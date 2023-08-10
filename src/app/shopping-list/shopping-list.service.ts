@@ -10,7 +10,7 @@ export class ShoppingListService {
   constructor(private http: HttpClient) { }
 
   get(): Observable<ShoppingList> {
-    return this.http.get<ShoppingList>(GlobalConstants.apiEndpoint + 'shopping-list/get').pipe(
+    return this.http.get<ShoppingList>(`${GlobalConstants.apiEndpoint}shopping-list/get`).pipe(
       tap((list) => console.table(list)),
       catchError((error) => { 
         console.log(error);

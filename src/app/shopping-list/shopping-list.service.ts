@@ -1,29 +1,22 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { ShoppingList } from './shopping-list';
-import { ItemShoppingList } from './item-shopping-list';
+import { Observable, catchError, of, tap } from 'rxjs';
+import { GlobalConstants } from '../config/global-constants';
 
 @Injectable()
 export class ShoppingListService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
-  getOne(): ShoppingList {
-    const shoppingList: ShoppingList = new ShoppingList();
-    shoppingList.id = 1;
-    shoppingList.name = 'Ma liste de course';
-
-    const itemShoppingList1: ItemShoppingList = new ItemShoppingList()
-    itemShoppingList1.id = 1;
-    itemShoppingList1.name = 'Litière';
-    itemShoppingList1.isChecked = true;
-    shoppingList.items.push(itemShoppingList1);
-
-    const itemShoppingList2: ItemShoppingList = new ItemShoppingList()
-    itemShoppingList2.id = 2;
-    itemShoppingList2.name = 'Fromages';
-    shoppingList.items.push(itemShoppingList2);
-
-    return shoppingList;
+  get(): Observable<ShoppingList> {
+    return this.http.get<ShoppingList>(GlobalConstants.apiEndpoint + 'shopping-list/get').pipe(
+      tap((list) => console.table(list)),
+      catchError((error) => { 
+        console.log(error);
+        return of(new ShoppingList);
+      })
+      );
   }
 
   save(shoppingList: ShoppingList): void { }

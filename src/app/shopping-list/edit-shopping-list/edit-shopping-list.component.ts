@@ -18,6 +18,6 @@ export class EditShoppingListComponent implements OnInit {
   constructor(private shoppingListService: ShoppingListService) { }
 
   ngOnInit(): void {
-    this.shoppingList = this.shoppingListService.getOne();
+    this.shoppingListService.get().subscribe((shoppingList) => this.shoppingList = shoppingList);
   }
 }

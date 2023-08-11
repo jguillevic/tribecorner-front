@@ -21,24 +21,20 @@ export class ShoppingListFormComponent {
 
   addItem(): void {
     if (this.newItemShopListName.length) {
-      const itemShoppingList: ItemShoppingList  = new ItemShoppingList;
+      const itemShoppingList: ItemShoppingList  = new ItemShoppingList();
       itemShoppingList.name = this.newItemShopListName;
       this.shoppingList.items.push(itemShoppingList);
       this.newItemShopListName = '';
+      
     }
   }
 
   deleteItem(itemShoppingList: ItemShoppingList): void {
-    console.log('Demande de suppression d\'un élément de la liste.');
-    console.log(itemShoppingList);
-    const itemIndex = this.shoppingList.items.indexOf(itemShoppingList);
+    const itemIndex: number = this.shoppingList.items.indexOf(itemShoppingList);
     this.shoppingList.items.splice(itemIndex, 1);
   }
 
   save(): void {
-    console.log("Demande de sauvegarde de la liste.");
-    console.log(this.shoppingList.name);
-    console.table(this.shoppingList.items);
-    this.shoppingListService.save(this.shoppingList);
+    this.shoppingListService.edit(this.shoppingList).subscribe();
   }
 }

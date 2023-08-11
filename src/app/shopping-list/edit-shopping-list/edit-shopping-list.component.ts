@@ -13,11 +13,11 @@ import { ShoppingListFormComponent } from '../shopping-list-form/shopping-list-f
   ]
 })
 export class EditShoppingListComponent implements OnInit {
-  shoppingList: ShoppingList = new ShoppingList;
+  shoppingList: ShoppingList|undefined;
 
   constructor(private shoppingListService: ShoppingListService) { }
 
   ngOnInit(): void {
-    this.shoppingListService.get().subscribe((shoppingList) => this.shoppingList = shoppingList);
+    this.shoppingListService.get().subscribe((shoppingLists) => this.shoppingList = shoppingLists.at(0));
   }
 }

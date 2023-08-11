@@ -24,8 +24,8 @@ export class ShoppingListFormComponent {
       const itemShoppingList: ItemShoppingList  = new ItemShoppingList();
       itemShoppingList.name = this.newItemShopListName;
       this.shoppingList.items.push(itemShoppingList);
+      itemShoppingList.position = this.shoppingList.items.indexOf(itemShoppingList) + 1;
       this.newItemShopListName = '';
-      
     }
   }
 

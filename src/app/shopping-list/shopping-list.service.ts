@@ -33,8 +33,6 @@ export class ShoppingListService {
 
     const body: string = JSON.stringify(shoppingList);
 
-    console.table(body);
-
     return this.http.put<ShoppingList>(
       `${GlobalConstants.apiEndpoint}shopping_lists/${shoppingList.id}`,
        body, 

@@ -6,18 +6,25 @@ import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { ShoppingListRoutes } from './app/shopping-list/shopping-list.routes';
 import { ShoppingListService } from './app/shopping-list/shopping-list.service';
 import { provideHttpClient } from '@angular/common/http';
+import { UserRoutes } from './app/user/user.routes';
+import { UserService } from './app/user/user.service';
 
 const routes: Routes = [
     { 
         path: '', 
-        redirectTo: ShoppingListRoutes.editShoppingListRoute, 
+        redirectTo: UserRoutes.signupUserRoute, 
         pathMatch: 'full' 
     },
     { 
         path: '',
         providers: [ ShoppingListService ],
         children: ShoppingListRoutes.shoppingListRoutes
-    }
+    },
+    { 
+        path: '',
+        providers: [ UserService ],
+        children: UserRoutes.userRoutes
+    },
 ];
 
 bootstrapApplication(AppComponent, {

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ShoppingList } from './shopping-list';
 import { Observable, catchError, of, tap } from 'rxjs';
-import { GlobalConstants } from '../config/global-constants';
+import { environment } from 'src/environments/environment.development';
 
 @Injectable()
 export class ShoppingListService {
@@ -15,7 +15,7 @@ export class ShoppingListService {
     .set('Accept', 'application/json');
 
     return this.http.get<ShoppingList[]>(
-      `${GlobalConstants.apiEndpoint}shopping_lists`
+      `${environment.apiUrl}shopping_lists`
       , { 'headers': headers }
       )
       .pipe(
@@ -34,7 +34,7 @@ export class ShoppingListService {
     const body: string = JSON.stringify(shoppingList);
 
     return this.http.put<ShoppingList>(
-      `${GlobalConstants.apiEndpoint}shopping_lists/${shoppingList.id}`,
+      `${environment.apiUrl}shopping_lists/${shoppingList.id}`,
        body, 
        { 'headers': headers }
       )

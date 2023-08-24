@@ -1,8 +1,8 @@
 export class ItemShoppingList {
-    id: number;
-    name: string;
-    isChecked: boolean;
-    position: number;
+    public id: number;
+    public name: string;
+    public isChecked: boolean;
+    public position: number;
 
     constructor() {
         this.id = -1;

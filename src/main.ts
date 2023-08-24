@@ -3,16 +3,16 @@ import { importProvidersFrom } from '@angular/core';
 import { AppComponent } from './app/app.component';
 import { provideRouter, Routes } from '@angular/router';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
-import { ShoppingListRoutes } from './app/shopping-list/shopping-list.routes';
-import { ShoppingListService } from './app/shopping-list/shopping-list.service';
+import { ShoppingListRoutes } from './app/shopping-list/route/shopping-list.routes';
+import { ShoppingListService } from './app/shopping-list/service/shopping-list.service';
 import { provideHttpClient } from '@angular/common/http';
-import { UserRoutes } from './app/user/user.routes';
-import { UserService } from './app/user/user.service';
+import { UserRoutes } from './app/user/route/user.routes';
+import { UserService } from './app/user/service/user.service';
 
 const routes: Routes = [
     { 
         path: '', 
-        redirectTo: UserRoutes.signupUserRoute, 
+        redirectTo: UserRoutes.signUpUserRoute, 
         pathMatch: 'full' 
     },
     { 

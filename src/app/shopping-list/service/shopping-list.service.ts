@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ShoppingList } from './shopping-list';
+import { ShoppingList } from '../model/shopping-list';
 import { Observable, catchError, of, tap } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 

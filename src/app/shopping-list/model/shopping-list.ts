@@ -1,9 +1,9 @@
 import { ItemShoppingList } from "./item-shopping-list";
 
 export class ShoppingList {
-    id: number;
-    name: string;
-    items: ItemShoppingList[]; 
+    public id: number;
+    public name: string;
+    public items: ItemShoppingList[]; 
 
     constructor() {
         this.id = -1;

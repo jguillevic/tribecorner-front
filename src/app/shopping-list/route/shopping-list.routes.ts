@@ -6,7 +6,7 @@ export class ShoppingListRoutes {
         { 
             path: ShoppingListRoutes.editShoppingListRoute,
             title: 'Ma liste de course',
-            loadComponent: () => import('./edit-shopping-list/edit-shopping-list.component').then(module => module.EditShoppingListComponent) 
+            loadComponent: () => import('../ui/edit-shopping-list/edit-shopping-list.component').then(module => module.EditShoppingListComponent) 
         },
     ];
 }

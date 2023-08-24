@@ -1,9 +1,9 @@
-export class User {
-    id: number;
-    uid: string
-    email: string;
-    firstname: string;
-    lastname: string;
+export class UserInfo {
+    public id: number;
+    public uid: string
+    public email: string;
+    public firstname: string;
+    public lastname: string;
 
     constructor() {
         this.id = -1;

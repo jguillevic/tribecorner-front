@@ -1,0 +1,28 @@
+<div>
+    <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">Bienvenue !</h1>
+    <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl">Rejoignez les membres de votre famille</p>
+</div>
+<form  (ngSubmit)="signUp()">
+    <div>
+        <input [(ngModel)]="signUpUser.firstname" #firstname="ngModel" name="firstname" type="text" placeholder="Nom" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+    </div>
+    <div>
+        <input [(ngModel)]="signUpUser.lastname" #lastname="ngModel" name="lastname" type="text" placeholder="Prénom" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+    </div>
+    <div>
+        <input [(ngModel)]="signUpUser.email" #email="ngModel" name="email" type="email" placeholder="Email" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+    </div>
+    <div>
+        <input [(ngModel)]="signUpUser.password" #password="ngModel" name="password" type="password" placeholder="Mot de passe" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+    </div>
+    <div>
+        <input [(ngModel)]="signUpUser.passwordConfirmation" #passwordConfirmation="ngModel" name="password-confirmation" type="password" placeholder="Confirmez mot de passe" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+    </div>
+    <div>
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Créer un compte</button>
+    </div>
+</form>
+<div>
+    <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl">Déjà membre ?</p>
+    <button (click)="goToSignIn()" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">Se connecter</button>
+</div>

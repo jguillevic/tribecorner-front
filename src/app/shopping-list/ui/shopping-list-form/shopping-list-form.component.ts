@@ -1,9 +1,9 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ShoppingList } from '../shopping-list';
-import { ItemShoppingList } from '../item-shopping-list';
-import { ShoppingListService } from '../shopping-list.service';
+import { ShoppingList } from '../../model/shopping-list';
+import { ItemShoppingList } from '../../model/item-shopping-list';
+import { ShoppingListService } from '../../service/shopping-list.service';
 
 @Component({
   standalone: true,
@@ -15,7 +15,7 @@ import { ShoppingListService } from '../shopping-list.service';
 })
 export class ShoppingListFormComponent {
   @Input() shoppingList: ShoppingList = new ShoppingList;
-  newItemShopListName: string = '';
+  public newItemShopListName: string = '';
 
   constructor(private shoppingListService: ShoppingListService) { }
 

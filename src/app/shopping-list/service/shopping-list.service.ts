@@ -15,8 +15,8 @@ export class ShoppingListService {
     .set('Accept', 'application/json');
 
     return this.http.get<ShoppingList[]>(
-      `${environment.apiUrl}shopping_lists`
-      , { 'headers': headers }
+      `${environment.apiUrl}shopping_lists`,
+      { 'headers': headers }
       )
       .pipe(
         catchError((error) => { 
@@ -35,8 +35,8 @@ export class ShoppingListService {
 
     return this.http.put<ShoppingList>(
       `${environment.apiUrl}shopping_lists/${shoppingList.id}`,
-       body, 
-       { 'headers': headers }
+      body, 
+      { 'headers': headers }
       )
       .pipe(
         catchError((error) => { 

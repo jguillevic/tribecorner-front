@@ -3,10 +3,10 @@
 </div>
 <form (ngSubmit)="signIn()">
     <div>
-        <input type="email" placeholder="Email" required [(ngModel)]="email" name="email">
+        <input type="email" placeholder="Email" required [(ngModel)]="signInUser.email" name="email">
     </div>
     <div>
-        <input type="password" placeholder="Mot de passe" required [(ngModel)]="password" name="password">
+        <input type="password" placeholder="Mot de passe" required [(ngModel)]="signInUser.password" name="password">
     </div>
     <div>
         <button type="submit">Se connecter</button>

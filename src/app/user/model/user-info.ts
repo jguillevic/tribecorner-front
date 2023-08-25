@@ -1,15 +1,14 @@
 export class UserInfo {
-    public id: number;
-    public uid: string
+    public id: number | undefined;
+    public firebaseId: string
     public email: string;
-    public firstname: string;
-    public lastname: string;
+    public firstName: string;
+    public lastName: string;
 
     constructor() {
-        this.id = -1;
-        this.uid = "";
+        this.firebaseId = "";
         this.email = "";
-        this.firstname = "";
-        this.lastname = "";
+        this.firstName = "";
+        this.lastName = "";
     }
 }

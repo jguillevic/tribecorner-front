@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { UserRoutes } from '../../route/user.routes';
 import { FormsModule } from '@angular/forms';
 import { SignUpUser } from '../../model/sign-up-user';
+import { ShoppingListRoutes } from 'src/app/shopping-list/route/shopping-list.routes';
 
 @Component({
   selector: 'app-sign-up-user',
@@ -16,14 +17,24 @@ import { SignUpUser } from '../../model/sign-up-user';
 })
 export class SignUpUserComponent {
   public signUpUser: SignUpUser = new SignUpUser();
+  public displaySignUpMessage: boolean = false;
 
-  constructor(private userService: UserService, private router: Router) { }
+  public constructor(private userService: UserService, private router: Router) { }
 
-  signUp(): void {
-    this.userService.signUp(this.signUpUser);
+  public signUp(): void {
+    this.displaySignUpMessage = true;
+
+    this.userService.signUp(this.signUpUser)
+    .subscribe((userInfo) => { 
+      if (!userInfo) { 
+        window.alert("Problème rencontré lors de la création du compte !"); 
+      } else {
+        this.router.navigate([ShoppingListRoutes.editShoppingListRoute]);
+      }
+    });  
   }
 
-  goToSignIn() {
+  public goToSignIn() {
     this.router.navigate([UserRoutes.signInUserRoute]);
   }
 }

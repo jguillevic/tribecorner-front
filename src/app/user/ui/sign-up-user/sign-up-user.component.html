@@ -2,12 +2,15 @@
     <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">Bienvenue !</h1>
     <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl">Rejoignez les membres de votre famille</p>
 </div>
+<div *ngIf="displaySignUpMessage">
+    <p>Création de compte en cours !</p>
+</div>
 <form  (ngSubmit)="signUp()">
     <div>
-        <input [(ngModel)]="signUpUser.firstname" #firstname="ngModel" name="firstname" type="text" placeholder="Nom" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+        <input [(ngModel)]="signUpUser.lastName" #lastName="ngModel" name="last-name" type="text" placeholder="Nom" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
     </div>
     <div>
-        <input [(ngModel)]="signUpUser.lastname" #lastname="ngModel" name="lastname" type="text" placeholder="Prénom" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+        <input [(ngModel)]="signUpUser.firstName" #firstName="ngModel" name="first-name" type="text" placeholder="Prénom" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
     </div>
     <div>
         <input [(ngModel)]="signUpUser.email" #email="ngModel" name="email" type="email" placeholder="Email" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">

@@ -1,23 +1,26 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword, Auth, signInWithEmailAndPassword, UserCredential } from "firebase/auth";
 import { environment } from 'src/environments/environment.development';
 import { SignUpUser } from '../model/sign-up-user';
 import { UserInfo } from '../model/user-info';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, defer, of, switchMap } from 'rxjs';
+import { Observable, catchError, defer, of, switchMap, tap } from 'rxjs';
 import { SignInUser } from '../model/sign-in-user';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class UserService {
-
-  constructor(private http: HttpClient) { }
+  private firebaseAuth: Auth;
+  constructor(private http: HttpClient) { 
+    const app: FirebaseApp = initializeApp(environment.firebaseConfig);
+    this.firebaseAuth = getAuth(app);
+  }
 
   public signUp(signUpUser: SignUpUser): Observable<UserInfo | undefined> {
     return defer(async () => {
-        const app: FirebaseApp = initializeApp(environment.firebaseConfig);
-        const auth: Auth = getAuth(app);
-        const userCredential: UserCredential = await createUserWithEmailAndPassword(auth, signUpUser.email, signUpUser.password);
+        const userCredential: UserCredential = await createUserWithEmailAndPassword(this.firebaseAuth, signUpUser.email, signUpUser.password);
 
         return userCredential;
       })
@@ -37,6 +40,7 @@ export class UserService {
             { 'headers': headers }
             )
             .pipe(
+              tap((userInfo) => { return localStorage.setItem('isSignedIn', 'true'); }),
               catchError((error) => { 
                 console.log(error);
                 return of(undefined);
@@ -52,9 +56,7 @@ export class UserService {
 
   public signIn(signInUser: SignInUser): Observable<UserInfo | undefined> {
     return defer(async () => {
-      const app: FirebaseApp = initializeApp(environment.firebaseConfig);
-      const auth: Auth = getAuth(app);
-      const userCredential: UserCredential = await signInWithEmailAndPassword(auth, signInUser.email, signInUser.password);
+      const userCredential: UserCredential = await signInWithEmailAndPassword(this.firebaseAuth, signInUser.email, signInUser.password);
 
       return userCredential;
     })
@@ -70,6 +72,7 @@ export class UserService {
           { 'headers': headers }
           )
           .pipe(
+            tap((userInfo) => { return localStorage.setItem('isSignedIn', 'true'); }),
             catchError((error) => { 
               console.log(error);
               return of(undefined);
@@ -83,6 +86,10 @@ export class UserService {
     );
   }
 
+  public signOut() : void {
+    localStorage.removeItem('isSignedIn');
+  }
+
   private static getUserInfo(firebaseId: string, signUpUser: SignUpUser): UserInfo {
     const userInfo: UserInfo = new UserInfo();
 
@@ -92,5 +99,9 @@ export class UserService {
     userInfo.email = signUpUser.email;
 
     return userInfo;
+  }
+
+  public isSignedIn() : boolean {
+    return localStorage.getItem('isSignedIn') == 'true';
   }
 }

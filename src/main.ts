@@ -8,6 +8,7 @@ import { ShoppingListService } from './app/shopping-list/service/shopping-list.s
 import { provideHttpClient } from '@angular/common/http';
 import { UserRoutes } from './app/user/route/user.routes';
 import { signedInGuard } from './app/user/guard/signed-in.guard';
+import { notSignedInGuard } from './app/user/guard/not-signed-in.guard';
 
 const routes: Routes = [
     { 
@@ -23,6 +24,7 @@ const routes: Routes = [
     },
     { 
         path: '',
+        canActivate: [notSignedInGuard],
         children: UserRoutes.userRoutes
     },
 ];

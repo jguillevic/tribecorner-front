@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { FirebaseApp, initializeApp } from 'firebase/app';
-import { getAuth, createUserWithEmailAndPassword, Auth, signInWithEmailAndPassword, UserCredential } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, Auth, signInWithEmailAndPassword, UserCredential, signOut, onAuthStateChanged, browserLocalPersistence, setPersistence, User } from "firebase/auth";
 import { environment } from 'src/environments/environment.development';
 import { SignUpUser } from '../model/sign-up-user';
 import { UserInfo } from '../model/user-info';
@@ -13,40 +13,38 @@ import { SignInUser } from '../model/sign-in-user';
 })
 export class UserService {
   private firebaseAuth: Auth;
+
+  public isSignedIn: boolean = false;
+
   constructor(private http: HttpClient) { 
     const app: FirebaseApp = initializeApp(environment.firebaseConfig);
     this.firebaseAuth = getAuth(app);
+
+    this.firebaseAuth.onAuthStateChanged((user) => {
+      this.refreshIsSignedIn(user);
+    });
   }
 
-  public signUp(signUpUser: SignUpUser): Observable<UserInfo | undefined> {
+  private firebaseSetPersistenceToLocal(): Observable<boolean> {
     return defer(async () => {
-        const userCredential: UserCredential = await createUserWithEmailAndPassword(this.firebaseAuth, signUpUser.email, signUpUser.password);
+      await setPersistence(this.firebaseAuth, browserLocalPersistence);
+      return true;
+    })
+      .pipe(   
+        catchError((error) => { 
+          console.log(error);
+          return of(false);
+        })
+      );
+  }
 
-        return userCredential;
-      })
+  private firebaseCreateUserWithEmailAndPassword(signUpUser: SignUpUser) : Observable<UserCredential | undefined> {
+    return defer(async () => {
+      const userCredential: UserCredential = await createUserWithEmailAndPassword(this.firebaseAuth, signUpUser.email, signUpUser.password);
+
+      return userCredential;
+    })
       .pipe(
-        switchMap((userCredential) => { 
-          // Enregistrement des informations spécifiques à l'application.
-          const headers: HttpHeaders= new HttpHeaders()
-          .set('Content-type', 'application/json')
-          .set('Accept', 'application/json');
-
-          const userInfo: UserInfo = UserService.getUserInfo(userCredential.user.uid, signUpUser);
-          const body: string = JSON.stringify(userInfo);
-
-          return this.http.post<UserInfo>(
-            `${environment.apiUrl}users`,
-            body,
-            { 'headers': headers }
-            )
-            .pipe(
-              tap((userInfo) => { return localStorage.setItem('isSignedIn', 'true'); }),
-              catchError((error) => { 
-                console.log(error);
-                return of(undefined);
-              })
-            ); 
-        }),
         catchError((error) => { 
           console.log(error);
           return of(undefined);
@@ -54,40 +52,117 @@ export class UserService {
       );
   }
 
-  public signIn(signInUser: SignInUser): Observable<UserInfo | undefined> {
+  private addUser(userCredential: UserCredential, signUpUser: SignUpUser) {
+    const headers: HttpHeaders = new HttpHeaders()
+      .set('Content-type', 'application/json')
+      .set('Accept', 'application/json');
+
+    const userInfo: UserInfo = UserService.getUserInfo(userCredential.user.uid, signUpUser);
+    const body: string = JSON.stringify(userInfo);
+
+    return this.http.post<UserInfo>(
+      `${environment.apiUrl}users`,
+      body,
+      { 'headers': headers }
+    )
+      .pipe(
+        catchError((error) => {
+          console.log(error);
+          return of(undefined);
+        })
+      );
+  }
+
+  public signUp(signUpUser: SignUpUser): Observable<UserInfo | undefined> {
+    return this.firebaseSetPersistenceToLocal()
+      .pipe(
+        switchMap((result) => { 
+          if (result) {
+            return this.firebaseCreateUserWithEmailAndPassword(signUpUser)
+            .pipe(
+              switchMap((userCredential) => { 
+                if (userCredential) {
+                  // Enregistrement des informations spécifiques à l'application.
+                  return this.addUser(userCredential, signUpUser)
+                  .pipe(
+                    tap((userInfo) => { this.isSignedIn = true; })
+                  );  
+                }
+                return of(undefined);
+              })
+            );
+          }
+
+          return of(undefined);
+          })
+        );
+  }
+
+  private firebaseSignInWithEmailAndPassword(signInUser: SignInUser) : Observable<UserCredential | undefined> {
     return defer(async () => {
       const userCredential: UserCredential = await signInWithEmailAndPassword(this.firebaseAuth, signInUser.email, signInUser.password);
 
       return userCredential;
     })
     .pipe(
-      switchMap((userCredential) => { 
-        // Récupération des informations spécifiques à l'application.
-        const headers: HttpHeaders= new HttpHeaders()
-        .set('Content-type', 'application/json')
-        .set('Accept', 'application/json');
-
-        return this.http.get<UserInfo>(
-          `${environment.apiUrl}users?email=${userCredential.user.email}`,
-          { 'headers': headers }
-          )
-          .pipe(
-            tap((userInfo) => { return localStorage.setItem('isSignedIn', 'true'); }),
-            catchError((error) => { 
-              console.log(error);
-              return of(undefined);
-            })
-          ); 
-      }),
       catchError((error) => { 
         console.log(error);
         return of(undefined);
       })
     );
   }
+  
+  public signIn(signInUser: SignInUser): Observable<UserInfo | undefined> {
+    return this.firebaseSetPersistenceToLocal()
+    .pipe(
+      switchMap((result) => { 
+        if (result) {
+          return this.firebaseSignInWithEmailAndPassword(signInUser)
+          .pipe(
+            switchMap((userCredential) => {
+              if (userCredential) {
+                return this.loadUserFromEmail(userCredential)
+                .pipe(
+                  tap((userInfo) => { this.isSignedIn = true; })
+                ); 
+              }
+              return of(undefined);
+            })
+          );
+        }
+        return of(undefined);
+      })
+    );
+  }
 
-  public signOut() : void {
-    localStorage.removeItem('isSignedIn');
+  private loadUserFromEmail(userCredential: UserCredential) {
+    const headers: HttpHeaders = new HttpHeaders()
+      .set('Content-type', 'application/json')
+      .set('Accept', 'application/json');
+
+    return this.http.get<UserInfo>(
+      `${environment.apiUrl}users?email=${userCredential.user.email}`,
+      { 'headers': headers }
+    )
+      .pipe(
+        catchError((error) => {
+          console.log(error);
+          return of(undefined);
+        })
+      );
+  }
+
+  public signOut() : Observable<boolean> {
+    return defer(async () => {
+      signOut(this.firebaseAuth);
+      return true;
+    })
+    .pipe(
+      catchError((error) => { 
+        console.log(error);
+        return of(false);
+      })
+    )
   }
 
   private static getUserInfo(firebaseId: string, signUpUser: SignUpUser): UserInfo {
@@ -101,7 +176,12 @@ export class UserService {
     return userInfo;
   }
 
-  public isSignedIn() : boolean {
-    return localStorage.getItem('isSignedIn') == 'true';
+  private refreshIsSignedIn(user: User | null) : void {
+    if (user) {
+      this.isSignedIn = true;
+    } else {
+      this.isSignedIn = false;
+    }
+    console.log('isSignedIn : ' + this.isSignedIn);
   }
 }

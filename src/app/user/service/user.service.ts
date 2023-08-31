@@ -1,6 +1,6 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { EventEmitter, Injectable, OnDestroy } from '@angular/core';
 import { FirebaseApp, initializeApp } from 'firebase/app';
-import { getAuth, createUserWithEmailAndPassword, Auth, signInWithEmailAndPassword, UserCredential, signOut, onAuthStateChanged, browserLocalPersistence, setPersistence, User } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, Auth, signInWithEmailAndPassword, UserCredential, signOut, onAuthStateChanged, browserLocalPersistence, setPersistence, User, Unsubscribe } from "firebase/auth";
 import { environment } from 'src/environments/environment.development';
 import { SignUpUser } from '../model/sign-up-user';
 import { UserInfo } from '../model/user-info';
@@ -11,18 +11,33 @@ import { SignInUser } from '../model/sign-in-user';
 @Injectable({
   providedIn: 'root',
 })
-export class UserService {
+export class UserService implements OnDestroy {
   private firebaseAuth: Auth;
+  private unsubscribe: Unsubscribe;
 
-  public isSignedIn: boolean = false;
+  public isSignedIn: boolean | undefined = undefined;
+  public isSignedInDefinedEvent = new EventEmitter();
 
   constructor(private http: HttpClient) { 
     const app: FirebaseApp = initializeApp(environment.firebaseConfig);
     this.firebaseAuth = getAuth(app);
 
-    this.firebaseAuth.onAuthStateChanged((user) => {
-      this.refreshIsSignedIn(user);
+    this.unsubscribe = this.firebaseAuth.onAuthStateChanged((user) => {
+      if (user) {
+        this.isSignedIn = true;
+      } else {
+        this.isSignedIn = false;
+      }
+      this.notifyIsSignedInDefined();
     });
+  }
+
+  public ngOnDestroy(): void {
+    this.unsubscribe();
+  }
+
+  private notifyIsSignedInDefined() {
+    this.isSignedInDefinedEvent.emit();
   }
 
   private firebaseSetPersistenceToLocal(): Observable<boolean> {
@@ -174,14 +189,5 @@ export class UserService {
     userInfo.email = signUpUser.email;
 
     return userInfo;
-  }
-
-  private refreshIsSignedIn(user: User | null) : void {
-    if (user) {
-      this.isSignedIn = true;
-    } else {
-      this.isSignedIn = false;
-    }
-    console.log('isSignedIn : ' + this.isSignedIn);
   }
 }

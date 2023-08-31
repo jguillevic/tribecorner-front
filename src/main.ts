@@ -9,12 +9,17 @@ import { provideHttpClient } from '@angular/common/http';
 import { UserRoutes } from './app/user/route/user.routes';
 import { signedInGuard } from './app/user/guard/signed-in.guard';
 import { notSignedInGuard } from './app/user/guard/not-signed-in.guard';
+import { LoadingRoutes } from './app/loading/route/loading.routes';
 
 const routes: Routes = [
     { 
         path: '', 
-        redirectTo: UserRoutes.signUpUserRoute, 
+        redirectTo: LoadingRoutes.displayLoadingRoute, 
         pathMatch: 'full' 
+    },
+    { 
+        path: '',
+        children: LoadingRoutes.loadingRoutes
     },
     { 
         path: '',

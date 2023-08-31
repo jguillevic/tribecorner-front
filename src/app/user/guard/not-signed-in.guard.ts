@@ -7,9 +7,12 @@ export const notSignedInGuard: CanActivateFn = (route, state) => {
   const userService = inject(UserService);
   const router = inject(Router);
 
-  if (!userService.isSignedIn) {
-    return true;
+  if (userService.isSignedIn == undefined) {
+    return router.navigate(['']);
+  }
+  if (userService.isSignedIn == true) {
+    return router.navigate([ShoppingListRoutes.editShoppingListRoute]);
   }
 
-  return router.navigate([ShoppingListRoutes.editShoppingListRoute]);
+  return true;
 };

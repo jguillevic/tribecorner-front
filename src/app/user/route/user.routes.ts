@@ -1,9 +1,9 @@
 import { Routes } from "@angular/router";
 
 export class UserRoutes {
-    static readonly signUpUserRoute: string = 'user/sign-up';
-    static readonly signInUserRoute: string = 'user/sign-in';
-    static  readonly userRoutes: Routes = [
+    public static readonly signUpUserRoute: string = 'user/sign-up';
+    public static readonly signInUserRoute: string = 'user/sign-in';
+    public static readonly userRoutes: Routes = [
         { 
             path: UserRoutes.signUpUserRoute,
             title: 'Créer un compte',
@@ -13,7 +13,6 @@ export class UserRoutes {
             path: UserRoutes.signInUserRoute,
             title: 'Se connecter',
             loadComponent: () => import('../ui/sign-in-user/sign-in-user.component').then(module => module.SignInUserComponent) 
-        },
-
+        }
     ];
 }

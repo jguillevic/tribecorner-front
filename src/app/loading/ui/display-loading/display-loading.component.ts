@@ -19,8 +19,7 @@ export class DisplayLoadingComponent implements OnInit {
   public ngOnInit(): void {
     if (this.userService.isSignedIn == undefined)
     {
-      const subscrition = this.userService.isSignedInDefinedEvent.subscribe(() => {
-        this.userService.isSignedInDefinedEvent.unsubscribe();
+      this.userService.isSignedInDefinedEvent.subscribe(() => {
         this.navigateTo(this.userService.isSignedIn == true);
       });
     } else {
@@ -32,6 +31,6 @@ export class DisplayLoadingComponent implements OnInit {
     if (isSignedIn == true) {
       return this.router.navigate([ShoppingListRoutes.editShoppingListRoute]);
     }
-    return this.router.navigate([UserRoutes.signUpUserRoute]);
+    return this.router.navigate([UserRoutes.signInUserRoute]);
   }
 }

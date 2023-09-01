@@ -19,7 +19,7 @@ export class ShoppingListFormComponent {
 
   constructor(private shoppingListService: ShoppingListService) { }
 
-  addItem(): void {
+  public addItem(): void {
     if (this.newItemShopListName.length) {
       const itemShoppingList: ItemShoppingList  = new ItemShoppingList();
       itemShoppingList.name = this.newItemShopListName;
@@ -29,12 +29,12 @@ export class ShoppingListFormComponent {
     }
   }
 
-  deleteItem(itemShoppingList: ItemShoppingList): void {
+  public deleteItem(itemShoppingList: ItemShoppingList): void {
     const itemIndex: number = this.shoppingList.items.indexOf(itemShoppingList);
     this.shoppingList.items.splice(itemIndex, 1);
   }
 
-  save(): void {
+  public save(): void {
     this.shoppingListService.edit(this.shoppingList).subscribe();
   }
 }

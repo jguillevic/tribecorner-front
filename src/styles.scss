@@ -1,4 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
+/* Reset */
+@use '../node_modules/scss-reset/src/scss/_reset.scss';
+
+/* Tailwind */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Externes */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+/* Helpers */
+@import 'styles/helpers/variables';
+
+/* Components */
+@import 'styles/components/buttons';
+@import 'styles/components/pages';
+@import 'styles/components/forms';

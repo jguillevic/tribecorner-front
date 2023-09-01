@@ -1,0 +1,35 @@
+.input {
+    display: inline-block;
+    font-family: $main-font;
+    font-weight: 400;
+    font-size: 16px;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 15px;
+    border-color: $gray-color;
+    padding: 10px;
+    color: $gray-color;
+    width: 100%;
+
+    &::placeholder {
+        font-style: italic;
+    }
+
+    &:focus {
+        border-color: $main-color;
+        color: $main-color;
+
+        &::placeholder {
+            color: $main-color;
+        }
+    }
+
+    &:hover {
+        border-color: $main-color;
+        color: $main-color;
+
+        &::placeholder {
+            color: $main-color;
+        }
+    }
+}

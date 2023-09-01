@@ -1,18 +1,22 @@
-<div>
-    <h1>Content de vous revoir !</h1>
-</div>
-<form (ngSubmit)="signIn()">
-    <div>
-        <input type="email" placeholder="Email" required [(ngModel)]="signInUser.email" name="email">
+<div class="page">
+    <div class="container-header">
+        <h1 class="header">Content de vous revoir !</h1>
     </div>
+    <form (ngSubmit)="signIn()">
+        <div class="container-inputs">
+            <div class="container-input">
+                <input class="input" type="email" placeholder="Email" required [(ngModel)]="signInUser.email" name="email">
+            </div>
+            <div>
+                <input class="input" type="password" placeholder="Mot de passe" required [(ngModel)]="signInUser.password" name="password">
+            </div>
+        </div>
+        <div class="container-buttons">
+            <button class="btn-filled" type="submit">Se connecter</button>
+        </div>
+    </form>
     <div>
-        <input type="password" placeholder="Mot de passe" required [(ngModel)]="signInUser.password" name="password">
+        <p>Pas encore de compte ?</p>
+        <button class="btn-outline" (click)="goToSignUp()">Créer un compte</button>
     </div>
-    <div>
-        <button type="submit">Se connecter</button>
-    </div>
-</form>
-<div>
-    <p>Pas encore de compte ?</p>
-    <button (click)="goToSignUp()">Créer un compte</button>
 </div>

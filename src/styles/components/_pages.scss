@@ -1,0 +1,31 @@
+.page {
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.container {
+    &-header {
+        margin-top: 50px;
+        margin-bottom: 40px;
+    }
+
+    &-inputs {
+        margin-bottom: 40px;
+    }
+
+    &-input {
+        margin-bottom: 20px;
+    }
+
+    &-buttons {
+        margin-bottom: 40px;
+    }
+}
+
+.header {
+    display: inline-block;
+    font-family: $main-font;
+    font-weight: 700;
+    font-size: 28px;
+    color: $dark-color;
+}

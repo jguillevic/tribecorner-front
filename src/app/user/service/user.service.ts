@@ -167,15 +167,14 @@ export class UserService implements OnDestroy {
       );
   }
 
-  public signOut() : Observable<boolean> {
+  public signOut() : Observable<void> {
     return defer(async () => {
       signOut(this.firebaseAuth);
-      return true;
     })
     .pipe(
       catchError((error) => { 
         console.log(error);
-        return of(false);
+        return of();
       })
     )
   }

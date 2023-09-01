@@ -1,12 +1,12 @@
 <form *ngIf="shoppingList" (ngSubmit)="save()" (keydown.enter)="$event.preventDefault()">
     <div>
-        <button type="submit">Enregistrer</button>
+        <button class="btn-filled" type="submit">Enregistrer</button>
     </div>
     <h1>{{ shoppingList.name }}</h1>
     <div>
         <div>
             <input type="text" placeholder="Ajouter un nouvel article" name="new-item-shopping-list-name" [(ngModel)]="newItemShopListName" #newItemShoppingListName="ngModel" (keyup.enter)="addItem()">
-            <button (click)="addItem()" [disabled]="!newItemShopListName.length">+</button>
+            <button class="btn-filled" (click)="addItem()" [disabled]="!newItemShopListName.length">+</button>
         </div>
     </div>
     <ul *ngIf="shoppingList.items">
@@ -15,7 +15,7 @@
                 <input type="checkbox" name="item-shopping-list-checkbox-{{itemShoppingList.id}}" [(ngModel)]="itemShoppingList.isChecked">
                 <span>{{ itemShoppingList.name }}</span>
                 <span>
-                    <button (click)="deleteItem(itemShoppingList)">Supprimer</button>
+                    <button class="btn-outline" (click)="deleteItem(itemShoppingList)">Supprimer</button>
                 </span>
             </div>
         </li>

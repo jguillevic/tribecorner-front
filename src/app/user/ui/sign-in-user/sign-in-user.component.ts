@@ -6,16 +6,20 @@ import { UserRoutes } from '../../route/user.routes';
 import { FormsModule } from '@angular/forms';
 import { SignInUser } from '../../model/sign-in-user';
 import { ShoppingListRoutes } from 'src/app/shopping-list/route/shopping-list.routes';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-sign-in-user',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatInputModule, MatFormFieldModule, MatButtonModule],
   templateUrl: './sign-in-user.component.html',
   styles: [
   ]
 })
 export class SignInUserComponent {
+  public hidePassword = true;
   public signInUser = new SignInUser();
 
   constructor(private userService: UserService, private router: Router) { }

@@ -6,11 +6,14 @@ import { UserRoutes } from '../../route/user.routes';
 import { FormsModule } from '@angular/forms';
 import { SignUpUser } from '../../model/sign-up-user';
 import { ShoppingListRoutes } from 'src/app/shopping-list/route/shopping-list.routes';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-sign-up-user',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatInputModule, MatFormFieldModule, MatButtonModule],
   templateUrl: './sign-up-user.component.html',
   styles: [
   ]

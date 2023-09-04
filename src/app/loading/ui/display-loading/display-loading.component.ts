@@ -4,11 +4,12 @@ import { UserService } from 'src/app/user/service/user.service';
 import { Router } from '@angular/router';
 import { ShoppingListRoutes } from 'src/app/shopping-list/route/shopping-list.routes';
 import { UserRoutes } from 'src/app/user/route/user.routes';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-display-loading',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatProgressSpinnerModule],
   templateUrl: './display-loading.component.html',
   styles: [
   ]

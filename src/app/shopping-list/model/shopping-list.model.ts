@@ -1,4 +1,4 @@
-import { ItemShoppingList } from "./item-shopping-list";
+import { ItemShoppingList } from "./item-shopping-list.model";
 
 export class ShoppingList {
     public id: number;

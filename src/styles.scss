@@ -2,18 +2,21 @@
 /* Reset */
 @use '../node_modules/scss-reset/src/scss/_reset.scss';
 
-/* Tailwind */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /* Externes */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
 /* Helpers */
+@import 'styles/helpers/commons';
 @import 'styles/helpers/variables';
 
 /* Components */
 @import 'styles/components/buttons';
 @import 'styles/components/pages';
 @import 'styles/components/forms';
+@import 'styles/components/toolbar';
+@import 'styles/components/loading';
+@import 'styles/components/shopping-list';
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

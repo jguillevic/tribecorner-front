@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ShoppingList } from '../model/shopping-list';
+import { ShoppingList } from '../model/shopping-list.model';
 import { Observable, catchError, of, tap } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 
@@ -9,7 +9,7 @@ export class ShoppingListService {
 
   constructor(private http: HttpClient) { }
 
-  get(): Observable<ShoppingList[]> {
+  public get(): Observable<ShoppingList[]> {
     const headers: HttpHeaders= new HttpHeaders()
     .set('Content-type', 'application/json')
     .set('Accept', 'application/json');
@@ -26,7 +26,7 @@ export class ShoppingListService {
       );
   }
 
-  edit(shoppingList: ShoppingList): Observable<ShoppingList|undefined> {
+  public edit(shoppingList: ShoppingList): Observable<ShoppingList|undefined> {
     const headers: HttpHeaders = new HttpHeaders()
     .set('Content-type', 'application/json')
     .set('Accept', 'application/json');

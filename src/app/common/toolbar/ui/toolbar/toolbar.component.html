@@ -1,0 +1,11 @@
+<mat-toolbar class="toolbar" color="primary">
+    <button (click)="goBack()" mat-icon-button aria-label="Cliquez ici pour revenir en arrière.">
+        <mat-icon>arrow_back</mat-icon>
+    </button>
+    <span>
+        <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>menu</mat-icon></button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="signOut()">Se déconnecter</button>
+        </mat-menu>
+    </span>
+</mat-toolbar>

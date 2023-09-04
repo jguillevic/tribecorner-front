@@ -1,22 +1,26 @@
 <div class="page">
-    <div class="container-header">
-        <h1 class="header">Content de vous revoir !</h1>
+    <div class="form-headers">
+        <h1 class="form-header">Content de vous revoir !</h1>
     </div>
     <form (ngSubmit)="signIn()">
-        <div class="container-inputs">
-            <div class="container-input">
-                <input class="input" type="email" placeholder="Email" required [(ngModel)]="signInUser.email" name="email">
-            </div>
-            <div>
-                <input class="input" type="password" placeholder="Mot de passe" required [(ngModel)]="signInUser.password" name="password">
-            </div>
+        <div class="form-inputs">
+            <mat-form-field class="form-input">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" required [(ngModel)]="signInUser.email" name="email">
+            </mat-form-field>
+            <mat-form-field class="form-input">
+                <mat-label>Mot de passe</mat-label>
+                <input matInput type="password" required [(ngModel)]="signInUser.password" name="password">
+            </mat-form-field>
         </div>
-        <div class="container-buttons">
-            <button class="btn-filled" type="submit">Se connecter</button>
+        <div class="form-buttons">
+            <button class="form-button" mat-raised-button color="primary" type="submit">Se connecter</button>
         </div>
     </form>
-    <div>
-        <p>Pas encore de compte ?</p>
-        <button class="btn-outline" (click)="goToSignUp()">Créer un compte</button>
+    <div class="form-sub-action">
+        <p class="form-sub-action-text">Pas encore de compte ?</p>
+        <div class="form-buttons">
+            <button class="form-button" mat-stroked-button color="primary" (click)="goToSignUp()">Créer un compte</button>
+        </div>
     </div>
 </div>

@@ -1,0 +1,13 @@
+.line {
+    text-decoration: line-through;
+}
+
+.center {
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+  }
+
+.debug-border {
+    border: 1px solid black;
+}

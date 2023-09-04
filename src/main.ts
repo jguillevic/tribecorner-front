@@ -10,6 +10,7 @@ import { UserRoutes } from './app/user/route/user.routes';
 import { signedInGuard } from './app/user/guard/signed-in.guard';
 import { notSignedInGuard } from './app/user/guard/not-signed-in.guard';
 import { LoadingRoutes } from './app/loading/route/loading.routes';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 const routes: Routes = [
     { 
@@ -36,9 +37,11 @@ const routes: Routes = [
 
 bootstrapApplication(AppComponent, {
     providers: [
-        importProvidersFrom(BrowserModule),
-        provideRouter(routes),
-        provideHttpClient()
-    ]
+    importProvidersFrom(BrowserModule),
+    provideRouter(routes),
+    provideHttpClient(),
+    provideAnimations(),
+    provideAnimations()
+]
 })
   .catch(err => console.error(err));

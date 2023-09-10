@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { UserService } from '../../service/user.service';
 import { Router } from '@angular/router';
 import { UserRoutes } from '../../route/user.routes';
+import { SignUpUser } from '../../model/sign-up-user.model';
 import { FormsModule } from '@angular/forms';
-import { SignUpUser } from '../../model/sign-up-user';
-import { ShoppingListRoutes } from 'src/app/shopping-list/route/shopping-list.routes';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
+import { HomeRoutes } from 'src/app/home/route/home.routes';
 
 @Component({
   selector: 'app-sign-up-user',
@@ -32,7 +32,7 @@ export class SignUpUserComponent {
       if (!userInfo) { 
         window.alert("Problème rencontré lors de la création du compte !"); 
       } else {
-        this.router.navigate([ShoppingListRoutes.editShoppingListRoute]);
+        this.router.navigate([HomeRoutes.displayHomeRoute]);
       }
     });  
   }

@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ShoppingListService } from '../../service/shopping-list.service';
 import { ShoppingList } from '../../model/shopping-list.model';
-import { ToolbarComponent } from 'src/app/common/toolbar/ui/toolbar/toolbar.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ItemShoppingList } from '../../model/item-shopping-list.model';
 import { FormsModule } from '@angular/forms';
 import { Subscription, interval } from 'rxjs';
+import { TabBarComponent } from 'src/app/common/tab-bar/ui/tab-bar/tab-bar.component';
 
 @Component({
   selector: 'app-display-shopping-list',
@@ -18,12 +18,12 @@ import { Subscription, interval } from 'rxjs';
   imports: [
     CommonModule,
     FormsModule,
-    ToolbarComponent,
     MatCheckboxModule,
     MatIconModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    TabBarComponent
   ],
   templateUrl: './edit-shopping-list.component.html',
   styles: [
@@ -32,8 +32,8 @@ import { Subscription, interval } from 'rxjs';
 export class EditShoppingListComponent implements OnInit, OnDestroy {
   private isEditing: boolean = false;
   private isSaving: boolean = false;
-  private getSubscription: Subscription |undefined;
-  private timerSubscription: Subscription |undefined;
+  private getSubscription: Subscription|undefined;
+  private timerSubscription: Subscription|undefined;
   private editSubscriptions: Subscription[] = [];
 
   public newItemShopListName: string = '';
@@ -42,18 +42,13 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
   constructor(private shoppingListService: ShoppingListService) { }
 
   public ngOnInit(): void {
-    this.getSubscription = this.shoppingListService.get().subscribe((shoppingLists) => this.shoppingList = shoppingLists.at(0));
+    this.getSubscription = this.shoppingListService.read().subscribe((shoppingLists) => this.shoppingList = shoppingLists.at(0));
     this.timerSubscription = interval(1000).subscribe(() => this.save());
   }
 
   public ngOnDestroy(): void {
-    if (this.getSubscription) {
-      this.getSubscription.unsubscribe();
-    }
-    if (this.timerSubscription) {
-      this.timerSubscription.unsubscribe();
-    }
-
+    this.getSubscription?.unsubscribe();
+    this.timerSubscription?.unsubscribe();
     this.editSubscriptions.forEach(subscription => subscription.unsubscribe());
   }
 

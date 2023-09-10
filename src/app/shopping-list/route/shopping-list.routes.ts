@@ -5,7 +5,7 @@ export class ShoppingListRoutes {
     public static readonly shoppingListRoutes: Routes = [
         { 
             path: ShoppingListRoutes.editShoppingListRoute,
-            title: 'Liste de course',
+            title: 'Votre liste de course',
             loadComponent: () => import('../ui/edit-shopping-list/edit-shopping-list.component').then(module => module.EditShoppingListComponent) 
         }
     ];

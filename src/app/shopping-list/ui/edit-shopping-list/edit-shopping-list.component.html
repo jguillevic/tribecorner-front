@@ -1,4 +1,3 @@
-<app-toolbar></app-toolbar>
 <div class="page">
     <div class="shopping-list" *ngIf="shoppingList">
         <h1 class="shopping-list-name">{{ shoppingList.name }}</h1>
@@ -6,10 +5,10 @@
             <li class="item-shopping-list" *ngFor="let itemShoppingList of shoppingList.items">
                 <span class="item-shopping-list-name" [ngClass]="{ 'line': itemShoppingList.isChecked }">{{ itemShoppingList.name }}</span>
                 <div class="item-shopping-list-btns">
-                    <button mat-mini-fab (click)="checkItem(itemShoppingList)" color="primary">
+                    <button mat-icon-button (click)="checkItem(itemShoppingList)" color="primary">
                         <mat-icon>done</mat-icon>
                     </button>
-                    <button mat-mini-fab (click)="deleteItem(itemShoppingList)" color="primary">
+                    <button mat-icon-button (click)="deleteItem(itemShoppingList)" color="primary">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </div>
@@ -25,3 +24,4 @@
         </button>
     </div>
 </div>
+<app-tab-bar class="tab-bar"></app-tab-bar>

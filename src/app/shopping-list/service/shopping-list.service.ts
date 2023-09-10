@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ShoppingList } from '../model/shopping-list.model';
 import { Observable, catchError, of, tap } from 'rxjs';
-import { environment } from 'src/environments/environment.development';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class ShoppingListService {
 
   constructor(private http: HttpClient) { }
 
-  public get(): Observable<ShoppingList[]> {
+  public read(): Observable<ShoppingList[]> {
     const headers: HttpHeaders= new HttpHeaders()
     .set('Content-type', 'application/json')
     .set('Accept', 'application/json');

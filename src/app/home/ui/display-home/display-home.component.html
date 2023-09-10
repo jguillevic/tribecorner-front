@@ -1,0 +1,38 @@
+<div class="page">
+    <div>
+        <h1>Bonjour !</h1>
+    </div>
+    <div>
+        <h2>Pas encore de famille ?</h2>
+        <div>
+            <h3>Créer une famille</h3>
+            <form>
+                <div>
+                    <mat-form-field>
+                        <mat-label>Nom de la famille</mat-label>
+                        <input matInput type="text" required name="family-name">
+                    </mat-form-field>
+                </div>
+                <div>
+                    <button mat-raised-button color="primary" type="submit">Créer</button>
+                </div>
+            </form>
+        </div>
+        <mat-divider></mat-divider>
+        <div>
+            <h3>Rejoindre une famille</h3>
+            <form>
+                <div>
+                    <mat-form-field>
+                        <mat-label>Code association famille</mat-label>
+                        <input matInput type="text" required name="family-association-code">
+                    </mat-form-field>
+                </div>
+                <div>
+                    <button mat-raised-button color="primary" type="submit">Rejoindre</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<app-tab-bar class="tab-bar"></app-tab-bar>

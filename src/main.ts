@@ -11,6 +11,8 @@ import { signedInGuard } from './app/user/guard/signed-in.guard';
 import { notSignedInGuard } from './app/user/guard/not-signed-in.guard';
 import { LoadingRoutes } from './app/loading/route/loading.routes';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { HomeRoutes } from './app/home/route/home.routes';
+import { HomeService } from './app/home/service/home.service';
 
 const routes: Routes = [
     { 
@@ -27,6 +29,12 @@ const routes: Routes = [
         providers: [ShoppingListService],
         canActivate: [signedInGuard],
         children: ShoppingListRoutes.shoppingListRoutes
+    },
+    { 
+        path: '',
+        providers: [HomeService],
+        canActivate: [signedInGuard],
+        children: HomeRoutes.homeRoutes
     },
     { 
         path: '',

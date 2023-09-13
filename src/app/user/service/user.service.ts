@@ -5,42 +5,70 @@ import { environment } from 'src/environments/environment.development';
 import { SignUpUser } from '../model/sign-up-user.model';
 import { UserInfo } from '../model/user-info.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, defer, map, of, switchMap, tap } from 'rxjs';
+import { Observable, Subscription, catchError, defer, map, of, switchMap, tap } from 'rxjs';
 import { SignInUser } from '../model/sign-in-user.model';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { LoadUserDto } from '../dto/load-user.dto';
+import { SessionStorageService } from 'src/app/common/storage/service/session-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService implements OnDestroy {
-  private apiPath = 'users';
+  private static apiPath: string = 'users';
+  private static userInfoSessionStorageKey: string = 'userInfo';
   private firebaseAuth: Auth;
   private onAuthStateChangedUnsubscribe: Unsubscribe;
+  private signInLocallySubscription: Subscription|undefined;
 
-  public isSignedIn: boolean|undefined = undefined;
+  private isSignedIn: boolean|undefined = undefined;
   public isSignedInDefinedEvent = new EventEmitter();
 
-  constructor(private http: HttpClient) { 
+  public constructor(
+    private http: HttpClient,
+    private sessionStorageService: SessionStorageService
+    ) { 
     const app: FirebaseApp = initializeApp(environment.firebaseConfig);
     this.firebaseAuth = getAuth(app);
 
-    this.onAuthStateChangedUnsubscribe = this.firebaseAuth.onAuthStateChanged((user) => {
-      if (user) {
-        this.isSignedIn = true;
-      } else {
-        this.isSignedIn = false;
-      }
-      this.notifyIsSignedInDefined();
-    });
+    this.onAuthStateChangedUnsubscribe = this.firebaseAuth.onAuthStateChanged(
+      (user) => this.onFirebaseAuthStateChange(user)
+      );
   }
 
   public ngOnDestroy(): void {
+    this.signInLocallySubscription?.unsubscribe();
     this.onAuthStateChangedUnsubscribe();
   }
 
   private notifyIsSignedInDefined(): void {
     this.isSignedInDefinedEvent.emit();
+  }
+
+  public getIsSignedIn(): boolean|undefined {
+    return this.isSignedIn;
+  }
+
+  public setIsSignedIn(isSignedIn: boolean|undefined): void {
+    if (this.isSignedIn != isSignedIn) {
+      this.isSignedIn = isSignedIn;
+      this.notifyIsSignedInDefined();
+    }
+  }
+
+  public getCurrentUserInfo(): UserInfo|undefined {
+    if (this.isSignedIn) {
+      return JSON.parse(this.sessionStorageService.getData(UserService.userInfoSessionStorageKey));
+    }
+    return undefined;
+  }
+
+  private onFirebaseAuthStateChange(user: User|null): void {
+    if (user) {
+      this.signInLocallySubscription = this.signInLocally(user.uid).subscribe();
+    } else {
+      this.setIsSignedIn(false);
+    }
   }
 
   private firebaseSetPersistenceToLocal(): Observable<boolean> {
@@ -79,7 +107,7 @@ export class UserService implements OnDestroy {
     const body: string = JSON.stringify(createUserDto);
 
     return this.http.post<LoadUserDto>(
-      `${environment.apiUrl}${this.apiPath}`,
+      `${environment.apiUrl}${UserService.apiPath}`,
       body,
       { 'headers': headers }
     )
@@ -90,6 +118,63 @@ export class UserService implements OnDestroy {
           return of(undefined);
         })
       );
+  }
+
+  private loadUserFromFirebaseId(firebaseId: string): Observable<UserInfo|undefined> {
+    const headers: HttpHeaders = new HttpHeaders()
+      .set('Content-type', 'application/json')
+      .set('Accept', 'application/json');
+
+    return this.http.get<LoadUserDto[]>(
+      `${environment.apiUrl}${UserService.apiPath}?firebaseId=${firebaseId}`,
+      { 'headers': headers }
+    )
+      .pipe(
+        switchMap((loadUserDtos) => { 
+          const loadUserDto: LoadUserDto|undefined = loadUserDtos.at(0);
+          if (loadUserDto) {
+            return of(UserService.fromLoadUserDtoToUserInfo(loadUserDto));
+          }
+          return of (undefined);
+        }),
+        catchError((error) => {
+          console.log(error);
+          return of(undefined);
+        })
+      );
+  }
+
+  private signInLocally(firebaseId: string): Observable<UserInfo|undefined> {
+    return this.loadUserFromFirebaseId(firebaseId)
+      .pipe(
+        tap((userInfo) => { 
+          if (userInfo) {
+            this.sessionStorageService.saveData(UserService.userInfoSessionStorageKey, JSON.stringify(userInfo));
+            this.setIsSignedIn(true);
+          }
+         })
+      );
+  }
+
+  public refreshCurrentUser(): Observable<UserInfo|undefined> {
+    const currentUserInfo: UserInfo|undefined = this.getCurrentUserInfo();
+    if (currentUserInfo) {
+      return this.loadUserFromFirebaseId(currentUserInfo.firebaseId)
+        .pipe(
+          tap((userInfo) => {
+            if (userInfo) {
+              this.sessionStorageService.saveData(UserService.userInfoSessionStorageKey, JSON.stringify(userInfo));
+            }
+          })
+        );
+    }
+
+    return of(undefined);
+  }
+
+  private signOutLocally(): void {
+    this.sessionStorageService.removeData(UserService.userInfoSessionStorageKey);
+    this.setIsSignedIn(false);
   }
 
   public signUp(signUpUser: SignUpUser): Observable<UserInfo|undefined> {
@@ -104,7 +189,12 @@ export class UserService implements OnDestroy {
                   // Enregistrement des informations spécifiques à l'application.
                   return this.createUser(userCredential, signUpUser)
                   .pipe(
-                    tap((userInfo) => { this.isSignedIn = true; })
+                    switchMap((userInfo) => { 
+                      if (userInfo) {
+                        return this.signInLocally(userInfo?.firebaseId);
+                      }
+                      return of(undefined);
+                    })
                   );  
                 }
                 return of(undefined);
@@ -130,7 +220,7 @@ export class UserService implements OnDestroy {
       })
     );
   }
-  
+
   public signIn(signInUser: SignInUser): Observable<UserInfo|undefined> {
     return this.firebaseSetPersistenceToLocal()
     .pipe(
@@ -140,10 +230,7 @@ export class UserService implements OnDestroy {
           .pipe(
             switchMap((userCredential) => {
               if (userCredential) {
-                return this.loadUserFromEmail(userCredential)
-                .pipe(
-                  tap((userInfo) => { this.isSignedIn = true; })
-                ); 
+                return this.signInLocally(userCredential.user.uid);
               }
               return of(undefined);
             })
@@ -154,30 +241,12 @@ export class UserService implements OnDestroy {
     );
   }
 
-  private loadUserFromEmail(userCredential: UserCredential): Observable<UserInfo|undefined> {
-    const headers: HttpHeaders = new HttpHeaders()
-      .set('Content-type', 'application/json')
-      .set('Accept', 'application/json');
-
-    return this.http.get<LoadUserDto>(
-      `${environment.apiUrl}${this.apiPath}?email=${userCredential.user.email}`,
-      { 'headers': headers }
-    )
-      .pipe(
-        switchMap((LoadUserDto) => { return of(UserService.fromLoadUserDtoToUserInfo(LoadUserDto)); }),
-        catchError((error) => {
-          console.log(error);
-          return of(undefined);
-        })
-      );
-  }
-
   public signOut() : Observable<void> {
     return defer(async () => {
       signOut(this.firebaseAuth);
     })
     .pipe(
-      tap(() => this.isSignedIn = false),
+      tap(() => this.signOutLocally()),
       catchError((error) => { 
         console.log(error);
         return of();

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../service/user.service';
 import { Router } from '@angular/router';
@@ -9,6 +9,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { HomeRoutes } from 'src/app/home/route/home.routes';
+import { Subscription } from 'rxjs';
+import { FamilyRoutes } from 'src/app/family/route/family.routes';
 
 @Component({
   selector: 'app-sign-up-user',
@@ -18,26 +20,30 @@ import { HomeRoutes } from 'src/app/home/route/home.routes';
   styles: [
   ]
 })
-export class SignUpUserComponent {
+export class SignUpUserComponent implements OnDestroy {
+  private signUpSubscription: Subscription|undefined;
+
   public signUpUser: SignUpUser = new SignUpUser();
-  public displaySignUpMessage: boolean = false;
 
   public constructor(private userService: UserService, private router: Router) { }
 
-  public signUp(): void {
-    this.displaySignUpMessage = true;
+  ngOnDestroy(): void {
+    this.signUpSubscription?.unsubscribe();
+  }
 
+  public signUp(): Promise<boolean>|void {
     this.userService.signUp(this.signUpUser)
     .subscribe((userInfo) => { 
       if (!userInfo) { 
-        window.alert("Problème rencontré lors de la création du compte !"); 
+        window.alert("Problème rencontré lors de la création du compte !");
       } else {
-        this.router.navigate([HomeRoutes.displayHomeRoute]);
+        return this.router.navigate([FamilyRoutes.createFamilyRoute]);
       }
-    });  
+      return;
+    });
   }
 
-  public goToSignIn() {
-    this.router.navigate([UserRoutes.signInUserRoute]);
+  public goToSignIn(): Promise<boolean> {
+    return this.router.navigate([UserRoutes.signInUserRoute]);
   }
 }

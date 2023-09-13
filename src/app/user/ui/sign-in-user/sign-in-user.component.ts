@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../service/user.service';
 import { Router } from '@angular/router';
@@ -9,6 +9,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { HomeRoutes } from 'src/app/home/route/home.routes';
+import { Subscription } from 'rxjs';
+import { FamilyRoutes } from 'src/app/family/route/family.routes';
 
 @Component({
   selector: 'app-sign-in-user',
@@ -18,24 +20,30 @@ import { HomeRoutes } from 'src/app/home/route/home.routes';
   styles: [
   ]
 })
-export class SignInUserComponent {
-  public hidePassword = true;
+export class SignInUserComponent implements OnDestroy {
+  private signInSubscription: Subscription|undefined;
+
   public signInUser = new SignInUser();
 
   constructor(private userService: UserService, private router: Router) { }
 
-  signIn(): void {
-    this.userService.signIn(this.signInUser)
+  ngOnDestroy(): void {
+    this.signInSubscription?.unsubscribe();
+  }
+
+  signIn(): Promise<boolean>|void {
+    this.signInSubscription = this.userService.signIn(this.signInUser)
     .subscribe((userInfo) => {
       if (!userInfo) { 
-        window.alert("Problème rencontré lors de l'authentification !"); 
+        window.alert("Problème rencontré lors de l'authentification !");
       } else {
-        this.router.navigate([HomeRoutes.displayHomeRoute]);
+        return this.router.navigate([FamilyRoutes.createFamilyRoute]);
       }
+      return;
     });
   }
 
-  goToSignUp() {
-    this.router.navigate([UserRoutes.signUpUserRoute]);
+  goToSignUp(): Promise<boolean> {
+    return this.router.navigate([UserRoutes.signUpUserRoute]);
   }
 }

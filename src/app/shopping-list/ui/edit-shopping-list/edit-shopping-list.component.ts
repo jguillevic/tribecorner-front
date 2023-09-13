@@ -32,7 +32,7 @@ import { TabBarComponent } from 'src/app/common/tab-bar/ui/tab-bar/tab-bar.compo
 export class EditShoppingListComponent implements OnInit, OnDestroy {
   private isEditing: boolean = false;
   private isSaving: boolean = false;
-  private getSubscription: Subscription|undefined;
+  private loadSubscription: Subscription|undefined;
   private timerSubscription: Subscription|undefined;
   private editSubscriptions: Subscription[] = [];
 
@@ -42,12 +42,12 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
   constructor(private shoppingListService: ShoppingListService) { }
 
   public ngOnInit(): void {
-    this.getSubscription = this.shoppingListService.read().subscribe((shoppingLists) => this.shoppingList = shoppingLists.at(0));
+    this.loadSubscription = this.shoppingListService.load().subscribe((shoppingLists) => this.shoppingList = shoppingLists.at(0));
     this.timerSubscription = interval(1000).subscribe(() => this.save());
   }
 
   public ngOnDestroy(): void {
-    this.getSubscription?.unsubscribe();
+    this.loadSubscription?.unsubscribe();
     this.timerSubscription?.unsubscribe();
     this.editSubscriptions.forEach(subscription => subscription.unsubscribe());
   }

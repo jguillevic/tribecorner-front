@@ -1,38 +1,31 @@
 <div class="page">
-    <div>
-        <h1>Bonjour !</h1>
-    </div>
-    <div>
-        <h2>Pas encore de famille ?</h2>
-        <div>
-            <h3>Créer une famille</h3>
-            <form>
-                <div>
-                    <mat-form-field>
-                        <mat-label>Nom de la famille</mat-label>
-                        <input matInput type="text" required name="family-name">
-                    </mat-form-field>
-                </div>
-                <div>
-                    <button mat-raised-button color="primary" type="submit">Créer</button>
-                </div>
-            </form>
+    <div class="home">
+        <div class="home-header">
+            <div class="home-header-menu">
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="signOut()">Déconnexion</button>
+                </mat-menu>
+            </div>
+            <div class="home-header-content">
+                <img class="home-header-content-img" src="https://images.ctfassets.net/4yflszkpcwkt/5JjMSztBDOfWKvLRiZbMkT/003a8e1007f3ef75085b9248cc5e2c34/ConCu3D_DNAHelixSection_Thumbnail.png">
+                <p class="home-header-content-text">Bonjour {{ currentUserInfo?.username }} !</p>
+            </div>
         </div>
-        <mat-divider></mat-divider>
-        <div>
-            <h3>Rejoindre une famille</h3>
-            <form>
-                <div>
-                    <mat-form-field>
-                        <mat-label>Code association famille</mat-label>
-                        <input matInput type="text" required name="family-association-code">
-                    </mat-form-field>
-                </div>
-                <div>
-                    <button mat-raised-button color="primary" type="submit">Rejoindre</button>
-                </div>
-            </form>
+        <div class="home-content margin">
+            <div *ngIf="currentUserInfo?.familyId && family" class="home-family">
+                <p class="home-family-name">Famile {{ family.name }}</p>
+                <p class="home-family-text">Membres</p>
+                <ul class="home-family-members">
+                    <li class="home-family-member" *ngFor="let familyMember of family.members">
+                        <img class="home-family-member-img" src="https://images.ctfassets.net/4yflszkpcwkt/5JjMSztBDOfWKvLRiZbMkT/003a8e1007f3ef75085b9248cc5e2c34/ConCu3D_DNAHelixSection_Thumbnail.png">
+                        <p class="home-family-member-name">{{ familyMember.username }}</p>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
+    <app-tab-bar class="tab-bar"></app-tab-bar>
 </div>
-<app-tab-bar class="tab-bar"></app-tab-bar>

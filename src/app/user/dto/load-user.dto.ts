@@ -6,7 +6,7 @@ export class LoadUserDto {
     public familyId: number|undefined;
 
     constructor() {
-        this.id = 0;
+        this.id = -1;
         this.firebaseId = "";
         this.email = "";
         this.username = "";

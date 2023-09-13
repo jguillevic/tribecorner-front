@@ -1,22 +1,14 @@
 .page {
     display: block;
-    width: 50%;
+    width: 400px;
     margin-left: auto;
     margin-right: auto;
     height: 100%;
     position: relative;
 }
 
-@media screen and (max-width:768px) {
-    .page {
-        width: 80%;
-    }
-}
-
-@media screen and (max-width:480px) {
+@media screen and (max-width:400px) {
     .page {
         width: 100%;
-        padding-left: 30px;
-        padding-right: 30px;
     }
 }

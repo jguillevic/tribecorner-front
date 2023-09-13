@@ -1,35 +1,37 @@
-<div class="page">
-    <div class="form-headers">
-        <h1 class="form-header">Bienvenue !</h1>
-        <p class="form-header-sub">Rejoignez les membres de votre famille.</p>
-    </div>
-    <form  (ngSubmit)="signUp()">
-        <div class="form-inputs">
-            <mat-form-field class="form-input">
-                <mat-label>Nom d'utilisateur</mat-label>
-                <input matInput type="text" required [(ngModel)]="signUpUser.username" #username="ngModel" name="username">
-            </mat-form-field>
-            <mat-form-field class="form-input">
-                <mat-label>Email</mat-label>
-                <input matInput type="email" required [(ngModel)]="signUpUser.email" #email="ngModel" name="email">
-            </mat-form-field>
-            <mat-form-field class="form-input">
-                <mat-label>Mot de passe</mat-label>
-                <input matInput type="password" required [(ngModel)]="signUpUser.password" #password="ngModel" name="password">
-            </mat-form-field>
-            <mat-form-field class="form-input">
-                <mat-label>Confirmez mot de passe</mat-label>
-                <input matInput type="password" required [(ngModel)]="signUpUser.passwordConfirmation" #passwordConfirmation="ngModel" name="password-confirmation">
-            </mat-form-field>
+<div class="page margin">
+    <div class="form">
+        <div class="form-headers">
+            <h1 class="form-header">Bienvenue !</h1>
+            <p class="form-header-sub">Rejoignez les membres de votre famille.</p>
         </div>
-        <div class="form-buttons">
-            <button class="form-button" mat-raised-button color="primary" type="submit">Créer un compte</button>
-        </div>
-    </form>
-    <div class="form-sub-action">
-        <p class="form-sub-action-text">Déjà membre ?</p>
-        <div class="form-buttons">
-            <button class="form-button" mat-stroked-button color="primary" (click)="goToSignIn()">Se connecter</button>
+        <form  (ngSubmit)="signUp()">
+            <div class="form-inputs">
+                <mat-form-field class="form-input">
+                    <mat-label>Nom d'utilisateur</mat-label>
+                    <input matInput type="text" required [(ngModel)]="signUpUser.username" #username="ngModel" name="username">
+                </mat-form-field>
+                <mat-form-field class="form-input">
+                    <mat-label>Email</mat-label>
+                    <input matInput type="email" required [(ngModel)]="signUpUser.email" #email="ngModel" name="email">
+                </mat-form-field>
+                <mat-form-field class="form-input">
+                    <mat-label>Mot de passe</mat-label>
+                    <input matInput type="password" required [(ngModel)]="signUpUser.password" #password="ngModel" name="password">
+                </mat-form-field>
+                <mat-form-field class="form-input">
+                    <mat-label>Confirmez mot de passe</mat-label>
+                    <input matInput type="password" required [(ngModel)]="signUpUser.passwordConfirmation" #passwordConfirmation="ngModel" name="password-confirmation">
+                </mat-form-field>
+            </div>
+            <div class="form-buttons">
+                <button class="form-button" mat-raised-button color="primary" type="submit">Créer un compte</button>
+            </div>
+        </form>
+        <div class="form-sub-action">
+            <p class="form-sub-action-text">Déjà membre ?</p>
+            <div class="form-buttons">
+                <button class="form-button" mat-stroked-button color="primary" (click)="goToSignIn()">Se connecter</button>
+            </div>
         </div>
     </div>
 </div>

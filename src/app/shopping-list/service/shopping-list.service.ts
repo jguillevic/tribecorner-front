@@ -9,7 +9,7 @@ export class ShoppingListService {
 
   constructor(private http: HttpClient) { }
 
-  public read(): Observable<ShoppingList[]> {
+  public load(): Observable<ShoppingList[]> {
     const headers: HttpHeaders= new HttpHeaders()
     .set('Content-type', 'application/json')
     .set('Accept', 'application/json');

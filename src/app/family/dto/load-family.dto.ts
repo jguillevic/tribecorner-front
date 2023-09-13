@@ -1,14 +1,14 @@
-import { FamilyMember } from "./family-member.model";
+import { LoadFamilyMemberDto } from "./load-family-member.dto";
 
-export class Family {
+export class LoadFamilyDto {
     public id: number;
     public name: string;
     public associationCode: string;
-    public members: FamilyMember[];
+    public members: LoadFamilyMemberDto[];
 
     constructor() {
         this.id = -1;
-        this.name = '';
+        this.name = "";
         this.associationCode = "";
         this.members = [];
     }

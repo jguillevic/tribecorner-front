@@ -1,0 +1,25 @@
+<div class="page margin">
+    <div class="form">
+        <div class="form-headers">
+            <h1 class="form-header">Votre famille existe déjà ?</h1>
+            <p class="form-header-sub">Rejoignez là dès maintenant.</p>
+        </div>
+        <form (ngSubmit)="joinFamily()">
+            <div class="form-inputs">
+                <mat-form-field class="form-input">
+                    <mat-label>Code famille</mat-label>
+                    <input matInput type="text" required [(ngModel)]="familyAssociationCode" name="family-association-code">
+                </mat-form-field>
+            </div>
+            <div class="form-buttons">
+                <button class="form-button" mat-raised-button color="primary" type="submit">Rejoindre ma famille</button>
+            </div>
+        </form>
+        <div class="form-sub-action">
+            <p class="form-sub-action-text">Votre famille n'existe pas encore ?</p>
+            <div class="form-buttons">
+                <button class="form-button" mat-stroked-button color="primary" (click)="goToCreateFamily()">Créer ma famille</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,14 +1,26 @@
 <mat-toolbar class="tab-bar" color="primary">
-    <button mat-icon-button (click)="goToHome()">
-        <mat-icon>home</mat-icon>
+    <button class="tab-bar-item" mat-icon-button (click)="goToHome()">
+        <div class="tab-bar-item-content">
+            <mat-icon>home</mat-icon>
+            <span class="tab-bar-item-content-text">Accueil</span>
+        </div>
     </button>
-    <button mat-icon-button (click)="goToShoppingList()">
-        <mat-icon>shopping_cart</mat-icon>
+    <button class="tab-bar-item" mat-icon-button (click)="goToShoppingList()">
+        <div class="tab-bar-item-content">
+            <mat-icon>shopping_cart</mat-icon>
+            <span class="tab-bar-item-content-text">Listes</span>
+        </div>
     </button>
-    <button mat-icon-button>
-        <mat-icon>lunch_dining</mat-icon>
+    <button class="tab-bar-item" mat-icon-button>
+        <div class="tab-bar-item-content">
+            <mat-icon>lunch_dining</mat-icon>
+            <span class="tab-bar-item-content-text">Repas</span>
+        </div>
     </button>
-    <button mat-icon-button>
-        <mat-icon>account_balance</mat-icon>
+    <button class="tab-bar-item" mat-icon-button>
+        <div class="tab-bar-item-content">
+            <mat-icon>account_balance</mat-icon>
+            <span class="tab-bar-item-content-text">Budget</span>
+        </div>
     </button>
 </mat-toolbar>

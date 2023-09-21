@@ -1,31 +1,29 @@
 <div class="page">
+    <app-profile-top-bar></app-profile-top-bar>
     <div class="home">
-        <div class="home-header">
-            <div class="home-header-menu">
-                <button mat-icon-button [matMenuTriggerFor]="menu">
-                    <mat-icon>more_vert</mat-icon>
-                </button>
-                <mat-menu #menu="matMenu">
-                    <button mat-menu-item (click)="signOut()">Déconnexion</button>
-                </mat-menu>
-            </div>
-            <div class="home-header-content">
-                <img class="home-header-content-img" src="https://images.ctfassets.net/4yflszkpcwkt/5JjMSztBDOfWKvLRiZbMkT/003a8e1007f3ef75085b9248cc5e2c34/ConCu3D_DNAHelixSection_Thumbnail.png">
-                <p class="home-header-content-text">Bonjour {{ currentUserInfo?.username }} !</p>
+        <div class="card bg-primary-color-200">
+            <img class="card-img" src="assets/img/undraw-time-management-re-tk5w.svg">
+            <div class="card-content">
+                <div class="card-label">Fête des écoles très long, trop long</div>
+                <div class="card-subtext-1">Demain</div>
+                <div class="card-subtext-2">17h00 - 22h00</div>
             </div>
         </div>
-        <div class="home-content margin">
-            <div *ngIf="currentUserInfo?.familyId && family" class="home-family">
-                <p class="home-family-name">Famile {{ family.name }}</p>
-                <p class="home-family-text">Membres</p>
-                <ul class="home-family-members">
-                    <li class="home-family-member" *ngFor="let familyMember of family.members">
-                        <img class="home-family-member-img" src="https://images.ctfassets.net/4yflszkpcwkt/5JjMSztBDOfWKvLRiZbMkT/003a8e1007f3ef75085b9248cc5e2c34/ConCu3D_DNAHelixSection_Thumbnail.png">
-                        <p class="home-family-member-name">{{ familyMember.username }}</p>
-                    </li>
-                </ul>
+        <div class="card bg-primary-color-400">
+            <img class="card-img" src="assets/img/undraw-eating-together-re-ux62.svg">
+            <div class="card-content">
+                <div class="card-label">Salade de pâtes</div>
+                <div class="card-subtext-1">Ce soir</div>
+            </div>
+        </div>
+        <div *ngFor="let shoppingList of this.shoppingLists" 
+        class="card bg-primary-color-700"
+        (click)="goToDisplayShoppingList(shoppingList.id)">
+            <img class="card-img" src="assets/img/undraw-gone-shopping-re-2lau.svg">
+            <div class="card-content">
+                <p class="card-label">{{ shoppingList.name }}</p>
             </div>
         </div>
     </div>
-    <app-tab-bar class="tab-bar"></app-tab-bar>
+    <app-tab-bar [selectedIndex]=0></app-tab-bar>
 </div>

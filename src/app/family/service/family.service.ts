@@ -15,7 +15,7 @@ export class FamilyService {
 
   constructor(private http: HttpClient) { }
 
-  public load(familyId: number): Observable<Family|undefined> {
+  public loadOneByFamilyId(familyId: number): Observable<Family|undefined> {
     const headers: HttpHeaders = new HttpHeaders()
     .set('Content-type', 'application/json')
     .set('Accept', 'application/json');
@@ -71,7 +71,7 @@ export class FamilyService {
     return createFamilyDto;
   }
 
-  public loadFromAssociationCode(associationCode: string): Observable<Family|undefined> {
+  public loadOneByAssociationCode(associationCode: string): Observable<Family|undefined> {
     const headers: HttpHeaders = new HttpHeaders()
     .set('Content-type', 'application/json')
     .set('Accept', 'application/json');
@@ -121,10 +121,10 @@ export class FamilyService {
   }
 
   public joinFamily(associationCode: string, userId: number): Observable<FamilyMember|undefined> {
-    return this.loadFromAssociationCode(associationCode)
+    return this.loadOneByAssociationCode(associationCode)
     .pipe(
       switchMap((family) => {
-        if (family) {
+        if (family && family.id) {
           return this.createFamilyMember(family.id, userId);
         }
         return of(undefined);

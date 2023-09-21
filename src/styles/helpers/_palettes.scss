@@ -1,0 +1,70 @@
+@use '@angular/material' as mat;
+
+$bright-pink-palette: (
+    50: $primary-color-50,
+    100: $primary-color-100,
+    200: $primary-color-200,
+    300: $primary-color-300,
+    400: $primary-color-400,
+    500: $primary-color-500,
+    600: $primary-color-600,
+    700: $primary-color-700,
+    800: $primary-color-800,
+    900: $primary-color-900,
+    A100: $primary-color-A100,
+    A200: $primary-color-A200,
+    A400: $primary-color-A400,
+    A700: $primary-color-A700,
+    contrast: (
+        50: rgba($dark-color, 0.87),
+        100: rgba($dark-color, 0.87),
+        200: rgba($dark-color, 0.87),
+        300: rgba($dark-color, 0.87),
+        400: rgba($dark-color, 0.87),
+        500: rgba($dark-color, 0.87),
+        600: rgba($dark-color, 0.87),
+        700: rgba($dark-color, 0.87),
+        800: $light-color,
+        900: $light-color,
+        A100: rgba($dark-color, 0.87),
+        A200: rgba($dark-color, 0.87),
+        A400: rgba($dark-color, 0.87),
+        A700: rgba($dark-color, 0.87)
+    )
+);
+
+$gamboge-palette: (
+    50: $accent-color-50,
+    100: $accent-color-100,
+    200: $accent-color-200,
+    300: $accent-color-300,
+    400: $accent-color-400,
+    500: $accent-color-500,
+    600: $accent-color-600,
+    700: $accent-color-700,
+    800: $accent-color-800,
+    900: $accent-color-900,
+    A100: $accent-color-A100,
+    A200: $accent-color-A200,
+    A400: $accent-color-A400,
+    A700: $accent-color-A700,
+    contrast: (
+      50: rgba($dark-color, 0.87),
+      100: rgba($dark-color, 0.87),
+      200: rgba($dark-color, 0.87),
+      300: rgba($dark-color, 0.87),
+      400: rgba($dark-color, 0.87),
+      500: rgba($dark-color, 0.87),
+      600: rgba($dark-color, 0.87),
+      700: rgba($dark-color, 0.87),
+      800: rgba($dark-color, 0.87),
+      900: rgba($dark-color, 0.87),
+      A100: rgba($dark-color, 0.87),
+      A200: rgba($dark-color, 0.87),
+      A400: rgba($dark-color, 0.87),
+      A700: rgba($dark-color, 0.87)
+    )
+);
+
+$primary: mat.define-palette($bright-pink-palette, 500);
+$accent: mat.define-palette($gamboge-palette, 400);

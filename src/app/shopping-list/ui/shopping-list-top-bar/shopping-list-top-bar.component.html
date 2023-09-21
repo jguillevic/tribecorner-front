@@ -1,0 +1,14 @@
+<mat-toolbar class="shopping-list-top-bar">
+    <button mat-icon-button (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+    </button>
+    <button *ngIf="goToEdit" mat-icon-button (click)="goToEdit()">
+        <mat-icon>edit</mat-icon>
+    </button>
+    <button *ngIf="goToDisplay" mat-icon-button (click)="goToDisplay()">
+        <mat-icon>visibility</mat-icon>
+    </button>
+    <button *ngIf="delete" mat-icon-button color="accent" (click)="delete()">
+        <mat-icon>delete</mat-icon>
+    </button>
+</mat-toolbar>

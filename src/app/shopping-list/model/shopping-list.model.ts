@@ -1,13 +1,14 @@
 import { ItemShoppingList } from "./item-shopping-list.model";
 
 export class ShoppingList {
-    public id: number;
+    public id: number|undefined;
     public name: string;
-    public items: ItemShoppingList[]; 
+    public familyId: number;
+    public items: ItemShoppingList[];
 
     constructor() {
-        this.id = -1;
         this.name = '';
+        this.familyId = -1;
         this.items = [];
     }
 }

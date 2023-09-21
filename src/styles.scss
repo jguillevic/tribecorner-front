@@ -3,20 +3,27 @@
 @use '../node_modules/scss-reset/src/scss/_reset.scss';
 
 /* Externes */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap');
 
 /* Helpers */
-@import 'styles/helpers/commons';
 @import 'styles/helpers/variables';
+@import 'styles/helpers/colors';
+@import 'styles/helpers/palettes';
+@import 'styles/helpers/typography';
+@import 'styles/helpers/themes';
+@import 'styles/helpers/commons';
 
 /* Components */
 @import 'styles/components/buttons';
 @import 'styles/components/pages';
 @import 'styles/components/forms';
-@import 'styles/components/tab-bar';
 @import 'styles/components/loading';
 @import 'styles/components/shopping-list';
 @import 'styles/components/home';
+@import 'styles/components/cards';
+@import 'styles/components/common/tab-bar';
+@import 'styles/components/common/profile-top-bar';
+@import 'styles/components/shopping-list/shopping-list-top-bar';
 
 
 html, body { height: 100%; }

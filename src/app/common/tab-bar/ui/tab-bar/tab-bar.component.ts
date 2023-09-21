@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,13 +16,15 @@ import { ShoppingListRoutes } from 'src/app/shopping-list/route/shopping-list.ro
   ]
 })
 export class TabBarComponent {
+  @Input() selectedIndex: number = 0;
+
   public constructor(private router: Router) { }
 
   public goToHome(): Promise<boolean> {
     return this.router.navigate([HomeRoutes.displayHomeRoute]);
   }
 
-  public goToShoppingList(): Promise<boolean> {
-    return this.router.navigate([ShoppingListRoutes.editShoppingListRoute]);
+  public goToShoppingLists(): Promise<boolean> {
+    return this.router.navigate([ShoppingListRoutes.displayShoppingListsRoute]);
   }
 }

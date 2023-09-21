@@ -35,7 +35,7 @@ const routes: Routes = [
     },
     { 
         path: '',
-        providers: [FamilyService],
+        providers: [FamilyService, ShoppingListService],
         canActivate: [signedInGuard, hasFamilyGuard],
         children: HomeRoutes.homeRoutes
     },

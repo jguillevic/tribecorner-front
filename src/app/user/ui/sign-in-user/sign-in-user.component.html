@@ -3,15 +3,39 @@
         <div class="form-headers">
             <h1 class="form-header">Content de vous revoir !</h1>
         </div>
-        <form (ngSubmit)="signIn()">
+        <form (ngSubmit)="signIn()" [formGroup]="signInForm">
             <div class="form-inputs">
                 <mat-form-field class="form-input">
                     <mat-label>Email</mat-label>
-                    <input matInput type="email" required [(ngModel)]="signInUser.email" name="email">
+                    <input matInput type="email" formControlName="email">
+                    <mat-error *ngIf="signInForm.controls['email'].hasError('email') && !signInForm.controls['email'].hasError('required')">
+                        Email invalide (exemple@format.fr)
+                    </mat-error>
+                    <mat-error *ngIf="signInForm.controls['email'].hasError('maxlength') && !signInForm.controls['email'].hasError('required')">
+                        Email trop long (max. {{ emailMaxLength }} caractères)
+                    </mat-error>
+                    <mat-error *ngIf="signInForm.controls['email'].hasError('not-found')">
+                        Email non trouvé
+                    </mat-error>
+                    <mat-error *ngIf="signInForm.controls['email'].hasError('required')">
+                        Email requis
+                    </mat-error>
                 </mat-form-field>
                 <mat-form-field class="form-input">
                     <mat-label>Mot de passe</mat-label>
-                    <input matInput type="password" required [(ngModel)]="signInUser.password" name="password">
+                    <input matInput type="password" formControlName="password">
+                    <mat-error *ngIf="signInForm.controls['password'].hasError('pattern') && !signInForm.controls['password'].hasError('required')">
+                        Mot de passe invalide (min. 8 caractères, 1 majuscule, 1 minuscule, 1 chiffre, 1 caractère spécial parmi @$!%*?&)
+                    </mat-error>
+                    <mat-error *ngIf="signInForm.controls['password'].hasError('maxlength') && !signInForm.controls['password'].hasError('required')">
+                        Mot de passe trop long (max. {{ passwordMaxLength }} caractères)
+                    </mat-error>
+                    <mat-error *ngIf="signInForm.controls['password'].hasError('wrong')">
+                        Mot de passe incorrect
+                    </mat-error>
+                    <mat-error *ngIf="signInForm.controls['password'].hasError('required')">
+                        Mot de passe requis
+                    </mat-error>
                 </mat-form-field>
             </div>
             <div class="form-buttons">

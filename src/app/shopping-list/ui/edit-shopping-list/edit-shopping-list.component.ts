@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ItemShoppingList } from '../../model/item-shopping-list.model';
 import { FormsModule } from '@angular/forms';
-import { Subscription, interval, map, of, switchMap } from 'rxjs';
+import { Observable, Subscription, interval, map, of, switchMap } from 'rxjs';
 import { TabBarComponent } from 'src/app/common/tab-bar/ui/tab-bar/tab-bar.component';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { UserInfo } from 'src/app/user/model/user-info.model';
@@ -38,17 +38,14 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
   private static createAction: string = 'create';
   private static updateAction: string = 'update';
   private currentAction: string|undefined;
-  private isEditing: boolean = false;
-  private isSaving: boolean = false;
   private initShoppingListSubscription: Subscription|undefined;
-  private timerSubscription: Subscription|undefined;
   private deleteSubscription: Subscription|undefined;
-  private editSubscriptions: Subscription[] = [];
 
   public newItemShopListName: string = '';
   public shoppingList: ShoppingList|undefined;
   public boundedDelete: (() => Promise<boolean>|undefined)|undefined;
   public boundedGoToDisplay: (() => Promise<boolean>|undefined)|undefined;
+  public boundedSave: (() => Observable<ShoppingList|undefined>)|undefined;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -58,6 +55,8 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
     ) { }
 
   public ngOnInit(): void {
+    this.boundedSave = this.save.bind(this);
+
     this.initShoppingListSubscription = this.activatedRoute.queryParams
     .pipe(
       switchMap((params: Params) => {
@@ -65,7 +64,6 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
 
         if (this.currentAction == EditShoppingListComponent.createAction) {
           const shoppingList: ShoppingList = new ShoppingList();
-          shoppingList.name = 'Ma liste';
           const currentUserInfo: UserInfo|undefined = this.userService.getCurrentUserInfo();
           if (currentUserInfo?.familyId) {
             shoppingList.familyId = currentUserInfo?.familyId;
@@ -84,14 +82,11 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
     .subscribe(shoppingList => {
       this.shoppingList = shoppingList;
     });
-    this.timerSubscription = interval(1000).subscribe(() => this.save());
   }
 
   public ngOnDestroy(): void {
     this.initShoppingListSubscription?.unsubscribe();
-    this.timerSubscription?.unsubscribe();
     this.deleteSubscription?.unsubscribe();
-    this.editSubscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   public addItem(): void {
@@ -102,8 +97,6 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
       this.shoppingList.items.push(itemShoppingList);
       itemShoppingList.position = this.shoppingList.items.indexOf(itemShoppingList) + 1;
       this.newItemShopListName = '';
-
-      this.isEditing = true;
     }
   }
 
@@ -111,45 +104,18 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
     if (this.shoppingList) {
       const itemIndex: number = this.shoppingList.items.indexOf(itemShoppingList);
       this.shoppingList.items.splice(itemIndex, 1);
-
-      this.isEditing = true;
     }
   }
 
-  public checkItem(itemShoppingList: ItemShoppingList): void {
-    itemShoppingList.isChecked = !itemShoppingList.isChecked;
-
-    this.isEditing = true;
-  }
-
-  public save(): void {
-    if (
-      this.shoppingList &&
-      this.isEditing &&
-      !this.isSaving
-      ) {
-      this.isSaving = true;
-
+  public save(): Observable<ShoppingList|undefined> {
+    if (this.shoppingList) {
       if (this.currentAction == EditShoppingListComponent.updateAction) {
-        this.editSubscriptions.push(
-          this.shoppingListService.update(this.shoppingList).subscribe(() => { 
-            this.isEditing = false;
-            this.isSaving = false; 
-          })
-        );
+        return this.shoppingListService.update(this.shoppingList);
       } else if (this.currentAction == EditShoppingListComponent.createAction) {
-        this.editSubscriptions.push(
-          this.shoppingListService.create(this.shoppingList).subscribe((shoppingList) => {
-            this.isEditing = false;
-            this.isSaving = false;
-            this.currentAction = EditShoppingListComponent.updateAction;
-            if (this.shoppingList && shoppingList) {
-              this.shoppingList.id = shoppingList.id;
-            }
-          })
-        );
+        return this.shoppingListService.create(this.shoppingList);
       }
     }
+    return of(undefined);
   }
 
   public delete(): Promise<boolean>|undefined {

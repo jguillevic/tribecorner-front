@@ -1,24 +1,14 @@
 <div class="page">
     <app-profile-top-bar></app-profile-top-bar>
-    <div>
-        <div class="flex-grid">
-            <div *ngFor="let shoppingList of this.shoppingLists"  class="card bg-primary-color-700">
-            <img class="card-img" src="assets/img/undraw-gone-shopping-re-2lau.svg">
-            <div class="card-content">
-                <p class="card-label">{{ shoppingList.name }}</p>
-            </div>
-            <div class="card-actions">
-                <button mat-icon-button (click)="goToUpdate(shoppingList.id)">
-                    <mat-icon>edit</mat-icon>
-                </button>
-                <button mat-icon-button (click)="goToDisplay(shoppingList.id)">
-                    <mat-icon>visibility</mat-icon>
-                </button>
-                <button mat-icon-button color="accent" (click)="delete(shoppingList)">
-                    <mat-icon>delete</mat-icon>
-                </button>
-            </div>
-        </div>
+    <div class="shopping-lists">
+        <app-card *ngFor="let shoppingList of this.shoppingLists"
+        imgUrl="assets/img/undraw-gone-shopping-re-2lau.svg" 
+        [label]="shoppingList.name"
+        [item]="shoppingList"
+        [goToUpdate]="bindedGoToUpdate"
+        [goToDisplay]="bindedGoToDisplay"
+        [delete]="bindedDelete"
+        ></app-card>
     </div>
     <button mat-fab color="primary" class="contextual-btn" (click)="goToCreate()">
         <mat-icon>add</mat-icon>

@@ -1,25 +1,30 @@
+$card-border-radius: 20px;
+
 .card {
     width: 160px;
-    min-height: 200px;
-    border-radius: 20px !important;
-    margin: 5px !important;
+    height: 200px;
+    border-radius: $card-border-radius;
+    margin: 5px;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    padding-top: 10px;
+    position: relative;
 
     &-img {
-        margin-top: 10px;
         height: 90px;
         display: block;
         margin-left: auto;
         margin-right: auto;
+        z-index: 1;
     }
 
     &-content {
         width: 120px;
         height: 100px;
-        padding-top: 10px !important;
+        padding-top: 10px;
         margin-left: auto;
         margin-right: auto;
-        position: relative !important;
+        position: relative;
+        z-index: 1;
     }
 
     &-label {
@@ -32,6 +37,7 @@
         margin: 0px !important;
         position: absolute;
         bottom: 40px;
+        z-index: 1;
     }
 
     &-subtext-1 {
@@ -43,6 +49,7 @@
         margin: 0px !important;
         position: absolute;
         bottom: 20px;
+        z-index: 1;
     }
 
     &-subtext-2 {
@@ -54,14 +61,29 @@
         margin: 0px !important;
         position: absolute;
         bottom: 5px;
+        z-index: 1;
     }
 
     &-actions {
+        position: absolute;
+        bottom: 0px;
+        z-index: 2;
         width: 100%;
+        height: 45px;
         margin-left: auto;
         margin-right: auto;
         display: flex;
         flex-direction: row;
         justify-content: center;
+        background-color: rgba($color: $light-color, $alpha: 0.5);
+        border-bottom-left-radius: $card-border-radius;
+        border-bottom-right-radius: $card-border-radius;
+        backdrop-filter: blur(20px);
+        overflow: hidden;
+        transition: height 0.5s;
     }
+
+    // &:hover .card-actions {
+    //     height: 45px;
+    // }
 }

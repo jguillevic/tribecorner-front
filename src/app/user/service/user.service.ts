@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment.development';
 import { SignUpUser } from '../model/sign-up-user.model';
 import { UserInfo } from '../model/user-info.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, Subscription, catchError, defer, map, of, switchMap, tap } from 'rxjs';
+import { Observable, Subscription, catchError, defer, map, of, switchMap, tap, throwError } from 'rxjs';
 import { SignInUser } from '../model/sign-in-user.model';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { LoadUserDto } from '../dto/load-user.dto';
@@ -71,34 +71,21 @@ export class UserService implements OnDestroy {
     }
   }
 
-  private firebaseSetPersistenceToLocal(): Observable<boolean> {
+  private firebaseSetPersistenceToLocal(): Observable<void> {
     return defer(async () => {
       await setPersistence(this.firebaseAuth, browserLocalPersistence);
-      return true;
-    })
-      .pipe(   
-        catchError((error) => { 
-          console.log(error);
-          return of(false);
-        })
-      );
+    });
   }
 
-  private firebaseCreateUserWithEmailAndPassword(signUpUser: SignUpUser) : Observable<UserCredential|undefined> {
+  private firebaseCreateUserWithEmailAndPassword(signUpUser: SignUpUser) : Observable<UserCredential> {
     return defer(async () => {
       const userCredential: UserCredential = await createUserWithEmailAndPassword(this.firebaseAuth, signUpUser.email, signUpUser.password);
 
       return userCredential;
-    })
-      .pipe(
-        catchError((error) => { 
-          console.log(error);
-          return of(undefined);
-        })
-      );
+    });
   }
 
-  private createUser(userCredential: UserCredential, signUpUser: SignUpUser): Observable<UserInfo|undefined> {
+  private createUser(userCredential: UserCredential, signUpUser: SignUpUser): Observable<UserInfo> {
     const headers: HttpHeaders = new HttpHeaders()
       .set('Content-type', 'application/json')
       .set('Accept', 'application/json');
@@ -112,11 +99,7 @@ export class UserService implements OnDestroy {
       { 'headers': headers }
     )
       .pipe(
-        switchMap((LoadUserDto) => { return of(UserService.fromLoadUserDtoToUserInfo(LoadUserDto)); }),
-        catchError((error) => {
-          console.log(error);
-          return of(undefined);
-        })
+        switchMap((LoadUserDto) => { return of(UserService.fromLoadUserDtoToUserInfo(LoadUserDto)); })
       );
   }
 
@@ -136,10 +119,6 @@ export class UserService implements OnDestroy {
             return of(UserService.fromLoadUserDtoToUserInfo(loadUserDto));
           }
           return of (undefined);
-        }),
-        catchError((error) => {
-          console.log(error);
-          return of(undefined);
         })
       );
   }
@@ -180,63 +159,40 @@ export class UserService implements OnDestroy {
   public signUp(signUpUser: SignUpUser): Observable<UserInfo|undefined> {
     return this.firebaseSetPersistenceToLocal()
       .pipe(
-        switchMap((result) => { 
-          if (result) {
-            return this.firebaseCreateUserWithEmailAndPassword(signUpUser)
-            .pipe(
-              switchMap((userCredential) => { 
-                if (userCredential) {
-                  // Enregistrement des informations spécifiques à l'application.
-                  return this.createUser(userCredential, signUpUser)
-                  .pipe(
-                    switchMap((userInfo) => { 
-                      if (userInfo) {
-                        return this.signInLocally(userInfo?.firebaseId);
-                      }
-                      return of(undefined);
-                    })
-                  );  
-                }
-                return of(undefined);
-              })
-            );
-          }
-
-          return of(undefined);
+        switchMap(() => { 
+          return this.firebaseCreateUserWithEmailAndPassword(signUpUser)
+          .pipe(
+            switchMap((userCredential) => { 
+              // Enregistrement des informations spécifiques à l'application.
+              return this.createUser(userCredential, signUpUser)
+              .pipe(
+                switchMap((userInfo) => { 
+                  return this.signInLocally(userInfo?.firebaseId);
+                })
+              );  
+            })
+          );
           })
         );
   }
 
-  private firebaseSignInWithEmailAndPassword(signInUser: SignInUser) : Observable<UserCredential|undefined> {
+  private firebaseSignInWithEmailAndPassword(signInUser: SignInUser) : Observable<UserCredential> {
     return defer(async () => {
       const userCredential: UserCredential = await signInWithEmailAndPassword(this.firebaseAuth, signInUser.email, signInUser.password);
-
       return userCredential;
-    })
-    .pipe(
-      catchError((error) => { 
-        console.log(error);
-        return of(undefined);
-      })
-    );
+    });
   }
 
   public signIn(signInUser: SignInUser): Observable<UserInfo|undefined> {
     return this.firebaseSetPersistenceToLocal()
     .pipe(
-      switchMap((result) => { 
-        if (result) {
-          return this.firebaseSignInWithEmailAndPassword(signInUser)
-          .pipe(
-            switchMap((userCredential) => {
-              if (userCredential) {
-                return this.signInLocally(userCredential.user.uid);
-              }
-              return of(undefined);
-            })
-          );
-        }
-        return of(undefined);
+      switchMap(() => { 
+        return this.firebaseSignInWithEmailAndPassword(signInUser)
+        .pipe(
+          switchMap((userCredential) => {
+            return this.signInLocally(userCredential.user.uid);
+          })
+        );
       })
     );
   }
@@ -246,11 +202,7 @@ export class UserService implements OnDestroy {
       signOut(this.firebaseAuth);
     })
     .pipe(
-      tap(() => this.signOutLocally()),
-      catchError((error) => { 
-        console.log(error);
-        return of();
-      })
+      tap(() => this.signOutLocally())
     )
   }
 

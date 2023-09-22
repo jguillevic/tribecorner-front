@@ -1,13 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ItemShoppingList } from '../../model/item-shopping-list.model';
 import { ShoppingList } from '../../model/shopping-list.model';
-import { Subscription, switchMap } from 'rxjs';
+import { Observable, Subscription, of, switchMap } from 'rxjs';
 import { ShoppingListService } from '../../service/shopping-list.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ShoppingListTopBarComponent } from "../shopping-list-top-bar/shopping-list-top-bar.component";
 import { ShoppingListRoutes } from '../../route/shopping-list.routes';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-display-shopping-list',
@@ -17,6 +20,9 @@ import { ShoppingListRoutes } from '../../route/shopping-list.routes';
     imports: [
         CommonModule,
         MatIconModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        FormsModule,
         ShoppingListTopBarComponent
     ]
 })
@@ -28,6 +34,7 @@ export class DisplayShoppingListComponent implements OnInit, OnDestroy {
   public shoppingList: ShoppingList|undefined;
   public boundedDelete: (() => Promise<boolean>|undefined)|undefined;
   public boundedGoToEdit: (() => Promise<boolean>|undefined)|undefined;
+  public boundedSave: (() => Observable<ShoppingList|undefined>)|undefined;
   
   public constructor(
     private activatedRoute: ActivatedRoute,
@@ -38,6 +45,7 @@ export class DisplayShoppingListComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.boundedDelete = this.delete.bind(this);
     this.boundedGoToEdit = this.goToEdit.bind(this);
+    this.boundedSave = this.save.bind(this);
 
     this.initShoppingListSubscription = this.activatedRoute.queryParams
     .pipe(
@@ -76,5 +84,12 @@ export class DisplayShoppingListComponent implements OnInit, OnDestroy {
       return this.router.navigate([ShoppingListRoutes.editShoppingListRoute], { queryParams: { action: 'update', id: this.shoppingList.id } });
     }
     return undefined;
+  }
+
+  public save(): Observable<ShoppingList|undefined> {
+    if (this.shoppingList) {
+      return this.shoppingListService.update(this.shoppingList);
+    }
+    return of(undefined);
   }
 }

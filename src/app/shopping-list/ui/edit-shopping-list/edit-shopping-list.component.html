@@ -1,29 +1,23 @@
 <div class="page">
-    <app-shopping-list-top-bar [delete]="boundedDelete" [goToDisplay]="boundedGoToDisplay"></app-shopping-list-top-bar>
-    <div class="margin">
-        <div class="shopping-list" *ngIf="shoppingList">
-            <h1 class="shopping-list-name">{{ shoppingList.name }}</h1>
-            <ul class="shopping-list-items" *ngIf="shoppingList.items">
-                <li class="item-shopping-list" *ngFor="let itemShoppingList of shoppingList.items">
-                    <span class="item-shopping-list-name" [ngClass]="{ 'line': itemShoppingList.isChecked }">{{ itemShoppingList.name }}</span>
-                    <div class="item-shopping-list-btns">
-                        <button mat-icon-button (click)="checkItem(itemShoppingList)" color="primary">
-                            <mat-icon>done</mat-icon>
-                        </button>
-                        <button mat-icon-button (click)="deleteItem(itemShoppingList)" color="primary">
-                            <mat-icon>delete</mat-icon>
-                        </button>
-                    </div>
-                </li>
-            </ul>
-        </div>
+    <app-shopping-list-top-bar [beforeGoBack]="boundedSave" [delete]="boundedDelete" [goToDisplay]="boundedGoToDisplay"></app-shopping-list-top-bar>
+    <div class="shopping-list margin" *ngIf="shoppingList">
+        <mat-form-field class="shopping-list-name">
+            <input matInput placeholder="Nom" type="text" required [(ngModel)]="shoppingList.name" name="name">
+        </mat-form-field>
+        <ul class="shopping-list-items" *ngIf="shoppingList.items">
+            <li class="item-shopping-list" *ngFor="let itemShoppingList of shoppingList.items">
+                <span class="item-shopping-list-name">{{ itemShoppingList.name }}</span>
+                <div class="item-shopping-list-btns">
+                    <button mat-icon-button (click)="deleteItem(itemShoppingList)" color="accent">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </li>
+        </ul>
         <div class="shopping-list-add-zone">
             <mat-form-field class="shopping-list-add-field">
-                <input matInput placeholder="Ajouter un élément" name="new-item-shopping-list-name" [(ngModel)]="newItemShopListName" #newItemShoppingListName="ngModel" (keyup.enter)="addItem()">
+                <input matInput placeholder="+ Ajouter un élément" name="new-item-shopping-list-name" [(ngModel)]="newItemShopListName" #newItemShoppingListName="ngModel" (keyup.enter)="addItem()">
             </mat-form-field>
-            <button mat-fab class="shopping-list-add-btn" color="primary" (click)="addItem()" [disabled]="!newItemShopListName.length">
-                <mat-icon>add</mat-icon>
-            </button>
         </div>
     </div>
 </div>

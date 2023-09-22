@@ -8,11 +8,11 @@ import { UserInfo } from 'src/app/user/model/user-info.model';
 import { UserService } from 'src/app/user/service/user.service';
 import { ShoppingListRoutes } from '../../route/shopping-list.routes';
 import { ShoppingListService } from '../../service/shopping-list.service';
-import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import {MatSnackBar, MatSnackBarRef, MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarRef, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ProfileTopBarComponent } from "../../../common/profile-top-bar/ui/profile-top-bar/profile-top-bar.component";
+import { CardComponent } from "../../../common/card/ui/card/card.component";
 
 @Component({
     selector: 'app-display-shopping-lists',
@@ -22,11 +22,11 @@ import { ProfileTopBarComponent } from "../../../common/profile-top-bar/ui/profi
     imports: [
         CommonModule,
         TabBarComponent,
-        MatCardModule,
         MatButtonModule,
         MatIconModule,
         MatSnackBarModule,
-        ProfileTopBarComponent
+        ProfileTopBarComponent,
+        CardComponent
     ]
 })
 export class DisplayShoppingListsComponent implements OnInit, OnDestroy {
@@ -34,6 +34,9 @@ export class DisplayShoppingListsComponent implements OnInit, OnDestroy {
   private deleteSubscription: Subscription|undefined;
 
   public shoppingLists: ShoppingList[]|undefined;
+  public bindedGoToUpdate: ((id: number|undefined) => Promise<boolean>|undefined)|undefined;
+  public bindedGoToDisplay: ((id: number|undefined) => Promise<boolean>|undefined)|undefined;
+  public bindedDelete: ((item: any) => void)|undefined;
 
   public constructor(
     private router: Router,
@@ -43,6 +46,10 @@ export class DisplayShoppingListsComponent implements OnInit, OnDestroy {
     ) { }
 
   public ngOnInit(): void {
+    this.bindedGoToUpdate = this.goToUpdate.bind(this);
+    this.bindedGoToDisplay = this.goToDisplay.bind(this);
+    this.bindedDelete = this.delete.bind(this);
+
     const userInfo: UserInfo|undefined = this.userService.getCurrentUserInfo();
 
     if (userInfo && userInfo.familyId) {
@@ -85,7 +92,7 @@ export class DisplayShoppingListsComponent implements OnInit, OnDestroy {
             const index: number = this.shoppingLists.indexOf(shoppingList);
             this.shoppingLists.splice(index, 1);
 
-            const snackBarRef = this.snackBar.open('Liste supprimée', 'Annuler', { duration: 5000 });
+            const snackBarRef: MatSnackBarRef<any> = this.snackBar.open('Liste supprimée', 'Annuler', { duration: 5000 });
             return snackBarRef.onAction()
             .pipe(
               switchMap(() => {

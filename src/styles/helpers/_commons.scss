@@ -31,9 +31,10 @@
 }
 
 .contextual-btn {
+    z-index: 2;
     position: fixed !important;
-    right: 10px;
-    bottom: 65px;
+    right: calc(50% - 30px);
+    bottom: 30px;
 }
 
 .bg

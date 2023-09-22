@@ -1,29 +1,22 @@
 <div class="page">
     <app-profile-top-bar></app-profile-top-bar>
     <div class="home">
-        <div class="card bg-primary-color-200">
-            <img class="card-img" src="assets/img/undraw-time-management-re-tk5w.svg">
-            <div class="card-content">
-                <div class="card-label">Fête des écoles très long, trop long</div>
-                <div class="card-subtext-1">Demain</div>
-                <div class="card-subtext-2">17h00 - 22h00</div>
-            </div>
-        </div>
-        <div class="card bg-primary-color-400">
-            <img class="card-img" src="assets/img/undraw-eating-together-re-ux62.svg">
-            <div class="card-content">
-                <div class="card-label">Salade de pâtes</div>
-                <div class="card-subtext-1">Ce soir</div>
-            </div>
-        </div>
-        <div *ngFor="let shoppingList of this.shoppingLists" 
-        class="card bg-primary-color-700"
-        (click)="goToDisplayShoppingList(shoppingList.id)">
-            <img class="card-img" src="assets/img/undraw-gone-shopping-re-2lau.svg">
-            <div class="card-content">
-                <p class="card-label">{{ shoppingList.name }}</p>
-            </div>
-        </div>
+        <app-card
+        imgUrl="assets/img/undraw-time-management-re-tk5w.svg" 
+        label="Fête des écoles très long, trop long"
+        subText1="Demain"
+        subText2="17h00 - 22h00"
+        ></app-card>
+        <app-card
+        imgUrl="assets/img/undraw-eating-together-re-ux62.svg" 
+        label="Salade de pâtes"
+        subText1="Ce soir"
+        ></app-card>
+        <app-card *ngFor="let shoppingList of this.shoppingLists"
+        imgUrl="assets/img/undraw-gone-shopping-re-2lau.svg" 
+        [label]="shoppingList.name"
+        (click)="goToDisplayShoppingList(shoppingList.id)"
+        ></app-card>
     </div>
     <app-tab-bar [selectedIndex]=0></app-tab-bar>
 </div>

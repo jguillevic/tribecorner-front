@@ -1,18 +1,15 @@
 <div class="page">
-    <app-shopping-list-top-bar [delete]="boundedDelete" [goToEdit]="boundedGoToEdit"></app-shopping-list-top-bar>
-    <div>
-        <div class="shopping-list" *ngIf="shoppingList">
-            <h1 class="shopping-list-name">{{ shoppingList.name }}</h1>
-            <ul class="shopping-list-items" *ngIf="shoppingList.items">
-                <li class="item-shopping-list" *ngFor="let itemShoppingList of shoppingList.items">
-                    <span class="item-shopping-list-name" [ngClass]="{ 'line': itemShoppingList.isChecked }">{{ itemShoppingList.name }}</span>
-                    <div class="item-shopping-list-btns">
-                        <button mat-icon-button (click)="checkItem(itemShoppingList)" color="primary">
-                            <mat-icon>done</mat-icon>
-                        </button>
-                    </div>
-                </li>
-            </ul>
-        </div>
+    <app-shopping-list-top-bar [beforeGoBack]="boundedSave" [delete]="boundedDelete" [goToEdit]="boundedGoToEdit"></app-shopping-list-top-bar>
+    <div class="shopping-list margin" *ngIf="shoppingList">
+        <h1 class="shopping-list-name">{{ shoppingList.name }}</h1>
+        <ul class="shopping-list-items" *ngIf="shoppingList.items">
+            <li class="item-shopping-list" *ngFor="let itemShoppingList of shoppingList.items">
+                <mat-checkbox class="example-margin"
+                  [(ngModel)]="itemShoppingList.isChecked"
+                  color="primary">
+                  <span class="item-shopping-list-name" [ngClass]="{ 'line': itemShoppingList.isChecked }">{{ itemShoppingList.name }}</span>
+                </mat-checkbox>
+            </li>
+        </ul>
     </div>
 </div>

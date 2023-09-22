@@ -1,0 +1,19 @@
+<div class="card" [ngClass]="backgroundColorClass">
+    <img *ngIf="imgUrl" class="card-img" [src]="imgUrl">
+    <div *ngIf="label || subText1 || subText2" class="card-content">
+        <div *ngIf="label" class="card-label">{{label}}</div>
+        <div *ngIf="subText1" class="card-subtext-1">{{subText1}}</div>
+        <div *ngIf="subText2" class="card-subtext-2">{{subText2}}</div>
+    </div>
+    <div *ngIf="(goToUpdate || goToDisplay || delete) && item" class="card-actions">
+        <button *ngIf="goToUpdate" mat-icon-button (click)="goToUpdate(item.id)">
+            <mat-icon>edit</mat-icon>
+        </button>
+        <button *ngIf="goToDisplay" mat-icon-button (click)="goToDisplay(item.id)">
+            <mat-icon>visibility</mat-icon>
+        </button>
+        <button *ngIf="delete" mat-icon-button color="accent" (click)="delete(item)">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </div>
+</div>

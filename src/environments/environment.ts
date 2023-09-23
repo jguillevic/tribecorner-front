@@ -1,6 +1,6 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://localhost:8000/',
+    apiUrl: 'https://api.tribecorner.fr/',
     firebaseConfig : {
         apiKey: "AIzaSyDuNMLuciC1INNmhzMEhlb5VWStT9J7Mu4",
         authDomain: "familyhub-33bd5.firebaseapp.com",

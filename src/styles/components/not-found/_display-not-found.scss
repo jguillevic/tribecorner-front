@@ -1,0 +1,30 @@
+.display-not-found {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &-title {
+        color: $primary-color;
+        font-size: 72px !important;
+        font-weight: 500;
+        margin-bottom: 25px !important;
+    }
+
+    &-subtitle {
+        font-size: 28px !important;
+        font-weight: 700;
+        margin:0 !important;
+        padding: 0 !important;
+        margin-bottom: 10px;
+    }
+
+    &-text {
+        font-size: 14px !important;
+    }
+
+    &-button {
+        margin-top: 15px;
+    }
+}

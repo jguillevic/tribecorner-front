@@ -1,4 +1,3 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { importProvidersFrom } from '@angular/core';
 import { AppComponent } from './app/app.component';
 import { provideRouter, Routes } from '@angular/router';
@@ -16,12 +15,13 @@ import { FamilyService } from './app/family/service/family.service';
 import { FamilyRoutes } from './app/family/route/family.routes';
 import { hasFamilyGuard } from './app/family/guard/has-family.guard';
 import { hasNoFamilyGuard } from './app/family/guard/has-no-family.guard';
+import { NotFoundRoutes } from './app/not-found/route/not-found.routes';
 
 const routes: Routes = [
     { 
         path: '', 
-        redirectTo: LoadingRoutes.displayLoadingRoute, 
-        pathMatch: 'full' 
+        pathMatch: 'full',
+        redirectTo: LoadingRoutes.displayLoadingRoute,
     },
     { 
         path: '',
@@ -50,6 +50,15 @@ const routes: Routes = [
         canActivate: [notSignedInGuard],
         children: UserRoutes.userRoutes
     },
+    { 
+        path: '',
+        children: NotFoundRoutes.notFoundRoutes
+    },
+    { 
+        path: '**',
+        pathMatch: 'full',
+        redirectTo: NotFoundRoutes.displayNotFound
+    }
 ];
 
 bootstrapApplication(AppComponent, {

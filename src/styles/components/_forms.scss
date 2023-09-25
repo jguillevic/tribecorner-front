@@ -2,6 +2,7 @@
     &-headers {
         padding-top: 40px;
         padding-bottom: 40px;
+        position: relative;
     }
 
     &-header {
@@ -11,6 +12,14 @@
         &-sub {
             font-weight: 400;
             font-size: 14px;
+        }
+
+        &-buttons {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            display: flex;
+            flex-direction: row;
         }
     }
 

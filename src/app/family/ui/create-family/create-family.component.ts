@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-import { Subscription, map, switchMap, tap } from 'rxjs';
+import { Subscription, switchMap } from 'rxjs';
 import { FamilyService } from '../../service/family.service';
 import { Router } from '@angular/router';
 import { FamilyRoutes } from '../../route/family.routes';
@@ -11,19 +11,31 @@ import { FormsModule } from '@angular/forms';
 import { HomeRoutes } from 'src/app/home/route/home.routes';
 import { UserInfo } from 'src/app/user/model/user-info.model';
 import { UserService } from 'src/app/user/service/user.service';
+import { SignOutButtonComponent } from "../../../common/buttons/sign-out/ui/sign-out-button.component";
+import { ButtonWithSpinnerDirective } from 'src/app/common/directives/button-with-spinner.directive';
 
 @Component({
-  selector: 'app-create-family',
-  standalone: true,
-  imports: [CommonModule, FormsModule, MatInputModule, MatFormFieldModule, MatButtonModule],
-  templateUrl: './create-family.component.html',
-  styles: [
-  ]
+    selector: 'app-create-family',
+    standalone: true,
+    templateUrl: './create-family.component.html',
+    styles: [],
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatButtonModule,
+        SignOutButtonComponent,
+        ButtonWithSpinnerDirective
+    ]
 })
-export class CreateFamilyComponent implements OnDestroy {
+export class CreateFamilyComponent implements OnInit, OnDestroy {
   private createSubscription: Subscription|undefined;
 
   public familyName: string|undefined;
+  public currentUserInfo: UserInfo|undefined;
+  public isCreatingFamily: boolean = false;
+  public isGoingToJoinFamily: boolean = false;
 
   public constructor(
     private router: Router,
@@ -31,31 +43,37 @@ export class CreateFamilyComponent implements OnDestroy {
     private userService: UserService
     ) { }
 
+  public ngOnInit(): void {
+    this.currentUserInfo = this.userService.getCurrentUserInfo();
+  }
+
   public ngOnDestroy(): void {
     this.createSubscription?.unsubscribe();
   }
 
   public createFamily(): void {
-    if (this.familyName) {
-      const currentUserInfo: UserInfo|undefined = this.userService.getCurrentUserInfo();
-
-      if (currentUserInfo) {
-        this.createSubscription = this.familyService
-        .create(this.familyName, currentUserInfo.id)
-        .pipe(
-          switchMap(() => {
-            return this.userService.refreshCurrentUser();
-          })
-        )
-        .subscribe(
-          () => {
-            return this.router.navigate([HomeRoutes.displayHomeRoute]); 
-          });
-      }
+    this.isCreatingFamily = true;    
+    if (this.familyName && this.currentUserInfo) {
+      this.createSubscription = this.familyService
+      .create(this.familyName, this.currentUserInfo.id)
+      .pipe(
+        switchMap(() => {
+          return this.userService.refreshCurrentUser();
+        })
+      )
+      .subscribe({
+        next: () => {
+          return this.router.navigate([HomeRoutes.displayHomeRoute]); 
+        },
+        error: (error) => { 
+          this.isCreatingFamily = false; 
+        }
+      });
     }
   }
 
   public goToJoinFamily(): Promise<boolean> {
+    this.isGoingToJoinFamily = true;
     return this.router.navigate([FamilyRoutes.joinFamilyRoute]);
   }
 }

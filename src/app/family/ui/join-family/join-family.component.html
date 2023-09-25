@@ -1,7 +1,10 @@
 <div class="page margin">
     <div class="form">
         <div class="form-headers">
-            <h1 class="form-header">Votre famille existe déjà ?</h1>
+            <div class="form-header-buttons">
+                <app-sign-out-button></app-sign-out-button>
+            </div>
+            <h1 class="form-header">{{ currentUserInfo?.username }}, votre famille existe déjà ?</h1>
             <p class="form-header-sub">Rejoignez là dès maintenant.</p>
         </div>
         <form (ngSubmit)="joinFamily()">

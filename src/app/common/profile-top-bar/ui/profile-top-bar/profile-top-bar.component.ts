@@ -40,12 +40,13 @@ export class ProfileTopBarComponent implements OnInit, OnDestroy {
       this.signOutSubscription?.unsubscribe();
     }
 
-  public signOut(): void {
+  public signOut(): Promise<boolean>|boolean {
     this.signOutSubscription = this.userService.signOut()
     .subscribe(() => 
       { 
         return this.router.navigate([ UserRoutes.signInUserRoute ]);
       }
     );
+    return false;
   }
 }

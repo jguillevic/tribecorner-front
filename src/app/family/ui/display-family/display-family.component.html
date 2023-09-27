@@ -2,7 +2,13 @@
     <app-profile-top-bar></app-profile-top-bar>
     <div>
         <p>En construction !</p>
+        <p>Nom famille : {{ family?.name }}</p>
         <p>Code d'association : {{ family?.associationCode }}</p>
+        <ul *ngIf="family && family.members.length > 0">
+            <li *ngFor="let familyMember of family.members">
+                {{ familyMember.username }}
+            </li>
+        </ul>
     </div>
     <app-tab-bar></app-tab-bar>
 </div>

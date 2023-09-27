@@ -5,7 +5,9 @@ import { ShoppingList } from '../../model/shopping-list.model';
 @Component({
   selector: 'app-shopping-list-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule
+  ],
   templateUrl: './shopping-list-card.component.html',
   styles: [
   ]
@@ -14,6 +16,7 @@ export class ShoppingListCardComponent implements OnInit {
   @Input() public shoppingList: ShoppingList|undefined;
 
   public backgroundColorClass: string|undefined;
+  public maxDisplayedItemsCount: number = 3;
 
   public ngOnInit(): void {
     const randomNumber: number = ShoppingListCardComponent.getRandomNumber(8) + 1;

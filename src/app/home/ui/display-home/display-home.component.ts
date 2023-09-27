@@ -55,10 +55,15 @@ export class DisplayHomeComponent implements OnInit, OnDestroy {
     this.loadSubscription?.unsubscribe();
   }
 
-  public goToDisplayShoppingList(shoppingListId: number|undefined): Promise<boolean>|undefined {
+  public goToDisplayShoppingList(shoppingListId: number|undefined): Promise<boolean>|boolean {
     if (shoppingListId) {
       return this.router.navigate([ShoppingListRoutes.displayShoppingListRoute], { queryParams: { action: 'update', id: shoppingListId } });
+    } else {
+      return false;
     }
-    return undefined;
+  }
+
+  public goToDisplayShoppingLists(): Promise<boolean> {
+    return this.router.navigate([ShoppingListRoutes.displayShoppingListsRoute]);
   }
 }

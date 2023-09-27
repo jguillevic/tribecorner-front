@@ -1,9 +1,15 @@
 <div class="page">
     <app-profile-top-bar></app-profile-top-bar>
     <div class="home">
-        <app-shopping-list-card *ngFor="let shoppingList of this.shoppingLists"
-        [shoppingList]="shoppingList"
-        (click)="goToDisplayShoppingList(shoppingList.id)"></app-shopping-list-card>
+        <div class="home-shopping-lists">
+            <div class="home-category">
+                <span class="home-category-name">Listes favorites</span>
+                <button class="home-category-see-all" (click)="goToDisplayShoppingLists()">Voir tout</button>
+            </div>
+            <app-shopping-list-card *ngFor="let shoppingList of this.shoppingLists"
+            [shoppingList]="shoppingList"
+            (click)="goToDisplayShoppingList(shoppingList.id)"></app-shopping-list-card>
+        </div>
     </div>
     <app-tab-bar [selectedIndex]=0></app-tab-bar>
 </div>

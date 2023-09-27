@@ -3,10 +3,11 @@
     width: 100%;
     height: 48px;
     position: relative;
+    background-color: $primary-color;
 
     &-user {
         position: absolute;
-        top: 5px;
+        top: 3px;
         left: 20px;
 
         &-img {
@@ -14,6 +15,7 @@
             height: 40px;
             object-fit: cover;
             border-radius: 50%;
+            border: 1px solid $light-color;
             background-color: $primary-color;
             display: flex;
             justify-content: center;
@@ -29,7 +31,7 @@
     
     &-text {
         position: absolute;
-        top: 5px;
+        top: 3px;
         left: 70px;
 
         &-welcome {

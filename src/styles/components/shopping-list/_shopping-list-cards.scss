@@ -4,8 +4,8 @@ $card-border-radius: 5px;
     width: 190px;
     border-radius: $card-border-radius;
     margin: 5px;
-    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-    position: relative;
+    box-shadow: $card-shadow;
+    display: inline-block;
 
     &-content {
         width: 150px;
@@ -16,13 +16,22 @@ $card-border-radius: 5px;
     }
 
     &-label {
-        color: $dark-color;
         font-size: 16px;
         font-weight: 700;
         max-width: 120px;
         vertical-align: bottom;
         padding: 0px !important;
         margin: 0px !important;
+    }
+
+    &-items {
+        margin-left: 10px;
+        margin-right: 10px;
+        padding-top: 5px;
+    }
+
+    &-item {
+        font-size: 14px;
     }
 
     &-actions {

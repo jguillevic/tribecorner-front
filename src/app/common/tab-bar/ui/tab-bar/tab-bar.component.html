@@ -1,15 +1,15 @@
 <mat-toolbar class="tab-bar">
     <button [ngClass]="selectedIndex == 0 ? 'tab-bar-item-selected' : 'tab-bar-item'" mat-icon-button (click)="goToHome()">
-        <mat-icon>home</mat-icon>
+        <mat-icon class="material-symbols-outlined">home</mat-icon>
     </button>
     <button [ngClass]="selectedIndex == 1 ? 'tab-bar-item-selected' : 'tab-bar-item'" class="tab-bar-item" mat-icon-button (click)="goToShoppingLists()">
-        <mat-icon>shopping_cart</mat-icon>
+        <mat-icon class="material-symbols-outlined">shopping_cart</mat-icon>
     </button>
     <button [ngClass]="selectedIndex == 2 ? 'tab-bar-item-selected' : 'tab-bar-item'" class="tab-bar-item" mat-icon-button>
-        <mat-icon>lunch_dining</mat-icon>
+        <mat-icon class="material-symbols-outlined">lunch_dining</mat-icon>
     </button>
     <button [ngClass]="selectedIndex == 3 ? 'tab-bar-item-selected' : 'tab-bar-item'" class="tab-bar-item" mat-icon-button>
-        <mat-icon>event</mat-icon>
+        <mat-icon class="material-symbols-outlined">event</mat-icon>
     </button>
     <!-- <button [ngClass]="selectedIndex == 4 ? 'tab-bar-item-selected' : 'tab-bar-item'" class="tab-bar-item" mat-icon-button>
         <mat-icon>savings</mat-icon>

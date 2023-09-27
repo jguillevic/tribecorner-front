@@ -1,14 +1,21 @@
-<mat-toolbar class="shopping-list-top-bar">
-    <button mat-icon-button (click)="goBack()">
-        <mat-icon>arrow_back</mat-icon>
-    </button>
-    <button *ngIf="goToEdit" mat-icon-button (click)="goToEdit()">
-        <mat-icon>edit</mat-icon>
-    </button>
-    <button *ngIf="goToDisplay" mat-icon-button (click)="goToDisplay()">
-        <mat-icon>visibility</mat-icon>
-    </button>
-    <button *ngIf="delete" mat-icon-button color="accent" (click)="delete()">
-        <mat-icon>delete</mat-icon>
-    </button>
-</mat-toolbar>
+<div class="shopping-list-top-bar">
+    <div class="shopping-list-top-bar-back">
+        <button mat-icon-button (click)="goBack()">
+            <mat-icon class="material-symbols-outlined">arrow_back</mat-icon>
+        </button>
+    </div>
+    <div class="shopping-list-top-bar-actions">
+        <button mat-icon-button color="accent" (click)="setFavorite()">
+            <mat-icon class="material-symbols-outlined" [ngClass]="shoppingList?.isFavorite ? 'material-symbols-fill' : ''">star</mat-icon>
+        </button>
+        <button *ngIf="isUpdating && isDisplaying" mat-icon-button (click)="goToEdit()">
+            <mat-icon class="material-symbols-outlined">edit</mat-icon>
+        </button>
+        <button *ngIf="isUpdating && isEditing" mat-icon-button (click)="goToDisplay()">
+            <mat-icon class="material-symbols-outlined">visibility</mat-icon>
+        </button>
+        <button *ngIf="isUpdating" mat-icon-button color="warn" (click)="delete()">
+            <mat-icon class="material-symbols-outlined">delete</mat-icon>
+        </button>
+    </div>
+</div>

@@ -16,6 +16,8 @@ import { UserInfo } from 'src/app/user/model/user-info.model';
 import { UserService } from 'src/app/user/service/user.service';
 import { ShoppingListTopBarComponent } from "../shopping-list-top-bar/shopping-list-top-bar.component";
 import { ShoppingListRoutes } from '../../route/shopping-list.routes';
+import { Action } from 'src/app/common/action';
+import { Mode } from '../mode';
 
 @Component({
     selector: 'app-display-shopping-list',
@@ -35,44 +37,34 @@ import { ShoppingListRoutes } from '../../route/shopping-list.routes';
     ]
 })
 export class EditShoppingListComponent implements OnInit, OnDestroy {
-  private static createAction: string = 'create';
-  private static updateAction: string = 'update';
-  private currentAction: string|undefined;
   private initShoppingListSubscription: Subscription|undefined;
   private deleteSubscription: Subscription|undefined;
 
   public newItemShopListName: string = '';
   public shoppingList: ShoppingList|undefined;
-  public boundedDelete: (() => Promise<boolean>|undefined)|undefined;
-  public boundedGoToDisplay: (() => Promise<boolean>|undefined)|undefined;
-  public boundedSave: (() => Observable<ShoppingList|undefined>)|undefined;
+  public currentAction: Action = Action.create;
+  public currentMode: Mode = Mode.edit;
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private router: Router,
     private userService: UserService,
     private shoppingListService: ShoppingListService
     ) { }
 
   public ngOnInit(): void {
-    this.boundedSave = this.save.bind(this);
-
     this.initShoppingListSubscription = this.activatedRoute.queryParams
     .pipe(
       switchMap((params: Params) => {
         this.currentAction = params['action'];
 
-        if (this.currentAction == EditShoppingListComponent.createAction) {
+        if (this.currentAction == Action.create) {
           const shoppingList: ShoppingList = new ShoppingList();
           const currentUserInfo: UserInfo|undefined = this.userService.getCurrentUserInfo();
           if (currentUserInfo?.familyId) {
             shoppingList.familyId = currentUserInfo?.familyId;
           }
           return of(shoppingList);
-        } else if (this.currentAction == EditShoppingListComponent.updateAction) {
-          this.boundedDelete = this.delete.bind(this);
-          this.boundedGoToDisplay = this.goToDisplay.bind(this);
-
+        } else if (this.currentAction == Action.update) {
           const shoppingListId: number = params['id'];
           return this.shoppingListService.loadOneById(shoppingListId);
         }
@@ -105,32 +97,5 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
       const itemIndex: number = this.shoppingList.items.indexOf(itemShoppingList);
       this.shoppingList.items.splice(itemIndex, 1);
     }
-  }
-
-  public save(): Observable<ShoppingList|undefined> {
-    if (this.shoppingList) {
-      if (this.currentAction == EditShoppingListComponent.updateAction) {
-        return this.shoppingListService.update(this.shoppingList);
-      } else if (this.currentAction == EditShoppingListComponent.createAction) {
-        return this.shoppingListService.create(this.shoppingList);
-      }
-    }
-    return of(undefined);
-  }
-
-  public delete(): Promise<boolean>|undefined {
-    if (this.shoppingList?.id) {
-      this.deleteSubscription = this.shoppingListService.delete(this.shoppingList.id).subscribe(() => {
-        return this.router.navigate([ShoppingListRoutes.displayShoppingListsRoute]);
-      });
-    }
-    return undefined;
-  }
-
-  public goToDisplay(): Promise<boolean>|undefined {
-    if (this.shoppingList?.id) {
-      return this.router.navigate([ShoppingListRoutes.displayShoppingListRoute], { queryParams: { id: this.shoppingList.id } });
-    }
-    return undefined;
   }
 }

@@ -1,0 +1,8 @@
+<div class="shopping-list-card" [ngClass]="backgroundColorClass">
+    <div class="shopping-list-card-content">
+        <div class="shopping-list-card-label">{{shoppingList?.name}}</div>
+    </div>
+    <div class="shopping-list-card-actions">
+        <ng-content></ng-content>
+    </div>
+</div>

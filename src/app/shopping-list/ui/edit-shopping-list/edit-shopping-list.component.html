@@ -1,5 +1,5 @@
 <div class="page">
-    <app-shopping-list-top-bar [beforeGoBack]="boundedSave" [delete]="boundedDelete" [goToDisplay]="boundedGoToDisplay"></app-shopping-list-top-bar>
+    <app-shopping-list-top-bar [shoppingList]="shoppingList" [currentAction]="currentAction" [currentMode]="currentMode"></app-shopping-list-top-bar>
     <div class="shopping-list margin" *ngIf="shoppingList">
         <mat-form-field class="shopping-list-name">
             <input matInput placeholder="Nom" type="text" required [(ngModel)]="shoppingList.name" name="name">
@@ -8,8 +8,8 @@
             <li class="item-shopping-list" *ngFor="let itemShoppingList of shoppingList.items">
                 <span class="item-shopping-list-name">{{ itemShoppingList.name }}</span>
                 <div class="item-shopping-list-btns">
-                    <button mat-icon-button (click)="deleteItem(itemShoppingList)" color="accent">
-                        <mat-icon>delete</mat-icon>
+                    <button mat-icon-button (click)="deleteItem(itemShoppingList)" color="warn">
+                        <mat-icon class="material-symbols-outlined">delete</mat-icon>
                     </button>
                 </div>
             </li>

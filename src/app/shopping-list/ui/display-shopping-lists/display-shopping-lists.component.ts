@@ -12,7 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarRef, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ProfileTopBarComponent } from "../../../common/profile-top-bar/ui/profile-top-bar/profile-top-bar.component";
-import { CardComponent } from "../../../common/card/ui/card/card.component";
+import { ShoppingListCardComponent } from "../shopping-list-card/shopping-list-card.component";
 
 @Component({
     selector: 'app-display-shopping-lists',
@@ -26,7 +26,7 @@ import { CardComponent } from "../../../common/card/ui/card/card.component";
         MatIconModule,
         MatSnackBarModule,
         ProfileTopBarComponent,
-        CardComponent
+        ShoppingListCardComponent
     ]
 })
 export class DisplayShoppingListsComponent implements OnInit, OnDestroy {
@@ -34,9 +34,6 @@ export class DisplayShoppingListsComponent implements OnInit, OnDestroy {
   private deleteSubscription: Subscription|undefined;
 
   public shoppingLists: ShoppingList[]|undefined;
-  public bindedGoToUpdate: ((id: number|undefined) => Promise<boolean>|undefined)|undefined;
-  public bindedGoToDisplay: ((id: number|undefined) => Promise<boolean>|undefined)|undefined;
-  public bindedDelete: ((item: any) => void)|undefined;
 
   public constructor(
     private router: Router,
@@ -46,10 +43,6 @@ export class DisplayShoppingListsComponent implements OnInit, OnDestroy {
     ) { }
 
   public ngOnInit(): void {
-    this.bindedGoToUpdate = this.goToUpdate.bind(this);
-    this.bindedGoToDisplay = this.goToDisplay.bind(this);
-    this.bindedDelete = this.delete.bind(this);
-
     const userInfo: UserInfo|undefined = this.userService.getCurrentUserInfo();
 
     if (userInfo && userInfo.familyId) {
@@ -69,18 +62,16 @@ export class DisplayShoppingListsComponent implements OnInit, OnDestroy {
     return this.router.navigate([ShoppingListRoutes.editShoppingListRoute], { queryParams: { action: 'create' } });
   }
 
-  public goToUpdate(shoppingListId: number|undefined): Promise<boolean>|undefined {
+  public goToUpdate(shoppingListId: number|undefined): void {
     if (shoppingListId) {
-      return this.router.navigate([ShoppingListRoutes.editShoppingListRoute], { queryParams: { action: 'update', id: shoppingListId } });
+      this.router.navigate([ShoppingListRoutes.editShoppingListRoute], { queryParams: { action: 'update', id: shoppingListId } });
     }
-    return undefined;
   }
 
-  public goToDisplay(shoppingListId: number|undefined): Promise<boolean>|undefined {
+  public goToDisplay(shoppingListId: number|undefined): void {
     if (shoppingListId) {
-      return this.router.navigate([ShoppingListRoutes.displayShoppingListRoute], { queryParams: { id: shoppingListId } });
+      this.router.navigate([ShoppingListRoutes.displayShoppingListRoute], { queryParams: { id: shoppingListId } });
     }
-    return undefined;
   }
 
   public delete(shoppingList: ShoppingList): void {
@@ -113,6 +104,12 @@ export class DisplayShoppingListsComponent implements OnInit, OnDestroy {
           return of(false);
         })
       ).subscribe();
+    }
+  }
+
+  public setFavorite(shoppingList: ShoppingList|undefined): void {
+    if (shoppingList) {
+      shoppingList.isFavorite = !shoppingList.isFavorite;
     }
   }
 }

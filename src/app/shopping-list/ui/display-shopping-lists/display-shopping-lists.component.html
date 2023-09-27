@@ -1,14 +1,21 @@
 <div class="page">
     <app-profile-top-bar></app-profile-top-bar>
     <div class="shopping-lists">
-        <app-card *ngFor="let shoppingList of this.shoppingLists"
-        imgUrl="assets/img/undraw-gone-shopping-re-2lau.svg" 
-        [label]="shoppingList.name"
-        [item]="shoppingList"
-        [goToUpdate]="bindedGoToUpdate"
-        [goToDisplay]="bindedGoToDisplay"
-        [delete]="bindedDelete"
-        ></app-card>
+        <app-shopping-list-card *ngFor="let shoppingList of this.shoppingLists"
+        [shoppingList]="shoppingList">
+            <button mat-icon-button color="accent" (click)="setFavorite(shoppingList)">
+                <mat-icon class="material-symbols-outlined" [ngClass]="shoppingList?.isFavorite ? 'material-symbols-fill' : ''">star</mat-icon>
+            </button>
+            <button mat-icon-button (click)="goToUpdate(shoppingList.id)">
+                <mat-icon class="material-symbols-outlined">edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="goToDisplay(shoppingList.id)">
+                <mat-icon class="material-symbols-outlined">visibility</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="delete(shoppingList)">
+                <mat-icon class="material-symbols-outlined">delete</mat-icon>
+            </button>
+        </app-shopping-list-card>
     </div>
     <button mat-fab color="primary" class="contextual-btn" (click)="goToCreate()">
         <mat-icon>add</mat-icon>

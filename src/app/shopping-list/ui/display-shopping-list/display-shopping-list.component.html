@@ -1,5 +1,5 @@
 <div class="page">
-    <app-shopping-list-top-bar [beforeGoBack]="boundedSave" [delete]="boundedDelete" [goToEdit]="boundedGoToEdit"></app-shopping-list-top-bar>
+    <app-shopping-list-top-bar [shoppingList]="shoppingList" [currentAction]="this.currentAction" [currentMode]="this.currentMode"></app-shopping-list-top-bar>
     <div class="shopping-list margin" *ngIf="shoppingList">
         <h1 class="shopping-list-name">{{ shoppingList.name }}</h1>
         <ul class="shopping-list-items" *ngIf="shoppingList.items">

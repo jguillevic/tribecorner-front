@@ -62,16 +62,24 @@ export class DisplayShoppingListsComponent implements OnInit, OnDestroy {
     return this.router.navigate([ShoppingListRoutes.editShoppingListRoute], { queryParams: { action: 'create' } });
   }
 
-  public goToUpdate(shoppingListId: number|undefined): void {
-    if (shoppingListId) {
-      this.router.navigate([ShoppingListRoutes.editShoppingListRoute], { queryParams: { action: 'update', id: shoppingListId } });
-    }
+  public goToUpdate(shoppingListId: number|undefined): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      if (shoppingListId) {
+        resolve(this.router.navigate([ShoppingListRoutes.editShoppingListRoute], { queryParams: { action: 'update', id: shoppingListId } }));
+      } else {
+        reject(false);
+      }
+    }); 
   }
 
-  public goToDisplay(shoppingListId: number|undefined): void {
-    if (shoppingListId) {
-      this.router.navigate([ShoppingListRoutes.displayShoppingListRoute], { queryParams: { id: shoppingListId } });
-    }
+  public goToDisplay(shoppingListId: number|undefined): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      if (shoppingListId) {
+        resolve(this.router.navigate([ShoppingListRoutes.displayShoppingListRoute], { queryParams: { id: shoppingListId } }));
+      } else {
+        reject(false);
+      }
+    });
   }
 
   public delete(shoppingList: ShoppingList): void {

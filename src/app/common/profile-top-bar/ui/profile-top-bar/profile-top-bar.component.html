@@ -15,6 +15,15 @@
             <mat-icon class="material-symbols-outlined">more_vert</mat-icon>
         </button> 
         <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="goToDisplayUser()">
+                <mat-icon class="material-symbols-outlined">person</mat-icon>
+                <span>Mon profil</span>
+            </button>
+            <button mat-menu-item (click)="goToDisplayFamily()">
+                <mat-icon class="material-symbols-outlined">diversity_1</mat-icon>
+                <span>Ma famille</span>
+            </button>
+            <mat-divider></mat-divider>
             <button mat-menu-item (click)="signOut()">
                 <mat-icon class="material-symbols-outlined">logout</mat-icon>
                 <span>Se déconnecter</span>

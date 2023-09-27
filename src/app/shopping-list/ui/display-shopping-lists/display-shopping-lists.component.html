@@ -4,7 +4,7 @@
         <app-shopping-list-card *ngFor="let shoppingList of this.shoppingLists"
         [shoppingList]="shoppingList">
             <button mat-icon-button color="accent" (click)="setFavorite(shoppingList)">
-                <mat-icon class="material-symbols-outlined" [ngClass]="shoppingList?.isFavorite ? 'material-symbols-fill' : ''">star</mat-icon>
+                <mat-icon class="material-symbols-outlined" [ngClass]="{ 'material-symbols-fill': shoppingList?.favorite }">star</mat-icon>
             </button>
             <button mat-icon-button (click)="goToUpdate(shoppingList.id)">
                 <mat-icon class="material-symbols-outlined">edit</mat-icon>

@@ -4,13 +4,13 @@ export class ShoppingList {
     public id: number|undefined;
     public name: string;
     public familyId: number;
-    public isFavorite: boolean;
+    public favorite: boolean;
     public items: ItemShoppingList[];
 
     constructor() {
         this.name = '';
         this.familyId = -1;
-        this.isFavorite = false;
+        this.favorite = false;
         this.items = [];
     }
 }

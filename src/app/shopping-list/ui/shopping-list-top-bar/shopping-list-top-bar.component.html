@@ -6,7 +6,7 @@
     </div>
     <div class="shopping-list-top-bar-actions">
         <button mat-icon-button color="accent" (click)="setFavorite()">
-            <mat-icon class="material-symbols-outlined" [ngClass]="{ 'material-symbols-fill': shoppingList?.isFavorite }">star</mat-icon>
+            <mat-icon class="material-symbols-outlined" [ngClass]="{ 'material-symbols-fill': shoppingList?.favorite }">star</mat-icon>
         </button>
         <button *ngIf="isUpdating && isDisplaying" mat-icon-button (click)="goToEdit()">
             <mat-icon class="material-symbols-outlined">edit</mat-icon>

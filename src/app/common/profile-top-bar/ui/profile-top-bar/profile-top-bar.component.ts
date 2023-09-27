@@ -9,6 +9,8 @@ import { UserService } from 'src/app/user/service/user.service';
 import { Router } from '@angular/router';
 import { UserRoutes } from 'src/app/user/route/user.routes';
 import { SignOutButtonComponent } from "../../../buttons/sign-out/ui/sign-out-button.component";
+import { MatDividerModule } from '@angular/material/divider';
+import { FamilyRoutes } from 'src/app/family/route/family.routes';
 
 @Component({
     selector: 'app-profile-top-bar',
@@ -20,7 +22,8 @@ import { SignOutButtonComponent } from "../../../buttons/sign-out/ui/sign-out-bu
         MatMenuModule,
         MatIconModule,
         MatButtonModule,
-        SignOutButtonComponent
+        SignOutButtonComponent,
+        MatDividerModule
     ]
 })
 export class ProfileTopBarComponent implements OnInit, OnDestroy {
@@ -33,22 +36,12 @@ export class ProfileTopBarComponent implements OnInit, OnDestroy {
     private router: Router
     ) { }
 
-    public ngOnInit(): void {
-      this.currentUserInfo = this.userService.getCurrentUserInfo();
-    }
-  
-    public ngOnDestroy(): void {
-      this.signOutSubscription?.unsubscribe();
-    }
+  public ngOnInit(): void {
+    this.currentUserInfo = this.userService.getCurrentUserInfo();
+  }
 
-  public signOut(): Promise<boolean>|boolean {
-    this.signOutSubscription = this.userService.signOut()
-    .subscribe(() => 
-      { 
-        return this.router.navigate([ UserRoutes.signInUserRoute ]);
-      }
-    );
-    return false;
+  public ngOnDestroy(): void {
+    this.signOutSubscription?.unsubscribe();
   }
 
   public getUsernameFirstLetterUpperCase(): string {
@@ -56,5 +49,22 @@ export class ProfileTopBarComponent implements OnInit, OnDestroy {
       return Array.from(this.currentUserInfo.username)[0].toUpperCase();
     }
     return '';
+  }
+
+  public goToDisplayUser(): Promise<boolean> {
+    return this.router.navigate([UserRoutes.displayUserRoute]);
+  }
+
+  public goToDisplayFamily(): Promise<boolean> {
+    return this.router.navigate([FamilyRoutes.displayFamilyRoute]);
+  }
+
+  public signOut(): void {
+    this.signOutSubscription = this.userService.signOut()
+    .subscribe(() => 
+      { 
+        this.router.navigate([UserRoutes.signInUserRoute]);
+      }
+    );
   }
 }

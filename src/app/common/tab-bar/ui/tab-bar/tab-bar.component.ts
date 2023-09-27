@@ -16,7 +16,7 @@ import { ShoppingListRoutes } from 'src/app/shopping-list/route/shopping-list.ro
   ]
 })
 export class TabBarComponent {
-  @Input() selectedIndex: number = 0;
+  @Input() selectedIndex: number = -1;
 
   public constructor(private router: Router) { }
 

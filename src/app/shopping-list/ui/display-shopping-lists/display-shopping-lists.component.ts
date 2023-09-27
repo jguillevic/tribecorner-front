@@ -109,7 +109,7 @@ export class DisplayShoppingListsComponent implements OnInit, OnDestroy {
 
   public setFavorite(shoppingList: ShoppingList|undefined): void {
     if (shoppingList) {
-      shoppingList.isFavorite = !shoppingList.isFavorite;
+      shoppingList.favorite = !shoppingList.favorite;
     }
   }
 }

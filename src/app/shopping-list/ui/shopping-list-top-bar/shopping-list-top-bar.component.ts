@@ -62,7 +62,7 @@ export class ShoppingListTopBarComponent implements OnInit, OnDestroy {
 
   public setFavorite(): void {
     if (this.shoppingList) {
-      this.shoppingList.isFavorite = !this.shoppingList.isFavorite;
+      this.shoppingList.favorite = !this.shoppingList.favorite;
     }
   }
 

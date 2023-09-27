@@ -11,8 +11,8 @@ import { ShoppingListService } from '../../service/shopping-list.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarRef, MatSnackBarModule } from '@angular/material/snack-bar';
-import { ProfileTopBarComponent } from "../../../common/profile-top-bar/ui/profile-top-bar/profile-top-bar.component";
 import { ShoppingListCardComponent } from "../shopping-list-card/shopping-list-card.component";
+import { ProfileTopBarComponent } from 'src/app/common/top-bar/profile/ui/profile-top-bar.component';
 
 @Component({
     selector: 'app-display-shopping-lists',

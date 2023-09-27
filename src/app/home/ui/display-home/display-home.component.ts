@@ -10,9 +10,9 @@ import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { ShoppingListService } from 'src/app/shopping-list/service/shopping-list.service';
 import { ShoppingList } from 'src/app/shopping-list/model/shopping-list.model';
-import { ProfileTopBarComponent } from "../../../common/profile-top-bar/ui/profile-top-bar/profile-top-bar.component";
 import { ShoppingListRoutes } from 'src/app/shopping-list/route/shopping-list.routes';
 import { ShoppingListCardComponent } from "../../../shopping-list/ui/shopping-list-card/shopping-list-card.component";
+import { ProfileTopBarComponent } from 'src/app/common/top-bar/profile/ui/profile-top-bar.component';
 
 @Component({
     selector: 'app-display-home',

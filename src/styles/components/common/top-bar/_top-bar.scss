@@ -1,0 +1,9 @@
+.top-bar {
+    width: 480px;
+    height: 48px;
+    background-color: $primary-color;
+
+    @media screen and (max-width:480px) {
+        width: 100%;
+    }
+}

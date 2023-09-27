@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProfileTopBarComponent } from "../../../common/profile-top-bar/ui/profile-top-bar/profile-top-bar.component";
 import { TabBarComponent } from "../../../common/tab-bar/ui/tab-bar/tab-bar.component";
+import { ProfileTopBarComponent } from 'src/app/common/top-bar/profile/ui/profile-top-bar.component';
+import { GoBackTopBarComponent } from "../../../common/top-bar/go-back/ui/go-back-top-bar.component";
 
 @Component({
     selector: 'app-display-user',
     standalone: true,
     templateUrl: './display-user.component.html',
     styles: [],
-    imports: [CommonModule, ProfileTopBarComponent, TabBarComponent]
+    imports: [CommonModule, ProfileTopBarComponent, TabBarComponent, GoBackTopBarComponent]
 })
 export class DisplayUserComponent {
 

@@ -6,14 +6,15 @@ import { FamilyService } from '../../service/family.service';
 import { Subscription } from 'rxjs';
 import { Family } from '../../model/family.model';
 import { TabBarComponent } from "../../../common/tab-bar/ui/tab-bar/tab-bar.component";
-import { ProfileTopBarComponent } from "../../../common/profile-top-bar/ui/profile-top-bar/profile-top-bar.component";
+import { ProfileTopBarComponent } from 'src/app/common/top-bar/profile/ui/profile-top-bar.component';
+import { GoBackTopBarComponent } from "../../../common/top-bar/go-back/ui/go-back-top-bar.component";
 
 @Component({
     selector: 'app-display-family',
     standalone: true,
     templateUrl: './display-family.component.html',
     styles: [],
-    imports: [CommonModule, TabBarComponent, ProfileTopBarComponent]
+    imports: [CommonModule, TabBarComponent, ProfileTopBarComponent, GoBackTopBarComponent]
 })
 export class DisplayFamilyComponent implements OnInit, OnDestroy {
   private loadFamilySubscription: Subscription|undefined;

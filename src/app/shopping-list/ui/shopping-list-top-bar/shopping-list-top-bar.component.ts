@@ -1,9 +1,7 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { Location } from '@angular/common'
 import { Observable, Subscription, of } from 'rxjs';
 import { ShoppingList } from '../../model/shopping-list.model';
 import { Action } from 'src/app/common/action';
@@ -17,7 +15,6 @@ import { Mode } from '../mode';
   standalone: true,
   imports: [
     CommonModule,
-    MatToolbarModule,
     MatButtonModule,
     MatIconModule
   ],

@@ -8,9 +8,9 @@ import { UserInfo } from 'src/app/user/model/user-info.model';
 import { UserService } from 'src/app/user/service/user.service';
 import { Router } from '@angular/router';
 import { UserRoutes } from 'src/app/user/route/user.routes';
-import { SignOutButtonComponent } from "../../../buttons/sign-out/ui/sign-out-button.component";
 import { MatDividerModule } from '@angular/material/divider';
 import { FamilyRoutes } from 'src/app/family/route/family.routes';
+import { SignOutButtonComponent } from 'src/app/common/button/ui/sign-out/sign-out-button.component';
 
 @Component({
     selector: 'app-profile-top-bar',

@@ -14,6 +14,7 @@ import { FamilyService } from './app/family/service/family.service';
 import { FamilyRoutes } from './app/family/route/family.routes';
 import { hasFamilyGuard } from './app/family/guard/has-family.guard';
 import { NotFoundRoutes } from './app/not-found/route/not-found.routes';
+import { MealRoutes } from './app/meal/route/meal.routes';
 
 const routes: Routes = [
     { 
@@ -30,6 +31,12 @@ const routes: Routes = [
         providers: [ShoppingListService],
         canActivate: [signedInGuard, hasFamilyGuard],
         children: ShoppingListRoutes.shoppingListRoutes
+    },
+    { 
+        path: '',
+        providers: [],
+        canActivate: [signedInGuard, hasFamilyGuard],
+        children: MealRoutes.mealRoutes
     },
     { 
         path: '',

@@ -1,0 +1,100 @@
+.display-meals {
+    padding-top: 10px;
+
+    &-calendar {
+        margin-left: 15px;
+    }
+
+    &-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+        align-items: top;
+        margin-top: 30px;
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+
+    &-kind {
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+        align-items: top;
+
+        &-name {
+            font-size: 18px;
+            font-weight: 700;
+        }
+    }
+
+    &-meal {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 80px auto 50px;
+        grid-template-rows: 18px 22px 22px 18px;
+        margin-top: 15px;
+
+        &-img {
+            width: 80px;
+            height: 80px;
+            border: 2px solid $primary-color;
+            border-radius: 5px;
+            grid-column: 1;
+            grid-row: 1 / 4;
+        }
+
+        &-name {
+            grid-column: 2;
+            grid-row: 2;
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            flex-direction: row;
+            justify-content: left;
+            align-items: center;
+            padding-left: 10px;
+            margin-bottom: 2px;
+        }
+
+        &-persons {
+            grid-column: 2;
+            grid-row: 3;
+            font-size: 14px;
+            font-weight: 400;
+            display: flex;
+            flex-direction: row;
+            justify-content: left;
+            align-items: center;
+            padding-left: 10px;
+            margin-top: 2px;
+
+            &::before {
+                font-family: 'Material Symbols Outlined';
+                font-weight: normal;
+                font-style: normal;
+                font-size: 24px;
+                display: inline-block;
+                line-height: 1;
+                text-transform: none;
+                letter-spacing: normal;
+                word-wrap: normal;
+                white-space: nowrap;
+                direction: ltr;
+                vertical-align: middle;
+                margin-right: 10px;
+                content: '\f233';
+            }
+        }
+
+        &-actions {
+            grid-column: 3;
+            grid-row: 1 / 4;
+            width: 50px;
+            height: 80px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}

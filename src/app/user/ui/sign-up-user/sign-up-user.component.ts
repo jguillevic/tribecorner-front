@@ -10,7 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { Subscription } from 'rxjs';
 import { FamilyRoutes } from 'src/app/family/route/family.routes';
-import { ButtonWithSpinnerDirective } from 'src/app/common/directives/button-with-spinner.directive';
+import { ButtonWithSpinnerDirective } from 'src/app/common/button/directive/button-with-spinner.directive';
 
 @Component({
   selector: 'app-sign-up-user',

@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/user/service/user.service';
 import { UserRoutes } from 'src/app/user/route/user.routes';
 import { Subscription } from 'rxjs';
-import { ButtonWithSpinnerDirective } from 'src/app/common/directives/button-with-spinner.directive';
+import { ButtonWithSpinnerDirective } from 'src/app/common/button/directive/button-with-spinner.directive';
 
 @Component({
   selector: 'app-sign-out-button',

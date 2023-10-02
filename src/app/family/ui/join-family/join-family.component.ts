@@ -11,8 +11,8 @@ import { Subscription, switchMap } from 'rxjs';
 import { UserService } from 'src/app/user/service/user.service';
 import { UserInfo } from 'src/app/user/model/user-info.model';
 import { HomeRoutes } from 'src/app/home/route/home.routes';
-import { SignOutButtonComponent } from "../../../common/buttons/sign-out/ui/sign-out-button.component";
-import { ButtonWithSpinnerDirective } from 'src/app/common/directives/button-with-spinner.directive';
+import { ButtonWithSpinnerDirective } from 'src/app/common/button/directive/button-with-spinner.directive';
+import { SignOutButtonComponent } from 'src/app/common/button/ui/sign-out/sign-out-button.component';
 
 @Component({
     selector: 'app-join-family',

@@ -5,7 +5,7 @@
     <button [ngClass]="selectedIndex == 1 ? 'tab-bar-item-selected' : 'tab-bar-item'" class="tab-bar-item" mat-icon-button (click)="goToShoppingLists()">
         <mat-icon class="material-symbols-outlined">shopping_cart</mat-icon>
     </button>
-    <button [ngClass]="selectedIndex == 2 ? 'tab-bar-item-selected' : 'tab-bar-item'" class="tab-bar-item" mat-icon-button>
+    <button [ngClass]="selectedIndex == 2 ? 'tab-bar-item-selected' : 'tab-bar-item'" class="tab-bar-item" mat-icon-button (click)="goToMeals()">
         <mat-icon class="material-symbols-outlined">lunch_dining</mat-icon>
     </button>
     <button [ngClass]="selectedIndex == 3 ? 'tab-bar-item-selected' : 'tab-bar-item'" class="tab-bar-item" mat-icon-button>

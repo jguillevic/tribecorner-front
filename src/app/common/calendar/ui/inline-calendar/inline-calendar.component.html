@@ -1,0 +1,14 @@
+<div class="inline-calendar">
+    <div class="inline-calendar-selected-day">
+        {{this.selectedCalendarDate?.date | date:'fullDate' | titlecase}}
+    </div>
+    <ol class="inline-calendar-dates">
+        <li *ngFor="let calendarDate of calendarDates" 
+        class="inline-calendar-date" 
+        [ngClass]="{'inline-calendar-date-select': calendarDate.isSelected}"
+        (click)="selectCalendarDate(calendarDate)">
+            <div class="inline-calendar-date-day-of-the-week">{{calendarDate.date | date:'EEEE' | slice:0:3 | uppercase}}</div>
+            <div class="inline-calendar-date-day-number">{{calendarDate.date | date:'d'}}</div>
+        </li>
+    </ol>
+</div>

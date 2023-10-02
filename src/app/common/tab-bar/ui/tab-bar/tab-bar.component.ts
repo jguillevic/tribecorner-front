@@ -6,6 +6,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
 import { HomeRoutes } from 'src/app/home/route/home.routes';
 import { ShoppingListRoutes } from 'src/app/shopping-list/route/shopping-list.routes';
+import { MealRoutes } from 'src/app/meal/route/meal.routes';
 
 @Component({
   selector: 'app-tab-bar',
@@ -26,5 +27,9 @@ export class TabBarComponent {
 
   public goToShoppingLists(): Promise<boolean> {
     return this.router.navigate([ShoppingListRoutes.displayShoppingListsRoute]);
+  }
+
+  public goToMeals(): Promise<boolean> {
+    return this.router.navigate([MealRoutes.displayMealsRoute]);
   }
 }

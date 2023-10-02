@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 import { FamilyRoutes } from 'src/app/family/route/family.routes';
 import { UserInfo } from '../../model/user-info.model';
 import { FirebaseError } from 'firebase/app';
-import { ButtonWithSpinnerDirective } from 'src/app/common/directives/button-with-spinner.directive';
+import { ButtonWithSpinnerDirective } from 'src/app/common/button/directive/button-with-spinner.directive';
 
 @Component({
   selector: 'app-sign-in-user',

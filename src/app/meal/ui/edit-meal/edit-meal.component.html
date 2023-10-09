@@ -1,1 +1,43 @@
-<p>edit-meal works!</p>
+<div class="page">
+    <app-close-top-bar (onCloseClicked)="onCloseClicked()"></app-close-top-bar>
+    <div class="margin">
+        <div class="form" *ngIf="meal">
+            <div class="form-headers">
+                <h1 class="form-header">{{ isCreating() ? 'Ajoutez votre nouveau repas !' : 'Modifiez votre repas !' }}</h1>
+            </div>
+            <form (ngSubmit)="editMeal()">
+                <div class="form-inputs">
+                    <mat-form-field class="form-input">
+                        <mat-label>Type de repas</mat-label>
+                        <mat-select required>
+                            <mat-option *ngFor="let loadedMealKind of loadedMealKinds" [value]="loadedMealKind.id">
+                            {{ loadedMealKind.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="form-input">
+                        <mat-label>Nom</mat-label>
+                        <input matInput type="text" required [(ngModel)]="meal.name" name="name">
+                    </mat-form-field>
+                    <mat-form-field class="form-input">
+                        <mat-label>Date</mat-label>
+                        <input matInput type="date" required [(ngModel)]="meal.date" name="date">
+                    </mat-form-field>
+                    <mat-form-field class="form-input">
+                        <mat-label>Repas pour ?</mat-label>
+                        <mat-select required>
+                            <mat-option *ngFor="let numberOfPersons of numbersOfPersons" [value]="numberOfPersons">
+                                {{ numberOfPersons }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="form-buttons">
+                    <button appButtonWithSpinner [loading]="isSaving" class="button form-button" mat-raised-button color="primary" type="submit">
+                        {{ isCreating() ? 'Ajouter mon repas' : 'Modifier mon repas' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

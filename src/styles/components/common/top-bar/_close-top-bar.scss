@@ -1,0 +1,9 @@
+.close-top-bar {
+    position: relative;
+
+    &-action {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+    }
+}

@@ -9,13 +9,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ItemShoppingList } from '../../model/item-shopping-list.model';
 import { FormsModule } from '@angular/forms';
-import { Observable, Subscription, interval, map, of, switchMap } from 'rxjs';
+import { Subscription, of, switchMap } from 'rxjs';
 import { TabBarComponent } from 'src/app/common/tab-bar/ui/tab-bar/tab-bar.component';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { UserInfo } from 'src/app/user/model/user-info.model';
 import { UserService } from 'src/app/user/service/user.service';
 import { ShoppingListTopBarComponent } from "../shopping-list-top-bar/shopping-list-top-bar.component";
-import { ShoppingListRoutes } from '../../route/shopping-list.routes';
 import { Action } from 'src/app/common/action';
 import { Mode } from '../mode';
 

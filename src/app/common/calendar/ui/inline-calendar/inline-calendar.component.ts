@@ -1,4 +1,4 @@
-import { Component, LOCALE_ID, OnInit } from '@angular/core';
+import { Component, EventEmitter, LOCALE_ID, OnInit, Output } from '@angular/core';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import * as fr from '@angular/common/locales/fr';
 import { CalendarDate } from '../../model/calendar-date.model';
@@ -10,9 +10,10 @@ import { CalendarDate } from '../../model/calendar-date.model';
   templateUrl: './inline-calendar.component.html',
   styles: [
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'fr-FR'}]
+  providers: [{ provide: LOCALE_ID, useValue: 'fr-FR' }]
 })
 export class InlineCalendarComponent implements OnInit {
+  @Output() public onSelectedDateChanged: EventEmitter<Date> = new EventEmitter<Date>();
   public selectedCalendarDate: CalendarDate|undefined;
   public calendarDates: CalendarDate[] = [];
 
@@ -31,13 +32,18 @@ export class InlineCalendarComponent implements OnInit {
 
     this.selectedCalendarDate = this.calendarDates[0];
     this.selectedCalendarDate.isSelected = true;
+    this.onSelectedDateChanged.emit(this.selectedCalendarDate.date);
   }
 
   public selectCalendarDate(calendarDate: CalendarDate): void {
-    if (this.selectedCalendarDate) {
+    if (
+      this.selectedCalendarDate 
+      && this.selectedCalendarDate.date != calendarDate.date
+      ) {
       this.selectedCalendarDate.isSelected = false;
       this.selectedCalendarDate = calendarDate;
       this.selectedCalendarDate.isSelected = true;
+      this.onSelectedDateChanged.emit(this.selectedCalendarDate.date);
     }
   }
 }

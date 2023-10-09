@@ -1,18 +1,18 @@
 <div class="page">
     <app-profile-top-bar></app-profile-top-bar>
     <div class="display-meals">
-        <app-inline-calendar class="display-meals-calendar"></app-inline-calendar>
+        <app-inline-calendar class="display-meals-calendar" (onSelectedDateChanged)="onSelectedDateChanged($event)"></app-inline-calendar>
         <div class="display-meals-content">
-            <div class="display-meals-kind">
+            <div class="display-meals-kind" *ngFor="let mealKind of this.mealKinds">
                 <div class="display-meals-kind-name">
-                    Déjeuner
+                    {{ mealKind.name }}
                 </div>
-                <div class="display-meals-meal">
+                <div class="display-meals-meal" *ngFor="let meal of this.mealsGroupByMealKinds.get(mealKind.id)">
                     <img class="display-meals-meal-img" src="/assets/img/undraw_breakfast_psiw.svg">
-                    <div class="display-meals-meal-name">Omelette et légumes</div>
-                    <div class="display-meals-meal-persons">4 personnes</div>
+                    <div class="display-meals-meal-name">{{ meal.name }}</div>
+                    <div class="display-meals-meal-persons">{{ meal.numberOfPersons }} personnes</div>
                     <div class="display-meals-meal-actions">
-                        <button mat-icon-button color="primary">
+                        <button mat-icon-button color="primary" (click)="goToUpdate(meal.id)">
                             <mat-icon>edit</mat-icon>
                           </button>
                     </div>
@@ -21,4 +21,4 @@
         </div>
     </div>
     <app-tab-bar [selectedIndex]=2></app-tab-bar>
-</div>>
+</div>

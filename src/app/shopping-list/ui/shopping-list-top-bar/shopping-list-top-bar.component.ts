@@ -69,9 +69,12 @@ export class ShoppingListTopBarComponent implements OnInit, OnDestroy {
         return this.shoppingListService.update(this.shoppingList);
       } else if (this.currentAction == Action.create) {
         return this.shoppingListService.create(this.shoppingList);
+      } else {
+        return of(undefined);
       }
+    } else {
+      return of(undefined);
     }
-    return of(undefined);
   }
 
   public delete(): void {

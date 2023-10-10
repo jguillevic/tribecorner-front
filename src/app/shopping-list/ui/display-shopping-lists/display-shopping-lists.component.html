@@ -17,8 +17,5 @@
             </button>
         </app-shopping-list-card>
     </div>
-    <button mat-fab color="primary" class="contextual-btn" (click)="goToCreate()">
-        <mat-icon>add</mat-icon>
-    </button>
-    <app-tab-bar [selectedIndex]=1></app-tab-bar>
+    <app-tab-bar [selectedIndex]=1 (onActionClicked)="goToCreate()"></app-tab-bar>
 </div>

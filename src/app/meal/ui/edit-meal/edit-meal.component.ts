@@ -116,7 +116,7 @@ export class EditMealComponent implements OnInit, OnDestroy {
     return this.currentAction == Action.create;
   }
 
-  public onCloseClicked(): void {
+  public closeClicked(): void {
     this.router.navigate([MealRoutes.displayMealsRoute]);
   }
 }

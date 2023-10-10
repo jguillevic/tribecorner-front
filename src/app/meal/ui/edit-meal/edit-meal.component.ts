@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { Meal } from '../../model/meal.model';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -17,6 +17,8 @@ import { MealKindService } from '../../service/meal-kind.service';
 import { MealKind } from '../../model/meal-kind.model';
 import { ButtonWithSpinnerDirective } from 'src/app/common/button/directive/button-with-spinner.directive';
 import { CloseTopBarComponent } from "../../../common/top-bar/close/ui/close-top-bar/close-top-bar.component";
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
     selector: 'app-edit-meal',
@@ -31,8 +33,10 @@ import { CloseTopBarComponent } from "../../../common/top-bar/close/ui/close-top
         FormsModule,
         MatSelectModule,
         ButtonWithSpinnerDirective,
-        CloseTopBarComponent
-    ]
+        CloseTopBarComponent,
+        MatDatepickerModule,
+        MatNativeDateModule
+    ],
 })
 export class EditMealComponent implements OnInit, OnDestroy {
   private currentAction: Action = Action.create;
@@ -50,16 +54,20 @@ export class EditMealComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private mealKindService: MealKindService,
     private mealService: MealService
-    ) { }
+    ) {
+  }
 
   public ngOnInit(): void {
     this.initMealSubscription = this.activatedRoute.queryParams
     .pipe(
       switchMap((params: Params) => {
         this.currentAction = params['action'];
+        const defaultDate = params['default-date'];
 
         if (this.currentAction == Action.create) {
           const meal: Meal = new Meal();
+          meal.date = defaultDate;
+          meal.numberOfPersons = 3;
           const currentUserInfo: UserInfo|undefined = this.userService.getCurrentUserInfo();
           if (currentUserInfo?.familyId) {
             meal.familyId = currentUserInfo?.familyId;

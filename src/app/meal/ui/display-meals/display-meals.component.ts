@@ -81,7 +81,7 @@ export class DisplayMealsComponent implements OnInit, OnDestroy {
   }
 
   public goToCreate(): Promise<boolean> {
-    return this.router.navigate([MealRoutes.editMealRoute], { queryParams: { action: 'create' } });
+    return this.router.navigate([MealRoutes.editMealRoute], { queryParams: { action: 'create', defautDate: new Date() } });
   }
 
   public goToUpdate(mealId: number|undefined): Promise<boolean> {

@@ -9,7 +9,7 @@
                 <div class="form-inputs">
                     <mat-form-field class="form-input">
                         <mat-label>Type de repas</mat-label>
-                        <mat-select required>
+                        <mat-select required [(value)]="meal.mealKindId">
                             <mat-option *ngFor="let loadedMealKind of loadedMealKinds" [value]="loadedMealKind.id">
                             {{ loadedMealKind.name }}
                             </mat-option>
@@ -21,11 +21,19 @@
                     </mat-form-field>
                     <mat-form-field class="form-input">
                         <mat-label>Date</mat-label>
-                        <input matInput type="date" required [(ngModel)]="meal.date" name="date">
+                        <input matInput [matDatepicker]="datepicker" name="date" required [(ngModel)]="meal.date">
+                        <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
+                        <mat-datepicker #datepicker>
+                            <mat-datepicker-actions>
+                            <button mat-button matDatepickerCancel>Annuler</button>
+                            <button mat-raised-button color="primary" matDatepickerApply>Appliquer</button>
+                            </mat-datepicker-actions>
+                        </mat-datepicker>
                     </mat-form-field>
+
                     <mat-form-field class="form-input">
                         <mat-label>Repas pour ?</mat-label>
-                        <mat-select required>
+                        <mat-select required [(value)]="meal.numberOfPersons">
                             <mat-option *ngFor="let numberOfPersons of numbersOfPersons" [value]="numberOfPersons">
                                 {{ numberOfPersons }}
                             </mat-option>

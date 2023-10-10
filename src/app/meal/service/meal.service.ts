@@ -36,7 +36,7 @@ export class MealService {
     meal.familyId = 1;
     meal.mealKindId = 1;
     meal.name = 'Mon repas de test';
-    meal.numberOfPersons = 12;
+    meal.numberOfPersons = 6;
 
     return of(meal);
   }

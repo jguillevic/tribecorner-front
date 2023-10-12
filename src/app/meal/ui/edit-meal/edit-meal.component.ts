@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule, registerLocaleData } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Meal } from '../../model/meal.model';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -62,11 +62,11 @@ export class EditMealComponent implements OnInit, OnDestroy {
     .pipe(
       switchMap((params: Params) => {
         this.currentAction = params['action'];
-        const defaultDate = params['default-date'];
+        const defaultDate = params['defaultDate'];
 
         if (this.currentAction == Action.create) {
           const meal: Meal = new Meal();
-          meal.date = defaultDate;
+          meal.date = new Date(defaultDate);
           meal.numberOfPersons = 3;
           const currentUserInfo: UserInfo|undefined = this.userService.getCurrentUserInfo();
           if (currentUserInfo?.familyId) {

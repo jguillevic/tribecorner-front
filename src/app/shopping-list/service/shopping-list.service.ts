@@ -32,15 +32,11 @@ export class ShoppingListService {
             shoppingLists.push(shoppingList);
           });
           return of(shoppingLists);
-        }),
-        catchError((error) => { 
-          console.log(error);
-          return of([]);
         })
       );
   }
 
-  public loadOneById(shoppingListId: number): Observable<ShoppingList|undefined> {
+  public loadOneById(shoppingListId: number): Observable<ShoppingList> {
     const headers: HttpHeaders= new HttpHeaders()
     .set('Content-type', 'application/json')
     .set('Accept', 'application/json');
@@ -53,10 +49,6 @@ export class ShoppingListService {
         switchMap((loadShoppingListDto) => {
           const shoppingList: ShoppingList = ShoppingListService.fromLoadShoppingListDtoToShoppingList(loadShoppingListDto);
           return of(shoppingList);
-        }),
-        catchError((error) => { 
-          console.log(error);
-          return of(undefined);
         })
       );
   }
@@ -77,10 +69,6 @@ export class ShoppingListService {
       .pipe(
         switchMap((loadShoppingListDto) => {
             return of(ShoppingListService.fromLoadShoppingListDtoToShoppingList(loadShoppingListDto));
-        }),
-        catchError((error) => { 
-          console.log(error);
-          return of(undefined);
         })
       );
   }

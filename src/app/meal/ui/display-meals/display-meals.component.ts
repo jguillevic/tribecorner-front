@@ -12,6 +12,9 @@ import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { MealRoutes } from '../../route/meal.routes';
 import { MealKindService } from '../../service/meal-kind.service';
+import { UserInfo } from 'src/app/user/model/user-info.model';
+import { UserService } from 'src/app/user/service/user.service';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-display-meals',
@@ -31,17 +34,22 @@ export class DisplayMealsComponent implements OnInit, OnDestroy {
   private loadAllMealsByDateSubscriptions: Subscription[] = [];
   private loadAllMealKindsSubscription: Subscription|undefined;
   private loadedMealKinds: MealKind[] = [];
+  private currentUserInfo: UserInfo|undefined;
+  private selectedDate: Date|undefined;
 
   public mealsGroupByMealKinds: Map<number, Meal[]> = new Map<number, Meal[]>;
   public mealKinds: MealKind[] = [];
 
   public constructor(
+    private userService: UserService,
     private mealKindService: MealKindService,
     private mealService: MealService,
     private router: Router
     ) { }
 
   public ngOnInit(): void {
+    this.currentUserInfo = this.userService.getCurrentUserInfo();
+
     this.loadAllMealKindsSubscription = this.mealKindService
     .loadAll()
     .subscribe(mealKinds => this.loadedMealKinds = mealKinds);
@@ -57,31 +65,41 @@ export class DisplayMealsComponent implements OnInit, OnDestroy {
   }
 
   public onSelectedDateChanged(date: Date) {
-    this.loadAllMealsByDateSubscriptions
-    .push(this.mealService
-      .loadAllByDate(date)
-      .subscribe((meals) => {
-        this.mealsGroupByMealKinds?.clear();
-        meals.forEach((meal) => {
-          if (!this.mealsGroupByMealKinds.has(meal.mealKindId)) {
-            this.mealsGroupByMealKinds.set(meal.mealKindId, []);
-          }
-          this.mealsGroupByMealKinds.get(meal.mealKindId)?.push(meal);
-        });
-        this.mealKinds = [];
-        Array.from(this.mealsGroupByMealKinds.keys())
-        .forEach((mealKindId) => {
-          const mealKind = this.loadedMealKinds.find(item => item.id == mealKindId);
-          if (mealKind) {
-            this.mealKinds.push(mealKind);
-          }
-        });
-      })
-    );
+    this.selectedDate = date;
+
+    if (this.currentUserInfo && this.currentUserInfo.familyId) {
+      this.loadAllMealsByDateSubscriptions
+      .push(this.mealService
+        .loadAllByDate(date, this.currentUserInfo.familyId)
+        .subscribe((meals) => {
+          this.mealsGroupByMealKinds?.clear();
+          meals.forEach((meal) => {
+            if (!this.mealsGroupByMealKinds.has(meal.mealKindId)) {
+              this.mealsGroupByMealKinds.set(meal.mealKindId, []);
+            }
+            this.mealsGroupByMealKinds.get(meal.mealKindId)?.push(meal);
+          });
+          this.mealKinds = [];
+          Array.from(this.mealsGroupByMealKinds.keys())
+          .forEach((mealKindId) => {
+            const mealKind = this.loadedMealKinds.find(item => item.id == mealKindId);
+            if (mealKind) {
+              this.mealKinds.push(mealKind);
+            }
+          });
+        })
+      );
+    }
   }
 
   public goToCreate(): Promise<boolean> {
-    return this.router.navigate([MealRoutes.editMealRoute], { queryParams: { action: 'create', defautDate: new Date() } });
+    return this.router.navigate([MealRoutes.editMealRoute],
+      { 
+        queryParams: { 
+          action: 'create',
+          defaultDate: moment(this.selectedDate).format("YYYY-MM-DD") 
+        } 
+      });
   }
 
   public goToUpdate(mealId: number|undefined): Promise<boolean> {

@@ -1,23 +1,41 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
 import { MealKind } from '../model/meal-kind.model';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { MealKindDto } from '../dto/meal-kind.dto';
+import { MealKindConverter } from '../converter/meal-kind.converter';
 
 @Injectable()
 export class MealKindService {
-  public constructor() { }
+  private static apiPath: string = "meal_kinds";
+
+  private mealKindConverter: MealKindConverter;
+
+  public constructor(
+    private http: HttpClient
+    ) { 
+      this.mealKindConverter = new MealKindConverter();
+    }
 
   public loadAll(): Observable<MealKind[]> {
-    const mealKinds: MealKind[] = [];
-    mealKinds.push(new MealKind());
-    mealKinds[0].id = 1;
-    mealKinds[0].name = 'Petit déjeuner';
-    mealKinds.push(new MealKind());
-    mealKinds[1].id = 2;
-    mealKinds[1].name = 'Déjeuner';
-    mealKinds.push(new MealKind());
-    mealKinds[2].id = 3;
-    mealKinds[2].name = 'Dîner';
+    const headers: HttpHeaders= new HttpHeaders()
+    .set('Content-type', 'application/json')
+    .set('Accept', 'application/json');
 
-    return of(mealKinds);
+    return this.http.get<MealKindDto[]>(
+      `${environment.apiUrl}${MealKindService.apiPath}`,
+      { 'headers': headers }
+      )
+      .pipe(
+        switchMap((mealKindDtos) => {
+          const mealKinds: MealKind[] = [];
+          mealKindDtos.forEach(mealKindDto => {
+            const mealKind: MealKind = this.mealKindConverter.fromDtoToModel(mealKindDto);
+            mealKinds.push(mealKind);
+          });
+          return of(mealKinds);
+        })
+      );
   }
 }

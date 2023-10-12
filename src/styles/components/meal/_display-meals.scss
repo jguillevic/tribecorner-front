@@ -10,7 +10,7 @@
         flex-direction: column;
         justify-content: left;
         align-items: top;
-        margin-top: 30px;
+        margin-top: 10px;
         margin-left: 15px;
         margin-right: 15px;
     }
@@ -24,6 +24,7 @@
         &-name {
             font-size: 18px;
             font-weight: 700;
+            margin-top: 20px;
         }
     }
 

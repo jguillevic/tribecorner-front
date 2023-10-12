@@ -71,16 +71,27 @@ export class DisplayMealsComponent implements OnInit, OnDestroy {
       this.loadAllMealsByDateSubscriptions
       .push(this.mealService
         .loadAllByDate(date, this.currentUserInfo.familyId)
-        .subscribe((meals) => {
+        .subscribe(meals => {
           this.mealsGroupByMealKinds?.clear();
-          meals.forEach((meal) => {
+          meals
+          .forEach((meal) => {
             if (!this.mealsGroupByMealKinds.has(meal.mealKindId)) {
               this.mealsGroupByMealKinds.set(meal.mealKindId, []);
             }
             this.mealsGroupByMealKinds.get(meal.mealKindId)?.push(meal);
           });
           this.mealKinds = [];
+
           Array.from(this.mealsGroupByMealKinds.keys())
+          .sort((mealKindId1, mealKindId2) => {
+            const mealKind1 = this.loadedMealKinds.find(item => mealKindId1 == item.id);
+            const mealKind2 = this.loadedMealKinds.find(item => mealKindId2 == item.id);
+
+            if (mealKind1 && mealKind2) {
+              return (mealKind1.position > mealKind2.position) ? 1 : -1;
+            }
+            return 0;
+          })
           .forEach((mealKindId) => {
             const mealKind = this.loadedMealKinds.find(item => item.id == mealKindId);
             if (mealKind) {

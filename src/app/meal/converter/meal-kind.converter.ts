@@ -6,6 +6,7 @@ export class MealKindConverter {
         const mealKind = new MealKind();
         mealKind.id = mealKindDto.id;
         mealKind.name = mealKindDto.name;
+        mealKind.position = mealKindDto.position;
         return mealKind;
     }
 }

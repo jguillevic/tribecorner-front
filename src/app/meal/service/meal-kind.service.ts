@@ -28,7 +28,7 @@ export class MealKindService {
       { 'headers': headers }
       )
       .pipe(
-        switchMap((mealKindDtos) => {
+        switchMap(mealKindDtos => {
           const mealKinds: MealKind[] = [];
           mealKindDtos.forEach(mealKindDto => {
             const mealKind: MealKind = this.mealKindConverter.fromDtoToModel(mealKindDto);

@@ -1,7 +1,11 @@
 <div class="page">
     <app-profile-top-bar></app-profile-top-bar>
     <div class="display-meals">
-        <app-inline-calendar class="display-meals-calendar" (onSelectedDateChanged)="onSelectedDateChanged($event)"></app-inline-calendar>
+        <app-inline-calendar 
+        class="display-meals-calendar" 
+        [defaultSelectedDateObservable]="defaultSelectedDateObservable" 
+        (onSelectedDateChanged)="onSelectedDateChanged($event)">
+        </app-inline-calendar>
         <div class="display-meals-content">
             <div class="display-meals-kind" *ngFor="let mealKind of this.mealKinds">
                 <div class="display-meals-kind-name">

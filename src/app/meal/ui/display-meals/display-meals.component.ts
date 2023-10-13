@@ -8,8 +8,8 @@ import { MealKind } from '../../model/meal-kind.model';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MealService } from '../../service/meal.service';
-import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { Observable, Subscription, of, switchMap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MealRoutes } from '../../route/meal.routes';
 import { MealKindService } from '../../service/meal-kind.service';
 import { UserInfo } from 'src/app/user/model/user-info.model';
@@ -39,8 +39,10 @@ export class DisplayMealsComponent implements OnInit, OnDestroy {
 
   public mealsGroupByMealKinds: Map<number, Meal[]> = new Map<number, Meal[]>;
   public mealKinds: MealKind[] = [];
+  public defaultSelectedDateObservable: Observable<Date>|undefined;
 
   public constructor(
+    private activatedRoute: ActivatedRoute,
     private userService: UserService,
     private mealKindService: MealKindService,
     private mealService: MealService,
@@ -53,6 +55,16 @@ export class DisplayMealsComponent implements OnInit, OnDestroy {
     this.loadAllMealKindsSubscription = this.mealKindService
     .loadAll()
     .subscribe(mealKinds => this.loadedMealKinds = mealKinds);
+
+    this.defaultSelectedDateObservable = this.activatedRoute.queryParams.pipe(
+      switchMap(params => {
+        if (params["defaultSelectedDate"]) {
+          return of(new Date(params["defaultSelectedDate"]));
+        } else {
+          return of(new Date());
+        }
+      })
+    );
   }
 
   public ngOnDestroy(): void {
@@ -71,7 +83,9 @@ export class DisplayMealsComponent implements OnInit, OnDestroy {
 
     if (this.currentUserInfo && this.currentUserInfo.familyId) {
       this.loadAllMealsByDateSubscriptions
-      .push(this.mealService
+      .push(
+        
+        this.mealService
         .loadAllByDate(date, this.currentUserInfo.familyId)
         .subscribe(meals => {
           meals

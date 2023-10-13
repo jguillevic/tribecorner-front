@@ -1,8 +1,10 @@
+$tab-bar-height: 48px;
+
 .tab-bar {
     position: fixed;
     bottom: 0px;
     width: 480px;
-    height: 48px;
+    height: $tab-bar-height;
     background-color: rgba($primary-color, 1);
 
     @media screen and (max-width:480px) {

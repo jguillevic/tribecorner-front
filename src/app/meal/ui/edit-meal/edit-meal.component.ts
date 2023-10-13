@@ -19,6 +19,7 @@ import { ButtonWithSpinnerDirective } from 'src/app/common/button/directive/butt
 import { CloseTopBarComponent } from "../../../common/top-bar/close/ui/close-top-bar/close-top-bar.component";
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-edit-meal',
@@ -112,7 +113,10 @@ export class EditMealComponent implements OnInit, OnDestroy {
     this.isSaving = true;
     this.save().subscribe({ 
       next: () => {
-        this.router.navigate([MealRoutes.displayMealsRoute]);
+        this.router.navigate(
+          [MealRoutes.displayMealsRoute],
+          { queryParams: { defaultSelectedDate: moment(this.meal?.date).format("YYYY-MM-DD") } }
+        );
       },
       error: () => {
         this.isSaving = false;

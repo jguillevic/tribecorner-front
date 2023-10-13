@@ -66,13 +66,14 @@ export class DisplayMealsComponent implements OnInit, OnDestroy {
 
   public onSelectedDateChanged(date: Date) {
     this.selectedDate = date;
+    this.mealKinds = [];
+    this.mealsGroupByMealKinds?.clear();
 
     if (this.currentUserInfo && this.currentUserInfo.familyId) {
       this.loadAllMealsByDateSubscriptions
       .push(this.mealService
         .loadAllByDate(date, this.currentUserInfo.familyId)
         .subscribe(meals => {
-          this.mealsGroupByMealKinds?.clear();
           meals
           .forEach((meal) => {
             if (!this.mealsGroupByMealKinds.has(meal.mealKindId)) {
@@ -80,7 +81,6 @@ export class DisplayMealsComponent implements OnInit, OnDestroy {
             }
             this.mealsGroupByMealKinds.get(meal.mealKindId)?.push(meal);
           });
-          this.mealKinds = [];
 
           Array.from(this.mealsGroupByMealKinds.keys())
           .sort((mealKindId1, mealKindId2) => {

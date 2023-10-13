@@ -17,22 +17,34 @@ export class InlineCalendarComponent implements OnInit, OnDestroy {
   @Input() public defaultSelectedDateObservable: Observable<Date>|undefined;
   @Output() public onSelectedDateChanged: EventEmitter<Date> = new EventEmitter<Date>();
 
-  private numberOfDates: number = 7;
-  private defaultSelectedDateSubscription: Subscription|undefined;
+  private _numberOfDates: number = 7;
+  private _defaultSelectedDateSubscription: Subscription|undefined;
 
-  public selectedCalendarDate: CalendarDate|undefined;
-  public calendarDates: CalendarDate[] = [];
+  private _selectedCalendarDate: CalendarDate | undefined;
+  public get selectedCalendarDate(): CalendarDate | undefined {
+    return this._selectedCalendarDate;
+  }
+  public set selectedCalendarDate(value: CalendarDate | undefined) {
+    this._selectedCalendarDate = value;
+  }
+  private _calendarDates: CalendarDate[] = [];
+  public get calendarDates(): CalendarDate[] {
+    return this._calendarDates;
+  }
+  public set calendarDates(value: CalendarDate[]) {
+    this._calendarDates = value;
+  }
 
   public constructor() {
     registerLocaleData(fr.default);
   }
 
   public ngOnDestroy(): void {
-    this.defaultSelectedDateSubscription?.unsubscribe();
+    this._defaultSelectedDateSubscription?.unsubscribe();
   }
 
   public ngOnInit(): void {
-    for (let i = 0; i < this.numberOfDates; i++) {
+    for (let i = 0; i < this._numberOfDates; i++) {
       const date: Date = new Date();
       date.setDate(date.getDate() + i);
       date.setHours(0,0,0,0);
@@ -42,7 +54,8 @@ export class InlineCalendarComponent implements OnInit, OnDestroy {
     }
 
     if (this.defaultSelectedDateObservable) {
-      this.defaultSelectedDateObservable.subscribe(defaultSelectedDate => {
+      this._defaultSelectedDateSubscription = this.defaultSelectedDateObservable
+      .subscribe(defaultSelectedDate => {
         defaultSelectedDate.setHours(0,0,0,0);
         this.calendarDates.forEach(calendarDate => {
           if (defaultSelectedDate && defaultSelectedDate.getTime() == calendarDate.date.getTime()) {

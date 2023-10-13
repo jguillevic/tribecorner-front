@@ -3,7 +3,7 @@
     bottom: 0px;
     width: 480px;
     height: 48px;
-    background-color: $primary-color;
+    background-color: rgba($primary-color, 1);
 
     @media screen and (max-width:480px) {
         width: 100%;
@@ -19,6 +19,10 @@
 
     &-item {
         color: $dark-color !important;
+
+        &-selected {
+            color: $dark-color !important;
+        }
     }
 
     &-action-button {

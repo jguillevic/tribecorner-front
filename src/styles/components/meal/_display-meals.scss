@@ -1,18 +1,20 @@
 .display-meals {
     padding-top: 10px;
+    width: 100%;
 
     &-calendar {
         margin-left: 15px;
     }
 
     &-content {
+        width: 100%;
+        padding-top: 10px;
+        padding-left: 15px;
+        padding-right: 15px;
         display: flex;
         flex-direction: column;
         justify-content: left;
         align-items: top;
-        margin-top: 10px;
-        margin-left: 15px;
-        margin-right: 15px;
     }
 
     &-kind {
@@ -96,6 +98,36 @@
             flex-direction: row;
             justify-content: center;
             align-items: center;
+        }
+    }
+
+    &-empty {
+        width: 100%;
+        padding-top: 80px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        &-illustration {
+            width: 200px;
+        }
+
+        &-title {
+            margin: 0 !important;
+            padding: 0 !important;
+            padding-top: 20px !important;
+            padding-bottom: 10px !important;
+            font-size: 28px !important;
+            font-weight: 700 !important;
+        }
+
+        &-message {
+            width: 200px;
+            margin: 0 !important;
+            padding: 0 !important;
+            font-size: 16px !important;
+            text-align: center;
         }
     }
 }

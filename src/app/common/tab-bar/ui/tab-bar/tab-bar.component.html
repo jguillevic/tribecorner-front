@@ -1,15 +1,15 @@
 <div class="tab-bar">
     <div class="tab-bar-container">
-        <button [ngClass]="{ 'material-symbols-fill': selectedIndex == 0 }" class="tab-bar-item" mat-icon-button (click)="goToHome()">
+        <button [ngClass]="{ 'material-symbols-fill tab-bar-item-selected': selectedIndex == 0 }" class="tab-bar-item" mat-icon-button (click)="goToHome()">
             <mat-icon class="material-symbols-outlined">home</mat-icon>
         </button>
-        <button [ngClass]="{ 'material-symbols-fill': selectedIndex == 1 }" class="tab-bar-item" mat-icon-button (click)="goToShoppingLists()">
+        <button [ngClass]="{ 'material-symbols-fill tab-bar-item-selected': selectedIndex == 1 }" class="tab-bar-item" mat-icon-button (click)="goToShoppingLists()">
             <mat-icon class="material-symbols-outlined">shopping_cart</mat-icon>
         </button>
-        <button [ngClass]="{ 'material-symbols-fill': selectedIndex == 2 }" class="tab-bar-item" mat-icon-button (click)="goToMeals()">
+        <button [ngClass]="{ 'material-symbols-fill tab-bar-item-selected': selectedIndex == 2 }" class="tab-bar-item" mat-icon-button (click)="goToMeals()">
             <mat-icon class="material-symbols-outlined">lunch_dining</mat-icon>
         </button>
-        <button [ngClass]="{ 'material-symbols-fill': selectedIndex == 3 }" class="tab-bar-item" mat-icon-button>
+        <button [ngClass]="{ 'material-symbols-fill tab-bar-item-selected': selectedIndex == 3 }" class="tab-bar-item" mat-icon-button>
             <mat-icon class="material-symbols-outlined">event</mat-icon>
         </button>
     </div>

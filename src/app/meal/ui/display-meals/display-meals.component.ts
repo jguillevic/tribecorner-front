@@ -33,6 +33,7 @@ import * as moment from 'moment';
 export class DisplayMealsComponent implements OnInit, OnDestroy {
   private loadAllMealsByDateSubscriptions: Subscription[] = [];
   private loadAllMealKindsSubscription: Subscription|undefined;
+  private deleteSubscription: Subscription|undefined;
   private loadedMealKinds: MealKind[] = [];
   private currentUserInfo: UserInfo|undefined;
   private selectedDate: Date|undefined;
@@ -68,6 +69,7 @@ export class DisplayMealsComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
+    this.deleteSubscription?.unsubscribe();
     this.loadAllMealKindsSubscription?.unsubscribe();
     this.loadAllMealsByDateSubscriptions?.forEach(
       loadAllMealsByDateSubscriptions => {
@@ -127,13 +129,24 @@ export class DisplayMealsComponent implements OnInit, OnDestroy {
       });
   }
 
-  public goToUpdate(mealId: number|undefined): Promise<boolean> {
+  public goToUpdate(mealId: number): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      if (mealId) {
-        resolve(this.router.navigate([MealRoutes.editMealRoute], { queryParams: { action: 'update', id: mealId } }));
-      } else {
-        reject(false);
-      }
+      resolve(this.router.navigate([MealRoutes.editMealRoute], { queryParams: { action: 'update', id: mealId } }));
     }); 
+  }
+
+  public delete(mealKindId: number, meal: Meal): void {
+    this.deleteSubscription = this.mealService
+    .delete(meal.id)
+    .subscribe(() => {
+      const meals: Meal[]|undefined = this.mealsGroupByMealKinds.get(mealKindId);
+      if (meals) {
+        const index: number = meals.indexOf(meal);
+        meals.splice(index, 1);
+        if (meals.length == 0) {
+          this.mealsGroupByMealKinds.delete(mealKindId);
+        }
+      }
+    });
   }
 }

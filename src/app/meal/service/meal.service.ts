@@ -63,7 +63,8 @@ export class MealService {
     .set('Content-type', 'application/json')
     .set('Accept', 'application/json');
 
-    const mealDto = this.mealConverter.formModelToDto(meal);
+    const mealDto = this.mealConverter.fromModelToDto(meal);
+    console.log(mealDto);
     const body: string = JSON.stringify(mealDto);
 
     return this.http.post<MealDto>(
@@ -83,7 +84,7 @@ export class MealService {
     .set('Content-type', 'application/json')
     .set('Accept', 'application/json');
 
-    const mealDto = this.mealConverter.formModelToDto(meal);
+    const mealDto = this.mealConverter.fromModelToDto(meal);
     const body: string = JSON.stringify(mealDto);
 
     return this.http.put<MealDto>(
@@ -95,6 +96,17 @@ export class MealService {
         switchMap((mealDto) => {
             return of(this.mealConverter.fromDtoToModel(mealDto));
         })
+      );
+  }
+
+  public delete(mealId: number): Observable<void> {
+    const headers: HttpHeaders= new HttpHeaders()
+    .set('Content-type', 'application/json')
+    .set('Accept', 'application/json');
+
+    return this.http.delete<void>(
+      `${environment.apiUrl}${MealService.apiPath}/${mealId}`,
+      { 'headers': headers }
       );
   }
 }

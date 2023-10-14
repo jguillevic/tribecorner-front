@@ -18,7 +18,10 @@
                     <div class="display-meals-meal-actions">
                         <button mat-icon-button color="primary" (click)="goToUpdate(meal.id)">
                             <mat-icon class="material-symbols-outlined">edit</mat-icon>
-                          </button>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="delete(mealKind.id, meal)">
+                            <mat-icon class="material-symbols-outlined">delete</mat-icon>
+                        </button>
                     </div>
                 </div>
             </div>

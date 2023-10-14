@@ -97,7 +97,7 @@ export class ShoppingListService {
       );
   }
 
-  public delete(shoppingListId: number): Observable<void|undefined> {
+  public delete(shoppingListId: number): Observable<void> {
     const headers: HttpHeaders= new HttpHeaders()
     .set('Content-type', 'application/json')
     .set('Accept', 'application/json');
@@ -105,12 +105,6 @@ export class ShoppingListService {
     return this.http.delete<void>(
       `${environment.apiUrl}${ShoppingListService.apiPath}/${shoppingListId}`,
       { 'headers': headers }
-      )
-      .pipe(
-        catchError((error) => { 
-          console.log(error);
-          return of(undefined);
-        })
       );
   }
 

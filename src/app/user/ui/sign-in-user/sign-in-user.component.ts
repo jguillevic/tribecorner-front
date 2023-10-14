@@ -33,19 +33,42 @@ import { ButtonWithSpinnerDirective } from 'src/app/common/button/directive/butt
 export class SignInUserComponent implements OnDestroy {
   private signInSubscription: Subscription|undefined;
 
-  public readonly emailMaxLength: number = 255; 
-  public readonly passwordMaxLength: number = 255;
-  public readonly passwordRegex: string = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
-  public hasUserNotFoundError: boolean = false;
-  public hasWrongPasswordError: boolean = false;
-  public isSigningIn: boolean = false;
-  public isGoingToSignUp: boolean = false;
+  private _isSigningIn: boolean = false;
+  public get isSigningIn(): boolean {
+    return this._isSigningIn;
+  }
+  public set isSigningIn(value: boolean) {
+    this._isSigningIn = value;
+  }
 
-  public signInForm: FormGroup = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email, Validators.minLength(1), Validators.maxLength(this.emailMaxLength)]),
-    password: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(this.passwordMaxLength), Validators.pattern(this.passwordRegex)])
-  },
-  { updateOn: 'submit' });
+  private _isGoingToSignUp: boolean = false;
+  public get isGoingToSignUp(): boolean {
+    return this._isGoingToSignUp;
+  }
+  public set isGoingToSignUp(value: boolean) {
+    this._isGoingToSignUp = value;
+  }
+
+  // Formulaire.
+  private readonly _emailMaxLength: number = 255; 
+  public get emailMaxLength(): number {
+    return this._emailMaxLength;
+  }
+
+  private readonly _passwordMaxLength: number = 255;
+  public get passwordMaxLength(): number {
+    return this._passwordMaxLength;
+  }
+
+  private readonly _signInForm: FormGroup = new FormGroup(
+    {
+      email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(this.emailMaxLength)]),
+      password: new FormControl('', [Validators.required, Validators.maxLength(this.passwordMaxLength)])
+    }
+  );
+  public get signInForm(): FormGroup {
+    return this._signInForm;
+  }
 
   public constructor(
     private userService: UserService,
@@ -72,6 +95,8 @@ export class SignInUserComponent implements OnDestroy {
       if (error.code == "auth/wrong-password") {
         this.signInForm.controls['password'].setErrors({'wrong': true});
       }
+    } else {
+      window.alert("Problème technique. Veuillez réessayer dans quelques minutes.");
     }
   }
 

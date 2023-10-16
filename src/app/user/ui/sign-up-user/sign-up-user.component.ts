@@ -50,12 +50,9 @@ export class SignUpUserComponent implements OnDestroy {
   }
 
   // Formulaire.
-  private _usernameMaxLength: number = 255; 
+  private readonly _usernameMaxLength: number = 255; 
   public get usernameMaxLength(): number {
     return this._usernameMaxLength;
-  }
-  public set usernameMaxLength(value: number) {
-    this._usernameMaxLength = value;
   }
 
   private readonly _emailMaxLength: number = 255; 

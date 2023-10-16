@@ -7,11 +7,20 @@
             <h1 class="form-header">{{ currentUserInfo?.username }}, votre famille n'existe pas encore ?</h1>
             <p class="form-header-sub">Créez en une dès maintenant.</p>
         </div>
-        <form (ngSubmit)="createFamily()">
+        <form (ngSubmit)="createFamily()" [formGroup]="createFamilyForm">
             <div class="form-inputs">
                 <mat-form-field class="form-input">
                     <mat-label>Nom de votre famille</mat-label>
-                    <input matInput type="text" required [(ngModel)]="familyName" name="family-name">
+                    <input matInput type="text" formControlName="familyName">
+                    <mat-error *ngIf="createFamilyForm.controls['familyName'].hasError('already-in-use')">
+                        Nom de famille déjà utilisé
+                    </mat-error>
+                    <mat-error *ngIf="createFamilyForm.controls['familyName'].hasError('maxlength')">
+                        Nom de famille trop long (max. {{ familyNameMaxLength }} caractères)
+                    </mat-error>
+                    <mat-error *ngIf="createFamilyForm.controls['familyName'].hasError('required')">
+                        Nom de famille requis
+                    </mat-error>
                 </mat-form-field>
             </div>
             <div class="form-buttons">

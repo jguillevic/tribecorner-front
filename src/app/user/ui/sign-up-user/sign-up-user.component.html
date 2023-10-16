@@ -9,7 +9,7 @@
                 <mat-form-field class="form-input">
                     <mat-label>Nom d'utilisateur</mat-label>
                     <input matInput type="text" formControlName="username">
-                    <mat-error *ngIf="signUpForm.controls['username'].hasError('maxlength') && !signUpForm.controls['username'].hasError('required')">
+                    <mat-error *ngIf="signUpForm.controls['username'].hasError('maxlength')">
                         Nom d'utilisateur trop long (max. {{ usernameMaxLength }} caractères)
                     </mat-error>
                     <mat-error *ngIf="signUpForm.controls['username'].hasError('required')">
@@ -19,10 +19,10 @@
                 <mat-form-field class="form-input">
                     <mat-label>Email</mat-label>
                     <input matInput type="email" formControlName="email">
-                    <mat-error *ngIf="signUpForm.controls['email'].hasError('email') && !signUpForm.controls['email'].hasError('required')">
+                    <mat-error *ngIf="signUpForm.controls['email'].hasError('email')">
                         Email invalide (exemple@format.fr)
                     </mat-error>
-                    <mat-error *ngIf="signUpForm.controls['email'].hasError('maxlength') && !signUpForm.controls['email'].hasError('required')">
+                    <mat-error *ngIf="signUpForm.controls['email'].hasError('maxlength')">
                         Email trop long (max. {{ emailMaxLength }} caractères)
                     </mat-error>
                     <mat-error *ngIf="signUpForm.controls['email'].hasError('already-in-use')">
@@ -35,10 +35,10 @@
                 <mat-form-field class="form-input">
                     <mat-label>Mot de passe</mat-label>
                     <input matInput type="password" formControlName="password">
-                    <mat-error *ngIf="signUpForm.controls['password'].hasError('pattern') && !signUpForm.controls['password'].hasError('required')">
+                    <mat-error *ngIf="signUpForm.controls['password'].hasError('pattern')">
                         Mot de passe invalide (min. 8 caractères, 1 majuscule, 1 minuscule, 1 chiffre, 1 caractère parmi @$!%*?&)
                     </mat-error>
-                    <mat-error *ngIf="signUpForm.controls['password'].hasError('maxlength') && !signUpForm.controls['password'].hasError('required')">
+                    <mat-error *ngIf="signUpForm.controls['password'].hasError('maxlength')">
                         Mot de passe trop long (max. {{ passwordMaxLength }} caractères)
                     </mat-error>
                     <mat-error *ngIf="signUpForm.controls['password'].hasError('required')">

@@ -26,15 +26,11 @@ export class FamilyService {
       .pipe(
         switchMap((loadFamilyDto) => {
           return of(FamilyService.fromLoadFamilyDtoToFamily(loadFamilyDto));
-        }),
-        catchError((error) => { 
-          console.log(error);
-          return of(undefined);
         })
       );
   }
 
-  public create(familyName: string, userId: number): Observable<Family|undefined> {
+  public create(familyName: string, userId: number): Observable<Family> {
     const headers: HttpHeaders = new HttpHeaders()
     .set('Content-type', 'application/json')
     .set('Accept', 'application/json');
@@ -51,10 +47,6 @@ export class FamilyService {
       .pipe(
         switchMap((loadFamilyDto) => {
           return of(FamilyService.fromLoadFamilyDtoToFamily(loadFamilyDto));
-        }),
-        catchError((error) => { 
-          console.log(error);
-          return of(undefined);
         })
       );
   }
@@ -71,7 +63,7 @@ export class FamilyService {
     return createFamilyDto;
   }
 
-  public loadOneByAssociationCode(associationCode: string): Observable<Family|undefined> {
+  public loadOneByAssociationCode(associationCode: string): Observable<Family> {
     const headers: HttpHeaders = new HttpHeaders()
     .set('Content-type', 'application/json')
     .set('Accept', 'application/json');
@@ -82,20 +74,13 @@ export class FamilyService {
       )
       .pipe(
         switchMap((loadFamilyDtos) => {
-          const loadFamilyDto: LoadFamilyDto|undefined = loadFamilyDtos.at(0);
-          if (loadFamilyDto) {
+          const loadFamilyDto: LoadFamilyDto = loadFamilyDtos[0];
             return of(FamilyService.fromLoadFamilyDtoToFamily(loadFamilyDto));
-          }
-          return of (undefined);
-        }),
-        catchError((error) => { 
-          console.log(error);
-          return of(undefined);
         })
       );
   }
 
-  public createFamilyMember(familyId: number, userId: number): Observable<FamilyMember|undefined> {
+  public createFamilyMember(familyId: number, userId: number): Observable<FamilyMember> {
     const headers: HttpHeaders = new HttpHeaders()
     .set('Content-type', 'application/json')
     .set('Accept', 'application/json');
@@ -112,10 +97,6 @@ export class FamilyService {
       .pipe(
         switchMap((loadFamilyMemberDto) => {
             return of(FamilyService.fromLoadFamilyMemberDtoToFamilyMember(loadFamilyMemberDto));
-        }),
-        catchError((error) => { 
-          console.log(error);
-          return of(undefined);
         })
       );
   }
@@ -124,7 +105,7 @@ export class FamilyService {
     return this.loadOneByAssociationCode(associationCode)
     .pipe(
       switchMap((family) => {
-        if (family && family.id) {
+        if (family.id) {
           return this.createFamilyMember(family.id, userId);
         }
         return of(undefined);

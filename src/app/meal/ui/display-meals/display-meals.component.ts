@@ -86,7 +86,6 @@ export class DisplayMealsComponent implements OnInit, OnDestroy {
     if (this.currentUserInfo && this.currentUserInfo.familyId) {
       this.loadAllMealsByDateSubscriptions
       .push(
-        
         this.mealService
         .loadAllByDate(date, this.currentUserInfo.familyId)
         .subscribe(meals => {

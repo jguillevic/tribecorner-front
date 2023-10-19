@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ShoppingList } from '../model/shopping-list.model';
-import { Observable, catchError, of, switchMap, tap } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { EditItemShoppingListDto } from '../dto/edit-item-shopping-list.dto';
 import { EditShoppingListDto } from '../dto/edit-shopping-list.dto';
@@ -89,10 +89,6 @@ export class ShoppingListService {
       .pipe(
         switchMap((loadShoppingListDto) => {
             return of(ShoppingListService.fromLoadShoppingListDtoToShoppingList(loadShoppingListDto));
-        }),
-        catchError((error) => { 
-          console.log(error);
-          return of(undefined);
         })
       );
   }

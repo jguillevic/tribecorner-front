@@ -86,7 +86,7 @@ export class JoinFamilyComponent implements OnInit, OnDestroy {
     return this.router.navigate([HomeRoutes.displayHomeRoute]);
   }
 
-  private handleError(error: any) {
+  private handleError(error: any): void {
     this.isJoiningFamily = false;
 
     if (error instanceof(AssociationCodeNotFoundError)) {

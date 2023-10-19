@@ -64,7 +64,6 @@ export class MealService {
     .set('Accept', 'application/json');
 
     const mealDto = this.mealConverter.fromModelToDto(meal);
-    console.log(mealDto);
     const body: string = JSON.stringify(mealDto);
 
     return this.http.post<MealDto>(

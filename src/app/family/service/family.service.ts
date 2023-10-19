@@ -8,6 +8,7 @@ import { LoadFamilyMemberDto } from '../dto/load-family-member.dto';
 import { FamilyMember } from '../model/family-member.model';
 import { CreateFamilyDto } from '../dto/create-family.dto';
 import { CreateFamilyMemberDto } from '../dto/create-family-member.dto';
+import { AssociationCodeNotFoundError } from '../error/association-code-not-found.error';
 
 @Injectable()
 export class FamilyService {
@@ -63,7 +64,7 @@ export class FamilyService {
     return createFamilyDto;
   }
 
-  public loadOneByAssociationCode(associationCode: string): Observable<Family> {
+  public loadOneByAssociationCode(associationCode: string): Observable<Family|undefined> {
     const headers: HttpHeaders = new HttpHeaders()
     .set('Content-type', 'application/json')
     .set('Accept', 'application/json');
@@ -74,8 +75,12 @@ export class FamilyService {
       )
       .pipe(
         switchMap((loadFamilyDtos) => {
-          const loadFamilyDto: LoadFamilyDto = loadFamilyDtos[0];
+          if (loadFamilyDtos.length > 0) {
+            const loadFamilyDto: LoadFamilyDto = loadFamilyDtos[0];
             return of(FamilyService.fromLoadFamilyDtoToFamily(loadFamilyDto));
+          } else {
+            return of(undefined);
+          }
         })
       );
   }
@@ -105,10 +110,15 @@ export class FamilyService {
     return this.loadOneByAssociationCode(associationCode)
     .pipe(
       switchMap((family) => {
-        if (family.id) {
-          return this.createFamilyMember(family.id, userId);
+        if (family) {
+          if (family.id) {
+            return this.createFamilyMember(family.id, userId);
+          } else {
+            return of (undefined);
+          }
+        } else {
+          throw new AssociationCodeNotFoundError();
         }
-        return of(undefined);
       })
     )
   }

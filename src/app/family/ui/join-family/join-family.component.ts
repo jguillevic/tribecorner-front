@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FamilyService } from '../../service/family.service';
 import { Router } from '@angular/router';
 import { FamilyRoutes } from '../../route/family.routes';
@@ -13,6 +13,7 @@ import { UserInfo } from 'src/app/user/model/user-info.model';
 import { HomeRoutes } from 'src/app/home/route/home.routes';
 import { ButtonWithSpinnerDirective } from 'src/app/common/button/directive/button-with-spinner.directive';
 import { SignOutButtonComponent } from 'src/app/common/button/ui/sign-out/sign-out-button.component';
+import { AssociationCodeNotFoundError } from '../../error/association-code-not-found.error';
 
 @Component({
     selector: 'app-join-family',
@@ -26,16 +27,46 @@ import { SignOutButtonComponent } from 'src/app/common/button/ui/sign-out/sign-o
         MatFormFieldModule,
         MatButtonModule,
         SignOutButtonComponent,
-        ButtonWithSpinnerDirective
+        ButtonWithSpinnerDirective,
+        ReactiveFormsModule
     ]
 })
 export class JoinFamilyComponent implements OnInit, OnDestroy {
-  private joinSubscription: Subscription|undefined;
+  private _joinSubscription: Subscription|undefined;
 
-  public familyAssociationCode: string|undefined;
-  public currentUserInfo: UserInfo|undefined;
-  public isJoiningFamily: boolean = false;
-  public isGoingToCreateFamily: boolean = false;
+  private _currentUserInfo: UserInfo | undefined;
+  public get currentUserInfo(): UserInfo | undefined {
+    return this._currentUserInfo;
+  }
+  public set currentUserInfo(value: UserInfo | undefined) {
+    this._currentUserInfo = value;
+  }
+
+  private _isJoiningFamily: boolean = false;
+  public get isJoiningFamily(): boolean {
+    return this._isJoiningFamily;
+  }
+  public set isJoiningFamily(value: boolean) {
+    this._isJoiningFamily = value;
+  }
+
+  private _isGoingToCreateFamily: boolean = false;
+  public get isGoingToCreateFamily(): boolean {
+    return this._isGoingToCreateFamily;
+  }
+  public set isGoingToCreateFamily(value: boolean) {
+    this._isGoingToCreateFamily = value;
+  }
+
+  // Formulaire.
+  private readonly _joinFamilyForm: FormGroup = new FormGroup(
+    {
+      familyAssociationCode: new FormControl('', [Validators.required]),
+    }
+  );
+  public get joinFamilyForm(): FormGroup {
+    return this._joinFamilyForm;
+  }
 
   public constructor(
     private router: Router,
@@ -48,26 +79,41 @@ export class JoinFamilyComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.joinSubscription?.unsubscribe();
+    this._joinSubscription?.unsubscribe();
+  }
+
+  private goToHome(): Promise<boolean> {
+    return this.router.navigate([HomeRoutes.displayHomeRoute]);
+  }
+
+  private handleError(error: any) {
+    this.isJoiningFamily = false;
+
+    if (error instanceof(AssociationCodeNotFoundError)) {
+      this.joinFamilyForm.controls['familyAssociationCode'].setErrors({'notFound': true});
+    } else {
+      window.alert("Problème technique. Veuillez réessayer dans quelques minutes.");
+    }
   }
 
   public joinFamily(): void {
-    this.isJoiningFamily = true;
-    if (this.familyAssociationCode && this.currentUserInfo) {
-      this.joinSubscription = this.familyService.joinFamily(this.familyAssociationCode, this.currentUserInfo.id)
-      .pipe(
-        switchMap(() => {
-          return this.userService.refreshCurrentUser();
-        })
-      )
-      .subscribe({
-        next: () => {
-        return this.router.navigate([HomeRoutes.displayHomeRoute]); 
-        },
-        error: (error) => { 
-          this.isJoiningFamily = false; 
-        }
-      });
+    if (this.joinFamilyForm.valid) {
+      this.isJoiningFamily = true;
+
+      const familyAssociationCode: string = this.joinFamilyForm.controls['familyAssociationCode'].value;
+
+      if (this.currentUserInfo) {
+        this._joinSubscription = this.familyService.joinFamily(familyAssociationCode, this.currentUserInfo.id)
+        .pipe(
+          switchMap(() => {
+            return this.userService.refreshCurrentUser();
+          })
+        )
+        .subscribe({
+          next: () => this.goToHome(),
+          error: (error) => this.handleError(error)
+        });
+      }
     }
   }
 

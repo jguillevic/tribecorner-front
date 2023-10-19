@@ -7,11 +7,17 @@
             <h1 class="form-header">{{ currentUserInfo?.username }}, votre famille existe déjà ?</h1>
             <p class="form-header-sub">Rejoignez là dès maintenant.</p>
         </div>
-        <form (ngSubmit)="joinFamily()">
+        <form (ngSubmit)="joinFamily()" [formGroup]="joinFamilyForm">
             <div class="form-inputs">
                 <mat-form-field class="form-input">
                     <mat-label>Code famille</mat-label>
-                    <input matInput type="text" required [(ngModel)]="familyAssociationCode" name="family-association-code">
+                    <input matInput type="text" formControlName="familyAssociationCode">
+                    <mat-error *ngIf="joinFamilyForm.controls['familyAssociationCode'].hasError('notFound')">
+                        Code d'association non trouvé
+                    </mat-error>
+                    <mat-error *ngIf="joinFamilyForm.controls['familyAssociationCode'].hasError('required')">
+                        Code d'association requis
+                    </mat-error>
                 </mat-form-field>
             </div>
             <div class="form-buttons">

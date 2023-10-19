@@ -86,22 +86,13 @@ export class CreateFamilyComponent implements OnInit, OnDestroy {
     this._createSubscription?.unsubscribe();
   }
 
-  private goToHome(): Promise<boolean>|void {
+  private goToHome(): Promise<boolean> {
     return this.router.navigate([HomeRoutes.displayHomeRoute]);
   }
 
   private handleError(error: any): void {
     this.isCreatingFamily = false;
-
-    console.log(error);
-
-    if (error instanceof(HttpErrorResponse) &&
-    error.status == 400 &&
-    error.error["detail"] == "FAMILY_NAME_ALREADY_IN_USE") {
-      this.createFamilyForm.controls['familyName'].setErrors({'already-in-use': true});
-    } else {
-      window.alert("Problème technique. Veuillez réessayer dans quelques minutes.");
-    }
+    window.alert("Problème technique. Veuillez réessayer dans quelques minutes.");
   }
 
   public createFamily(): void {

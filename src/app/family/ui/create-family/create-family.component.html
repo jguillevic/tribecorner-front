@@ -12,9 +12,6 @@
                 <mat-form-field class="form-input">
                     <mat-label>Nom de votre famille</mat-label>
                     <input matInput type="text" formControlName="familyName">
-                    <mat-error *ngIf="createFamilyForm.controls['familyName'].hasError('already-in-use')">
-                        Nom de famille déjà utilisé
-                    </mat-error>
                     <mat-error *ngIf="createFamilyForm.controls['familyName'].hasError('maxlength')">
                         Nom de famille trop long (max. {{ familyNameMaxLength }} caractères)
                     </mat-error>

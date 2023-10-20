@@ -1,11 +1,12 @@
 <div class="page">
-    <app-close-top-bar (onCloseClicked)="closeClicked()"></app-close-top-bar>
+    <app-edit-top-bar 
+    (onCloseClicked)="goToDisplayMeals()"
+    (onSaveClicked)="editMeal()">
+        {{ isCreating() ? 'Ajouter mon repas' : 'Modifier mon repas' }}
+    </app-edit-top-bar>
     <div class="margin">
         <div class="form">
-            <div class="form-headers">
-                <h1 class="form-header">{{ isCreating() ? 'Ajoutez votre nouveau repas !' : 'Modifiez votre repas !' }}</h1>
-            </div>
-            <form (ngSubmit)="editMeal()" [formGroup]="editMealForm">
+            <form [formGroup]="editMealForm">
                 <div class="form-inputs">
                     <!--Type.-->
                     <mat-form-field class="form-input">
@@ -23,6 +24,9 @@
                     <mat-form-field class="form-input">
                         <mat-label>Nom</mat-label>
                         <input matInput type="text" formControlName="mealName">
+                        <mat-error *ngIf="editMealForm.controls['mealName'].hasError('maxlength')">
+                            Nom trop long (max. {{ this.mealNameMaxLength }} caractères)
+                        </mat-error>
                         <mat-error *ngIf="editMealForm.controls['mealName'].hasError('required')">
                             Nom requis
                         </mat-error>
@@ -54,11 +58,6 @@
                             Nombre de personnes requis
                         </mat-error>
                     </mat-form-field>
-                </div>
-                <div class="form-buttons">
-                    <button appButtonWithSpinner [loading]="isSaving" class="button form-button" mat-raised-button color="primary" type="submit">
-                        {{ isCreating() ? 'Ajouter mon repas' : 'Modifier mon repas' }}
-                    </button>
                 </div>
             </form>
         </div>

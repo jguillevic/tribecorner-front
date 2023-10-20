@@ -16,7 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MealKindService } from '../../service/meal-kind.service';
 import { MealKind } from '../../model/meal-kind.model';
 import { ButtonWithSpinnerDirective } from 'src/app/common/button/directive/button-with-spinner.directive';
-import { CloseTopBarComponent } from "../../../common/top-bar/close/ui/close-top-bar/close-top-bar.component";
+import { EditTopBarComponent } from "../../../common/top-bar/edit/ui/edit-top-bar/edit-top-bar.component";
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import * as moment from 'moment';
@@ -34,7 +34,7 @@ import * as moment from 'moment';
         FormsModule,
         MatSelectModule,
         ButtonWithSpinnerDirective,
-        CloseTopBarComponent,
+        EditTopBarComponent,
         MatDatepickerModule,
         MatNativeDateModule,
         ReactiveFormsModule
@@ -69,9 +69,9 @@ export class EditMealComponent implements OnInit, OnDestroy {
   }
 
   // Formulaire.
-  private readonly _mealNameLength: number = 255; 
+  private readonly _mealNameMaxLength: number = 255; 
   public get mealNameMaxLength(): number {
-    return this._mealNameLength;
+    return this._mealNameMaxLength;
   }
 
   private readonly _editMealForm: FormGroup = new FormGroup(
@@ -146,6 +146,7 @@ export class EditMealComponent implements OnInit, OnDestroy {
 
   private getMeal(): Meal {
     const meal: Meal = new Meal();
+
     if (this._currentMealId) {
       meal.id = this._currentMealId;
     }
@@ -161,22 +162,23 @@ export class EditMealComponent implements OnInit, OnDestroy {
   }
 
   private save(): Observable<Meal|undefined> {
-      const meal: Meal = this.getMeal();
+    const meal: Meal = this.getMeal();
 
-      if (this._currentAction == Action.update) {
-        return this.mealService.update(meal);
-      } else if (this._currentAction == Action.create) {
-        return this.mealService.create(meal);
-      }
+    if (this._currentAction == Action.update) {
+      return this.mealService.update(meal);
+    } else if (this._currentAction == Action.create) {
+      return this.mealService.create(meal);
+    }
 
-      return of(undefined);
+    return of(undefined);
   }
 
   private handleError(error: any): void {
     this.isSaving = false;
+    window.alert("Problème technique. Veuillez réessayer dans quelques minutes.");
   }
 
-  private goToDisplayMeals(): Promise<boolean> {
+  public goToDisplayMeals(): Promise<boolean> {
     const date: Date = this.editMealForm.controls['mealDate'].value;
 
     return this.router.navigate(
@@ -197,9 +199,5 @@ export class EditMealComponent implements OnInit, OnDestroy {
 
   public isCreating(): boolean {
     return this._currentAction == Action.create;
-  }
-
-  public closeClicked(): void {
-    this.router.navigate([MealRoutes.displayMealsRoute]);
   }
 }

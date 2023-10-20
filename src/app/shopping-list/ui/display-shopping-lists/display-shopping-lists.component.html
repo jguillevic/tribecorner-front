@@ -1,6 +1,6 @@
 <div class="page">
     <app-profile-top-bar></app-profile-top-bar>
-    <div class="shopping-lists">
+    <div class="display-shopping-lists">
         <app-shopping-list-card *ngFor="let shoppingList of this.shoppingLists"
         [shoppingList]="shoppingList">
             <button mat-icon-button color="accent" (click)="setFavorite(shoppingList)">
@@ -16,6 +16,11 @@
                 <mat-icon class="material-symbols-outlined">delete</mat-icon>
             </button>
         </app-shopping-list-card>
+        <div class="display-shopping-lists-empty" *ngIf="!this.shoppingLists || this.shoppingLists.length == 0">
+            <img class="display-shopping-lists-empty-illustration" src="/assets/img/undraw_gone_shopping_re_2lau.svg">
+            <h1 class="display-shopping-lists-empty-title">Oups !</h1>
+            <p class="display-shopping-lists-empty-message">Vous n'avez pas encore créé de liste.</p>
+        </div>
     </div>
     <app-tab-bar [selectedIndex]=1 (onActionClicked)="goToCreate()"></app-tab-bar>
 </div>

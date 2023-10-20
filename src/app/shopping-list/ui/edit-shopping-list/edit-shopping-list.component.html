@@ -1,23 +1,40 @@
 <div class="page">
-    <app-shopping-list-top-bar [shoppingList]="shoppingList" [currentAction]="currentAction" [currentMode]="currentMode"></app-shopping-list-top-bar>
-    <div class="shopping-list margin" *ngIf="shoppingList">
-        <mat-form-field class="shopping-list-name">
-            <input matInput placeholder="Nom" type="text" required [(ngModel)]="shoppingList.name" name="name">
-        </mat-form-field>
-        <ul class="shopping-list-items" *ngIf="shoppingList.items">
-            <li class="item-shopping-list" *ngFor="let itemShoppingList of shoppingList.items">
-                <span class="item-shopping-list-name">{{ itemShoppingList.name }}</span>
-                <div class="item-shopping-list-btns">
-                    <button mat-icon-button (click)="deleteItem(itemShoppingList)" color="warn">
-                        <mat-icon class="material-symbols-outlined">delete</mat-icon>
-                    </button>
+    <app-edit-top-bar 
+    (onCloseClicked)="goToDisplayShoppingLists()" 
+    (onSaveClicked)="editShoppingList()">
+        {{ isCreating() ? 'Ajouter ma liste' : 'Modifier ma liste' }}
+    </app-edit-top-bar>
+    <div class="margin">
+        <div class="form">
+            <form [formGroup]="editShoppingListForm">
+                <div class="form-inputs">
+                    <mat-form-field class="form-input">
+                        <mat-label>Nom</mat-label>
+                        <input matInput type="text" formControlName="shoppingListName">
+                        <mat-error *ngIf="editShoppingListForm.controls['shoppingListName'].hasError('maxlength')">
+                            Nom trop long (max. {{ this.shoppingListNameMaxLength }} caractères)
+                        </mat-error>
+                        <mat-error *ngIf="editShoppingListForm.controls['shoppingListName'].hasError('required')">
+                            Nom requis
+                        </mat-error>
+                    </mat-form-field>
+                    <ul class="shopping-list-items">
+                        <li class="item-shopping-list" *ngFor="let itemShoppingList of itemShoppingLists">
+                            <span class="item-shopping-list-name">{{ itemShoppingList.name }}</span>
+                            <div class="item-shopping-list-btns">
+                                <button type="button" mat-icon-button (click)="deleteItem(itemShoppingList)" color="warn">
+                                    <mat-icon class="material-symbols-outlined">delete</mat-icon>
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="shopping-list-add-zone">
+                        <mat-form-field class="shopping-list-add-field">
+                            <input matInput placeholder="+ Ajouter un élément" formControlName="newItemShoppingListName" (keyup.enter)="addItem()">
+                        </mat-form-field>
+                    </div>
                 </div>
-            </li>
-        </ul>
-        <div class="shopping-list-add-zone">
-            <mat-form-field class="shopping-list-add-field">
-                <input matInput placeholder="+ Ajouter un élément" name="new-item-shopping-list-name" [(ngModel)]="newItemShopListName" #newItemShoppingListName="ngModel" (keyup.enter)="addItem()">
-            </mat-form-field>
+            </form>
         </div>
     </div>
 </div>

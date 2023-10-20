@@ -1,0 +1,25 @@
+.edit-top-bar {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 48px auto 48px;
+    grid-template-rows: $top-bar-height;
+
+    &-close {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    &-save {
+        grid-column: 3;
+        grid-row: 1;
+    }
+
+    &-title {
+        grid-column: 2;
+        grid-row: 1;
+        margin-top: 12px;
+        text-align: center;
+        font-size: 24px;
+        font-weight: 700;
+    }
+}

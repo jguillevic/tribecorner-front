@@ -31,33 +31,53 @@ import * as moment from 'moment';
     ]
 })
 export class DisplayMealsComponent implements OnInit, OnDestroy {
-  private loadAllMealsByDateSubscriptions: Subscription[] = [];
-  private loadAllMealKindsSubscription: Subscription|undefined;
-  private deleteSubscription: Subscription|undefined;
-  private loadedMealKinds: MealKind[] = [];
-  private currentUserInfo: UserInfo|undefined;
-  private selectedDate: Date|undefined;
+  private _loadAllMealsByDateSubscriptions: Subscription[] = [];
+  private _loadAllMealKindsSubscription: Subscription|undefined;
+  private _deleteSubscription: Subscription|undefined;
+  private _loadedMealKinds: MealKind[] = [];
+  private _currentUserInfo: UserInfo|undefined;
+  private _selectedDate: Date|undefined;
 
-  public mealsGroupByMealKinds: Map<number, Meal[]> = new Map<number, Meal[]>;
-  public mealKinds: MealKind[] = [];
-  public defaultSelectedDateObservable: Observable<Date>|undefined;
+  private _mealsGroupByMealKinds: Map<number, Meal[]> = new Map<number, Meal[]>;
+  public get mealsGroupByMealKinds(): Map<number, Meal[]> {
+    return this._mealsGroupByMealKinds;
+  }
+  public set mealsGroupByMealKinds(value: Map<number, Meal[]>) {
+    this._mealsGroupByMealKinds = value;
+  }
+
+  private _mealKinds: MealKind[] = [];
+  public get mealKinds(): MealKind[] {
+    return this._mealKinds;
+  }
+  public set mealKinds(value: MealKind[]) {
+    this._mealKinds = value;
+  }
+
+  private _defaultSelectedDateObservable: Observable<Date> | undefined;
+  public get defaultSelectedDateObservable(): Observable<Date> | undefined {
+    return this._defaultSelectedDateObservable;
+  }
+  public set defaultSelectedDateObservable(value: Observable<Date> | undefined) {
+    this._defaultSelectedDateObservable = value;
+  }
 
   public constructor(
-    private activatedRoute: ActivatedRoute,
-    private userService: UserService,
-    private mealKindService: MealKindService,
-    private mealService: MealService,
-    private router: Router
+    private _activatedRoute: ActivatedRoute,
+    private _userService: UserService,
+    private _mealKindService: MealKindService,
+    private _mealService: MealService,
+    private _router: Router
     ) { }
 
   public ngOnInit(): void {
-    this.currentUserInfo = this.userService.getCurrentUserInfo();
+    this._currentUserInfo = this._userService.getCurrentUserInfo();
 
-    this.loadAllMealKindsSubscription = this.mealKindService
+    this._loadAllMealKindsSubscription = this._mealKindService
     .loadAll()
-    .subscribe(mealKinds => this.loadedMealKinds = mealKinds);
+    .subscribe(mealKinds => this._loadedMealKinds = mealKinds);
 
-    this.defaultSelectedDateObservable = this.activatedRoute.queryParams.pipe(
+    this.defaultSelectedDateObservable = this._activatedRoute.queryParams.pipe(
       switchMap(params => {
         if (params["defaultSelectedDate"]) {
           return of(new Date(params["defaultSelectedDate"]));
@@ -69,9 +89,9 @@ export class DisplayMealsComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.deleteSubscription?.unsubscribe();
-    this.loadAllMealKindsSubscription?.unsubscribe();
-    this.loadAllMealsByDateSubscriptions?.forEach(
+    this._deleteSubscription?.unsubscribe();
+    this._loadAllMealKindsSubscription?.unsubscribe();
+    this._loadAllMealsByDateSubscriptions?.forEach(
       loadAllMealsByDateSubscriptions => {
         loadAllMealsByDateSubscriptions.unsubscribe()
       }
@@ -79,15 +99,15 @@ export class DisplayMealsComponent implements OnInit, OnDestroy {
   }
 
   public onSelectedDateChanged(date: Date) {
-    this.selectedDate = date;
+    this._selectedDate = date;
     this.mealKinds = [];
     this.mealsGroupByMealKinds?.clear();
 
-    if (this.currentUserInfo && this.currentUserInfo.familyId) {
-      this.loadAllMealsByDateSubscriptions
+    if (this._currentUserInfo && this._currentUserInfo.familyId) {
+      this._loadAllMealsByDateSubscriptions
       .push(
-        this.mealService
-        .loadAllByDate(date, this.currentUserInfo.familyId)
+        this._mealService
+        .loadAllByDate(date, this._currentUserInfo.familyId)
         .subscribe(meals => {
           meals
           .forEach((meal) => {
@@ -99,8 +119,8 @@ export class DisplayMealsComponent implements OnInit, OnDestroy {
 
           Array.from(this.mealsGroupByMealKinds.keys())
           .sort((mealKindId1, mealKindId2) => {
-            const mealKind1 = this.loadedMealKinds.find(item => mealKindId1 == item.id);
-            const mealKind2 = this.loadedMealKinds.find(item => mealKindId2 == item.id);
+            const mealKind1 = this._loadedMealKinds.find(item => mealKindId1 == item.id);
+            const mealKind2 = this._loadedMealKinds.find(item => mealKindId2 == item.id);
 
             if (mealKind1 && mealKind2) {
               return (mealKind1.position > mealKind2.position) ? 1 : -1;
@@ -108,7 +128,7 @@ export class DisplayMealsComponent implements OnInit, OnDestroy {
             return 0;
           })
           .forEach((mealKindId) => {
-            const mealKind = this.loadedMealKinds.find(item => item.id == mealKindId);
+            const mealKind = this._loadedMealKinds.find(item => item.id == mealKindId);
             if (mealKind) {
               this.mealKinds.push(mealKind);
             }
@@ -119,23 +139,23 @@ export class DisplayMealsComponent implements OnInit, OnDestroy {
   }
 
   public goToCreate(): Promise<boolean> {
-    return this.router.navigate([MealRoutes.editMealRoute],
+    return this._router.navigate([MealRoutes.editMealRoute],
       { 
         queryParams: { 
           action: 'create',
-          defaultDate: moment(this.selectedDate).format("YYYY-MM-DD") 
+          defaultDate: moment(this._selectedDate).format("YYYY-MM-DD") 
         } 
       });
   }
 
   public goToUpdate(mealId: number): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      resolve(this.router.navigate([MealRoutes.editMealRoute], { queryParams: { action: 'update', id: mealId } }));
+      resolve(this._router.navigate([MealRoutes.editMealRoute], { queryParams: { action: 'update', id: mealId } }));
     }); 
   }
 
   public delete(mealKindId: number, meal: Meal): void {
-    this.deleteSubscription = this.mealService
+    this._deleteSubscription = this._mealService
     .delete(meal.id)
     .subscribe(() => {
       const meals: Meal[]|undefined = this.mealsGroupByMealKinds.get(mealKindId);

@@ -2,10 +2,10 @@
 /* Reset */
 @use '../node_modules/scss-reset/src/scss/_reset.scss';
 
-/* Externes */
+/* externes */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap');
 
-/* Helpers */
+/* helpers */
 @import 'styles/helpers/colors';
 @import 'styles/helpers/palettes';
 @import 'styles/helpers/typography';
@@ -13,24 +13,32 @@
 @import 'styles/helpers/shadows';
 @import 'styles/helpers/commons';
 
-/* Components */
+/* components */
 @import 'styles/components/buttons';
 @import 'styles/components/pages';
 @import 'styles/components/forms';
 @import 'styles/components/loading';
-@import 'styles/components/home';
+/* common */
+/* calendar */
 @import 'styles/components/common/calendar/inline-calendar';
 @import 'styles/components/common/tab-bar';
+/* top-bar */
 @import 'styles/components/common/top-bar/top-bar';
 @import 'styles/components/common/top-bar/go-back-top-bar';
 @import 'styles/components/common/top-bar/edit-top-bar';
 @import 'styles/components/common/top-bar/profile-top-bar';
+/* home */
+@import 'styles/components/home/display-home';
+@import 'styles/components/home/home-category';
+/* shopping-list */
 @import 'styles/components/shopping-list/shopping-list';
 @import 'styles/components/shopping-list/shopping-list-top-bar';
 @import 'styles/components/shopping-list/shopping-list-cards';
 @import 'styles/components/shopping-list/display-shopping-lists';
 @import 'styles/components/shopping-list/edit-shopping-list';
+/* meal */
 @import 'styles/components/meal/display-meals';
+/* not-found */
 @import 'styles/components/not-found/display-not-found';
 
 

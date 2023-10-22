@@ -46,7 +46,7 @@ export class DisplayShoppingListsComponent implements OnInit, OnDestroy {
     const userInfo: UserInfo|undefined = this.userService.getCurrentUserInfo();
 
     if (userInfo && userInfo.familyId) {
-      this.loadSubscription = this.shoppingListService.loadByFamilyId(userInfo.familyId)
+      this.loadSubscription = this.shoppingListService.loadAllByFamilyId(userInfo.familyId)
       .subscribe(shoppingLists => {
         this.shoppingLists = shoppingLists;
       });

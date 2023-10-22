@@ -15,7 +15,7 @@ export class ShoppingListService {
 
   constructor(private http: HttpClient) { }
 
-  public loadByFamilyId(familyId: number, count: number = 20): Observable<ShoppingList[]> {
+  public loadAllByFamilyId(familyId: number, count: number = 20): Observable<ShoppingList[]> {
     const headers: HttpHeaders= new HttpHeaders()
     .set('Content-type', 'application/json')
     .set('Accept', 'application/json');

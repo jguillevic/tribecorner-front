@@ -1,15 +1,33 @@
 <div class="page">
     <app-profile-top-bar></app-profile-top-bar>
-    <div class="home">
-        <div class="home-shopping-lists">
-            <div class="home-category">
-                <span class="home-category-name">Listes favorites</span>
-                <button class="home-category-see-all" (click)="goToDisplayShoppingLists()">Voir tout</button>
+    <div class="display-home">
+        <app-home-category 
+        categoryName="Mes événements" 
+        (onSeeAllClicked)="goToDisplayEvents()"
+        [isEmpty]="this.events.length == 0">
+        </app-home-category>
+        <mat-divider></mat-divider>
+        <app-home-category 
+        categoryName="Mes repas du jour" 
+        (onSeeAllClicked)="goToDisplayMeals()"
+        [isEmpty]="this.meals.length == 0"
+        [isLoading]="this.isLoadingMeals">
+            <p class="display-home-meal" *ngFor="let meal of this.meals">
+                {{meal.name}}
+            </p>
+        </app-home-category>
+        <mat-divider></mat-divider>
+        <app-home-category 
+        categoryName="Mes listes favorites" 
+        (onSeeAllClicked)="goToDisplayShoppingLists()"
+        [isEmpty]="this.shoppingLists.length == 0"
+        [isLoading]="this.isLoadingShoppingLists">
+            <div class="display-home-shopping-lists">
+                <app-shopping-list-card *ngFor="let shoppingList of this.shoppingLists"
+                [shoppingList]="shoppingList"
+                (click)="goToDisplayShoppingList(shoppingList.id)"></app-shopping-list-card>
             </div>
-            <app-shopping-list-card *ngFor="let shoppingList of this.shoppingLists"
-            [shoppingList]="shoppingList"
-            (click)="goToDisplayShoppingList(shoppingList.id)"></app-shopping-list-card>
-        </div>
+        </app-home-category>
     </div>
     <app-tab-bar [selectedIndex]=0></app-tab-bar>
 </div>

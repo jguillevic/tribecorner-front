@@ -17,6 +17,7 @@ import { NotFoundRoutes } from './app/not-found/route/not-found.routes';
 import { MealRoutes } from './app/meal/route/meal.routes';
 import { MealKindService } from './app/meal/service/meal-kind.service';
 import { MealService } from './app/meal/service/meal.service';
+import { EventService } from './app/event/service/event.service';
 
 const routes: Routes = [
     { 
@@ -42,7 +43,12 @@ const routes: Routes = [
     },
     { 
         path: '',
-        providers: [FamilyService, MealService, ShoppingListService],
+        providers: [
+            FamilyService,
+            EventService,
+            MealService,
+            ShoppingListService
+        ],
         canActivate: [signedInGuard, hasFamilyGuard],
         children: HomeRoutes.homeRoutes
     },

@@ -19,6 +19,7 @@ import { Meal } from 'src/app/meal/model/meal.model';
 import { MatDividerModule } from '@angular/material/divider';
 import { Event } from 'src/app/event/model/event.model';
 import { MealService } from 'src/app/meal/service/meal.service';
+import { EventService } from 'src/app/event/service/event.service';
 
 @Component({
     selector: 'app-display-home',
@@ -38,6 +39,7 @@ import { MealService } from 'src/app/meal/service/meal.service';
     ]
 })
 export class DisplayHomeComponent implements OnInit, OnDestroy {
+  private _loadEventsSubscription: Subscription|undefined;
   private _loadMealsSubscription: Subscription|undefined;
   private _loadShoppingListsSubscription: Subscription|undefined;
 
@@ -64,6 +66,14 @@ export class DisplayHomeComponent implements OnInit, OnDestroy {
     return this._events;
   }
 
+  private _isLoadingEvents: boolean = true;
+  public get isLoadingEvents(): boolean {
+    return this._isLoadingEvents;
+  }
+  public set isLoadingEvents(value: boolean) {
+    this._isLoadingEvents = value;
+  }
+
   private _isLoadingMeals: boolean = true;
   public get isLoadingMeals(): boolean {
     return this._isLoadingMeals;
@@ -81,6 +91,7 @@ export class DisplayHomeComponent implements OnInit, OnDestroy {
   }
 
   public constructor(
+    private _eventService: EventService,
     private _mealService: MealService,
     private _shoppingListService: ShoppingListService,
     private _userService: UserService,
@@ -91,6 +102,15 @@ export class DisplayHomeComponent implements OnInit, OnDestroy {
     this.currentUserInfo = this._userService.getCurrentUserInfo();
 
     if (this.currentUserInfo?.familyId) {
+      this._loadEventsSubscription = this._eventService
+      .loadAll()
+      .subscribe(
+        events => {
+          events.forEach(event => this.events.push(event));
+          this.isLoadingEvents = false;
+        }
+      );
+
       this._loadMealsSubscription = this._mealService
       .loadAllByDate(new Date(), this.currentUserInfo?.familyId)
       .subscribe(
@@ -111,6 +131,7 @@ export class DisplayHomeComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
+    this._loadEventsSubscription?.unsubscribe();
     this._loadMealsSubscription?.unsubscribe();
     this._loadShoppingListsSubscription?.unsubscribe();
   }

@@ -4,7 +4,8 @@
         <app-home-category 
         categoryName="Mes événements" 
         (onSeeAllClicked)="goToDisplayEvents()"
-        [isEmpty]="this.events.length == 0">
+        [isEmpty]="this.events.length == 0"
+        [isLoading]="this.isLoadingEvents">
         </app-home-category>
         <mat-divider></mat-divider>
         <app-home-category 

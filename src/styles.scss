@@ -19,9 +19,11 @@
 @import 'styles/components/forms';
 @import 'styles/components/loading';
 /* common */
+@import 'styles/components/common/tab-bar';
 /* calendar */
 @import 'styles/components/common/calendar/inline-calendar';
-@import 'styles/components/common/tab-bar';
+/* loading */
+@import 'styles/components/common/loading/simple-loading';
 /* top-bar */
 @import 'styles/components/common/top-bar/top-bar';
 @import 'styles/components/common/top-bar/go-back-top-bar';

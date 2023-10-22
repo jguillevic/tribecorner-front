@@ -3,10 +3,7 @@
         <div class="home-category-header-name">{{this.categoryName}}</div>
         <button type="button" class="home-category-header-see-all" (click)="this.seeAll()">Voir tout</button>
     </div>
-    <div *ngIf="this.isLoading" class="home-category-loading">
-        <mat-spinner [diameter]="16" class="home-category-loading-spinner"></mat-spinner>
-        <span class="home-category-loading-text">Chargement en cours ...</span>
-    </div>
+    <app-simple-loading *ngIf="this.isLoading"></app-simple-loading>
     <div *ngIf="!this.isLoading && this.isEmpty" class="home-category-empty">Aucun élément à afficher.</div>
     <ng-content *ngIf="!this.isLoading && !this.isEmpty"></ng-content>
 </div>

@@ -1,17 +1,17 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
+
 
 @Component({
-  selector: 'app-home-category',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatProgressSpinnerModule
-  ],
-  templateUrl: './home-category.component.html',
-  styles: [
-  ]
+    selector: 'app-home-category',
+    standalone: true,
+    templateUrl: './home-category.component.html',
+    styles: [],
+    imports: [
+        CommonModule,
+        SimpleLoadingComponent
+    ]
 })
 export class HomeCategoryComponent {
   private _categoryName: string | undefined;

@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarRef, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ShoppingListCardComponent } from "../shopping-list-card/shopping-list-card.component";
 import { ProfileTopBarComponent } from 'src/app/common/top-bar/profile/ui/profile-top-bar.component';
+import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
 
 @Component({
     selector: 'app-display-shopping-lists',
@@ -26,14 +27,16 @@ import { ProfileTopBarComponent } from 'src/app/common/top-bar/profile/ui/profil
         MatIconModule,
         MatSnackBarModule,
         ProfileTopBarComponent,
-        ShoppingListCardComponent
+        ShoppingListCardComponent,
+        SimpleLoadingComponent
     ]
 })
 export class DisplayShoppingListsComponent implements OnInit, OnDestroy {
   private loadSubscription: Subscription|undefined;
   private deleteSubscription: Subscription|undefined;
 
-  public shoppingLists: ShoppingList[]|undefined;
+  public readonly shoppingLists: ShoppingList[] = [];
+  public isLoadingShoppingLists: boolean = true;
 
   public constructor(
     private router: Router,
@@ -48,7 +51,10 @@ export class DisplayShoppingListsComponent implements OnInit, OnDestroy {
     if (userInfo && userInfo.familyId) {
       this.loadSubscription = this.shoppingListService.loadAllByFamilyId(userInfo.familyId)
       .subscribe(shoppingLists => {
-        this.shoppingLists = shoppingLists;
+        shoppingLists.forEach(shoppingList => {
+          this.shoppingLists?.push(shoppingList);
+        });
+        this.isLoadingShoppingLists = false;
       });
     }
   }

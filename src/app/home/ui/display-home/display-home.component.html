@@ -12,10 +12,25 @@
         categoryName="Mes repas du jour" 
         (onSeeAllClicked)="goToDisplayMeals()"
         [isEmpty]="this.meals.length == 0"
-        [isLoading]="this.isLoadingMeals">
-            <p class="display-home-meal" *ngFor="let meal of this.meals">
-                {{meal.name}}
-            </p>
+        [isLoading]="this.isLoadingMealData">
+            <div class="display-home-meals-container">
+                <div class="display-home-meal-kinds-container">
+                    <div class="display-home-meal-kind-name"
+                    *ngFor="let mealKind of this.mealKinds">
+                        {{mealKind.name}}
+                    </div>
+                </div>
+                <div class="display-home-meals-by-kind-container"
+                *ngFor="let mealKind of this.mealKinds">
+                    <div class="display-home-meals-column-container"
+                    *ngFor="let mealKind of this.mealKinds">
+                        <app-meal-card class="display-home-meal"
+                        *ngFor="let meal of this.meals" 
+                        [name]="meal.name">
+                        </app-meal-card>
+                    </div>
+                </div>
+            </div>
         </app-home-category>
         <mat-divider></mat-divider>
         <app-home-category 
@@ -23,7 +38,7 @@
         (onSeeAllClicked)="goToDisplayShoppingLists()"
         [isEmpty]="this.shoppingLists.length == 0"
         [isLoading]="this.isLoadingShoppingLists">
-            <div class="display-home-shopping-lists">
+            <div class="display-home-shopping-lists-container">
                 <app-shopping-list-card *ngFor="let shoppingList of this.shoppingLists"
                 [shoppingList]="shoppingList"
                 (click)="goToDisplayShoppingList(shoppingList.id)"></app-shopping-list-card>

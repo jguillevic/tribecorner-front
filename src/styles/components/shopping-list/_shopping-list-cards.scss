@@ -1,8 +1,6 @@
-$card-border-radius: 5px;
-
 .shopping-list-card {
     width: 190px;
-    border-radius: $card-border-radius;
+    border-radius: $default-border-radius;
     margin: 5px;
     box-shadow: $card-shadow;
     display: inline-block;
@@ -42,8 +40,8 @@ $card-border-radius: 5px;
         flex-direction: row;
         justify-content: center;
         background-color: rgba($color: $light-color, $alpha: 0.5);
-        border-bottom-left-radius: $card-border-radius;
-        border-bottom-right-radius: $card-border-radius;
+        border-bottom-left-radius: $default-border-radius;
+        border-bottom-right-radius: $default-border-radius;
         backdrop-filter: blur(20px);
     }
 }

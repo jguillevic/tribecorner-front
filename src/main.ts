@@ -46,6 +46,7 @@ const routes: Routes = [
         providers: [
             FamilyService,
             EventService,
+            MealKindService,
             MealService,
             ShoppingListService
         ],

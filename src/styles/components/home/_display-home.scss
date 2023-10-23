@@ -3,21 +3,55 @@
     width: 100%;
     display: block;
 
-    &-meals {
+    &-meals-container {
+        width: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
+        grid-template-rows: auto auto;
+    }
+
+    &-meal-kinds-container {
         width: 100%;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
+        justify-content: space-between;
+        align-items: self-end;
+        grid-row: 1;
+        padding-bottom: 5px;
     }
 
-    &-meal {
-        width: 100%;
+    &-meal-kind-name {
+        width: 33%;
+        font-size: 16px;
+        font-weight: 500;
         display: block;
     }
 
-    &-shopping-lists {
+    &-meals-by-kind-container {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        grid-row: 2;
+    }
+
+    &-meals-column-container {
+        width: 33%;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: left;
+        align-items: self-start;
+    }
+
+    &-meal/*:not(:last-child)*/ {
+        margin-bottom: 5px;
+        margin-right: 5px;
+    }
+
+    &-shopping-lists-container {
         width: 100%;
         display: flex;
         flex-direction: row;

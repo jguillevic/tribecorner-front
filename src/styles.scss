@@ -10,7 +10,7 @@
 @import 'styles/helpers/palettes';
 @import 'styles/helpers/typography';
 @import 'styles/helpers/themes';
-@import 'styles/helpers/shadows';
+@import 'styles/helpers/variables';
 @import 'styles/helpers/commons';
 
 /* components */
@@ -40,6 +40,7 @@
 @import 'styles/components/shopping-list/edit-shopping-list';
 /* meal */
 @import 'styles/components/meal/display-meals';
+@import 'styles/components/meal/meal-card';
 /* not-found */
 @import 'styles/components/not-found/display-not-found';
 

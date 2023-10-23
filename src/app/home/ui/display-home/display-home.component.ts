@@ -23,6 +23,8 @@ import { EventService } from 'src/app/event/service/event.service';
 import { MealCardComponent } from "../../../meal/ui/meal-card/meal-card.component";
 import { MealKindService } from 'src/app/meal/service/meal-kind.service';
 import { MealKind } from 'src/app/meal/model/meal-kind.model';
+import { MealsByMealKind } from 'src/app/meal/model/meals-by-meal-kind.model';
+import { MealsByMealKindService } from 'src/app/meal/service/meals-by-meal-kind.service';
 
 @Component({
     selector: 'app-display-home',
@@ -44,22 +46,20 @@ import { MealKind } from 'src/app/meal/model/meal-kind.model';
 })
 export class DisplayHomeComponent implements OnInit, OnDestroy {
   private loadEventsSubscription: Subscription|undefined;
-  private loadMealDataSubscription: Subscription|undefined;
+  private loadMealsByMealKindsSubscription: Subscription|undefined;
   private loadShoppingListsSubscription: Subscription|undefined;
 
   public currentUserInfo: UserInfo | undefined;
   public readonly shoppingLists: ShoppingList[] = [];
-  public readonly mealKinds: MealKind[] = [];
-  public readonly meals: Meal[] = [];
+  public readonly mealsByMealKinds: MealsByMealKind[] = [];
   public readonly events: Event[] = [];
   public isLoadingEvents: boolean = true;
-  public isLoadingMealData: boolean = true;
+  public isLoadingMealsByMealKinds: boolean = true;
   public isLoadingShoppingLists: boolean = true;
 
   public constructor(
     private eventService: EventService,
-    private mealKindService: MealKindService,
-    private mealService: MealService,
+    private mealsByMealKindService: MealsByMealKindService,
     private shoppingListService: ShoppingListService,
     private userService: UserService,
     private router: Router
@@ -78,21 +78,12 @@ export class DisplayHomeComponent implements OnInit, OnDestroy {
         }
       );
 
-      this.loadMealDataSubscription = forkJoin({
-        mealKinds: this.mealKindService
-        .loadAll(),
-        meals: this.mealService
-        .loadAllByDate(new Date(), this.currentUserInfo?.familyId)
-      })
+      this.loadMealsByMealKindsSubscription = this.mealsByMealKindService
+      .loadAllByDate(new Date(), this.currentUserInfo.familyId)
       .subscribe(
-        result => {
-          result.mealKinds.forEach(mealKind => {
-            this.mealKinds.push(mealKind);
-          });
-          result.meals.forEach(meal => {
-            this.meals.push(meal);
-          });
-          this.isLoadingMealData = false;
+        mealsByMealKinds => {
+          mealsByMealKinds.forEach(mealsByMealKind => this.mealsByMealKinds.push(mealsByMealKind));
+          this.isLoadingMealsByMealKinds = false;
         }
       );
 
@@ -108,7 +99,7 @@ export class DisplayHomeComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this.loadEventsSubscription?.unsubscribe();
-    this.loadMealDataSubscription?.unsubscribe();
+    this.loadMealsByMealKindsSubscription?.unsubscribe();
     this.loadShoppingListsSubscription?.unsubscribe();
   }
 

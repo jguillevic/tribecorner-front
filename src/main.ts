@@ -18,6 +18,7 @@ import { MealRoutes } from './app/meal/route/meal.routes';
 import { MealKindService } from './app/meal/service/meal-kind.service';
 import { MealService } from './app/meal/service/meal.service';
 import { EventService } from './app/event/service/event.service';
+import { MealsByMealKindService } from './app/meal/service/meals-by-meal-kind.service';
 
 const routes: Routes = [
     { 
@@ -48,6 +49,7 @@ const routes: Routes = [
             EventService,
             MealKindService,
             MealService,
+            MealsByMealKindService,
             ShoppingListService
         ],
         canActivate: [signedInGuard, hasFamilyGuard],

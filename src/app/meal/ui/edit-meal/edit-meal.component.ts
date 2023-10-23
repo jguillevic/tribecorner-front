@@ -41,40 +41,20 @@ import * as moment from 'moment';
     ],
 })
 export class EditMealComponent implements OnInit, OnDestroy {
-  private _currentAction: Action = Action.create;
-  private _currentMealId: number|undefined;
-  private _currentFamilyId: number|undefined;
-  private _initMealSubscription: Subscription|undefined;
-  private _loadMealKindsSubscription: Subscription|undefined;
+  private currentAction: Action = Action.create;
+  private currentMealId: number|undefined;
+  private currentFamilyId: number|undefined;
+  private initMealSubscription: Subscription|undefined;
+  private loadMealKindsSubscription: Subscription|undefined;
 
-  private _loadedMealKinds: MealKind[] = [];
-  public get loadedMealKinds(): MealKind[] {
-    return this._loadedMealKinds;
-  }
-  public set loadedMealKinds(value: MealKind[]) {
-    this._loadedMealKinds = value;
-  }
-
-  private readonly _numbersOfPersons: number[] = [1, 2, 3, 4, 5, 6, 7, 8];
-  public get numbersOfPersons(): number[] {
-    return this._numbersOfPersons;
-  }
-
-  private _isSaving: boolean = false;
-  public get isSaving(): boolean {
-    return this._isSaving;
-  }
-  public set isSaving(value: boolean) {
-    this._isSaving = value;
-  }
+  public loadedMealKinds: MealKind[] = [];
+  public readonly numbersOfPersons: number[] = [1, 2, 3, 4, 5, 6, 7, 8];
+  public isSaving: boolean = false;
 
   // Formulaire.
-  private readonly _mealNameMaxLength: number = 255; 
-  public get mealNameMaxLength(): number {
-    return this._mealNameMaxLength;
-  }
+  public readonly mealNameMaxLength: number = 255; 
 
-  private readonly _editMealForm: FormGroup = new FormGroup(
+  public readonly editMealForm: FormGroup = new FormGroup(
     {
       mealKindId: new FormControl(undefined, [Validators.required]),
       mealName: new FormControl(undefined, [Validators.required, Validators.maxLength(this.mealNameMaxLength)]),
@@ -82,9 +62,6 @@ export class EditMealComponent implements OnInit, OnDestroy {
       mealNumberOfPersons: new FormControl(undefined, [Validators.required])
     }
   );
-  public get editMealForm(): FormGroup {
-    return this._editMealForm;
-  }
 
   public constructor(
     private activatedRoute: ActivatedRoute,
@@ -96,13 +73,13 @@ export class EditMealComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this._initMealSubscription = this.activatedRoute.queryParams
+    this.initMealSubscription = this.activatedRoute.queryParams
     .pipe(
       switchMap((params: Params) => {
-        this._currentAction = params['action'];
+        this.currentAction = params['action'];
         const defaultDate = params['defaultDate'];
 
-        if (this._currentAction == Action.create) {
+        if (this.currentAction == Action.create) {
           const meal: Meal = new Meal();
           meal.date = new Date(defaultDate);
           meal.numberOfPersons = 3;
@@ -111,10 +88,10 @@ export class EditMealComponent implements OnInit, OnDestroy {
             meal.familyId = currentUserInfo?.familyId;
           }
           return of(meal);
-        } else if (this._currentAction == Action.update) {
-          this._currentMealId = params['id'];
-          if (this._currentMealId) {
-            return this.mealService.loadOneById(this._currentMealId);
+        } else if (this.currentAction == Action.update) {
+          this.currentMealId = params['id'];
+          if (this.currentMealId) {
+            return this.mealService.loadOneById(this.currentMealId);
           }
         }
         return of(undefined);
@@ -130,28 +107,28 @@ export class EditMealComponent implements OnInit, OnDestroy {
         if (meal.numberOfPersons > 0) {
           this.editMealForm.controls['mealNumberOfPersons'].setValue(meal.numberOfPersons);
         }
-        this._currentFamilyId = meal.familyId;
+        this.currentFamilyId = meal.familyId;
       }
     });
 
-    this._loadMealKindsSubscription = this.mealKindService
+    this.loadMealKindsSubscription = this.mealKindService
     .loadAll()
     .subscribe(mealKinds => this.loadedMealKinds = mealKinds);
   }
 
   public ngOnDestroy(): void {
-    this._initMealSubscription?.unsubscribe();
-    this._loadMealKindsSubscription?.unsubscribe();
+    this.initMealSubscription?.unsubscribe();
+    this.loadMealKindsSubscription?.unsubscribe();
   }
 
   private getMeal(): Meal {
     const meal: Meal = new Meal();
 
-    if (this._currentMealId) {
-      meal.id = this._currentMealId;
+    if (this.currentMealId) {
+      meal.id = this.currentMealId;
     }
-    if (this._currentFamilyId) {
-      meal.familyId = this._currentFamilyId;
+    if (this.currentFamilyId) {
+      meal.familyId = this.currentFamilyId;
     }
     meal.mealKindId = this.editMealForm.controls['mealKindId'].value;
     meal.name = this.editMealForm.controls['mealName'].value;
@@ -164,9 +141,9 @@ export class EditMealComponent implements OnInit, OnDestroy {
   private save(): Observable<Meal|undefined> {
     const meal: Meal = this.getMeal();
 
-    if (this._currentAction == Action.update) {
+    if (this.currentAction == Action.update) {
       return this.mealService.update(meal);
-    } else if (this._currentAction == Action.create) {
+    } else if (this.currentAction == Action.create) {
       return this.mealService.create(meal);
     }
 
@@ -198,6 +175,6 @@ export class EditMealComponent implements OnInit, OnDestroy {
   }
 
   public isCreating(): boolean {
-    return this._currentAction == Action.create;
+    return this.currentAction == Action.create;
   }
 }

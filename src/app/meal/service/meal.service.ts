@@ -29,7 +29,7 @@ export class MealService {
       { 'headers': headers }
       )
       .pipe(
-        switchMap((mealDtos) => {
+        switchMap(mealDtos => {
           const meals: Meal[] = [];
           mealDtos.forEach(mealDto => {
             const meal: Meal = this.mealConverter.fromDtoToModel(mealDto);

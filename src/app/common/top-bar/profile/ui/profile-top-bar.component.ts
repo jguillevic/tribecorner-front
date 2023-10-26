@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { Subscription } from 'rxjs';
+import { Subscription, map } from 'rxjs';
 import { UserInfo } from 'src/app/user/model/user-info.model';
 import { UserService } from 'src/app/user/service/user.service';
 import { Router } from '@angular/router';
@@ -59,12 +59,11 @@ export class ProfileTopBarComponent implements OnInit, OnDestroy {
     return this.router.navigate([FamilyRoutes.displayFamilyRoute]);
   }
 
-  public signOut(): void {
+  public signOut(): void{
     this.signOutSubscription = this.userService.signOut()
-    .subscribe(() => 
-      { 
-        this.router.navigate([UserRoutes.signInUserRoute]);
-      }
-    );
+    .pipe(
+      map(() => this.router.navigate([UserRoutes.signInUserRoute]))
+    )
+    .subscribe();
   }
 }

@@ -6,7 +6,7 @@
     </app-edit-top-bar>
     <div class="margin">
         <div class="form">
-            <form [formGroup]="editMealForm">
+            <form [formGroup]="editMealForm" (ngSubmit)="editMeal()">
                 <div class="form-inputs">
                     <!--Type.-->
                     <mat-form-field class="form-input">

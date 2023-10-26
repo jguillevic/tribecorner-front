@@ -1,7 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Family } from '../model/family.model';
-import { Observable, catchError, of, switchMap } from 'rxjs';
+import { Observable, map, of, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LoadFamilyDto } from '../dto/load-family.dto';
 import { LoadFamilyMemberDto } from '../dto/load-family-member.dto';
@@ -9,46 +8,37 @@ import { FamilyMember } from '../model/family-member.model';
 import { CreateFamilyDto } from '../dto/create-family.dto';
 import { CreateFamilyMemberDto } from '../dto/create-family-member.dto';
 import { AssociationCodeNotFoundError } from '../error/association-code-not-found.error';
+import { ApiHttpClient } from 'src/app/common/http/api-http-client';
 
 @Injectable()
 export class FamilyService {
   private static apiPath: string = 'families';
 
-  constructor(private http: HttpClient) { }
+  public constructor(private apiHttp: ApiHttpClient) { }
 
-  public loadOneByFamilyId(familyId: number): Observable<Family|undefined> {
-    const headers: HttpHeaders = new HttpHeaders()
-    .set('Content-type', 'application/json')
-    .set('Accept', 'application/json');
-
-    return this.http.get<LoadFamilyDto>(
+  public loadOneByFamilyId(familyId: number): Observable<Family> {
+    return this.apiHttp.get<LoadFamilyDto>(
       `${environment.apiUrl}${FamilyService.apiPath}/${familyId}`
       )
       .pipe(
-        switchMap((loadFamilyDto) => {
-          return of(FamilyService.fromLoadFamilyDtoToFamily(loadFamilyDto));
-        })
+        map(loadFamilyDto => 
+          FamilyService.fromLoadFamilyDtoToFamily(loadFamilyDto)
+        )
       );
   }
 
   public create(familyName: string, userId: number): Observable<Family> {
-    const headers: HttpHeaders = new HttpHeaders()
-    .set('Content-type', 'application/json')
-    .set('Accept', 'application/json');
-
     const createFamilyDto: CreateFamilyDto = FamilyService.createCreateFamilyDto(familyName, userId);
-
     const body: string = JSON.stringify(createFamilyDto);
 
-    return this.http.post<LoadFamilyDto>(
+    return this.apiHttp.post<LoadFamilyDto>(
       `${environment.apiUrl}${FamilyService.apiPath}`,
-      body, 
-      { 'headers': headers }
+      body
       )
       .pipe(
-        switchMap((loadFamilyDto) => {
-          return of(FamilyService.fromLoadFamilyDtoToFamily(loadFamilyDto));
-        })
+        map(loadFamilyDto => 
+          FamilyService.fromLoadFamilyDtoToFamily(loadFamilyDto)
+        )
       );
   }
 
@@ -64,52 +54,37 @@ export class FamilyService {
     return createFamilyDto;
   }
 
-  public loadOneByAssociationCode(associationCode: string): Observable<Family|undefined> {
-    const headers: HttpHeaders = new HttpHeaders()
-    .set('Content-type', 'application/json')
-    .set('Accept', 'application/json');
-
-    return this.http.get<LoadFamilyDto[]>(
-      `${environment.apiUrl}${FamilyService.apiPath}?associationCode=${associationCode}`,
-      { 'headers': headers }
+  public loadOneByAssociationCode(associationCode: string): Observable<Family> {
+    return this.apiHttp.get<LoadFamilyDto>(
+      `${environment.apiUrl}${FamilyService.apiPath}?associationCode=${associationCode}`
       )
       .pipe(
-        switchMap((loadFamilyDtos) => {
-          if (loadFamilyDtos.length > 0) {
-            const loadFamilyDto: LoadFamilyDto = loadFamilyDtos[0];
-            return of(FamilyService.fromLoadFamilyDtoToFamily(loadFamilyDto));
-          } else {
-            return of(undefined);
-          }
-        })
+        map(loadFamilyDto => 
+            FamilyService.fromLoadFamilyDtoToFamily(loadFamilyDto)
+        )
       );
   }
 
   public createFamilyMember(familyId: number, userId: number): Observable<FamilyMember> {
-    const headers: HttpHeaders = new HttpHeaders()
-    .set('Content-type', 'application/json')
-    .set('Accept', 'application/json');
-
     const createFamilyMemberDto = new CreateFamilyMemberDto();
     createFamilyMemberDto.userId = userId;
     const body: string = JSON.stringify(createFamilyMemberDto);
 
-    return this.http.post<LoadFamilyMemberDto>(
+    return this.apiHttp.post<LoadFamilyMemberDto>(
       `${environment.apiUrl}${FamilyService.apiPath}/${familyId}/family_members`,
-      body,
-      { 'headers': headers }
+      body
       )
       .pipe(
-        switchMap((loadFamilyMemberDto) => {
-            return of(FamilyService.fromLoadFamilyMemberDtoToFamilyMember(loadFamilyMemberDto));
-        })
+        map(loadFamilyMemberDto => 
+            FamilyService.fromLoadFamilyMemberDtoToFamilyMember(loadFamilyMemberDto)
+        )
       );
   }
 
   public joinFamily(associationCode: string, userId: number): Observable<FamilyMember|undefined> {
     return this.loadOneByAssociationCode(associationCode)
     .pipe(
-      switchMap((family) => {
+      switchMap(family => {
         if (family) {
           if (family.id) {
             return this.createFamilyMember(family.id, userId);

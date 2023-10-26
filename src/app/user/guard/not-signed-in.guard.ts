@@ -8,10 +8,10 @@ export const notSignedInGuard: CanActivateFn = (route, state) => {
   const userService = inject(UserService);
   const router = inject(Router);
 
-  if (userService.getIsSignedIn() == undefined) {
+  if (userService.isSignedIn == undefined) {
     return router.navigate([LoadingRoutes.displayLoadingRoute]);
   }
-  else if (userService.getIsSignedIn() == true) {
+  else if (userService.isSignedIn == true) {
     return router.navigate([FamilyRoutes.createFamilyRoute]);
   }
   return true;

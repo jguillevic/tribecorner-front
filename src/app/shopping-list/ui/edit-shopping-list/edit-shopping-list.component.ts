@@ -159,6 +159,8 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
   }
 
   public editShoppingList(): void {
+        // Pour forcer l'apparition des erreurs.
+        this.editShoppingListForm.markAllAsTouched();
     if (this.editShoppingListForm.valid) {
       this.isSaving = true;
       this.save().subscribe({ 

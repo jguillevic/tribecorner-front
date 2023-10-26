@@ -1,106 +1,78 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ShoppingList } from '../model/shopping-list.model';
-import { Observable, of, switchMap } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { EditItemShoppingListDto } from '../dto/edit-item-shopping-list.dto';
 import { EditShoppingListDto } from '../dto/edit-shopping-list.dto';
 import { ItemShoppingList } from '../model/item-shopping-list.model';
 import { LoadShoppingListDto } from '../dto/load-shopping-list.dto';
 import { LoadItemShoppingListDto } from '../dto/load-item-shopping-list.dto';
+import { ApiHttpClient } from 'src/app/common/http/api-http-client';
 
 @Injectable()
 export class ShoppingListService {
   private static apiPath: string = "shopping_lists";
 
-  constructor(private http: HttpClient) { }
+  constructor(private apiHttp: ApiHttpClient) { }
 
   public loadAllByFamilyId(familyId: number, count: number = 20): Observable<ShoppingList[]> {
-    const headers: HttpHeaders= new HttpHeaders()
-    .set('Content-type', 'application/json')
-    .set('Accept', 'application/json');
-
-    return this.http.get<LoadShoppingListDto[]>(
-      `${environment.apiUrl}${ShoppingListService.apiPath}?family=${familyId}&itemsPerPage=${count}`,
-      { 'headers': headers }
+    return this.apiHttp.get<LoadShoppingListDto[]>(
+      `${environment.apiUrl}${ShoppingListService.apiPath}?family=${familyId}&itemsPerPage=${count}`
       )
       .pipe(
-        switchMap((loadShoppingListDtos) => {
-          const shoppingLists: ShoppingList[] = [];
-          loadShoppingListDtos.forEach(loadShoppingListDto => {
-            const shoppingList: ShoppingList = ShoppingListService.fromLoadShoppingListDtoToShoppingList(loadShoppingListDto);
-            shoppingLists.push(shoppingList);
-          });
-          return of(shoppingLists);
-        })
+        map(loadShoppingListDtos => 
+          loadShoppingListDtos.map(loadShoppingListDto =>
+            ShoppingListService.fromLoadShoppingListDtoToShoppingList(loadShoppingListDto)
+          )
+        )
       );
   }
 
   public loadOneById(shoppingListId: number): Observable<ShoppingList> {
-    const headers: HttpHeaders= new HttpHeaders()
-    .set('Content-type', 'application/json')
-    .set('Accept', 'application/json');
-
-    return this.http.get<LoadShoppingListDto>(
-      `${environment.apiUrl}${ShoppingListService.apiPath}/${shoppingListId}`,
-      { 'headers': headers }
+    return this.apiHttp.get<LoadShoppingListDto>(
+      `${environment.apiUrl}${ShoppingListService.apiPath}/${shoppingListId}`
       )
       .pipe(
-        switchMap((loadShoppingListDto) => {
-          const shoppingList: ShoppingList = ShoppingListService.fromLoadShoppingListDtoToShoppingList(loadShoppingListDto);
-          return of(shoppingList);
-        })
+        map(
+          loadShoppingListDto => 
+          ShoppingListService.fromLoadShoppingListDtoToShoppingList(loadShoppingListDto)
+        )
       );
   }
 
-  public create(shoppingList: ShoppingList): Observable<ShoppingList|undefined> {
-    const headers: HttpHeaders = new HttpHeaders()
-    .set('Content-type', 'application/json')
-    .set('Accept', 'application/json');
-
+  public create(shoppingList: ShoppingList): Observable<ShoppingList> {
     const editShoppingListDto = ShoppingListService.fromShoppingListToEditShoppingListDto(shoppingList);
     const body: string = JSON.stringify(editShoppingListDto);
 
-    return this.http.post<LoadShoppingListDto>(
+    return this.apiHttp.post<LoadShoppingListDto>(
       `${environment.apiUrl}${ShoppingListService.apiPath}`,
-      body, 
-      { 'headers': headers }
+      body
       )
       .pipe(
-        switchMap((loadShoppingListDto) => {
-            return of(ShoppingListService.fromLoadShoppingListDtoToShoppingList(loadShoppingListDto));
-        })
+        map(loadShoppingListDto => 
+            ShoppingListService.fromLoadShoppingListDtoToShoppingList(loadShoppingListDto)
+        )
       );
   }
 
-  public update(shoppingList: ShoppingList): Observable<ShoppingList|undefined> {
-    const headers: HttpHeaders = new HttpHeaders()
-    .set('Content-type', 'application/json')
-    .set('Accept', 'application/json');
-
+  public update(shoppingList: ShoppingList): Observable<ShoppingList> {
     const editShoppingListDto = ShoppingListService.fromShoppingListToEditShoppingListDto(shoppingList);
     const body: string = JSON.stringify(editShoppingListDto);
 
-    return this.http.put<LoadShoppingListDto>(
+    return this.apiHttp.put<LoadShoppingListDto>(
       `${environment.apiUrl}${ShoppingListService.apiPath}/${shoppingList.id}`,
-      body, 
-      { 'headers': headers }
+      body
       )
       .pipe(
-        switchMap((loadShoppingListDto) => {
-            return of(ShoppingListService.fromLoadShoppingListDtoToShoppingList(loadShoppingListDto));
-        })
+        map(loadShoppingListDto => 
+            ShoppingListService.fromLoadShoppingListDtoToShoppingList(loadShoppingListDto)
+        )
       );
   }
 
   public delete(shoppingListId: number): Observable<void> {
-    const headers: HttpHeaders= new HttpHeaders()
-    .set('Content-type', 'application/json')
-    .set('Accept', 'application/json');
-
-    return this.http.delete<void>(
-      `${environment.apiUrl}${ShoppingListService.apiPath}/${shoppingListId}`,
-      { 'headers': headers }
+    return this.apiHttp.delete<void>(
+      `${environment.apiUrl}${ShoppingListService.apiPath}/${shoppingListId}`
       );
   }
 

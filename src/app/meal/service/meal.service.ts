@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, switchMap } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Meal } from '../model/meal.model';
 import { environment } from 'src/environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MealConverter } from '../converter/meal.converter';
 import { MealDto } from '../dto/meal.dto';
 import * as moment from 'moment';
+import { ApiHttpClient } from 'src/app/common/http/api-http-client';
 
 @Injectable()
 export class MealService {
@@ -14,98 +14,69 @@ export class MealService {
   private mealConverter: MealConverter;
 
   public constructor(
-    private http: HttpClient
+    private apiHttp: ApiHttpClient
     ) { 
       this.mealConverter = new MealConverter();
     }
 
   public loadAllByDate(date: Date, familyId: number): Observable<Meal[]> {
-    const headers: HttpHeaders= new HttpHeaders()
-    .set('Content-type', 'application/json')
-    .set('Accept', 'application/json');
-
-    return this.http.get<MealDto[]>(
-      `${environment.apiUrl}${MealService.apiPath}?family=${familyId}&date=${moment(date).format("YYYY-MM-DD")}`,
-      { 'headers': headers }
+    return this.apiHttp.get<MealDto[]>(
+      `${environment.apiUrl}${MealService.apiPath}?family=${familyId}&date=${moment(date).format("YYYY-MM-DD")}`
       )
       .pipe(
-        switchMap(mealDtos => {
-          const meals: Meal[] = [];
-          mealDtos.forEach(mealDto => {
-            const meal: Meal = this.mealConverter.fromDtoToModel(mealDto);
-            meals.push(meal);
-          });
-          return of(meals);
-        })
+        map(mealDtos => 
+          mealDtos.map(mealDto => 
+            this.mealConverter.fromDtoToModel(mealDto)
+          )
+        )
       );
   }
 
   public loadOneById(mealId: number): Observable<Meal>
   {
-    const headers: HttpHeaders= new HttpHeaders()
-    .set('Content-type', 'application/json')
-    .set('Accept', 'application/json');
-
-    return this.http.get<MealDto>(
-      `${environment.apiUrl}${MealService.apiPath}/${mealId}`,
-      { 'headers': headers }
+    return this.apiHttp.get<MealDto>(
+      `${environment.apiUrl}${MealService.apiPath}/${mealId}`
       )
       .pipe(
-        switchMap((mealDto) => {
-          const meal: Meal = this.mealConverter.fromDtoToModel(mealDto);
-          return of(meal);
-        })
+        map(mealDto => 
+          this.mealConverter.fromDtoToModel(mealDto)
+        )
       );
   }
 
   public create(meal: Meal): Observable<Meal> {
-    const headers: HttpHeaders = new HttpHeaders()
-    .set('Content-type', 'application/json')
-    .set('Accept', 'application/json');
-
     const mealDto = this.mealConverter.fromModelToDto(meal);
     const body: string = JSON.stringify(mealDto);
 
-    return this.http.post<MealDto>(
+    return this.apiHttp.post<MealDto>(
       `${environment.apiUrl}${MealService.apiPath}`,
-      body,
-      { 'headers': headers }
+      body
       )
       .pipe(
-        switchMap((mealDto) => {
-            return of(this.mealConverter.fromDtoToModel(mealDto));
-        })
+        map(mealDto => 
+            this.mealConverter.fromDtoToModel(mealDto)
+        )
       );
   }
 
   public update(meal: Meal): Observable<Meal> {
-    const headers: HttpHeaders = new HttpHeaders()
-    .set('Content-type', 'application/json')
-    .set('Accept', 'application/json');
-
     const mealDto = this.mealConverter.fromModelToDto(meal);
     const body: string = JSON.stringify(mealDto);
 
-    return this.http.put<MealDto>(
+    return this.apiHttp.put<MealDto>(
       `${environment.apiUrl}${MealService.apiPath}/${meal.id}`,
-      body,
-      { 'headers': headers }
+      body
       )
       .pipe(
-        switchMap((mealDto) => {
-            return of(this.mealConverter.fromDtoToModel(mealDto));
-        })
+        map(mealDto => 
+            this.mealConverter.fromDtoToModel(mealDto)
+        )
       );
   }
 
   public delete(mealId: number): Observable<void> {
-    const headers: HttpHeaders= new HttpHeaders()
-    .set('Content-type', 'application/json')
-    .set('Accept', 'application/json');
-
-    return this.http.delete<void>(
-      `${environment.apiUrl}${MealService.apiPath}/${mealId}`,
-      { 'headers': headers }
+    return this.apiHttp.delete<void>(
+      `${environment.apiUrl}${MealService.apiPath}/${mealId}`
       );
   }
 }

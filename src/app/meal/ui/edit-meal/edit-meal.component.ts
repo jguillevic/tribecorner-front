@@ -165,6 +165,8 @@ export class EditMealComponent implements OnInit, OnDestroy {
   }
 
   public editMeal(): void {
+    // Pour forcer l'apparition des erreurs.
+    this.editMealForm.markAllAsTouched();
     if (this.editMealForm.valid) {
       this.isSaving = true;
       this.save().subscribe({ 

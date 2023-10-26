@@ -1,15 +1,15 @@
 import { EventEmitter, Injectable, OnDestroy } from '@angular/core';
-import { FirebaseApp, initializeApp } from 'firebase/app';
-import { getAuth, createUserWithEmailAndPassword, Auth, signInWithEmailAndPassword, UserCredential, signOut, onAuthStateChanged, browserLocalPersistence, setPersistence, User, Unsubscribe } from "firebase/auth";
-import { environment } from 'src/environments/environment.development';
+import { Auth, Unsubscribe, User, UserCredential, browserLocalPersistence, createUserWithEmailAndPassword, getAuth, setPersistence, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { SignUpUser } from '../model/sign-up-user.model';
 import { UserInfo } from '../model/user-info.model';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, Subscription, catchError, defer, map, of, switchMap, tap, throwError } from 'rxjs';
+import { Observable, Subscription, exhaustMap, from, map, of, tap } from 'rxjs';
 import { SignInUser } from '../model/sign-in-user.model';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { LoadUserDto } from '../dto/load-user.dto';
 import { SessionStorageService } from 'src/app/common/storage/service/session-storage.service';
+import { environment } from 'src/environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { FirebaseApp, initializeApp } from 'firebase/app';
 
 @Injectable({
   providedIn: 'root',
@@ -21,18 +21,28 @@ export class UserService implements OnDestroy {
   private onAuthStateChangedUnsubscribe: Unsubscribe;
   private signInLocallySubscription: Subscription|undefined;
 
-  private isSignedIn: boolean|undefined = undefined;
+  private _isSignedIn: boolean | undefined = undefined;
+  public get isSignedIn(): boolean|undefined {
+    return this._isSignedIn;
+  }
+  public set isSignedIn(isSignedIn: boolean|undefined) {
+    if (this._isSignedIn != isSignedIn) {
+      this._isSignedIn = isSignedIn;
+      this.notifyIsSignedInDefined();
+    }
+  }
+
   public isSignedInDefinedEvent = new EventEmitter();
 
   public constructor(
     private http: HttpClient,
     private sessionStorageService: SessionStorageService
     ) { 
-    const app: FirebaseApp = initializeApp(environment.firebaseConfig);
-    this.firebaseAuth = getAuth(app);
-
-    this.onAuthStateChangedUnsubscribe = this.firebaseAuth.onAuthStateChanged(
-      (user) => this.onFirebaseAuthStateChange(user)
+      const app: FirebaseApp = initializeApp(environment.firebaseConfig);
+      this.firebaseAuth = getAuth(app);
+  
+      this.onAuthStateChangedUnsubscribe = this.firebaseAuth.onAuthStateChanged(
+        user => this.onFirebaseAuthStateChange(user)
       );
   }
 
@@ -41,96 +51,72 @@ export class UserService implements OnDestroy {
     this.onAuthStateChangedUnsubscribe();
   }
 
-  private notifyIsSignedInDefined(): void {
-    this.isSignedInDefinedEvent.emit();
-  }
-
-  public getIsSignedIn(): boolean|undefined {
-    return this.isSignedIn;
-  }
-
-  public setIsSignedIn(isSignedIn: boolean|undefined): void {
-    if (this.isSignedIn != isSignedIn) {
-      this.isSignedIn = isSignedIn;
-      this.notifyIsSignedInDefined();
-    }
-  }
-
-  public getCurrentUserInfo(): UserInfo|undefined {
-    if (this.isSignedIn) {
-      return JSON.parse(this.sessionStorageService.getData(UserService.userInfoSessionStorageKey));
-    }
-    return undefined;
-  }
-
-  private onFirebaseAuthStateChange(user: User|null): void {
-    if (user) {
-      this.signInLocallySubscription = this.signInLocally(user.uid).subscribe();
-    } else {
-      this.setIsSignedIn(false);
-    }
-  }
-
-  private firebaseSetPersistenceToLocal(): Observable<void> {
-    return defer(async () => {
-      await setPersistence(this.firebaseAuth, browserLocalPersistence);
-    });
-  }
-
-  private firebaseCreateUserWithEmailAndPassword(signUpUser: SignUpUser) : Observable<UserCredential> {
-    return defer(async () => {
-      const userCredential: UserCredential = await createUserWithEmailAndPassword(this.firebaseAuth, signUpUser.email, signUpUser.password);
-
-      return userCredential;
-    });
-  }
-
   private createUser(userCredential: UserCredential, signUpUser: SignUpUser): Observable<UserInfo> {
-    const headers: HttpHeaders = new HttpHeaders()
-      .set('Content-type', 'application/json')
-      .set('Accept', 'application/json');
-
     const createUserDto: CreateUserDto = UserService.fromSignUpUserToCreateUserDto(userCredential.user.uid, signUpUser);
     const body: string = JSON.stringify(createUserDto);
 
-    return this.http.post<LoadUserDto>(
-      `${environment.apiUrl}${UserService.apiPath}`,
-      body,
-      { 'headers': headers }
-    )
+    return this.getFirebaseJWT()
+    .pipe(
+      exhaustMap(token => {
+        const headers: HttpHeaders= new HttpHeaders()
+          .set('Content-type', 'application/json')
+          .set('Accept', 'application/json')
+          .set('Authorization', `Bearer ${token}`);
+        
+        return this.http.post<LoadUserDto>(
+            `${environment.apiUrl}${UserService.apiPath}`,
+            body,
+            { 'headers': headers }
+          )
+      }),
+      map(LoadUserDto => 
+        UserService.fromLoadUserDtoToUserInfo(LoadUserDto)
+      )
+    );
+  }
+
+  private loadUserFromFirebaseId(firebaseId: string): Observable<UserInfo> {
+    return this.getFirebaseJWT()
+    .pipe(
+      exhaustMap(token => {
+        const headers: HttpHeaders= new HttpHeaders()
+          .set('Content-type', 'application/json')
+          .set('Accept', 'application/json')
+          .set('Authorization', `Bearer ${token}`);
+
+        return this.http.get<LoadUserDto[]>(
+            `${environment.apiUrl}${UserService.apiPath}?firebaseId=${firebaseId}`,
+            { 'headers': headers }
+          )
+      }),
+      map(loadUserDtos => 
+          UserService.fromLoadUserDtoToUserInfo(loadUserDtos[0])
+      )
+    );
+  }
+
+  public signUp(signUpUser: SignUpUser): Observable<UserInfo|undefined> {
+    return this.firebaseSetPersistenceToLocal()
       .pipe(
-        switchMap((LoadUserDto) => { return of(UserService.fromLoadUserDtoToUserInfo(LoadUserDto)); })
+        exhaustMap(() => 
+          this.firebaseCreateUserWithEmailAndPassword(signUpUser.email, signUpUser.password)
+        ),
+        exhaustMap(userCredential =>  
+          // Enregistrement des informations spécifiques à l'application.
+          this.createUser(userCredential, signUpUser)
+        ),
+        exhaustMap(userInfo => 
+          this.signInLocally(userInfo?.firebaseId)
+        )
       );
   }
 
-  private loadUserFromFirebaseId(firebaseId: string): Observable<UserInfo|undefined> {
-    const headers: HttpHeaders = new HttpHeaders()
-      .set('Content-type', 'application/json')
-      .set('Accept', 'application/json');
-
-    return this.http.get<LoadUserDto[]>(
-      `${environment.apiUrl}${UserService.apiPath}?firebaseId=${firebaseId}`,
-      { 'headers': headers }
-    )
-      .pipe(
-        switchMap((loadUserDtos) => { 
-          const loadUserDto: LoadUserDto|undefined = loadUserDtos.at(0);
-          if (loadUserDto) {
-            return of(UserService.fromLoadUserDtoToUserInfo(loadUserDto));
-          }
-          return of (undefined);
-        })
-      );
-  }
-
-  private signInLocally(firebaseId: string): Observable<UserInfo|undefined> {
+  private signInLocally(firebaseId: string): Observable<UserInfo> {
     return this.loadUserFromFirebaseId(firebaseId)
       .pipe(
-        tap((userInfo) => { 
-          if (userInfo) {
-            this.sessionStorageService.saveData(UserService.userInfoSessionStorageKey, JSON.stringify(userInfo));
-            this.setIsSignedIn(true);
-          }
+        tap(userInfo => {
+          this.sessionStorageService.saveData(UserService.userInfoSessionStorageKey, JSON.stringify(userInfo));
+          this.isSignedIn = true;
          })
       );
   }
@@ -140,70 +126,78 @@ export class UserService implements OnDestroy {
     if (currentUserInfo) {
       return this.loadUserFromFirebaseId(currentUserInfo.firebaseId)
         .pipe(
-          tap((userInfo) => {
-            if (userInfo) {
-              this.sessionStorageService.saveData(UserService.userInfoSessionStorageKey, JSON.stringify(userInfo));
-            }
-          })
+          tap(userInfo => 
+              this.sessionStorageService.saveData(UserService.userInfoSessionStorageKey, JSON.stringify(userInfo))
+          )
         );
     }
 
     return of(undefined);
   }
 
-  private signOutLocally(): void {
-    this.sessionStorageService.removeData(UserService.userInfoSessionStorageKey);
-    this.setIsSignedIn(false);
-  }
-
-  public signUp(signUpUser: SignUpUser): Observable<UserInfo|undefined> {
-    return this.firebaseSetPersistenceToLocal()
-      .pipe(
-        switchMap(() => { 
-          return this.firebaseCreateUserWithEmailAndPassword(signUpUser)
-          .pipe(
-            switchMap((userCredential) => { 
-              // Enregistrement des informations spécifiques à l'application.
-              return this.createUser(userCredential, signUpUser)
-              .pipe(
-                switchMap((userInfo) => { 
-                  return this.signInLocally(userInfo?.firebaseId);
-                })
-              );  
-            })
-          );
-          })
-        );
-  }
-
-  private firebaseSignInWithEmailAndPassword(signInUser: SignInUser) : Observable<UserCredential> {
-    return defer(async () => {
-      const userCredential: UserCredential = await signInWithEmailAndPassword(this.firebaseAuth, signInUser.email, signInUser.password);
-      return userCredential;
-    });
-  }
-
   public signIn(signInUser: SignInUser): Observable<UserInfo|undefined> {
     return this.firebaseSetPersistenceToLocal()
     .pipe(
-      switchMap(() => { 
-        return this.firebaseSignInWithEmailAndPassword(signInUser)
-        .pipe(
-          switchMap((userCredential) => {
-            return this.signInLocally(userCredential.user.uid);
-          })
-        );
-      })
+      exhaustMap(() =>  
+        this.firebaseSignInWithEmailAndPassword(signInUser.email, signInUser.password)
+      ),
+      exhaustMap(userCredential => 
+        this.signInLocally(userCredential.user.uid)
+      )
     );
   }
 
-  public signOut() : Observable<void> {
-    return defer(async () => {
-      signOut(this.firebaseAuth);
-    })
+  private onFirebaseAuthStateChange(user: User|null): void {
+    if (user) {
+      this.signInLocallySubscription = this.signInLocally(user.uid).subscribe();
+    } else {
+      this.isSignedIn = false;
+    }
+  }
+
+  public notifyIsSignedInDefined(): void {
+    this.isSignedInDefinedEvent.emit();
+  }
+
+  public getCurrentUserInfo(): UserInfo|undefined {
+    if (this.isSignedIn) {
+      return JSON.parse(this.sessionStorageService.getData(UserService.userInfoSessionStorageKey));
+    }
+    return undefined;
+  }
+
+  public getFirebaseJWT(): Observable<string | undefined> {
+    if (
+      this.isSignedIn &&
+      this.firebaseAuth.currentUser
+      ) {
+      return from(this.firebaseAuth.currentUser.getIdToken());
+    }
+    return of(undefined);
+  }
+
+  public firebaseSetPersistenceToLocal(): Observable<void> {
+    return from(setPersistence(this.firebaseAuth, browserLocalPersistence));
+  }
+
+  public firebaseCreateUserWithEmailAndPassword(email: string, password: string): Observable<UserCredential> {
+    return from(createUserWithEmailAndPassword(this.firebaseAuth, email, password));
+  }
+
+  public signOutLocally(): void {
+    this.sessionStorageService.removeData(UserService.userInfoSessionStorageKey);
+    this.isSignedIn = false;
+  }
+
+  public signOut(): Observable<void> {
+    return from(signOut(this.firebaseAuth))
     .pipe(
       tap(() => this.signOutLocally())
-    )
+    );
+  }
+
+  public firebaseSignInWithEmailAndPassword(email: string, password: string): Observable<UserCredential> {
+    return from(signInWithEmailAndPassword(this.firebaseAuth, email, password));
   }
 
   private static fromSignUpUserToCreateUserDto(firebaseId: string, signUpUser: SignUpUser): CreateUserDto {

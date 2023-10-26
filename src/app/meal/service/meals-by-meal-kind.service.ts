@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MealKindService } from './meal-kind.service';
 import { MealService } from './meal.service';
 import { MealsByMealKind } from '../model/meals-by-meal-kind.model';
-import { Observable, forkJoin, of, switchMap } from 'rxjs';
+import { Observable, combineLatest, mergeMap, of } from 'rxjs';
 import { MealKind } from '../model/meal-kind.model';
 import { Meal } from '../model/meal.model';
 
@@ -15,12 +15,12 @@ export class MealsByMealKindService {
   ) { }
   
   public loadAllByDate(date: Date, familyId: number): Observable<MealsByMealKind[]> {
-    return forkJoin({
+    return combineLatest({
       mealKinds: this.mealKindService.loadAll(),
       meals: this.mealService.loadAllByDate(date, familyId)
     })
     .pipe(
-      switchMap(result => {
+      mergeMap(result => {
         const mealKinds: MealKind[] = result.mealKinds;
         const meals: Map<number, Meal[]> = new Map<number, Meal[]>();
         result.meals.forEach(meal => {

@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/user/service/user.service';
 import { UserRoutes } from 'src/app/user/route/user.routes';
-import { Subscription } from 'rxjs';
+import { Subscription, from, map } from 'rxjs';
 import { ButtonWithSpinnerDirective } from 'src/app/common/button/directive/button-with-spinner.directive';
 
 @Component({
@@ -35,19 +35,12 @@ export class SignOutButtonComponent implements OnDestroy {
     this.signOutSubscription?.unsubscribe();
   }
 
-  public signOut(): Promise<boolean>|boolean {
+  public signOut(): void {
     this.isSigningOut = true;
-
     this.signOutSubscription = this.userService.signOut()
-      .subscribe({
-        next: () => 
-        { 
-          return this.router.navigate([ UserRoutes.signInUserRoute ]);
-        },
-        error: (error) => {
-          this.isSigningOut = false
-        }
-      });
-    return false;
+    .pipe(
+      map(() => from(this.router.navigate([ UserRoutes.signInUserRoute ])))
+    )
+    .subscribe();
   }
 }

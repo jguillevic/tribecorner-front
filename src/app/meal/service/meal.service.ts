@@ -21,7 +21,7 @@ export class MealService {
 
   public loadAllByDate(date: Date, familyId: number): Observable<Meal[]> {
     return this.apiHttp.get<MealDto[]>(
-      `${environment.apiUrl}${MealService.apiPath}?family=${familyId}&date=${moment(date).format("YYYY-MM-DD")}`
+      `${environment.apiUrl}${MealService.apiPath}?date=${moment(date).format("YYYY-MM-DD")}`
       )
       .pipe(
         map(mealDtos => 

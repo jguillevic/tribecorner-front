@@ -4,14 +4,14 @@
         <app-home-category 
         categoryName="Mes événements" 
         (onSeeAllClicked)="goToDisplayEvents()"
-        [isEmpty]="this.events.length == 0"
+        [isEmpty]="!this.events.length"
         [isLoading]="this.isLoadingEvents">
         </app-home-category>
         <mat-divider></mat-divider>
         <app-home-category 
         categoryName="Mes repas du jour" 
         (onSeeAllClicked)="goToDisplayMeals()"
-        [isEmpty]="this.mealsByMealKinds.length == 0"
+        [isEmpty]="!this.mealsByMealKinds.length"
         [isLoading]="this.isLoadingMealsByMealKinds">
             <div class="display-home-meals-by-meal-kinds-container">
                 <div class="display-home-meals-by-meal-kind-container"
@@ -32,7 +32,7 @@
         <app-home-category 
         categoryName="Mes listes favorites" 
         (onSeeAllClicked)="goToDisplayShoppingLists()"
-        [isEmpty]="this.shoppingLists.length == 0"
+        [isEmpty]="!this.shoppingLists.length"
         [isLoading]="this.isLoadingShoppingLists">
             <div class="display-home-shopping-lists-container">
                 <app-shopping-list-card *ngFor="let shoppingList of this.shoppingLists"

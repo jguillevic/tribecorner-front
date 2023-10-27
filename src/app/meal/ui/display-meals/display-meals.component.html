@@ -25,7 +25,7 @@
                     </div>
                 </div>
             </div>
-            <div class="display-meals-empty" *ngIf="this.mealKinds.length == 0">
+            <div class="display-meals-empty" *ngIf="!this.mealKinds.length">
                 <img class="display-meals-empty-illustration" src="/assets/img/undraw-eating-together-re-ux62.svg">
                 <h1 class="display-meals-empty-title">Oups !</h1>
                 <p class="display-meals-empty-message">Vous n'avez pas encore plannifié de repas.</p>

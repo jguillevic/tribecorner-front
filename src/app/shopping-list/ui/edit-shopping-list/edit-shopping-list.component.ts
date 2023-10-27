@@ -91,14 +91,14 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
       switchMap((params: Params) => {
         this._currentAction = params['action'];
 
-        if (this._currentAction == Action.create) {
+        if (this._currentAction === Action.create) {
           const shoppingList: ShoppingList = new ShoppingList();
           const currentUserInfo: UserInfo|undefined = this.userService.getCurrentUserInfo();
           if (currentUserInfo?.familyId) {
             shoppingList.familyId = currentUserInfo?.familyId;
           }
           return of(shoppingList);
-        } else if (this._currentAction == Action.update) {
+        } else if (this._currentAction === Action.update) {
           this._currentShoppingListId = params['id'];
           if (this._currentShoppingListId) {
             return this.shoppingListService.loadOneById(this._currentShoppingListId);
@@ -138,9 +138,9 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
   private save(): Observable<ShoppingList|undefined> {
     const shoppingList: ShoppingList = this.getShoppingList();
 
-    if (this._currentAction == Action.update) {
+    if (this._currentAction === Action.update) {
       return this.shoppingListService.update(shoppingList);
-    } else if (this._currentAction == Action.create) {
+    } else if (this._currentAction === Action.create) {
       return this.shoppingListService.create(shoppingList);
     }
 
@@ -188,6 +188,6 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
   }
 
   public isCreating(): boolean {
-    return this._currentAction == Action.create;
+    return this._currentAction === Action.create;
   }
 }

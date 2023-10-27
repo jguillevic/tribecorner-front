@@ -89,10 +89,10 @@ export class SignInUserComponent implements OnDestroy {
     this.isSigningIn = false;
 
     if (error instanceof(FirebaseError)) {
-      if (error.code == "auth/user-not-found") {
+      if (error.code === "auth/user-not-found") {
         this.signInForm.controls['email'].setErrors({'not-found': true});
       }
-      if (error.code == "auth/wrong-password") {
+      if (error.code === "auth/wrong-password") {
         this.signInForm.controls['password'].setErrors({'wrong': true});
       }
     } else {

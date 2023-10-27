@@ -99,8 +99,8 @@ export class DisplayMealsComponent implements OnInit, OnDestroy {
 
           Array.from(this.mealsGroupByMealKinds.keys())
           .sort((mealKindId1, mealKindId2) => {
-            const mealKind1 = this.loadedMealKinds.find(item => mealKindId1 == item.id);
-            const mealKind2 = this.loadedMealKinds.find(item => mealKindId2 == item.id);
+            const mealKind1 = this.loadedMealKinds.find(item => mealKindId1 === item.id);
+            const mealKind2 = this.loadedMealKinds.find(item => mealKindId2 === item.id);
 
             if (mealKind1 && mealKind2) {
               return (mealKind1.position > mealKind2.position) ? 1 : -1;
@@ -108,7 +108,7 @@ export class DisplayMealsComponent implements OnInit, OnDestroy {
             return 0;
           })
           .forEach((mealKindId) => {
-            const mealKind = this.loadedMealKinds.find(item => item.id == mealKindId);
+            const mealKind = this.loadedMealKinds.find(item => item.id === mealKindId);
             if (mealKind) {
               this.mealKinds.push(mealKind);
             }
@@ -142,7 +142,7 @@ export class DisplayMealsComponent implements OnInit, OnDestroy {
       if (meals) {
         const index: number = meals.indexOf(meal);
         meals.splice(index, 1);
-        if (meals.length == 0) {
+        if (!meals.length) {
           this.mealsGroupByMealKinds.delete(mealKindId);
         }
       }

@@ -21,13 +21,13 @@ export class DisplayLoadingComponent implements OnInit, OnDestroy {
   constructor(private userService: UserService, private router: Router) { }
 
   public ngOnInit(): void {
-    if (this.userService.isSignedIn == undefined)
+    if (this.userService.isSignedIn === undefined)
     {
       this.isSignedInDefinedEventSubscription = this.userService.isSignedInDefinedEvent.subscribe(() => {
-        this.navigateTo(this.userService.isSignedIn == true);
+        this.navigateTo(this.userService.isSignedIn === true);
       });
     } else {
-      this.navigateTo(this.userService.isSignedIn == false);
+      this.navigateTo(this.userService.isSignedIn === false);
     }
   }
 
@@ -36,7 +36,7 @@ export class DisplayLoadingComponent implements OnInit, OnDestroy {
   }
 
   private navigateTo(isSignedIn: boolean) : Promise<boolean> {
-    if (isSignedIn == true) {
+    if (isSignedIn === true) {
       return this.router.navigate([HomeRoutes.displayHomeRoute]);
     }
     return this.router.navigate([UserRoutes.signInUserRoute]);

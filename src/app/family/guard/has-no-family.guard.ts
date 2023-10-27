@@ -11,7 +11,7 @@ export const hasNoFamilyGuard: CanActivateFn = (route, state) => {
 
   const currentUserInfo: UserInfo|undefined = userService.getCurrentUserInfo();
 
-  if (currentUserInfo == undefined) {
+  if (currentUserInfo === undefined) {
     return router.navigate([UserRoutes.signInUserRoute]);
   }
   else if (currentUserInfo.familyId) {

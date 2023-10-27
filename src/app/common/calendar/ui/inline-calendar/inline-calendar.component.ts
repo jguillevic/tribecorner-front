@@ -58,7 +58,7 @@ export class InlineCalendarComponent implements OnInit, OnDestroy {
       .subscribe(defaultSelectedDate => {
         defaultSelectedDate.setHours(0,0,0,0);
         this.calendarDates.forEach(calendarDate => {
-          if (defaultSelectedDate && defaultSelectedDate.getTime() == calendarDate.date.getTime()) {
+          if (defaultSelectedDate && defaultSelectedDate.getTime() === calendarDate.date.getTime()) {
             this.selectedCalendarDate = calendarDate;
             this.selectedCalendarDate.isSelected = true;
             this.onSelectedDateChanged.emit(this.selectedCalendarDate.date);

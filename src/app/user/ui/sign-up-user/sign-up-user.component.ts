@@ -100,7 +100,7 @@ export class SignUpUserComponent implements OnDestroy {
     this.isSigningUp = false;
 
     if (error instanceof(FirebaseError)) {
-      if (error.code == "auth/email-already-in-use") {
+      if (error.code === "auth/email-already-in-use") {
         this.signUpForm.controls['email'].setErrors({'already-in-use': true});
       }
     } else {

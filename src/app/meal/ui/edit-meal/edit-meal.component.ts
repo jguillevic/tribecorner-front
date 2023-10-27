@@ -79,7 +79,7 @@ export class EditMealComponent implements OnInit, OnDestroy {
         this.currentAction = params['action'];
         const defaultDate = params['defaultDate'];
 
-        if (this.currentAction == Action.create) {
+        if (this.currentAction === Action.create) {
           const meal: Meal = new Meal();
           meal.date = new Date(defaultDate);
           meal.numberOfPersons = 3;
@@ -88,7 +88,7 @@ export class EditMealComponent implements OnInit, OnDestroy {
             meal.familyId = currentUserInfo?.familyId;
           }
           return of(meal);
-        } else if (this.currentAction == Action.update) {
+        } else if (this.currentAction === Action.update) {
           this.currentMealId = params['id'];
           if (this.currentMealId) {
             return this.mealService.loadOneById(this.currentMealId);
@@ -141,9 +141,9 @@ export class EditMealComponent implements OnInit, OnDestroy {
   private save(): Observable<Meal|undefined> {
     const meal: Meal = this.getMeal();
 
-    if (this.currentAction == Action.update) {
+    if (this.currentAction === Action.update) {
       return this.mealService.update(meal);
-    } else if (this.currentAction == Action.create) {
+    } else if (this.currentAction === Action.create) {
       return this.mealService.create(meal);
     }
 
@@ -177,6 +177,6 @@ export class EditMealComponent implements OnInit, OnDestroy {
   }
 
   public isCreating(): boolean {
-    return this.currentAction == Action.create;
+    return this.currentAction === Action.create;
   }
 }

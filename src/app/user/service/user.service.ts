@@ -167,11 +167,11 @@ export class UserService implements OnDestroy {
   }
 
   public getFirebaseJWT(): Observable<string | undefined> {
-    if (
-      this.isSignedIn &&
-      this.firebaseAuth.currentUser
-      ) {
-      return from(this.firebaseAuth.currentUser.getIdToken());
+    if (this.firebaseAuth.currentUser) {
+      return from(this.firebaseAuth.currentUser.getIdToken())
+      .pipe(
+        tap(token => console.log(token))
+      );
     }
     return of(undefined);
   }

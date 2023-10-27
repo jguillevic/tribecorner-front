@@ -88,7 +88,7 @@ export class DisplayHomeComponent implements OnInit, OnDestroy {
       );
 
       this.loadShoppingListsSubscription = this.shoppingListService
-      .loadAllByFamilyId(this.currentUserInfo.familyId, 3)
+      .loadAll()
       .subscribe(
         shoppingLists => { 
           shoppingLists.forEach(shoppingList => this.shoppingLists.push(shoppingList));

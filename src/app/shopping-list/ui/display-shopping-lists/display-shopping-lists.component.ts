@@ -49,7 +49,7 @@ export class DisplayShoppingListsComponent implements OnInit, OnDestroy {
     const userInfo: UserInfo|undefined = this.userService.getCurrentUserInfo();
 
     if (userInfo && userInfo.familyId) {
-      this.loadSubscription = this.shoppingListService.loadAllByFamilyId(userInfo.familyId)
+      this.loadSubscription = this.shoppingListService.loadAll()
       .subscribe(shoppingLists => {
         shoppingLists.forEach(shoppingList => {
           this.shoppingLists?.push(shoppingList);

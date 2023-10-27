@@ -15,9 +15,9 @@ export class ShoppingListService {
 
   constructor(private apiHttp: ApiHttpClient) { }
 
-  public loadAllByFamilyId(familyId: number, count: number = 20): Observable<ShoppingList[]> {
+  public loadAll(): Observable<ShoppingList[]> {
     return this.apiHttp.get<LoadShoppingListDto[]>(
-      `${environment.apiUrl}${ShoppingListService.apiPath}?family=${familyId}&itemsPerPage=${count}`
+      `${environment.apiUrl}${ShoppingListService.apiPath}`
       )
       .pipe(
         map(loadShoppingListDtos => 

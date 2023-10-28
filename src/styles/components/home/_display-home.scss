@@ -9,11 +9,11 @@
         padding-right: 15px;
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: left;
     }
 
     &-meals-by-meal-kind-container {
-        width: 33%;
+        width: 33.3%;
         grid-template-rows: auto auto;
     }
 

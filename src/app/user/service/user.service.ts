@@ -26,7 +26,7 @@ export class UserService implements OnDestroy {
     return this._isSignedIn;
   }
   public set isSignedIn(isSignedIn: boolean|undefined) {
-    if (this._isSignedIn != isSignedIn) {
+    if (this._isSignedIn !== isSignedIn) {
       this._isSignedIn = isSignedIn;
       this.notifyIsSignedInDefined();
     }
@@ -168,10 +168,7 @@ export class UserService implements OnDestroy {
 
   public getFirebaseJWT(): Observable<string | undefined> {
     if (this.firebaseAuth.currentUser) {
-      return from(this.firebaseAuth.currentUser.getIdToken())
-      .pipe(
-        tap(token => console.log(token))
-      );
+      return from(this.firebaseAuth.currentUser.getIdToken());
     }
     return of(undefined);
   }

@@ -1,9 +1,8 @@
 <div class="page">
     <app-profile-top-bar></app-profile-top-bar>
     <div class="display-shopping-lists">
-        <app-simple-loading *ngIf="this.isLoadingShoppingLists"></app-simple-loading>
-        <div *ngIf="!this.isLoadingShoppingLists" class="display-shopping-lists-container">
-            <app-shopping-list-card *ngFor="let shoppingList of this.shoppingLists"
+        <div *ngIf="this.shoppingLists$ | async as shoppingLists;else loading" class="display-shopping-lists-container">
+            <app-shopping-list-card *ngFor="let shoppingList of shoppingLists"
             [shoppingList]="shoppingList">
                 <button mat-icon-button color="accent" (click)="setFavorite(shoppingList)">
                     <mat-icon class="material-symbols-outlined" [ngClass]="{ 'material-symbols-fill': shoppingList?.favorite }">star</mat-icon>
@@ -18,12 +17,15 @@
                     <mat-icon class="material-symbols-outlined">delete</mat-icon>
                 </button>
             </app-shopping-list-card>
-            <div class="display-shopping-lists-empty" *ngIf="!this.shoppingLists || !this.shoppingLists.length">
+            <div class="display-shopping-lists-empty" *ngIf="!shoppingLists || !shoppingLists.length">
                 <img class="display-shopping-lists-empty-illustration" src="/assets/img/undraw_gone_shopping_re_2lau.svg">
                 <h1 class="display-shopping-lists-empty-title">Oups !</h1>
                 <p class="display-shopping-lists-empty-message">Vous n'avez pas encore créé de liste.</p>
             </div>
         </div>
+        <ng-template #loading>
+            <app-simple-loading></app-simple-loading>
+        </ng-template>
     </div>
     <app-tab-bar [selectedIndex]=1 (onActionClicked)="goToCreate()"></app-tab-bar>
 </div>

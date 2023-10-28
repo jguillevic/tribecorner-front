@@ -19,7 +19,7 @@ export class MealService {
       this.mealConverter = new MealConverter();
     }
 
-  public loadAllByDate(date: Date, familyId: number): Observable<Meal[]> {
+  public loadAllByDate(date: Date): Observable<Meal[]> {
     return this.apiHttp.get<MealDto[]>(
       `${environment.apiUrl}${MealService.apiPath}?date=${moment(date).format("YYYY-MM-DD")}`
       )

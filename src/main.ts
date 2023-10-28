@@ -38,7 +38,11 @@ const routes: Routes = [
     },
     { 
         path: '',
-        providers: [MealKindService, MealService],
+        providers: [
+            MealKindService,
+            MealService,
+            MealsByMealKindService
+        ],
         canActivate: [signedInGuard, hasFamilyGuard],
         children: MealRoutes.mealRoutes
     },

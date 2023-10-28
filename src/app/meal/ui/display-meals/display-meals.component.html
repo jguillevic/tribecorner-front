@@ -3,15 +3,17 @@
     <div class="display-meals">
         <app-inline-calendar 
         class="display-meals-calendar" 
-        [defaultSelectedDateObservable]="defaultSelectedDateObservable" 
+        [defaultSelectedDate$]="defaultSelectedDate$" 
         (onSelectedDateChanged)="onSelectedDateChanged($event)">
         </app-inline-calendar>
-        <div class="display-meals-content">
-            <div class="display-meals-kind" *ngFor="let mealKind of this.mealKinds">
+        <div 
+        *ngIf="this.mealsByMealKinds$ | async as mealsByMealKinds; else loading" 
+        class="display-meals-content">
+            <div class="display-meals-kind" *ngFor="let mealsByMealKind of mealsByMealKinds">
                 <div class="display-meals-kind-name">
-                    {{ mealKind.name }}
+                    {{ mealsByMealKind.mealKind.name }}
                 </div>
-                <div class="display-meals-meal" *ngFor="let meal of this.mealsGroupByMealKinds.get(mealKind.id)">
+                <div class="display-meals-meal" *ngFor="let meal of this.mealsByMealKind.meals">
                     <img class="display-meals-meal-img" src="/assets/img/undraw_breakfast_psiw.svg">
                     <div class="display-meals-meal-name">{{ meal.name }}</div>
                     <div class="display-meals-meal-persons">{{ meal.numberOfPersons }} personnes</div>
@@ -19,18 +21,21 @@
                         <button mat-icon-button color="primary" (click)="goToUpdate(meal.id)">
                             <mat-icon class="material-symbols-outlined">edit</mat-icon>
                         </button>
-                        <button mat-icon-button color="warn" (click)="delete(mealKind.id, meal)">
+                        <button mat-icon-button color="warn" (click)="delete(meal)">
                             <mat-icon class="material-symbols-outlined">delete</mat-icon>
                         </button>
                     </div>
                 </div>
             </div>
-            <div class="display-meals-empty" *ngIf="!this.mealKinds.length">
+            <div class="display-meals-empty" *ngIf="!this.mealsByMealKinds.length">
                 <img class="display-meals-empty-illustration" src="/assets/img/undraw-eating-together-re-ux62.svg">
                 <h1 class="display-meals-empty-title">Oups !</h1>
                 <p class="display-meals-empty-message">Vous n'avez pas encore plannifié de repas.</p>
             </div>
         </div>
+        <ng-template #loading>
+            <app-simple-loading></app-simple-loading>
+        </ng-template>
     </div>
     <app-tab-bar [selectedIndex]=2 (onActionClicked)="goToCreate()"></app-tab-bar>
 </div>

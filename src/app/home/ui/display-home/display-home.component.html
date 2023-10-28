@@ -1,21 +1,22 @@
 <div class="page">
     <app-profile-top-bar></app-profile-top-bar>
     <div class="display-home">
-        <app-home-category 
+        <app-home-category
         categoryName="Mes événements" 
-        (onSeeAllClicked)="goToDisplayEvents()"
-        [isEmpty]="!this.events.length"
-        [isLoading]="this.isLoadingEvents">
+        (onSeeAllClicked)="goToDisplayEvents()">
+            <div *ngIf="this.events$ | async as events;else loadingEvents"></div>
+            <ng-template #loadingEvents>
+                <app-simple-loading></app-simple-loading>
+            </ng-template>
         </app-home-category>
         <mat-divider></mat-divider>
-        <app-home-category 
+        <app-home-category
         categoryName="Mes repas du jour" 
-        (onSeeAllClicked)="goToDisplayMeals()"
-        [isEmpty]="!this.mealsByMealKinds.length"
-        [isLoading]="this.isLoadingMealsByMealKinds">
-            <div class="display-home-meals-by-meal-kinds-container">
+        (onSeeAllClicked)="goToDisplayMeals()">
+            <div *ngIf="this.mealsByMealKinds$ | async as mealsByMealKinds;else loadingMeals"
+            class="display-home-meals-by-meal-kinds-container">
                 <div class="display-home-meals-by-meal-kind-container"
-                *ngFor="let mealsByMealKind of this.mealsByMealKinds">
+                *ngFor="let mealsByMealKind of mealsByMealKinds">
                     <div class="display-home-meal-kind-name">
                         {{mealsByMealKind.mealKind.name}}
                     </div>
@@ -27,18 +28,23 @@
                     </div>
                 </div>
             </div>
+            <ng-template #loadingMeals>
+                <app-simple-loading></app-simple-loading>
+            </ng-template>
         </app-home-category>
         <mat-divider></mat-divider>
-        <app-home-category 
+        <app-home-category
         categoryName="Mes listes favorites" 
-        (onSeeAllClicked)="goToDisplayShoppingLists()"
-        [isEmpty]="!this.shoppingLists.length"
-        [isLoading]="this.isLoadingShoppingLists">
-            <div class="display-home-shopping-lists-container">
-                <app-shopping-list-card *ngFor="let shoppingList of this.shoppingLists"
+        (onSeeAllClicked)="goToDisplayShoppingLists()">
+            <div *ngIf="this.shoppingLists$ | async as shoppingLists;else loadingShoppingLists"
+            class="display-home-shopping-lists-container">
+                <app-shopping-list-card *ngFor="let shoppingList of shoppingLists"
                 [shoppingList]="shoppingList"
                 (click)="goToDisplayShoppingList(shoppingList.id)"></app-shopping-list-card>
             </div>
+            <ng-template #loadingShoppingLists>
+                <app-simple-loading></app-simple-loading>
+            </ng-template>
         </app-home-category>
     </div>
     <app-tab-bar [selectedIndex]=0></app-tab-bar>

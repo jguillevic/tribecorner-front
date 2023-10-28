@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, shareReplay } from 'rxjs';
 import { MealKind } from '../model/meal-kind.model';
 import { environment } from 'src/environments/environment';
 import { MealKindDto } from '../dto/meal-kind.dto';
@@ -28,7 +28,8 @@ export class MealKindService {
           .map(mealKindDto => 
             this.mealKindConverter.fromDtoToModel(mealKindDto)
           )
-        )
+        ),
+        shareReplay(1)
       );
   }
 }

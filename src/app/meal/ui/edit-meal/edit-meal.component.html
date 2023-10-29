@@ -6,31 +6,28 @@
     </app-edit-top-bar>
     <div class="margin">
         <div class="form">
-            <form *ngIf="editMealForm$ | async as editMealForm; else loadingForm" [formGroup]="editMealForm" (ngSubmit)="editMeal()">
+            <form *ngIf="editMealFormData$ | async as editMealFormData; else loadingForm" [formGroup]="editMealFormData.editMealForm" (ngSubmit)="editMeal()">
                 <div class="form-inputs">
                     <!--Type.-->
-                    <mat-form-field *ngIf="this.mealKinds$ | async as mealKinds; else loadingMealKinds" class="form-input">
+                    <mat-form-field class="form-input">
                         <mat-label>Type de repas</mat-label>
                         <mat-select formControlName="mealKindId">
-                            <mat-option *ngFor="let mealKind of mealKinds" [value]="mealKind.id">
+                            <mat-option *ngFor="let mealKind of editMealFormData.mealKinds" [value]="mealKind.id">
                             {{ mealKind.name }}
                             </mat-option>
                         </mat-select>
-                        <mat-error *ngIf="editMealForm.controls['mealKindId'].hasError('required')">
+                        <mat-error *ngIf="editMealFormData.editMealForm.controls['mealKindId'].hasError('required')">
                             Type de repas requis
                         </mat-error>
                     </mat-form-field>
-                    <ng-template #loadingMealKinds>
-                        <app-simple-loading></app-simple-loading>
-                    </ng-template>
                     <!--Nom.-->
                     <mat-form-field class="form-input">
                         <mat-label>Nom</mat-label>
                         <input matInput type="text" formControlName="mealName">
-                        <mat-error *ngIf="editMealForm.controls['mealName'].hasError('maxlength')">
+                        <mat-error *ngIf="editMealFormData.editMealForm.controls['mealName'].hasError('maxlength')">
                             Nom trop long (max. {{ this.mealNameMaxLength }} caractères)
                         </mat-error>
-                        <mat-error *ngIf="editMealForm.controls['mealName'].hasError('required')">
+                        <mat-error *ngIf="editMealFormData.editMealForm.controls['mealName'].hasError('required')">
                             Nom requis
                         </mat-error>
                     </mat-form-field>
@@ -57,7 +54,7 @@
                                 {{ numberOfPersons }}
                             </mat-option>
                         </mat-select>
-                        <mat-error *ngIf="editMealForm.controls['mealNumberOfPersons'].hasError('required')">
+                        <mat-error *ngIf="editMealFormData.editMealForm.controls['mealNumberOfPersons'].hasError('required')">
                             Nombre de personnes requis
                         </mat-error>
                     </mat-form-field>

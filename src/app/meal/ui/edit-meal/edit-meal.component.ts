@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Action } from 'src/app/common/action';
 import { MealService } from '../../service/meal.service';
-import { Observable, Subscription, exhaustMap, map, mergeMap, of, shareReplay, tap } from 'rxjs';
+import { Observable, Subscription, combineLatest, exhaustMap, map, mergeMap, of, shareReplay, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MealRoutes } from '../../route/meal.routes';
 import { UserService } from 'src/app/user/service/user.service';
@@ -59,10 +59,11 @@ export class EditMealComponent implements OnDestroy {
         return true;
       }
       return false;
-    })
+    }),
+    shareReplay(1)
   );
 
-  public readonly mealKinds$: Observable<MealKind[]> 
+  private readonly mealKinds$: Observable<MealKind[]> 
   = this.mealKindService
   .loadAll();
 
@@ -73,7 +74,7 @@ export class EditMealComponent implements OnDestroy {
   public readonly mealNameMaxLength: number = 255; 
 
   private editMealForm: FormGroup|undefined;
-  public readonly editMealForm$: Observable<FormGroup> = this.activatedRoute.queryParams
+  private readonly editMealForm$: Observable<FormGroup> = this.activatedRoute.queryParams
   .pipe(
     mergeMap(params => {
       const currentAction = params['action'];   
@@ -100,7 +101,16 @@ export class EditMealComponent implements OnDestroy {
         }
       );
     }),
-    tap(editMealForm => this.editMealForm = editMealForm),
+    tap(editMealForm => this.editMealForm = editMealForm)
+  );
+
+  public readonly editMealFormData$ 
+  = combineLatest({
+    editMealForm: this.editMealForm$,
+    mealKinds: this.mealKinds$
+  })
+  .pipe(
+    tap(data => console.table(data))
   );
 
   public constructor(

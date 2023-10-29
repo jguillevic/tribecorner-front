@@ -15,6 +15,7 @@ import { MealsByMealKind } from '../../model/meals-by-meal-kind.model';
 import { MealsByMealKindService } from '../../service/meals-by-meal-kind.service';
 import { Action } from 'src/app/common/action';
 import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
+import { LargeEmptyComponent } from "../../../common/empty/ui/large-empty/large-empty.component";
 
 @Component({
     selector: 'app-display-meals',
@@ -28,7 +29,8 @@ import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loadin
         InlineCalendarComponent,
         MatIconModule,
         MatButtonModule,
-        SimpleLoadingComponent
+        SimpleLoadingComponent,
+        LargeEmptyComponent
     ]
 })
 export class DisplayMealsComponent implements OnInit, OnDestroy {

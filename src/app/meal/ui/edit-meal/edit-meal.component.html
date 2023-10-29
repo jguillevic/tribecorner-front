@@ -1,13 +1,8 @@
 <div class="page">
-    <app-edit-top-bar 
+    <app-edit-top-bar
+    [title]="(isCreating$ | async) ? 'Ajouter mon repas' : 'Modifier mon repas'"
     (onCloseClicked)="goToDisplayMeals()"
     (onSaveClicked)="editMeal()">
-        <div *ngIf="isCreating$ | async as isCreating; else loadingTitle">
-            {{ isCreating ? 'Ajouter mon repas' : 'Modifier mon repas' }}
-        </div>
-        <ng-template #loadingTitle>
-            <app-simple-loading></app-simple-loading>
-        </ng-template>
     </app-edit-top-bar>
     <div class="margin">
         <div class="form">

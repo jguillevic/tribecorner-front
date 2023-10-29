@@ -7,10 +7,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Action } from 'src/app/common/action';
 import { MealService } from '../../service/meal.service';
-import { BehaviorSubject, Observable, Subscription, exhaustMap, map, of, tap } from 'rxjs';
+import { Observable, Subscription, exhaustMap, map, mergeMap, of, shareReplay, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MealRoutes } from '../../route/meal.routes';
-import { UserInfo } from 'src/app/user/model/user-info.model';
 import { UserService } from 'src/app/user/service/user.service';
 import { MatSelectModule } from '@angular/material/select';
 import { MealKindService } from '../../service/meal-kind.service';
@@ -47,12 +46,20 @@ export class EditMealComponent implements OnDestroy {
   private saveSubscription: Subscription|undefined;
   private currentMealId: number|undefined;
 
-  private readonly currentActionSubject: BehaviorSubject<string> = new BehaviorSubject(Action.create);
-  public currentAction$ = this.currentActionSubject.asObservable();
+  public currentAction$ = this.activatedRoute.queryParams
+  .pipe(
+    map(params => params['action'] as string),
+    shareReplay(1)
+  );
 
   public isCreating$ = this.currentAction$
   .pipe(
-    map(currentAction => currentAction === Action.create)
+    map(currentAction => {
+      if (currentAction === Action.create) {
+        return true;
+      }
+      return false;
+    })
   );
 
   public readonly mealKinds$: Observable<MealKind[]> 
@@ -68,9 +75,8 @@ export class EditMealComponent implements OnDestroy {
   private editMealForm: FormGroup|undefined;
   public readonly editMealForm$: Observable<FormGroup> = this.activatedRoute.queryParams
   .pipe(
-    exhaustMap(params => {
-      const currentAction = params['action'];
-      this.currentActionSubject.next(currentAction);
+    mergeMap(params => {
+      const currentAction = params['action'];   
       const defaultDate = params['defaultDate'];
 
       if (currentAction === Action.update) {
@@ -82,10 +88,6 @@ export class EditMealComponent implements OnDestroy {
       const meal: Meal = new Meal();
       meal.date = new Date(defaultDate);
       meal.numberOfPersons = 3;
-      const currentUserInfo: UserInfo|undefined = this.userService.getCurrentUserInfo();
-      if (currentUserInfo?.familyId) {
-        meal.familyId = currentUserInfo?.familyId;
-      }
       return of(meal);
     }),
     map(meal => {

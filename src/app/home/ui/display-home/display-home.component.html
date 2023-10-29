@@ -4,7 +4,13 @@
         <app-home-category
         categoryName="Mes événements" 
         (onSeeAllClicked)="goToDisplayEvents()">
-            <div *ngIf="this.events$ | async as events;else loadingEvents"></div>
+            <div *ngIf="this.events$ | async as events;else loadingEvents">
+                <div *ngIf="events.length;else emptyEvents">
+                </div>
+                <ng-template #emptyEvents>
+                    <app-simple-empty></app-simple-empty>
+                </ng-template>
+            </div>
             <ng-template #loadingEvents>
                 <app-simple-loading></app-simple-loading>
             </ng-template>
@@ -27,6 +33,7 @@
                         </app-meal-card>
                     </div>
                 </div>
+                <app-simple-empty *ngIf="!mealsByMealKinds.length"></app-simple-empty>
             </div>
             <ng-template #loadingMeals>
                 <app-simple-loading></app-simple-loading>
@@ -40,7 +47,9 @@
             class="display-home-shopping-lists-container">
                 <app-shopping-list-card *ngFor="let shoppingList of shoppingLists"
                 [shoppingList]="shoppingList"
-                (click)="goToDisplayShoppingList(shoppingList.id)"></app-shopping-list-card>
+                (click)="goToDisplayShoppingList(shoppingList.id)">
+                </app-shopping-list-card>
+                <app-simple-empty *ngIf="!shoppingLists.length"></app-simple-empty>
             </div>
             <ng-template #loadingShoppingLists>
                 <app-simple-loading></app-simple-loading>

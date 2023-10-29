@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ShoppingListCardComponent } from "../shopping-list-card/shopping-list-card.component";
 import { ProfileTopBarComponent } from 'src/app/common/top-bar/profile/ui/profile-top-bar.component';
 import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
+import { LargeEmptyComponent } from "../../../common/empty/ui/large-empty/large-empty.component";
 
 @Component({
     selector: 'app-display-shopping-lists',
@@ -24,7 +25,8 @@ import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loadin
         MatIconModule,
         ProfileTopBarComponent,
         ShoppingListCardComponent,
-        SimpleLoadingComponent
+        SimpleLoadingComponent,
+        LargeEmptyComponent
     ]
 })
 export class DisplayShoppingListsComponent implements OnDestroy {

@@ -27,11 +27,12 @@
                     </div>
                 </div>
             </div>
-            <div class="display-meals-empty" *ngIf="!this.mealsByMealKinds.length">
-                <img class="display-meals-empty-illustration" src="/assets/img/undraw-eating-together-re-ux62.svg">
-                <h1 class="display-meals-empty-title">Oups !</h1>
-                <p class="display-meals-empty-message">Vous n'avez pas encore plannifié de repas.</p>
-            </div>
+            <app-large-empty 
+            *ngIf="!this.mealsByMealKinds.length"
+            illustrationSource="/assets/img/undraw-eating-together-re-ux62.svg"
+            title="Oups !"
+            message="Vous n'avez pas encore plannifié de repas.">
+            </app-large-empty>
         </div>
         <ng-template #loading>
             <app-simple-loading></app-simple-loading>

@@ -3,7 +3,5 @@
         <div class="home-category-header-name">{{this.categoryName}}</div>
         <button type="button" class="home-category-header-see-all" (click)="this.seeAll()">Voir tout</button>
     </div>
-    <app-simple-loading *ngIf="this.isLoading"></app-simple-loading>
-    <div *ngIf="!this.isLoading && this.isEmpty" class="home-category-empty">Aucun élément à afficher.</div>
-    <ng-content *ngIf="!this.isLoading && !this.isEmpty"></ng-content>
+    <ng-content></ng-content>
 </div>

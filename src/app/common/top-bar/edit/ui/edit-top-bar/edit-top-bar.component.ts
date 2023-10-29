@@ -16,21 +16,9 @@ import { MatButtonModule } from '@angular/material/button';
   ]
 })
 export class EditTopBarComponent {
-  private _onCloseClicked: EventEmitter<void> = new EventEmitter();
-  public get onCloseClicked(): EventEmitter<void> {
-    return this._onCloseClicked;
-  }
-  @Output() public set onCloseClicked(value: EventEmitter<void>) {
-    this._onCloseClicked = value;
-  }
-
-  private _onSaveClicked: EventEmitter<void> = new EventEmitter();
-  public get onSaveClicked(): EventEmitter<void> {
-    return this._onSaveClicked;
-  }
-  @Output() public set onSaveClicked(value: EventEmitter<void>) {
-    this._onSaveClicked = value;
-  }
+  @Input() public title: string|null = '';
+  @Output() public onCloseClicked: EventEmitter<void> = new EventEmitter();
+  @Output() public onSaveClicked: EventEmitter<void> = new EventEmitter();
 
   public close(): void {
     this.onCloseClicked.emit();

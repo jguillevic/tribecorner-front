@@ -1,8 +1,8 @@
 <div class="page">
-    <app-edit-top-bar 
+    <app-edit-top-bar
+    [title]="isCreating() ? 'Ajouter ma liste' : 'Modifier ma liste'"
     (onCloseClicked)="goToDisplayShoppingLists()" 
     (onSaveClicked)="editShoppingList()">
-        {{ isCreating() ? 'Ajouter ma liste' : 'Modifier ma liste' }}
     </app-edit-top-bar>
     <div class="margin">
         <div class="form">

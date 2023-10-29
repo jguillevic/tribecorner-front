@@ -21,6 +21,7 @@ import { MealsByMealKind } from 'src/app/meal/model/meals-by-meal-kind.model';
 import { MealsByMealKindService } from 'src/app/meal/service/meals-by-meal-kind.service';
 import { Action } from 'src/app/common/action';
 import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
+import { SimpleEmptyComponent } from "../../../common/empty/ui/simple-empty/simple-empty.component";
 
 @Component({
     selector: 'app-display-home',
@@ -38,7 +39,8 @@ import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loadin
         HomeCategoryComponent,
         MatDividerModule,
         MealCardComponent,
-        SimpleLoadingComponent
+        SimpleLoadingComponent,
+        SimpleEmptyComponent
     ]
 })
 export class DisplayHomeComponent {

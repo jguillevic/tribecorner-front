@@ -5,13 +5,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ItemShoppingList } from '../../model/item-shopping-list.model';
 import { ShoppingList } from '../../model/shopping-list.model';
-import { Subscription, switchMap } from 'rxjs';
+import { Observable, Subscription, mergeMap, shareReplay, switchMap } from 'rxjs';
 import { ShoppingListService } from '../../service/shopping-list.service';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { ShoppingListTopBarComponent } from "../shopping-list-top-bar/shopping-list-top-bar.component";
 import { FormsModule } from '@angular/forms';
 import { Action } from 'src/app/common/action';
 import { Mode } from '../mode';
+import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
 
 @Component({
     selector: 'app-display-shopping-list',
@@ -24,37 +25,29 @@ import { Mode } from '../mode';
         MatButtonModule,
         MatCheckboxModule,
         FormsModule,
-        ShoppingListTopBarComponent
+        ShoppingListTopBarComponent,
+        SimpleLoadingComponent
     ]
 })
-export class DisplayShoppingListComponent implements OnInit, OnDestroy {
-  private initShoppingListSubscription: Subscription|undefined;
+export class DisplayShoppingListComponent implements OnDestroy {
   private deleteSubscription: Subscription|undefined;
-
-  public shoppingList: ShoppingList|undefined;
-  public currentAction: Action = Action.update;
-  public currentMode: Mode = Mode.display;
   
+  public readonly shoppingList$: Observable<ShoppingList> 
+  = this.activatedRoute.queryParams
+  .pipe(
+    mergeMap(params => {
+        const shoppingListId: number = params['id'];
+        return this.shoppingListService.loadOneById(shoppingListId);
+    }),
+    shareReplay(1)
+  );
+
   public constructor(
     private activatedRoute: ActivatedRoute,
     private shoppingListService: ShoppingListService
-    ) { }
-
-  public ngOnInit(): void {
-    this.initShoppingListSubscription = this.activatedRoute.queryParams
-    .pipe(
-      switchMap((params: Params) => {
-          const shoppingListId: number = params['id'];
-          return this.shoppingListService.loadOneById(shoppingListId);
-      })
-    )
-    .subscribe(shoppingList => {
-      this.shoppingList = shoppingList;
-    });
-  }
+  ) { }
 
   public ngOnDestroy(): void {
-    this.initShoppingListSubscription?.unsubscribe();
     this.deleteSubscription?.unsubscribe();
   }
 

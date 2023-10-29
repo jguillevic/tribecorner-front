@@ -7,10 +7,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Action } from 'src/app/common/action';
 import { MealService } from '../../service/meal.service';
-import { Observable, Subscription, combineLatest, exhaustMap, map, mergeMap, of, shareReplay, tap } from 'rxjs';
+import { Observable, Subscription, combineLatest, map, mergeMap, of, shareReplay, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MealRoutes } from '../../route/meal.routes';
-import { UserService } from 'src/app/user/service/user.service';
 import { MatSelectModule } from '@angular/material/select';
 import { MealKindService } from '../../service/meal-kind.service';
 import { MealKind } from '../../model/meal-kind.model';
@@ -108,15 +107,11 @@ export class EditMealComponent implements OnDestroy {
   = combineLatest({
     editMealForm: this.editMealForm$,
     mealKinds: this.mealKinds$
-  })
-  .pipe(
-    tap(data => console.table(data))
-  );
+  });
 
   public constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private userService: UserService,
     private mealKindService: MealKindService,
     private mealService: MealService
     ) {
@@ -143,7 +138,7 @@ export class EditMealComponent implements OnDestroy {
   private save(): Observable<Meal|undefined> {
     return this.currentAction$
     .pipe(
-      exhaustMap(currentAction => {
+      mergeMap(currentAction => {
         const meal: Meal = this.getMeal();
 
         if (currentAction === Action.update) {

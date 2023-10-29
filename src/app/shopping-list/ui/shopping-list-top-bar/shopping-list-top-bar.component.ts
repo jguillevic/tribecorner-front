@@ -23,7 +23,7 @@ import { ShoppingListRoutes } from '../../route/shopping-list.routes';
 export class ShoppingListTopBarComponent implements OnDestroy {
   private saveSubscription: Subscription|undefined;
 
-  @Input() public shoppingList: ShoppingList|undefined;
+  @Input() public shoppingList: ShoppingList|null|undefined;
 
   public constructor(
     private router: Router,

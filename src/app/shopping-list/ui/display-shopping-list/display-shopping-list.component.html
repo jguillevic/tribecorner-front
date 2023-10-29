@@ -1,6 +1,6 @@
 <div class="page">
-    <app-shopping-list-top-bar [shoppingList]="shoppingList"></app-shopping-list-top-bar>
-    <div class="shopping-list margin" *ngIf="shoppingList">
+    <app-shopping-list-top-bar [shoppingList]="shoppingList$ | async"></app-shopping-list-top-bar>
+    <div class="shopping-list margin" *ngIf="shoppingList$ | async as shoppingList;else loadingShoppingList">
         <h1 class="shopping-list-name">{{ shoppingList.name }}</h1>
         <ul class="shopping-list-items" *ngIf="shoppingList.items">
             <li class="item-shopping-list" *ngFor="let itemShoppingList of shoppingList.items">
@@ -12,4 +12,7 @@
             </li>
         </ul>
     </div>
+    <ng-template #loadingShoppingList>
+        <app-simple-loading></app-simple-loading>
+    </ng-template>
 </div>

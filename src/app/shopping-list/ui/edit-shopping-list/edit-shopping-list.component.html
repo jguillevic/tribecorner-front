@@ -1,12 +1,12 @@
 <div class="page">
     <app-edit-top-bar
-    [title]="isCreating() ? 'Ajouter ma liste' : 'Modifier ma liste'"
+    [title]="(isCreating$ | async) ? 'Ajouter ma liste' : 'Modifier ma liste'"
     (onCloseClicked)="goToDisplayShoppingLists()" 
     (onSaveClicked)="editShoppingList()">
     </app-edit-top-bar>
     <div class="margin">
         <div class="form">
-            <form [formGroup]="editShoppingListForm">
+            <form *ngIf="editShoppingListForm$ | async as editShoppingListForm; else loadingForm" [formGroup]="editShoppingListForm">
                 <div class="form-inputs">
                     <mat-form-field class="form-input">
                         <mat-label>Nom</mat-label>
@@ -35,6 +35,9 @@
                     </div>
                 </div>
             </form>
+            <ng-template #loadingForm>
+                <app-simple-loading></app-simple-loading>
+            </ng-template>
         </div>
     </div>
 </div>

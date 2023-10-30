@@ -1,11 +1,13 @@
 <div class="page">
     <app-edit-top-bar
     [title]="(isCreating$ | async) ? 'Ajouter mon repas' : 'Modifier mon repas'"
-    (onCloseClicked)="goToDisplayMeals()"
+    [isSaving]="(this.isSaving$ | async) ?? false"
+    [isClosing]="(this.isClosing$ | async) ?? false"
+    (onCloseClicked)="close()"
     (onSaveClicked)="editMeal()">
     </app-edit-top-bar>
     <div class="margin">
-        <div class="form">
+        <div class="form m-t-30">
             <form *ngIf="editMealFormData$ | async as editMealFormData; else loadingForm" [formGroup]="editMealFormData.editMealForm" (ngSubmit)="editMeal()">
                 <div class="form-inputs">
                     <!--Type.-->
@@ -31,21 +33,6 @@
                             Nom requis
                         </mat-error>
                     </mat-form-field>
-                    <!--Date.-->
-                    <!-- <mat-form-field class="form-input">
-                        <mat-label>Date</mat-label>
-                        <input matInput [matDatepicker]="datepicker" formControlName="mealDate">
-                        <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
-                        <mat-datepicker #datepicker>
-                            <mat-datepicker-actions>
-                            <button mat-button matDatepickerCancel>Annuler</button>
-                            <button mat-raised-button color="primary" matDatepickerApply>Appliquer</button>
-                            </mat-datepicker-actions>
-                        </mat-datepicker>
-                        <mat-error *ngIf="editMealForm.controls['mealDate'].hasError('required')">
-                            Date requise
-                        </mat-error>
-                    </mat-form-field> -->
                     <!--Nombre de personnes.-->
                     <mat-form-field class="form-input">
                         <mat-label>Repas pour ?</mat-label>

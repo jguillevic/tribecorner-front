@@ -2,12 +2,6 @@
     text-decoration: line-through;
 }
 
-.center {
-    display: flex; 
-    justify-content: center; 
-    align-items: center;
-  }
-
 .debug-border {
     border: 1px solid black;
 }
@@ -23,18 +17,6 @@
     flex-direction: row;
     justify-content: left;
     flex-wrap: wrap;
-}
-
-.card {
-    width: 156px;
-    margin: 5px;
-}
-
-.contextual-btn {
-    z-index: 2;
-    position: fixed !important;
-    right: calc(50% - 30px);
-    bottom: 30px;
 }
 
 .bg

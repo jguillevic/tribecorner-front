@@ -1,11 +1,13 @@
 <div class="page">
     <app-edit-top-bar
     [title]="(isCreating$ | async) ? 'Ajouter ma liste' : 'Modifier ma liste'"
+    [isSaving]="(this.isSaving$ | async) ?? false"
+    [isClosing]="(this.isClosing$ | async) ?? false"
     (onCloseClicked)="goToDisplayShoppingLists()" 
     (onSaveClicked)="editShoppingList()">
     </app-edit-top-bar>
     <div class="margin">
-        <div class="form">
+        <div class="form m-t-30">
             <form *ngIf="editShoppingListForm$ | async as editShoppingListForm; else loadingForm" [formGroup]="editShoppingListForm">
                 <div class="form-inputs">
                     <mat-form-field class="form-input">

@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ItemShoppingList } from '../../model/item-shopping-list.model';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Observable, Subscription, map, mergeMap, of, shareReplay, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, map, mergeMap, of, shareReplay, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Action } from 'src/app/common/action';
 import { ShoppingListRoutes } from '../../route/shopping-list.routes';
@@ -56,7 +56,12 @@ export class EditShoppingListComponent implements OnDestroy {
   );
 
   public itemShoppingLists: ItemShoppingList[] = [];
-  public isSaving: boolean = false;
+  
+  private readonly isSavingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public readonly isSaving$: Observable<boolean> = this.isSavingSubject.asObservable();
+
+  private readonly isClosingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public readonly isClosing$: Observable<boolean> = this.isClosingSubject.asObservable();
 
   // Formulaire.
   public readonly shoppingListNameMaxLength: number = 255;
@@ -125,7 +130,7 @@ export class EditShoppingListComponent implements OnDestroy {
   }
 
   private handleError(error: any): void {
-    this.isSaving = false;
+    this.isSavingSubject.next(false);
     window.alert("Problème technique. Veuillez réessayer dans quelques minutes.");
   }
 
@@ -139,7 +144,7 @@ export class EditShoppingListComponent implements OnDestroy {
         // Pour forcer l'apparition des erreurs.
         this.editShoppingListForm?.markAllAsTouched();
     if (this.editShoppingListForm?.valid) {
-      this.isSaving = true;
+      this.isSavingSubject.next(true);
       this.saveSubscription 
       = this.save()
       .subscribe({
@@ -152,7 +157,7 @@ export class EditShoppingListComponent implements OnDestroy {
   public addItem(): void {
     const newItemShoppingListName: string = this.editShoppingListForm?.controls['newItemShoppingListName'].value;
 
-    if (newItemShoppingListName.length > 0) {
+    if (newItemShoppingListName.length) {
       const itemShoppingList: ItemShoppingList  = new ItemShoppingList();
       itemShoppingList.name = newItemShoppingListName;
       this.itemShoppingLists.push(itemShoppingList);
@@ -164,5 +169,10 @@ export class EditShoppingListComponent implements OnDestroy {
   public deleteItem(itemShoppingList: ItemShoppingList): void {
       const itemIndex: number = this.itemShoppingLists.indexOf(itemShoppingList);
       this.itemShoppingLists.splice(itemIndex, 1);
+  }
+
+  public close(): Promise<boolean> {
+    this.isClosingSubject.next(true);
+    return this.goToDisplayShoppingLists();
   }
 }

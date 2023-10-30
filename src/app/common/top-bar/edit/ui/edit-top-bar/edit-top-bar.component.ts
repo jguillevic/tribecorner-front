@@ -18,11 +18,11 @@ import { MtxButtonModule } from '@ng-matero/extensions/button';
   ]
 })
 export class EditTopBarComponent {
-  @Input() public title: string|null = '';
+  @Input() public title: string = '';
+  @Input() public isSaving: boolean = false;
+  @Input() public isClosing: boolean = false;
   @Output() public onCloseClicked: EventEmitter<void> = new EventEmitter();
   @Output() public onSaveClicked: EventEmitter<void> = new EventEmitter();
-
-  //public color: ThemePalette = 'accent';
 
   public close(): void {
     this.onCloseClicked.emit();

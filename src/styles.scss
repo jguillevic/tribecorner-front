@@ -11,7 +11,9 @@
 @import 'styles/helpers/typography';
 @import 'styles/helpers/themes';
 @import 'styles/helpers/variables';
+@import 'styles/helpers/margins';
 @import 'styles/helpers/commons';
+
 
 /* components */
 @import 'styles/components/pages';
@@ -47,7 +49,6 @@
 @import 'styles/components/meal/meal-card';
 /* not-found */
 @import 'styles/components/not-found/display-not-found';
-
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

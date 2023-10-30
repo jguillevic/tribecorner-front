@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Action } from 'src/app/common/action';
 import { MealService } from '../../service/meal.service';
-import { Observable, Subscription, combineLatest, map, mergeMap, of, shareReplay, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, combineLatest, map, mergeMap, of, shareReplay, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MealRoutes } from '../../route/meal.routes';
 import { MatSelectModule } from '@angular/material/select';
@@ -66,8 +66,13 @@ export class EditMealComponent implements OnDestroy {
   = this.mealKindService
   .loadAll();
 
+  private readonly isSavingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public readonly isSaving$: Observable<boolean> = this.isSavingSubject.asObservable();
+
+  private readonly isClosingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public readonly isClosing$: Observable<boolean> = this.isClosingSubject.asObservable();
+
   public readonly numbersOfPersons: number[] = [1, 2, 3, 4, 5, 6, 7, 8];
-  public isSaving: boolean = false;
 
   // Formulaire.
   public readonly mealNameMaxLength: number = 255; 
@@ -153,7 +158,7 @@ export class EditMealComponent implements OnDestroy {
   }
 
   private handleError(error: any): void {
-    this.isSaving = false;
+    this.isSavingSubject.next(false);
     window.alert("Problème technique. Veuillez réessayer dans quelques minutes.");
   }
 
@@ -170,7 +175,7 @@ export class EditMealComponent implements OnDestroy {
     // Pour forcer l'apparition des erreurs.
     this.editMealForm?.markAllAsTouched();
     if (this.editMealForm?.valid) {
-      this.isSaving = true;
+      this.isSavingSubject.next(true);
       this.saveSubscription 
       = this.save()
       .subscribe({ 
@@ -178,5 +183,10 @@ export class EditMealComponent implements OnDestroy {
         error: (error) => this.handleError(error)
       });
     }
+  }
+
+  public close(): Promise<boolean> {
+    this.isClosingSubject.next(true);
+    return this.goToDisplayMeals();
   }
 }

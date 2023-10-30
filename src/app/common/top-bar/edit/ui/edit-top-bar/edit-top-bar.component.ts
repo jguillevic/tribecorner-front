@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MtxButtonModule } from '@ng-matero/extensions/button';
 
 @Component({
   selector: 'app-edit-top-bar',
@@ -9,7 +10,8 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [
     CommonModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MtxButtonModule
   ],
   templateUrl: './edit-top-bar.component.html',
   styles: [
@@ -19,6 +21,8 @@ export class EditTopBarComponent {
   @Input() public title: string|null = '';
   @Output() public onCloseClicked: EventEmitter<void> = new EventEmitter();
   @Output() public onSaveClicked: EventEmitter<void> = new EventEmitter();
+
+  //public color: ThemePalette = 'accent';
 
   public close(): void {
     this.onCloseClicked.emit();

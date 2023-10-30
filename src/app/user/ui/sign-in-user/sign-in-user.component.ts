@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 import { FamilyRoutes } from 'src/app/family/route/family.routes';
 import { UserInfo } from '../../model/user-info.model';
 import { FirebaseError } from 'firebase/app';
-import { ButtonWithSpinnerDirective } from 'src/app/common/button/directive/button-with-spinner.directive';
+import { MtxButtonModule } from '@ng-matero/extensions/button';
 
 @Component({
   selector: 'app-sign-in-user',
@@ -24,7 +24,7 @@ import { ButtonWithSpinnerDirective } from 'src/app/common/button/directive/butt
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
-    ButtonWithSpinnerDirective
+    MtxButtonModule
   ],
   templateUrl: './sign-in-user.component.html',
   styles: [
@@ -33,42 +33,18 @@ import { ButtonWithSpinnerDirective } from 'src/app/common/button/directive/butt
 export class SignInUserComponent implements OnDestroy {
   private signInSubscription: Subscription|undefined;
 
-  private _isSigningIn: boolean = false;
-  public get isSigningIn(): boolean {
-    return this._isSigningIn;
-  }
-  public set isSigningIn(value: boolean) {
-    this._isSigningIn = value;
-  }
-
-  private _isGoingToSignUp: boolean = false;
-  public get isGoingToSignUp(): boolean {
-    return this._isGoingToSignUp;
-  }
-  public set isGoingToSignUp(value: boolean) {
-    this._isGoingToSignUp = value;
-  }
+  public isSigningIn: boolean = false;
+  public isGoingToSignUp: boolean = false;
 
   // Formulaire.
-  private readonly _emailMaxLength: number = 255; 
-  public get emailMaxLength(): number {
-    return this._emailMaxLength;
-  }
-
-  private readonly _passwordMaxLength: number = 255;
-  public get passwordMaxLength(): number {
-    return this._passwordMaxLength;
-  }
-
-  private readonly _signInForm: FormGroup = new FormGroup(
+  public readonly emailMaxLength: number = 255; 
+  public readonly passwordMaxLength: number = 255;
+  public readonly signInForm: FormGroup = new FormGroup(
     {
       email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(this.emailMaxLength)]),
       password: new FormControl('', [Validators.required, Validators.maxLength(this.passwordMaxLength)])
     }
   );
-  public get signInForm(): FormGroup {
-    return this._signInForm;
-  }
 
   public constructor(
     private userService: UserService,

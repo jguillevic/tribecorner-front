@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/user/service/user.service';
 import { UserRoutes } from 'src/app/user/route/user.routes';
 import { Subscription, from, map } from 'rxjs';
-import { ButtonWithSpinnerDirective } from 'src/app/common/button/directive/button-with-spinner.directive';
+import { MtxButtonModule } from '@ng-matero/extensions/button';
 
 @Component({
   selector: 'app-sign-out-button',
@@ -15,7 +15,7 @@ import { ButtonWithSpinnerDirective } from 'src/app/common/button/directive/butt
     CommonModule,
     MatButtonModule,
     MatIconModule,
-    ButtonWithSpinnerDirective
+    MtxButtonModule
   ],
   templateUrl: './sign-out-button.component.html',
   styles: [

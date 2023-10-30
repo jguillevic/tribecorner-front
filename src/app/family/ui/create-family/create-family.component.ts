@@ -11,9 +11,8 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { HomeRoutes } from 'src/app/home/route/home.routes';
 import { UserInfo } from 'src/app/user/model/user-info.model';
 import { UserService } from 'src/app/user/service/user.service';
-import { ButtonWithSpinnerDirective } from 'src/app/common/button/directive/button-with-spinner.directive';
 import { SignOutButtonComponent } from 'src/app/common/button/ui/sign-out/sign-out-button.component';
-import { HttpErrorResponse } from '@angular/common/http';
+import { MtxButtonModule } from '@ng-matero/extensions/button';
 
 @Component({
     selector: 'app-create-family',
@@ -27,8 +26,8 @@ import { HttpErrorResponse } from '@angular/common/http';
         MatFormFieldModule,
         MatButtonModule,
         SignOutButtonComponent,
-        ButtonWithSpinnerDirective,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MtxButtonModule
     ]
 })
 export class CreateFamilyComponent implements OnInit, OnDestroy {

@@ -13,12 +13,12 @@ import { MealRoutes } from '../../route/meal.routes';
 import { MatSelectModule } from '@angular/material/select';
 import { MealKindService } from '../../service/meal-kind.service';
 import { MealKind } from '../../model/meal-kind.model';
-import { ButtonWithSpinnerDirective } from 'src/app/common/button/directive/button-with-spinner.directive';
 import { EditTopBarComponent } from "../../../common/top-bar/edit/ui/edit-top-bar/edit-top-bar.component";
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import * as moment from 'moment';
 import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
+import { MtxButtonModule } from '@ng-matero/extensions/button';
 
 @Component({
     selector: 'app-edit-meal',
@@ -32,12 +32,12 @@ import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loadin
         MatFormFieldModule,
         FormsModule,
         MatSelectModule,
-        ButtonWithSpinnerDirective,
         EditTopBarComponent,
         MatDatepickerModule,
         MatNativeDateModule,
         ReactiveFormsModule,
-        SimpleLoadingComponent
+        SimpleLoadingComponent,
+        MtxButtonModule
     ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })

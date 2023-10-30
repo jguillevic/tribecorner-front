@@ -11,9 +11,9 @@ import { Subscription, switchMap } from 'rxjs';
 import { UserService } from 'src/app/user/service/user.service';
 import { UserInfo } from 'src/app/user/model/user-info.model';
 import { HomeRoutes } from 'src/app/home/route/home.routes';
-import { ButtonWithSpinnerDirective } from 'src/app/common/button/directive/button-with-spinner.directive';
 import { SignOutButtonComponent } from 'src/app/common/button/ui/sign-out/sign-out-button.component';
 import { AssociationCodeNotFoundError } from '../../error/association-code-not-found.error';
+import { MtxButtonModule } from '@ng-matero/extensions/button';
 
 @Component({
     selector: 'app-join-family',
@@ -27,8 +27,8 @@ import { AssociationCodeNotFoundError } from '../../error/association-code-not-f
         MatFormFieldModule,
         MatButtonModule,
         SignOutButtonComponent,
-        ButtonWithSpinnerDirective,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MtxButtonModule
     ]
 })
 export class JoinFamilyComponent implements OnInit, OnDestroy {

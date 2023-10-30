@@ -11,10 +11,10 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Observable, Subscription, map, mergeMap, of, shareReplay, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Action } from 'src/app/common/action';
-import { ButtonWithSpinnerDirective } from 'src/app/common/button/directive/button-with-spinner.directive';
 import { ShoppingListRoutes } from '../../route/shopping-list.routes';
 import { EditTopBarComponent } from "../../../common/top-bar/edit/ui/edit-top-bar/edit-top-bar.component";
 import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
+import { MtxButtonModule } from '@ng-matero/extensions/button';
 
 @Component({
     selector: 'app-display-shopping-list',
@@ -28,10 +28,10 @@ import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loadin
         MatButtonModule,
         MatFormFieldModule,
         MatInputModule,
-        ButtonWithSpinnerDirective,
         EditTopBarComponent,
         ReactiveFormsModule,
-        SimpleLoadingComponent
+        SimpleLoadingComponent,
+        MtxButtonModule
     ]
 })
 export class EditShoppingListComponent implements OnDestroy {

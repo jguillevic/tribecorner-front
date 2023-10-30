@@ -10,9 +10,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { Subscription } from 'rxjs';
 import { FamilyRoutes } from 'src/app/family/route/family.routes';
-import { ButtonWithSpinnerDirective } from 'src/app/common/button/directive/button-with-spinner.directive';
 import { UserInfo } from '../../model/user-info.model';
 import { FirebaseError } from 'firebase/app';
+import { MtxButtonModule } from '@ng-matero/extensions/button';
 
 @Component({
   selector: 'app-sign-up-user',
@@ -24,7 +24,7 @@ import { FirebaseError } from 'firebase/app';
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
-    ButtonWithSpinnerDirective
+    MtxButtonModule
   ],
   templateUrl: './sign-up-user.component.html',
   styles: [

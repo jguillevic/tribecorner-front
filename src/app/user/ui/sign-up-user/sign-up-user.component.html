@@ -47,13 +47,13 @@
                 </mat-form-field>
             </div>
             <div class="form-buttons">
-                <button appButtonWithSpinner [loading]="isSigningUp" class="button form-button" mat-raised-button color="primary" type="submit">Créer un compte</button>
+                <button [loading]="isSigningUp" class="button form-button" mat-raised-button color="primary" type="submit">Créer un compte</button>
             </div>
         </form>
         <div class="form-sub-action">
             <p class="form-sub-action-text">Déjà membre ?</p>
             <div class="form-buttons">
-                <button appButtonWithSpinner [loading]="isGoingToSignIn" class="button form-button" mat-stroked-button color="primary" (click)="goToSignIn()">Se connecter</button>
+                <button [loading]="isGoingToSignIn" class="button form-button" mat-stroked-button color="primary" (click)="goToSignIn()">Se connecter</button>
             </div>
         </div>
     </div>

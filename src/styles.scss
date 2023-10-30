@@ -14,12 +14,13 @@
 @import 'styles/helpers/commons';
 
 /* components */
-@import 'styles/components/buttons';
 @import 'styles/components/pages';
 @import 'styles/components/forms';
 @import 'styles/components/loading';
 /* common */
 @import 'styles/components/common/tab-bar';
+/* button */
+@import 'styles/components/common/button/buttons';
 /* calendar */
 @import 'styles/components/common/calendar/inline-calendar';
 /* empty */

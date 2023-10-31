@@ -31,58 +31,33 @@ import { MtxButtonModule } from '@ng-matero/extensions/button';
     ]
 })
 export class CreateFamilyComponent implements OnInit, OnDestroy {
-  private _createSubscription: Subscription|undefined;
+  private createSubscription: Subscription|undefined;
 
-  private _currentUserInfo: UserInfo | undefined;
-  public get currentUserInfo(): UserInfo | undefined {
-    return this._currentUserInfo;
-  }
-  public set currentUserInfo(value: UserInfo | undefined) {
-    this._currentUserInfo = value;
-  }
-
-  private _isCreatingFamily: boolean = false;
-  public get isCreatingFamily(): boolean {
-    return this._isCreatingFamily;
-  }
-  public set isCreatingFamily(value: boolean) {
-    this._isCreatingFamily = value;
-  }
-  private _isGoingToJoinFamily: boolean = false;
-  public get isGoingToJoinFamily(): boolean {
-    return this._isGoingToJoinFamily;
-  }
-  public set isGoingToJoinFamily(value: boolean) {
-    this._isGoingToJoinFamily = value;
-  }
+  public currentUserInfo: UserInfo | undefined;
+  public isCreatingFamily: boolean = false;
+  public isGoingToJoinFamily: boolean = false;
 
   // Formulaire.
-  private readonly _familyNameLength: number = 255; 
-  public get familyNameMaxLength(): number {
-    return this._familyNameLength;
-  }
+  public readonly familyNameMaxLength: number = 255; 
 
-  private readonly _createFamilyForm: FormGroup = new FormGroup(
+  public readonly createFamilyForm: FormGroup = new FormGroup(
     {
       familyName: new FormControl('', [Validators.required, Validators.maxLength(this.familyNameMaxLength)]),
     }
   );
-  public get createFamilyForm(): FormGroup {
-    return this._createFamilyForm;
-  }
 
   public constructor(
     private router: Router,
     private familyService: FamilyService,
     private userService: UserService
-    ) { }
+  ) { }
 
   public ngOnInit(): void {
     this.currentUserInfo = this.userService.getCurrentUserInfo();
   }
 
   public ngOnDestroy(): void {
-    this._createSubscription?.unsubscribe();
+    this.createSubscription?.unsubscribe();
   }
 
   private goToHome(): Promise<boolean> {
@@ -101,7 +76,7 @@ export class CreateFamilyComponent implements OnInit, OnDestroy {
       const familyName: string = this.createFamilyForm.controls['familyName'].value;
 
       if (this.currentUserInfo) {
-        this._createSubscription = this.familyService
+        this.createSubscription = this.familyService
         .create(familyName, this.currentUserInfo.id)
         .pipe(
           switchMap(() => {

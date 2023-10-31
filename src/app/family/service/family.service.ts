@@ -54,13 +54,18 @@ export class FamilyService {
     return createFamilyDto;
   }
 
-  public loadOneByAssociationCode(associationCode: string): Observable<Family> {
-    return this.apiHttp.get<LoadFamilyDto>(
+  public loadOneByAssociationCode(associationCode: string): Observable<Family|undefined> {
+    return this.apiHttp.get<LoadFamilyDto[]>(
       `${environment.apiUrl}${FamilyService.apiPath}?associationCode=${associationCode}`
       )
       .pipe(
-        map(loadFamilyDto => 
-            FamilyService.fromLoadFamilyDtoToFamily(loadFamilyDto)
+        map(loadFamilyDtos => {
+            if (loadFamilyDtos.length) {
+            return FamilyService.fromLoadFamilyDtoToFamily(loadFamilyDtos[0]);
+            } else {
+              return undefined;
+            }
+          }
         )
       );
   }

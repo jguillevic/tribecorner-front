@@ -34,40 +34,17 @@ import { MtxButtonModule } from '@ng-matero/extensions/button';
 export class JoinFamilyComponent implements OnInit, OnDestroy {
   private _joinSubscription: Subscription|undefined;
 
-  private _currentUserInfo: UserInfo | undefined;
-  public get currentUserInfo(): UserInfo | undefined {
-    return this._currentUserInfo;
-  }
-  public set currentUserInfo(value: UserInfo | undefined) {
-    this._currentUserInfo = value;
-  }
-
-  private _isJoiningFamily: boolean = false;
-  public get isJoiningFamily(): boolean {
-    return this._isJoiningFamily;
-  }
-  public set isJoiningFamily(value: boolean) {
-    this._isJoiningFamily = value;
-  }
-
-  private _isGoingToCreateFamily: boolean = false;
-  public get isGoingToCreateFamily(): boolean {
-    return this._isGoingToCreateFamily;
-  }
-  public set isGoingToCreateFamily(value: boolean) {
-    this._isGoingToCreateFamily = value;
-  }
+  public currentUserInfo: UserInfo | undefined;
+  public isJoiningFamily: boolean = false;
+  public isGoingToCreateFamily: boolean = false;
 
   // Formulaire.
-  private readonly _joinFamilyForm: FormGroup = new FormGroup(
+  public readonly joinFamilyForm: FormGroup = new FormGroup(
     {
       familyAssociationCode: new FormControl('', [Validators.required]),
     }
   );
-  public get joinFamilyForm(): FormGroup {
-    return this._joinFamilyForm;
-  }
-
+  
   public constructor(
     private router: Router,
     private familyService: FamilyService,

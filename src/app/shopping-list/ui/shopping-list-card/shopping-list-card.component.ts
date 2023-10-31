@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ShoppingList } from '../../model/shopping-list.model';
 
@@ -12,18 +12,8 @@ import { ShoppingList } from '../../model/shopping-list.model';
   styles: [
   ]
 })
-export class ShoppingListCardComponent implements OnInit {
+export class ShoppingListCardComponent {
   @Input() public shoppingList: ShoppingList|undefined;
 
-  public backgroundColorClass: string|undefined;
-  public maxDisplayedItemsCount: number = 3;
-
-  public ngOnInit(): void {
-    const randomNumber: number = ShoppingListCardComponent.getRandomNumber(8) + 1;
-    this.backgroundColorClass = `bg-primary-color-${randomNumber}00`;
-  }
-
-  private static getRandomNumber(max: number): number {
-    return Math.floor(Math.random() * max);
-  }
+  public maxDisplayedItemsCount: number = 7;
 }

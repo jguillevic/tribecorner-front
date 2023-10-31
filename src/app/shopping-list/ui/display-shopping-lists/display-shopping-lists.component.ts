@@ -82,10 +82,4 @@ export class DisplayShoppingListsComponent implements OnDestroy {
       .subscribe();
     }
   }
-
-  public setFavorite(shoppingList: ShoppingList|undefined): void {
-    if (shoppingList) {
-      shoppingList.favorite = !shoppingList.favorite;
-    }
-  }
 }

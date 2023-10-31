@@ -41,7 +41,7 @@
         </app-home-category>
         <mat-divider></mat-divider>
         <app-home-category
-        categoryName="Mes listes favorites" 
+        categoryName="Mes listes" 
         (onSeeAllClicked)="goToDisplayShoppingLists()">
             <div *ngIf="this.shoppingLists$ | async as shoppingLists;else loadingShoppingLists"
             class="display-home-shopping-lists-container">

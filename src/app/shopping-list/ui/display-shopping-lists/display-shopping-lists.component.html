@@ -2,13 +2,11 @@
     <app-profile-top-bar></app-profile-top-bar>
     <div class="display-shopping-lists">
         <div *ngIf="this.shoppingLists$ | async as shoppingLists;else loading" class="display-shopping-lists-container">
-            <app-shopping-list-card *ngFor="let shoppingList of shoppingLists"
+            <app-shopping-list-card 
+            *ngFor="let shoppingList of shoppingLists"
             [shoppingList]="shoppingList">
                 <button mat-icon-button (click)="goToUpdate(shoppingList.id)">
                     <mat-icon class="material-symbols-outlined">edit</mat-icon>
-                </button>
-                <button mat-icon-button (click)="goToDisplay(shoppingList.id)">
-                    <mat-icon class="material-symbols-outlined">visibility</mat-icon>
                 </button>
                 <button mat-icon-button color="warn" (click)="delete(shoppingList)">
                     <mat-icon class="material-symbols-outlined">delete</mat-icon>

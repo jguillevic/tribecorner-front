@@ -15,6 +15,7 @@ import { ShoppingListRoutes } from '../../route/shopping-list.routes';
 import { EditTopBarComponent } from "../../../common/top-bar/edit/ui/edit-top-bar/edit-top-bar.component";
 import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
 import { MtxButtonModule } from '@ng-matero/extensions/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
     selector: 'app-display-shopping-list',
@@ -31,7 +32,8 @@ import { MtxButtonModule } from '@ng-matero/extensions/button';
         EditTopBarComponent,
         ReactiveFormsModule,
         SimpleLoadingComponent,
-        MtxButtonModule
+        MtxButtonModule,
+        MatCheckboxModule
     ]
 })
 export class EditShoppingListComponent implements OnDestroy {

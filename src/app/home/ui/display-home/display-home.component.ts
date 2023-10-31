@@ -72,7 +72,7 @@ export class DisplayHomeComponent {
 
   public goToDisplayShoppingList(shoppingListId: number|undefined): Promise<boolean>|void {
     if (shoppingListId) {
-      return this.router.navigate([ShoppingListRoutes.displayShoppingListRoute], { queryParams: { action: Action.update, id: shoppingListId } });
+      return this.router.navigate([ShoppingListRoutes.editShoppingListRoute], { queryParams: { action: Action.update, id: shoppingListId } });
     }
   }
 

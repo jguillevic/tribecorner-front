@@ -22,10 +22,15 @@
                     </mat-form-field>
                     <ul class="shopping-list-items">
                         <li class="item-shopping-list" *ngFor="let itemShoppingList of itemShoppingLists">
-                            <span class="item-shopping-list-name">{{ itemShoppingList.name }}</span>
+                            <mat-checkbox
+                            color="primary"
+                            [(ngModel)]="itemShoppingList.isChecked"
+                            [ngModelOptions]="{standalone: true}">
+                            <span class="item-shopping-list-name" [ngClass]="{ 'line': itemShoppingList.isChecked }">{{ itemShoppingList.name }}</span>
+                          </mat-checkbox>
                             <div class="item-shopping-list-btns">
                                 <button type="button" mat-icon-button (click)="deleteItem(itemShoppingList)" color="warn">
-                                    <mat-icon class="material-symbols-outlined">delete</mat-icon>
+                                    <mat-icon class="material-symbols-outlined">close</mat-icon>
                                 </button>
                             </div>
                         </li>

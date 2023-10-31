@@ -59,16 +59,6 @@ export class DisplayShoppingListsComponent implements OnDestroy {
     }); 
   }
 
-  public goToDisplay(shoppingListId: number|undefined): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
-      if (shoppingListId) {
-        resolve(this.router.navigate([ShoppingListRoutes.displayShoppingListRoute], { queryParams: { id: shoppingListId } }));
-      } else {
-        reject(false);
-      }
-    });
-  }
-
   public delete(shoppingList: ShoppingList): void {
     if (shoppingList.id) {
       this.deleteSubscription = this.shoppingListService.delete(shoppingList.id)

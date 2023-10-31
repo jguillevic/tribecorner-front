@@ -38,8 +38,7 @@ import { MtxButtonModule } from '@ng-matero/extensions/button';
         ReactiveFormsModule,
         SimpleLoadingComponent,
         MtxButtonModule
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    ]
 })
 export class EditMealComponent implements OnDestroy {
   private saveSubscription: Subscription|undefined;

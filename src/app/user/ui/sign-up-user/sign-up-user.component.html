@@ -34,7 +34,10 @@
                 </mat-form-field>
                 <mat-form-field class="form-input">
                     <mat-label>Mot de passe</mat-label>
-                    <input matInput type="password" formControlName="password">
+                    <input matInput [type]="this.hidePassword ? 'password' : 'text'" formControlName="password">
+                    <button type="button" mat-icon-button matSuffix (click)="this.hidePassword = !this.hidePassword">
+                        <mat-icon>{{this.hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
                     <mat-error *ngIf="signUpForm.controls['password'].hasError('pattern')">
                         Mot de passe invalide (min. 8 caractères, 1 majuscule, 1 minuscule, 1 chiffre, 1 caractère parmi @$!%*?&)
                     </mat-error>

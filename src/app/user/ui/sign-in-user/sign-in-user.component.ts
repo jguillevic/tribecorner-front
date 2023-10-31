@@ -2,9 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../service/user.service';
 import { Router } from '@angular/router';
-import { UserRoutes } from '../../route/user.routes';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SignInUser } from '../../model/sign-in-user.model';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,6 +11,9 @@ import { FamilyRoutes } from 'src/app/family/route/family.routes';
 import { UserInfo } from '../../model/user-info.model';
 import { FirebaseError } from 'firebase/app';
 import { MtxButtonModule } from '@ng-matero/extensions/button';
+import { MatIconModule } from '@angular/material/icon';
+import { SignInUser } from '../../model/sign-in-user.model';
+import { UserRoutes } from '../../route/user.routes';
 
 @Component({
   selector: 'app-sign-in-user',
@@ -24,7 +25,8 @@ import { MtxButtonModule } from '@ng-matero/extensions/button';
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
-    MtxButtonModule
+    MtxButtonModule,
+    MatIconModule
   ],
   templateUrl: './sign-in-user.component.html',
   styles: [
@@ -33,6 +35,7 @@ import { MtxButtonModule } from '@ng-matero/extensions/button';
 export class SignInUserComponent implements OnDestroy {
   private signInSubscription: Subscription|undefined;
 
+  public hidePassword: boolean = true;
   public isSigningIn: boolean = false;
   public isGoingToSignUp: boolean = false;
 

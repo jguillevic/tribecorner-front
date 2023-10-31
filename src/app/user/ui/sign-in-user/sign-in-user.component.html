@@ -23,7 +23,10 @@
                 </mat-form-field>
                 <mat-form-field class="form-input">
                     <mat-label>Mot de passe</mat-label>
-                    <input matInput type="password" formControlName="password">
+                    <input matInput [type]="this.hidePassword ? 'password' : 'text'" formControlName="password">
+                    <button type="button" mat-icon-button matSuffix (click)="this.hidePassword = !this.hidePassword">
+                        <mat-icon>{{this.hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                      </button>
                     <mat-error *ngIf="signInForm.controls['password'].hasError('maxlength')">
                         Mot de passe trop long (max. {{ passwordMaxLength }} caractères)
                     </mat-error>

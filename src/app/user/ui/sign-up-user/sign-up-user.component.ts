@@ -13,6 +13,7 @@ import { FamilyRoutes } from 'src/app/family/route/family.routes';
 import { UserInfo } from '../../model/user-info.model';
 import { FirebaseError } from 'firebase/app';
 import { MtxButtonModule } from '@ng-matero/extensions/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-sign-up-user',
@@ -24,70 +25,41 @@ import { MtxButtonModule } from '@ng-matero/extensions/button';
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
-    MtxButtonModule
+    MtxButtonModule,
+    MatIconModule
   ],
   templateUrl: './sign-up-user.component.html',
   styles: [
   ]
 })
 export class SignUpUserComponent implements OnDestroy {
-  private _signUpSubscription: Subscription|undefined;
+  private signUpSubscription: Subscription|undefined;
 
-  private _isSigningUp: boolean = false;
-  public get isSigningUp(): boolean {
-    return this._isSigningUp;
-  }
-  public set isSigningUp(value: boolean) {
-    this._isSigningUp = value;
-  }
-
-  private _isGoingToSignIn: boolean = false;
-  public get isGoingToSignIn(): boolean {
-    return this._isGoingToSignIn;
-  }
-  public set isGoingToSignIn(value: boolean) {
-    this._isGoingToSignIn = value;
-  }
+  public hidePassword: boolean = true;
+  public isSigningUp: boolean = false;
+  public isGoingToSignIn: boolean = false;
 
   // Formulaire.
-  private readonly _usernameMaxLength: number = 255; 
-  public get usernameMaxLength(): number {
-    return this._usernameMaxLength;
-  }
+  public readonly usernameMaxLength: number = 255; 
+  public readonly emailMaxLength: number = 255; 
+  public readonly passwordMaxLength: number = 255;
+  public readonly passwordRegex: string = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
 
-  private readonly _emailMaxLength: number = 255; 
-  public get emailMaxLength(): number {
-    return this._emailMaxLength;
-  }
-
-  private readonly _passwordMaxLength: number = 255;
-  public get passwordMaxLength(): number {
-    return this._passwordMaxLength;
-  }
-
-  private readonly _passwordRegex: string = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
-  public get passwordRegex(): string {
-    return this._passwordRegex;
-  }
-
-  private readonly _signUpForm: FormGroup = new FormGroup(
+  public readonly signUpForm: FormGroup = new FormGroup(
     {
       username: new FormControl('', [Validators.required, Validators.maxLength(this.usernameMaxLength)]),
       email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(this.emailMaxLength)]),
       password: new FormControl('', [Validators.required, Validators.maxLength(this.passwordMaxLength), Validators.pattern(this.passwordRegex)])
     }
   );
-  public get signUpForm(): FormGroup {
-    return this._signUpForm;
-  }
 
   public constructor(
     private userService: UserService,
     private router: Router
-    ) { }
+  ) { }
 
   public ngOnDestroy(): void {
-    this._signUpSubscription?.unsubscribe();
+    this.signUpSubscription?.unsubscribe();
   }
 
   private goToCreateFamily(userInfo: UserInfo|undefined): Promise<boolean>|void {

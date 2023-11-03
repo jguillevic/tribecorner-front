@@ -6,9 +6,9 @@
     (onCloseClicked)="goToDisplayShoppingLists()" 
     (onSaveClicked)="editShoppingList()">
     </app-edit-top-bar>
-    <div class="margin">
-        <div class="form m-t-30">
-            <form *ngIf="editShoppingListForm$ | async as editShoppingListForm; else loadingForm" [formGroup]="editShoppingListForm">
+    <div>
+        <div class="margin">
+            <form class="form m-t-30" *ngIf="editShoppingListForm$ | async as editShoppingListForm; else loadingForm" [formGroup]="editShoppingListForm">
                 <div class="form-inputs">
                     <mat-form-field class="form-input">
                         <mat-label>Nom</mat-label>
@@ -20,31 +20,59 @@
                             Nom requis
                         </mat-error>
                     </mat-form-field>
-                    <ul class="shopping-list-items">
-                        <li class="item-shopping-list" *ngFor="let itemShoppingList of itemShoppingLists">
+                    <ul *ngIf="this.notCheckedItemShoppingLists$ | async as notCheckedItemShoppingLists">
+                        <li class="item-shopping-list" *ngFor="let notCheckedItemShoppingList of notCheckedItemShoppingLists">
                             <mat-checkbox
                             color="primary"
-                            [(ngModel)]="itemShoppingList.isChecked"
-                            [ngModelOptions]="{standalone: true}">
-                            <span class="item-shopping-list-name" [ngClass]="{ 'line': itemShoppingList.isChecked }">{{ itemShoppingList.name }}</span>
-                          </mat-checkbox>
-                            <div class="item-shopping-list-btns">
-                                <button type="button" mat-icon-button (click)="deleteItem(itemShoppingList)" color="warn">
+                            [checked]="notCheckedItemShoppingList.isChecked"
+                            (change)="toggleItemShoppingList(notCheckedItemShoppingList)">
+                                <span class="item-shopping-list__name" [ngClass]="{ 'line': notCheckedItemShoppingList.isChecked }">{{ notCheckedItemShoppingList.name }}</span>
+                            </mat-checkbox>
+                            <div class="item-shopping-list__buttons">
+                                <button type="button" mat-icon-button (click)="deleteItemShoppingList(notCheckedItemShoppingList)" color="warn">
                                     <mat-icon class="material-symbols-outlined">close</mat-icon>
                                 </button>
                             </div>
                         </li>
                     </ul>
-                    <div class="shopping-list-add-zone">
-                        <mat-form-field class="shopping-list-add-field">
-                            <input matInput placeholder="+ Ajouter un élément" formControlName="newItemShoppingListName" (keyup.enter)="addItem()">
-                        </mat-form-field>
-                    </div>
                 </div>
             </form>
-            <ng-template #loadingForm>
-                <app-simple-loading></app-simple-loading>
-            </ng-template>
+            <div *ngIf="this.checkedItemShoppingLists$ | async as checkedItemShoppingLists">
+                <mat-expansion-panel *ngIf="checkedItemShoppingLists.length">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{checkedItemShoppingLists.length}} article(s) coché(s)
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <ul>
+                        <li class="item-shopping-list" *ngFor="let checkedItemShoppingList of checkedItemShoppingLists">
+                            <mat-checkbox
+                                color="primary"
+                                [checked]="checkedItemShoppingList.isChecked"
+                                (change)="toggleItemShoppingList(checkedItemShoppingList)">
+                                    <span class="item-shopping-list__name" [ngClass]="{ 'line': checkedItemShoppingList.isChecked }">{{ checkedItemShoppingList.name }}</span>
+                            </mat-checkbox>
+                            <div class="item-shopping-list__buttons">
+                                <button type="button" mat-icon-button (click)="deleteItemShoppingList(checkedItemShoppingList)" color="warn">
+                                    <mat-icon class="material-symbols-outlined">close</mat-icon>
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                </mat-expansion-panel>
+            </div>
         </div>
+        <form class="add-form margin" [formGroup]="addNewItemShoppingListForm" (ngSubmit)="addItemShoppingList()">
+            <mat-form-field class="add-form__field">
+                <mat-label>Nouvel article</mat-label>
+                <input matInput type="text" formControlName="newItemShoppingListName">
+            </mat-form-field>
+            <button mat-raised-button color="primary" class="add-form__button">
+                Ajouter
+            </button>
+        </form>
+        <ng-template #loadingForm>
+            <app-simple-loading></app-simple-loading>
+        </ng-template>
     </div>
 </div>

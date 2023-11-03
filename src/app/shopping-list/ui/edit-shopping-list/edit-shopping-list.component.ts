@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ItemShoppingList } from '../../model/item-shopping-list.model';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { BehaviorSubject, Observable, Subscription, map, mergeMap, of, shareReplay, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, map, mergeMap, of, share, shareReplay, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Action } from 'src/app/common/action';
 import { ShoppingListRoutes } from '../../route/shopping-list.routes';
@@ -16,12 +16,13 @@ import { EditTopBarComponent } from "../../../common/top-bar/edit/ui/edit-top-ba
 import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
 import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @Component({
     selector: 'app-display-shopping-list',
     standalone: true,
     templateUrl: './edit-shopping-list.component.html',
-    styles: [],
+    styleUrls: [ 'edit-shopping-list.component.scss' ],
     imports: [
         CommonModule,
         FormsModule,
@@ -33,7 +34,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
         ReactiveFormsModule,
         SimpleLoadingComponent,
         MtxButtonModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        MatExpansionModule
     ]
 })
 export class EditShoppingListComponent implements OnDestroy {
@@ -57,8 +59,25 @@ export class EditShoppingListComponent implements OnDestroy {
     shareReplay(1)
   );
 
-  public itemShoppingLists: ItemShoppingList[] = [];
-  
+  private itemShoppingListsSubject: BehaviorSubject<ItemShoppingList[]> = new BehaviorSubject<ItemShoppingList[]>([]);
+  public itemShoppingLists$: Observable<ItemShoppingList[]> = this.itemShoppingListsSubject.asObservable();
+
+  public notCheckedItemShoppingLists$ = this.itemShoppingLists$
+    .pipe(
+      map(
+        itemShoppingLists => 
+          itemShoppingLists.filter(itemShoppingList => !itemShoppingList.isChecked)
+      )
+    );
+
+  public checkedItemShoppingLists$ = this.itemShoppingLists$
+    .pipe(
+      map(
+        itemShoppingLists => 
+          itemShoppingLists.filter(itemShoppingList => itemShoppingList.isChecked)
+      )
+    );
+
   private readonly isSavingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public readonly isSaving$: Observable<boolean> = this.isSavingSubject.asObservable();
 
@@ -83,17 +102,23 @@ export class EditShoppingListComponent implements OnDestroy {
       const shoppingList: ShoppingList = new ShoppingList();
       return of(shoppingList);
     }),
-    tap(shoppingList => this.itemShoppingLists = shoppingList.items),
+    tap(shoppingList => this.itemShoppingListsSubject.next(shoppingList.items)),
     map(shoppingList => 
       new FormGroup(
         {
           shoppingListName: new FormControl(shoppingList.name, [Validators.required, Validators.maxLength(this.shoppingListNameMaxLength)]),
-          newItemShoppingListName: new FormControl(undefined)
+          newItemShoppingListName: new FormControl('')
         }
       )
     ),
     tap(editShoppingListForm => this.editShoppingListForm = editShoppingListForm)
   );
+
+  public readonly addNewItemShoppingListForm: FormGroup = new FormGroup(
+    {
+      newItemShoppingListName: new FormControl('')
+    }
+  )
   
   public constructor(
     private activatedRoute: ActivatedRoute,
@@ -112,7 +137,7 @@ export class EditShoppingListComponent implements OnDestroy {
       shoppingList.id = this.currentShoppingListId;
     }
     shoppingList.name = this.editShoppingListForm?.controls['shoppingListName'].value;
-    shoppingList.items = this.itemShoppingLists;
+    shoppingList.items = this.itemShoppingListsSubject.value;
 
     return shoppingList;
   }
@@ -156,25 +181,31 @@ export class EditShoppingListComponent implements OnDestroy {
     }
   }
 
-  public addItem(): void {
-    const newItemShoppingListName: string = this.editShoppingListForm?.controls['newItemShoppingListName'].value;
+  public addItemShoppingList(): void {
+    const newItemShoppingListName: string = this.addNewItemShoppingListForm?.controls['newItemShoppingListName'].value;
 
     if (newItemShoppingListName.length) {
       const itemShoppingList: ItemShoppingList  = new ItemShoppingList();
       itemShoppingList.name = newItemShoppingListName;
-      this.itemShoppingLists.push(itemShoppingList);
-      itemShoppingList.position = this.itemShoppingLists.indexOf(itemShoppingList) + 1;
-      this.editShoppingListForm?.controls['newItemShoppingListName'].setValue("");
+      this.itemShoppingListsSubject.next([...this.itemShoppingListsSubject.value, itemShoppingList]);
+      itemShoppingList.position = this.itemShoppingListsSubject.value.indexOf(itemShoppingList) + 1;
+      this.addNewItemShoppingListForm?.controls['newItemShoppingListName'].setValue("");
     }
   }
 
-  public deleteItem(itemShoppingList: ItemShoppingList): void {
-      const itemIndex: number = this.itemShoppingLists.indexOf(itemShoppingList);
-      this.itemShoppingLists.splice(itemIndex, 1);
+  public deleteItemShoppingList(itemShoppingList: ItemShoppingList): void {
+      const itemIndex: number = this.itemShoppingListsSubject.value.indexOf(itemShoppingList);
+      this.itemShoppingListsSubject.value.splice(itemIndex, 1);
+      this.itemShoppingListsSubject.next([...this.itemShoppingListsSubject.value]);
   }
 
   public close(): Promise<boolean> {
     this.isClosingSubject.next(true);
     return this.goToDisplayShoppingLists();
+  }
+
+  public toggleItemShoppingList(itemShoppingList: ItemShoppingList) {
+    itemShoppingList.isChecked = !itemShoppingList.isChecked;
+    this.itemShoppingListsSubject.next([...this.itemShoppingListsSubject.value]);
   }
 }

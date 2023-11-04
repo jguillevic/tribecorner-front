@@ -1,5 +1,9 @@
 @import '../../../../styles/helpers/_mixins.scss';
 
+.shopping-list {
+    padding-bottom: 100px;
+}
+
 .add-form {
     position: fixed;
     bottom: 0;
@@ -7,6 +11,7 @@
     grid-template-columns: 1fr auto;
     align-items: center;
     background-color: white;
+    padding-top: 10px;
     
     @include media-width;
 

@@ -1,12 +1,17 @@
 <div class="shopping-list-card">
     <div class="shopping-list-card-content">
         <div class="shopping-list-card-label">{{shoppingList?.name}}</div>
-        <ul class="shopping-list-card-items" *ngIf="shoppingList && shoppingList.items && shoppingList.items.length > 0">
-            <li class="shopping-list-card-item" *ngFor="let itemShoppingList of shoppingList.items | slice:0:maxDisplayedItemsCount; let i = index">
-                <div [ngClass]="{ 'line': itemShoppingList.isChecked }">{{itemShoppingList.name}}</div>
-            </li>
-            <li *ngIf="shoppingList.items.length > maxDisplayedItemsCount">...</li>
-        </ul>
+        <div *ngIf="this.notCheckedItemShoppingLists$ |async as notCheckedItemShoppingLists">
+            <ul class="shopping-list-card-items" *ngIf="notCheckedItemShoppingLists.length">
+                <li class="shopping-list-card-item" *ngFor="let notCheckedItemShoppingList of this.notCheckedItemShoppingLists | slice:0:maxDisplayedItemsCount; let i = index">
+                    <div>{{notCheckedItemShoppingList.name}}</div>
+                </li>
+                <li *ngIf="notCheckedItemShoppingLists.length > maxDisplayedItemsCount">...</li>
+            </ul>
+        </div>
+        <div *ngIf="this.checkedItemShoppingLists$ | async as checkedItemShoppingLists">
+            <span *ngIf="this.checkedItemShoppingLists.length">+ {{this.checkedItemShoppingLists.length}} article(s) coché(s)</span>
+        </div>
     </div>
     <div class="shopping-list-card-actions">
         <ng-content></ng-content>

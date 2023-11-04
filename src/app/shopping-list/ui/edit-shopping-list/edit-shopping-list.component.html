@@ -7,7 +7,7 @@
     (onSaveClicked)="editShoppingList()">
     </app-edit-top-bar>
     <div>
-        <div class="margin">
+        <div class="margin shopping-list">
             <form class="form m-t-30" *ngIf="editShoppingListForm$ | async as editShoppingListForm; else loadingForm" [formGroup]="editShoppingListForm">
                 <div class="form-inputs">
                     <mat-form-field class="form-input">

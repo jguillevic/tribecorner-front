@@ -51,7 +51,7 @@ export class DisplayMealsComponent implements OnInit, OnDestroy {
     private mealService: MealService,
     private mealsByMealKindService: MealsByMealKindService,
     private router: Router
-    ) { }
+  ) { }
 
   public ngOnInit(): void {
     this.activatedRoute.queryParams.pipe(
@@ -73,7 +73,6 @@ export class DisplayMealsComponent implements OnInit, OnDestroy {
 
   public onSelectedDateChanged(date: Date) {
     this.selectedDate = date;
-
     this.mealsByMealKinds$ = this.mealsByMealKindService.loadAllByDate(this.selectedDate);
   }
 

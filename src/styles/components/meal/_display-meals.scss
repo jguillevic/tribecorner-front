@@ -1,7 +1,7 @@
 .display-meals {
     padding-top: 10px;
     width: 100%;
-    padding-bottom: calc($tab-bar-height + 30px);
+    padding-bottom: $padding-bottom-tab-bar;
 
     &-calendar {
         margin-left: 15px;

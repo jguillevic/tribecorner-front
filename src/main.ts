@@ -19,6 +19,7 @@ import { MealKindService } from './app/meal/service/meal-kind.service';
 import { MealService } from './app/meal/service/meal.service';
 import { EventService } from './app/event/service/event.service';
 import { MealsByMealKindService } from './app/meal/service/meals-by-meal-kind.service';
+import { ShoppingListCopierService } from './app/shopping-list/service/shopping-list-copier.service';
 
 const routes: Routes = [
     { 
@@ -32,7 +33,10 @@ const routes: Routes = [
     },
     { 
         path: '',
-        providers: [ShoppingListService],
+        providers: [
+            ShoppingListService,
+            ShoppingListCopierService
+        ],
         canActivate: [signedInGuard, hasFamilyGuard],
         children: ShoppingListRoutes.shoppingListRoutes
     },

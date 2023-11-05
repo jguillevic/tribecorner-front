@@ -1,28 +1,42 @@
 <div class="page">
     <app-profile-top-bar></app-profile-top-bar>
-    <div class="display-shopping-lists">
-        <div *ngIf="this.shoppingLists$ | async as shoppingLists;else loading" class="display-shopping-lists-container">
-            <app-shopping-list-card 
-            *ngFor="let shoppingList of shoppingLists"
-            [shoppingList]="shoppingList">
-                <button mat-icon-button (click)="goToUpdate(shoppingList.id)">
-                    <mat-icon class="material-symbols-outlined">edit</mat-icon>
-                </button>
-                <button mat-icon-button color="warn" (click)="delete(shoppingList)">
-                    <mat-icon class="material-symbols-outlined">delete</mat-icon>
-                </button>
-            </app-shopping-list-card>
-            <app-large-empty 
-            *ngIf="!shoppingLists.length"
-            illustrationSource="/assets/img/undraw_gone_shopping_re_2lau.svg"
-            title="Oups !"
-            message="Vous n'avez pas encore créé de liste."
-            >
-            </app-large-empty>
-        </div>
-        <ng-template #loading>
-            <app-simple-loading></app-simple-loading>
-        </ng-template>
-    </div>
+    <mat-tab-group *ngIf="this.shoppingLists$ | async as shoppingLists;else loading">
+        <mat-tab label="En cours">
+            <div class="shopping-lists">
+                <div class="shopping-lists__container">
+                    <app-shopping-list-card 
+                    *ngFor="let shoppingList of shoppingLists"
+                    [shoppingList]="shoppingList">
+                        <button mat-icon-button (click)="goToUpdate(shoppingList.id)">
+                            <mat-icon class="material-symbols-outlined">edit</mat-icon>
+                        </button>
+                        <app-shopping-list-copy-button 
+                        [shoppingListToCopy]="shoppingList"
+                        (onShoppingListCopied)="onShoppingListCopied($event)">
+                        </app-shopping-list-copy-button>
+                        <button mat-icon-button (click)="toggleArchive(shoppingList.id)">
+                            <mat-icon class="material-symbols-outlined">archive</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="delete(shoppingList)">
+                            <mat-icon class="material-symbols-outlined">delete</mat-icon>
+                        </button>
+                    </app-shopping-list-card>
+                    <app-large-empty 
+                    *ngIf="!shoppingLists.length"
+                    illustrationSource="/assets/img/undraw_gone_shopping_re_2lau.svg"
+                    title="Oups !"
+                    message="Vous n'avez pas encore créé de liste."
+                    >
+                    </app-large-empty>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Archives">
+
+        </mat-tab>
+    </mat-tab-group>
+    <ng-template #loading>
+        <app-simple-loading></app-simple-loading>
+    </ng-template>
     <app-tab-bar [selectedIndex]=1 (onActionClicked)="goToCreate()"></app-tab-bar>
 </div>

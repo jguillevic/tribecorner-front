@@ -1,11 +1,5 @@
 <div class="page">
-    <app-edit-top-bar
-    [title]="(isCreating$ | async) ? 'Ajouter ma liste' : 'Modifier ma liste'"
-    [isSaving]="(this.isSaving$ | async) ?? false"
-    [isClosing]="(this.isClosing$ | async) ?? false"
-    (onCloseClicked)="goToDisplayShoppingLists()" 
-    (onSaveClicked)="editShoppingList()">
-    </app-edit-top-bar>
+    <app-go-back-top-bar></app-go-back-top-bar>
     <div>
         <div class="margin shopping-list">
             <form class="form m-t-30" *ngIf="editShoppingListForm$ | async as editShoppingListForm; else loadingForm" [formGroup]="editShoppingListForm">
@@ -66,6 +60,9 @@
             <mat-form-field class="add-form__field">
                 <mat-label>Nouvel article</mat-label>
                 <input matInput type="text" formControlName="newItemShoppingListName">
+                <mat-error *ngIf="addNewItemShoppingListForm.controls['newItemShoppingListName'].hasError('maxlength')">
+                    Nom trop long (max. {{ this.itemShoppingListNameMaxLength }} caractères)
+                </mat-error>
             </mat-form-field>
             <button mat-raised-button color="primary" class="add-form__button">
                 Ajouter

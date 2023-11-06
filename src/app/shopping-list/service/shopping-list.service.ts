@@ -34,8 +34,7 @@ export class ShoppingListService {
           loadShoppingListDtos.map(loadShoppingListDto =>
             ShoppingListService.fromLoadShoppingListDtoToShoppingList(loadShoppingListDto)
           )
-        ),
-        tap(shoppingLists => console.table(shoppingLists))
+        )
       );
   }
 
@@ -47,8 +46,7 @@ export class ShoppingListService {
         map(
           loadShoppingListDto => 
           ShoppingListService.fromLoadShoppingListDtoToShoppingList(loadShoppingListDto)
-        ),
-        tap(shoppingList => console.table(shoppingList))
+        )
       );
   }
 
@@ -63,8 +61,7 @@ export class ShoppingListService {
       .pipe(
         map(loadShoppingListDto => 
             ShoppingListService.fromLoadShoppingListDtoToShoppingList(loadShoppingListDto)
-        ),
-        tap(shoppingList => console.table(shoppingList))
+        )
       );
   }
 
@@ -79,8 +76,7 @@ export class ShoppingListService {
       .pipe(
         map(loadShoppingListDto => 
             ShoppingListService.fromLoadShoppingListDtoToShoppingList(loadShoppingListDto)
-        ),
-        tap(shoppingList => console.table(shoppingList))
+        )
       );
   }
 

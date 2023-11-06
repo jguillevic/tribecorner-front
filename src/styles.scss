@@ -2,9 +2,6 @@
 /* Reset */
 @use '../node_modules/scss-reset/src/scss/_reset.scss';
 
-/* externes */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap');
-
 /* helpers */
 @import 'styles/helpers/colors';
 @import 'styles/helpers/palettes';
@@ -41,7 +38,6 @@
 @import 'styles/components/home/home-category';
 /* shopping-list */
 @import 'styles/components/shopping-list/shopping-list-top-bar';
-@import 'styles/components/shopping-list/shopping-list-cards';
 /* meal */
 @import 'styles/components/meal/display-meals';
 @import 'styles/components/meal/meal-card';

@@ -52,15 +52,16 @@ export class DisplayHomeComponent {
   = this.mealsByMealKindService
   .loadAllByDate(new Date());
 
-  public readonly shoppingLists$: Observable<ShoppingList[]> = this.shoppingListService
-  .loadAll();
+  public readonly shoppingLists$: Observable<ShoppingList[]> 
+  = this.shoppingListService
+  .loadAll(false);
 
   public constructor(
     private eventService: EventService,
     private mealsByMealKindService: MealsByMealKindService,
     private shoppingListService: ShoppingListService,
     private router: Router
-    ) { }
+  ) { }
 
   public goToDisplayEvents(): void {
 

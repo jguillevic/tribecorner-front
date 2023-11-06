@@ -1,9 +1,9 @@
 <div class="shopping-list-card">
-    <div class="shopping-list-card-content">
-        <div class="shopping-list-card-label">{{shoppingList?.name}}</div>
+    <div class="shopping-list-card__container">
+        <div class="shopping-list-card__label">{{shoppingList?.name}}</div>
         <div *ngIf="this.notCheckedItemShoppingLists$ |async as notCheckedItemShoppingLists">
-            <ul class="shopping-list-card-items" *ngIf="notCheckedItemShoppingLists.length">
-                <li class="shopping-list-card-item" *ngFor="let notCheckedItemShoppingList of this.notCheckedItemShoppingLists | slice:0:maxDisplayedItemsCount; let i = index">
+            <ul class="shopping-list-card__items" *ngIf="notCheckedItemShoppingLists.length">
+                <li class="shopping-list-card__item" *ngFor="let notCheckedItemShoppingList of this.notCheckedItemShoppingLists | slice:0:maxDisplayedItemsCount; let i = index">
                     <div>{{notCheckedItemShoppingList.name}}</div>
                 </li>
                 <li *ngIf="notCheckedItemShoppingLists.length > maxDisplayedItemsCount">...</li>
@@ -13,7 +13,7 @@
             <span *ngIf="this.checkedItemShoppingLists.length">+ {{this.checkedItemShoppingLists.length}} article(s) coché(s)</span>
         </div>
     </div>
-    <div class="shopping-list-card-actions">
+    <div class="shopping-list-card__actions">
         <ng-content></ng-content>
     </div>
 </div>

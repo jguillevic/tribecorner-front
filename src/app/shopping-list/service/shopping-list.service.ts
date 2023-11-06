@@ -13,11 +13,21 @@ import { ApiHttpClient } from 'src/app/common/http/api-http-client';
 export class ShoppingListService {
   private static apiPath: string = "shopping_lists";
 
-  constructor(private apiHttp: ApiHttpClient) { }
+  public constructor(private apiHttp: ApiHttpClient) { }
 
-  public loadAll(): Observable<ShoppingList[]> {
+  public static getLoadAllRequest(isArchived: boolean|undefined = undefined): string {
+    let isArchivedParameter: string = '';
+    if (isArchived !== undefined) {
+      isArchivedParameter = `?isArchived=${isArchived}`;
+    }
+    const request: string = `${environment.apiUrl}${ShoppingListService.apiPath}${isArchivedParameter}`;
+
+    return request;
+  }
+
+  public loadAll(isArchived: boolean|undefined = undefined): Observable<ShoppingList[]> {
     return this.apiHttp.get<LoadShoppingListDto[]>(
-      `${environment.apiUrl}${ShoppingListService.apiPath}`
+      ShoppingListService.getLoadAllRequest(isArchived)
       )
       .pipe(
         map(loadShoppingListDtos => 

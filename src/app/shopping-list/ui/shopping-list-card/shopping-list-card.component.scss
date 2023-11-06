@@ -1,19 +1,25 @@
+@import '../../../../styles.scss';
+
+:host {
+    width: 100%;
+    margin: 5px;
+}
+
 .shopping-list-card {
-    width: 190px;
+    width: 100%;
     border-radius: $default-border-radius;
     box-shadow: $card-shadow;
     display: inline-block;
     background-color: $primary-color-200;
-    margin: 5px;
 
-    &-content {
+    &__container {
         width: 100%;
         padding: 10px;
         margin-left: auto;
         margin-right: auto;
     }
 
-    &-label {
+    &__label {
         font-size: 16px;
         font-weight: 700;
         vertical-align: bottom;
@@ -21,17 +27,17 @@
         margin: 0px !important;
     }
 
-    &-items {
+    &__items {
         margin-left: 10px;
         margin-right: 10px;
         padding-top: 5px;
     }
 
-    &-item {
+    &__item {
         font-size: 14px;
     }
 
-    &-actions {
+    &__actions {
         width: 100%;
         margin-left: auto;
         margin-right: auto;

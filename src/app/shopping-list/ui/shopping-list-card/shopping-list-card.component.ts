@@ -11,8 +11,7 @@ import { ItemShoppingList } from '../../model/item-shopping-list.model';
     CommonModule
   ],
   templateUrl: './shopping-list-card.component.html',
-  styles: [
-  ]
+  styleUrls: ['shopping-list-card.component.scss']
 })
 export class ShoppingListCardComponent implements OnInit {
   @Input() public shoppingList: ShoppingList|undefined;

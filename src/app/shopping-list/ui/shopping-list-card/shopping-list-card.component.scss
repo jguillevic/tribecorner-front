@@ -43,7 +43,7 @@
         margin-right: auto;
         display: flex;
         flex-direction: row;
-        justify-content: center;
+        justify-content: flex-end;
         background-color: rgba($color: $light-color, $alpha: 0.5);
         border-bottom-left-radius: $default-border-radius;
         border-bottom-right-radius: $default-border-radius;

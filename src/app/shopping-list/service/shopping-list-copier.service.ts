@@ -11,8 +11,8 @@ export class ShoppingListCopierService {
     const copiedShoppingList = new ShoppingList();
 
     copiedShoppingList.id = copyIds ? shoppingListToCopy.id : undefined;
-    copiedShoppingList.familyId = shoppingListToCopy.familyId;
     copiedShoppingList.name = shoppingListToCopy.name;
+    copiedShoppingList.isArchived = shoppingListToCopy.isArchived;
     shoppingListToCopy.items.forEach(item => {
         const copiedItemShoppingList = new ItemShoppingList();
         copiedItemShoppingList.id = copyIds ? item.id : undefined;

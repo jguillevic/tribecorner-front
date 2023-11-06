@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ShoppingList } from '../../model/shopping-list.model';
 import { ShoppingListService } from '../../service/shopping-list.service';
-import { Subscription } from 'rxjs';
+import { Subscription, tap } from 'rxjs';
 
 @Component({
   selector: 'app-shopping-list-archive-toggle',
@@ -40,8 +40,17 @@ export class ShoppingListArchiveToggleComponent implements OnDestroy {
     this.isTogglingArchive = true;
     if (this.shoppingListToToggleArchive) {
       this.shoppingListToToggleArchive.isArchived = !this.shoppingListToToggleArchive.isArchived;
-      this.onShoppingListArchiveToggled.emit();
+      this.toggleArchiveSubscription 
+      = this.shoppingListService.update(this.shoppingListToToggleArchive)
+      .pipe(
+        tap(updatedShoppingList => this.onShoppingListArchiveToggled.emit(updatedShoppingList)),
+        tap(() => this.isTogglingArchive = false)
+      )
+      .subscribe(
+        {
+          error: () => this.isTogglingArchive = false
+        }
+      );
     }
-    this.isTogglingArchive = false;
   }
 }

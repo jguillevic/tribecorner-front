@@ -39,6 +39,7 @@ export class ShoppingListCopyButtonComponent implements OnDestroy {
   public copy(): void {
     this.isCopying = true;
     const copiedShoppingList = this.shoppingListCopierService.copy(this.shoppingListToCopy, false);
+    copiedShoppingList.isArchived = false;
     this.copySubscription = this.shoppingListService.create(copiedShoppingList)
     .pipe(
       tap(

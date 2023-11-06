@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ShoppingList } from '../model/shopping-list.model';
-import { Observable, map } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { EditItemShoppingListDto } from '../dto/edit-item-shopping-list.dto';
 import { EditShoppingListDto } from '../dto/edit-shopping-list.dto';
@@ -24,7 +24,8 @@ export class ShoppingListService {
           loadShoppingListDtos.map(loadShoppingListDto =>
             ShoppingListService.fromLoadShoppingListDtoToShoppingList(loadShoppingListDto)
           )
-        )
+        ),
+        tap(shoppingLists => console.table(shoppingLists))
       );
   }
 
@@ -36,7 +37,8 @@ export class ShoppingListService {
         map(
           loadShoppingListDto => 
           ShoppingListService.fromLoadShoppingListDtoToShoppingList(loadShoppingListDto)
-        )
+        ),
+        tap(shoppingList => console.table(shoppingList))
       );
   }
 
@@ -51,7 +53,8 @@ export class ShoppingListService {
       .pipe(
         map(loadShoppingListDto => 
             ShoppingListService.fromLoadShoppingListDtoToShoppingList(loadShoppingListDto)
-        )
+        ),
+        tap(shoppingList => console.table(shoppingList))
       );
   }
 
@@ -66,7 +69,8 @@ export class ShoppingListService {
       .pipe(
         map(loadShoppingListDto => 
             ShoppingListService.fromLoadShoppingListDtoToShoppingList(loadShoppingListDto)
-        )
+        ),
+        tap(shoppingList => console.table(shoppingList))
       );
   }
 
@@ -81,7 +85,7 @@ export class ShoppingListService {
 
     editShoppingListDto.id = shoppingList.id;
     editShoppingListDto.name = shoppingList.name;
-    editShoppingListDto.familyId = shoppingList.familyId;
+    editShoppingListDto.isArchived = shoppingList.isArchived;
 
     shoppingList.items.forEach(itemShoppingList => {
       const editItemShoppingListDto = ShoppingListService.fromItemShoppingListToEditItemShoppingListDto(itemShoppingList);
@@ -107,7 +111,7 @@ export class ShoppingListService {
 
     shoppingList.id = loadShoppingListDto.id;
     shoppingList.name = loadShoppingListDto.name;
-    shoppingList.familyId = loadShoppingListDto.familyId;
+    shoppingList.isArchived = loadShoppingListDto.isArchived;
 
     loadShoppingListDto.items.forEach(loadItemShoppingListDto => {
       const itemShoppingList = ShoppingListService.fromLoadItemShoppingListDtoToItemShoppingList(loadItemShoppingListDto);

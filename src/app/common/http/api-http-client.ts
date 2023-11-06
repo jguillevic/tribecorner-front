@@ -65,6 +65,24 @@ export class ApiHttpClient {
         );
     }
 
+    public patch<T>(url: string, body: any | null): Observable<T> {
+      return this.userService.getFirebaseJWT()
+      .pipe(
+        exhaustMap(token => {
+          const headers: HttpHeaders= new HttpHeaders()
+          .set('Content-type', 'application/json')
+          .set('Accept', 'application/json')
+          .set('Authorization', `Bearer ${token}`);
+  
+          return this.http.patch<T>(
+            url,
+            body,
+            { 'headers': headers }
+            );
+        })
+      );
+  }
+
     public delete<T>(url: string): Observable<T> {
         return this.userService.getFirebaseJWT()
         .pipe(

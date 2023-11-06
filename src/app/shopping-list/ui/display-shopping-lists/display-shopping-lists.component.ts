@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TabBarComponent } from 'src/app/common/tab-bar/ui/tab-bar/tab-bar.component';
 import { Router } from '@angular/router';
 import { ShoppingList } from '../../model/shopping-list.model';
-import { BehaviorSubject, Observable, Subscription, combineLatest, map, shareReplay, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, combineLatest, filter, map, shareReplay, tap } from 'rxjs';
 import { ShoppingListRoutes } from '../../route/shopping-list.routes';
 import { ShoppingListService } from '../../service/shopping-list.service';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,6 +14,8 @@ import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loadin
 import { LargeEmptyComponent } from "../../../common/empty/ui/large-empty/large-empty.component";
 import { MatTabsModule } from '@angular/material/tabs';
 import { ShoppingListCopyButtonComponent } from "../shopping-list-copy-button/shopping-list-copy-button.component";
+import { ShoppingListDeleteButtonComponent } from "../shopping-list-delete-button/shopping-list-delete-button.component";
+import { ShoppingListArchiveToggleComponent } from "../shopping-list-archive-toggle/shopping-list-archive-toggle.component";
 
 @Component({
     selector: 'app-display-shopping-lists',
@@ -30,11 +32,19 @@ import { ShoppingListCopyButtonComponent } from "../shopping-list-copy-button/sh
         SimpleLoadingComponent,
         LargeEmptyComponent,
         MatTabsModule,
-        ShoppingListCopyButtonComponent
+        ShoppingListCopyButtonComponent,
+        ShoppingListDeleteButtonComponent,
+        ShoppingListArchiveToggleComponent
     ]
 })
 export class DisplayShoppingListsComponent implements OnDestroy {
   private deleteSubscription: Subscription|undefined;
+
+  private loadedShoppingLists$ 
+  = this.shoppingListService.loadAll()
+  .pipe(
+    shareReplay(1)
+  );
 
   private addedShoppingListsSubject: BehaviorSubject<ShoppingList[]> = new BehaviorSubject<ShoppingList[]>([]);
   public addedShoppingLists$ = this.addedShoppingListsSubject.asObservable();
@@ -42,10 +52,10 @@ export class DisplayShoppingListsComponent implements OnDestroy {
   private deletedShoppingListSubject: BehaviorSubject<ShoppingList[]> = new BehaviorSubject<ShoppingList[]>([]);
   public deletedShoppingLists$ = this.deletedShoppingListSubject.asObservable();
 
-  public shoppingLists$: Observable<ShoppingList[]> 
+  private shoppingLists$: Observable<ShoppingList[]> 
   = combineLatest(
     {
-      loaded: this.shoppingListService.loadAll(),
+      loaded: this.loadedShoppingLists$,
       added: this.addedShoppingLists$,
       deleted: this.deletedShoppingLists$
     }
@@ -55,6 +65,31 @@ export class DisplayShoppingListsComponent implements OnDestroy {
       [...result.loaded, ...result.added]
       .filter(shoppingList => !result.deleted.includes(shoppingList))
     )
+  );
+
+  private shoppingListToggleArchiveSubject: BehaviorSubject<ShoppingList> = new BehaviorSubject<ShoppingList>(new ShoppingList());
+  private shoppingListToggleArchive$ = this.shoppingListToggleArchiveSubject.asObservable();
+
+  public archivedShoppingLists$: Observable<ShoppingList[]>
+  = combineLatest(
+    {
+      shoppingLists: this.shoppingLists$,
+      shoppingListToggleArchive: this.shoppingListToggleArchive$
+    }
+  )
+  .pipe(
+    map(result => result.shoppingLists.filter(shoppingList => shoppingList.isArchived))
+  );
+
+  public unarchivedShoppingLists$: Observable<ShoppingList[]>
+  = combineLatest(
+    {
+      shoppingLists: this.shoppingLists$,
+      shoppingListToggleArchive: this.shoppingListToggleArchive$
+    }
+  )
+  .pipe(
+    map(result => result.shoppingLists.filter(shoppingList => !shoppingList.isArchived))
   );
 
   public constructor(
@@ -100,9 +135,16 @@ export class DisplayShoppingListsComponent implements OnDestroy {
       );
   }
 
-  public toggleArchive(shoppingListId: number|undefined): void {
-    if (shoppingListId) {
+  public onShoppingListDeleted(deletedShoppingList: ShoppingList) {
+    this.deletedShoppingListSubject.next(
+      [
+        ...this.deletedShoppingListSubject.value,
+        deletedShoppingList
+      ]
+    );
+  }
 
-    }
+  public onShoppingListArchiveToggled(shoppingList: ShoppingList): void {
+    this.shoppingListToggleArchiveSubject.next(shoppingList);
   }
 }

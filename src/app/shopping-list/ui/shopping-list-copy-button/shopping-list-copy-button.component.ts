@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { Subscription, tap } from 'rxjs';
 import { ShoppingList } from '../../model/shopping-list.model';
 import { ShoppingListService } from '../../service/shopping-list.service';
 import { ShoppingListCopierService } from '../../service/shopping-list-copier.service';
+import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 

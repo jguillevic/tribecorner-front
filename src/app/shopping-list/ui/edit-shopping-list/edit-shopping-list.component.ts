@@ -46,23 +46,6 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
   private saveSubscription: Subscription|undefined;
   private currentShoppingListId: number|undefined;
 
-  public currentAction$ = this.activatedRoute.queryParams
-  .pipe(
-    map(params => params['action'] as string),
-    shareReplay(1)
-  );
-
-  public isCreating$ = this.currentAction$
-  .pipe(
-    map(currentAction => {
-      if (currentAction === Action.create) {
-        return true;
-      }
-      return false;
-    }),
-    shareReplay(1)
-  );
-
   private itemShoppingListsSubject: BehaviorSubject<ItemShoppingList[]> = new BehaviorSubject<ItemShoppingList[]>([]);
   public itemShoppingLists$: Observable<ItemShoppingList[]> = this.itemShoppingListsSubject.asObservable();
 
@@ -145,8 +128,7 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
       skip(1),
       debounceTime(500),
       filter(() => this.editShoppingListForm.valid),
-      switchMap(() => this.save()),
-      tap(() => console.log('Sauvegardé !'))
+      switchMap(() => this.save())
     )
     .subscribe()
   }
@@ -169,16 +151,15 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
   }
 
   private save(): Observable<ShoppingList> {
-    return this.currentAction$
-    .pipe(
-      mergeMap(currentAction => {
-        const shoppingList: ShoppingList = this.getShoppingList();
+    const shoppingList: ShoppingList = this.getShoppingList();
 
-        if (currentAction === Action.update) {
-          return this.shoppingListService.update(shoppingList);
-        } 
-        return this.shoppingListService.create(shoppingList);
-      })
+    if (this.currentShoppingListId !== undefined) {
+      return this.shoppingListService.update(shoppingList);
+    }
+
+    return this.shoppingListService.create(shoppingList)
+    .pipe(
+      tap(shoppingList => this.currentShoppingListId = shoppingList.id)
     );
   }
 

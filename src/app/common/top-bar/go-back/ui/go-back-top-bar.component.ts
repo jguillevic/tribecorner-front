@@ -12,8 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatButtonModule
   ],
   templateUrl: './go-back-top-bar.component.html',
-  styles: [
-  ]
+  styleUrls: ['go-back-top-bar.component.scss']
 })
 export class GoBackTopBarComponent {
   public isGoingBack: boolean = false;

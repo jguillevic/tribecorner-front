@@ -8,11 +8,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ItemShoppingList } from '../../model/item-shopping-list.model';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { BehaviorSubject, Observable, Subscription, combineLatest, debounceTime, filter, map, mergeMap, of, shareReplay, skip, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, combineLatest, debounceTime, filter, map, mergeMap, of, skip, switchMap, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Action } from 'src/app/common/action';
 import { ShoppingListRoutes } from '../../route/shopping-list.routes';
-import { EditTopBarComponent } from "../../../common/top-bar/edit/ui/edit-top-bar/edit-top-bar.component";
 import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
 import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -31,7 +30,6 @@ import { GoBackTopBarComponent } from "../../../common/top-bar/go-back/ui/go-bac
         MatButtonModule,
         MatFormFieldModule,
         MatInputModule,
-        EditTopBarComponent,
         ReactiveFormsModule,
         SimpleLoadingComponent,
         MtxButtonModule,

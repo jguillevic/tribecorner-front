@@ -7,16 +7,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Action } from 'src/app/common/action';
 import { MealService } from '../../service/meal.service';
-import { BehaviorSubject, Observable, Subscription, combineLatest, debounceTime, filter, map, mergeMap, of, shareReplay, skip, switchMap, tap } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MealRoutes } from '../../route/meal.routes';
+import { BehaviorSubject, Observable, Subscription, combineLatest, debounceTime, filter, map, mergeMap, of, switchMap, tap } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
 import { MealKindService } from '../../service/meal-kind.service';
 import { MealKind } from '../../model/meal-kind.model';
-import { EditTopBarComponent } from "../../../common/top-bar/edit/ui/edit-top-bar/edit-top-bar.component";
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import * as moment from 'moment';
 import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
 import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { GoBackTopBarComponent } from "../../../common/top-bar/go-back/ui/go-back-top-bar.component";
@@ -33,14 +30,14 @@ import { GoBackTopBarComponent } from "../../../common/top-bar/go-back/ui/go-bac
         MatFormFieldModule,
         FormsModule,
         MatSelectModule,
-        EditTopBarComponent,
         MatDatepickerModule,
         MatNativeDateModule,
         ReactiveFormsModule,
         SimpleLoadingComponent,
         MtxButtonModule,
         GoBackTopBarComponent
-    ]
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditMealComponent implements OnInit, OnDestroy {
   private autoSaveSubscription: Subscription|undefined;

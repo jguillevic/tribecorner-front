@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Meal } from '../../model/meal.model';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Action } from 'src/app/common/action';
 import { MealService } from '../../service/meal.service';
-import { BehaviorSubject, Observable, Subscription, combineLatest, map, mergeMap, of, shareReplay, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, combineLatest, debounceTime, filter, map, mergeMap, of, shareReplay, skip, switchMap, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MealRoutes } from '../../route/meal.routes';
 import { MatSelectModule } from '@angular/material/select';
@@ -19,6 +19,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import * as moment from 'moment';
 import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
 import { MtxButtonModule } from '@ng-matero/extensions/button';
+import { GoBackTopBarComponent } from "../../../common/top-bar/go-back/ui/go-back-top-bar.component";
 
 @Component({
     selector: 'app-edit-meal',
@@ -37,29 +38,13 @@ import { MtxButtonModule } from '@ng-matero/extensions/button';
         MatNativeDateModule,
         ReactiveFormsModule,
         SimpleLoadingComponent,
-        MtxButtonModule
+        MtxButtonModule,
+        GoBackTopBarComponent
     ]
 })
-export class EditMealComponent implements OnDestroy {
-  private saveSubscription: Subscription|undefined;
+export class EditMealComponent implements OnInit, OnDestroy {
+  private autoSaveSubscription: Subscription|undefined;
   private currentMealId: number|undefined;
-
-  public currentAction$ = this.activatedRoute.queryParams
-  .pipe(
-    map(params => params['action'] as string),
-    shareReplay(1)
-  );
-
-  public isCreating$ = this.currentAction$
-  .pipe(
-    map(currentAction => {
-      if (currentAction === Action.create) {
-        return true;
-      }
-      return false;
-    }),
-    shareReplay(1)
-  );
 
   private readonly mealKinds$: Observable<MealKind[]> 
   = this.mealKindService
@@ -76,7 +61,16 @@ export class EditMealComponent implements OnDestroy {
   // Formulaire.
   public readonly mealNameMaxLength: number = 255; 
 
-  private editMealForm: FormGroup|undefined;
+  private editMealForm: FormGroup 
+  = new FormGroup(
+    {
+      mealKindId: new FormControl(0, [Validators.required]),
+      mealName: new FormControl('', [Validators.required, Validators.maxLength(this.mealNameMaxLength)]),
+      mealDate: new FormControl(new Date(), [Validators.required]),
+      mealNumberOfPersons: new FormControl(0, [Validators.required])
+    }
+  );
+
   private readonly editMealForm$: Observable<FormGroup> = this.activatedRoute.queryParams
   .pipe(
     mergeMap(params => {
@@ -94,17 +88,13 @@ export class EditMealComponent implements OnDestroy {
       meal.numberOfPersons = 3;
       return of(meal);
     }),
-    map(meal => {
-      return new FormGroup(
-        {
-          mealKindId: new FormControl(meal.mealKindId ?? 0, [Validators.required]),
-          mealName: new FormControl(meal.name, [Validators.required, Validators.maxLength(this.mealNameMaxLength)]),
-          mealDate: new FormControl(meal.date, [Validators.required]),
-          mealNumberOfPersons: new FormControl(meal.numberOfPersons ?? 3, [Validators.required])
-        }
-      );
+    tap(meal => {
+      this.editMealForm.controls['mealKindId'].setValue(meal.mealKindId ?? 1);
+      this.editMealForm.controls['mealName'].setValue(meal.name);
+      this.editMealForm.controls['mealDate'].setValue(meal.date);
+      this.editMealForm.controls['mealNumberOfPersons'].setValue(meal.numberOfPersons ?? 3);
     }),
-    tap(editMealForm => this.editMealForm = editMealForm)
+    map(() => this.editMealForm)
   );
 
   public readonly editMealFormData$ 
@@ -115,14 +105,24 @@ export class EditMealComponent implements OnDestroy {
 
   public constructor(
     private activatedRoute: ActivatedRoute,
-    private router: Router,
     private mealKindService: MealKindService,
     private mealService: MealService
     ) {
   }
+
+  public ngOnInit(): void {
+    this.autoSaveSubscription 
+    = this.editMealForm.valueChanges
+    .pipe(
+      debounceTime(500),
+      filter(() => !this.editMealForm.pristine && this.editMealForm.valid),
+      switchMap(() => this.save())
+    )
+    .subscribe();
+  }
   
   public ngOnDestroy(): void {
-    this.saveSubscription?.unsubscribe();
+    this.autoSaveSubscription?.unsubscribe();
   }
 
   private getMeal(): Meal {
@@ -139,53 +139,16 @@ export class EditMealComponent implements OnDestroy {
     return meal;
   }
 
-  private save(): Observable<Meal|undefined> {
-    return this.currentAction$
-    .pipe(
-      mergeMap(currentAction => {
-        const meal: Meal = this.getMeal();
+  private save(): Observable<Meal> {
+    const meal: Meal = this.getMeal();
 
-        if (currentAction === Action.update) {
-          return this.mealService.update(meal);
-        } else if (currentAction === Action.create) {
-          return this.mealService.create(meal);
-        }
-
-        return of(undefined);
-      })
-    );
-  }
-
-  private handleError(error: any): void {
-    this.isSavingSubject.next(false);
-    window.alert("Problème technique. Veuillez réessayer dans quelques minutes.");
-  }
-
-  public goToDisplayMeals(): Promise<boolean> {
-    const date: Date = this.editMealForm?.controls['mealDate'].value;
-
-    return this.router.navigate(
-      [MealRoutes.displayMealsRoute],
-      { queryParams: { defaultSelectedDate: moment(date).format("YYYY-MM-DD") } }
-      );
-  }
-
-  public editMeal(): void {
-    // Pour forcer l'apparition des erreurs.
-    this.editMealForm?.markAllAsTouched();
-    if (this.editMealForm?.valid) {
-      this.isSavingSubject.next(true);
-      this.saveSubscription 
-      = this.save()
-      .subscribe({ 
-        next: () => this.goToDisplayMeals(),
-        error: (error) => this.handleError(error)
-      });
+    if (this.currentMealId !== undefined) {
+      return this.mealService.update(meal);
     }
-  }
 
-  public close(): Promise<boolean> {
-    this.isClosingSubject.next(true);
-    return this.goToDisplayMeals();
+    return this.mealService.create(meal)
+    .pipe(
+      tap(meal => this.currentMealId = meal.id)
+    );
   }
 }

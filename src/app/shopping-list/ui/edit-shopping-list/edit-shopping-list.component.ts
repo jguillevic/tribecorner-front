@@ -43,7 +43,6 @@ import { GoBackTopBarComponent } from "../../../common/top-bar/go-back/ui/go-bac
 })
 export class EditShoppingListComponent implements OnInit, OnDestroy {
   private autoSaveSubscription: Subscription|undefined;
-  private saveSubscription: Subscription|undefined;
   private currentShoppingListId: number|undefined;
 
   private itemShoppingListsSubject: BehaviorSubject<ItemShoppingList[]> = new BehaviorSubject<ItemShoppingList[]>([]);
@@ -64,15 +63,6 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
         itemShoppingLists.filter(itemShoppingList => itemShoppingList.isChecked)
     )
   );
-
-  private itemShoppingListChangesSubject: BehaviorSubject<ItemShoppingList> = new BehaviorSubject<ItemShoppingList>(new ItemShoppingList());
-  private itemShoppingListChanges$ = this.itemShoppingListChangesSubject.asObservable();
-
-  private readonly isSavingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public readonly isSaving$: Observable<boolean> = this.isSavingSubject.asObservable();
-
-  private readonly isClosingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public readonly isClosing$: Observable<boolean> = this.isClosingSubject.asObservable();
 
   // Formulaire.
   public readonly shoppingListNameMaxLength: number = 255;
@@ -130,12 +120,11 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
       filter(() => this.editShoppingListForm.valid),
       switchMap(() => this.save())
     )
-    .subscribe()
+    .subscribe();
   }
 
   public ngOnDestroy(): void {
     this.autoSaveSubscription?.unsubscribe();
-    this.saveSubscription?.unsubscribe();
   }
 
   private getShoppingList(): ShoppingList {
@@ -163,31 +152,10 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
     );
   }
 
-  private handleError(error: any): void {
-    this.isSavingSubject.next(false);
-    window.alert("Problème technique. Veuillez réessayer dans quelques minutes.");
-  }
-
   public goToDisplayShoppingLists(): Promise<boolean> {
     return this.router.navigate(
       [ShoppingListRoutes.displayShoppingListsRoute]
     );
-  }
-
-  public editShoppingList(): void {
-    // Pour forcer l'apparition des erreurs.
-    this.editShoppingListForm.markAllAsTouched();
-    if (this.editShoppingListForm.valid) {
-      this.isSavingSubject.next(true);
-      this.saveSubscription 
-      = this.save()
-      .subscribe(
-        {
-          next: () => this.goToDisplayShoppingLists(),
-          error: (error) => this.handleError(error)
-        }
-      );
-    }
   }
 
   public addItemShoppingList(): void {
@@ -209,11 +177,6 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
       const itemIndex: number = this.itemShoppingListsSubject.value.indexOf(itemShoppingList);
       this.itemShoppingListsSubject.value.splice(itemIndex, 1);
       this.itemShoppingListsSubject.next([...this.itemShoppingListsSubject.value]);
-  }
-
-  public close(): Promise<boolean> {
-    this.isClosingSubject.next(true);
-    return this.goToDisplayShoppingLists();
   }
 
   public toggleItemShoppingList(itemShoppingList: ItemShoppingList) {

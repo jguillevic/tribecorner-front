@@ -1,14 +1,8 @@
 <div class="page">
-    <app-edit-top-bar
-    [title]="(isCreating$ | async) ? 'Ajouter mon repas' : 'Modifier mon repas'"
-    [isSaving]="(this.isSaving$ | async) ?? false"
-    [isClosing]="(this.isClosing$ | async) ?? false"
-    (onCloseClicked)="close()"
-    (onSaveClicked)="editMeal()">
-    </app-edit-top-bar>
+    <app-go-back-top-bar></app-go-back-top-bar>
     <div class="margin">
         <div class="form m-t-30">
-            <form *ngIf="editMealFormData$ | async as editMealFormData; else loadingForm" [formGroup]="editMealFormData.editMealForm" (ngSubmit)="editMeal()">
+            <form *ngIf="editMealFormData$ | async as editMealFormData; else loadingForm" [formGroup]="editMealFormData.editMealForm">
                 <div class="form-inputs">
                     <!--Type.-->
                     <mat-form-field class="form-input">

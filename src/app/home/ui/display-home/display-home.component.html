@@ -6,6 +6,12 @@
         (onSeeAllClicked)="goToDisplayEvents()">
             <div *ngIf="this.events$ | async as events;else loadingEvents">
                 <div *ngIf="events.length;else emptyEvents">
+                    <div *ngFor="let event of events">
+                        <div>{{event.name}}</div>
+                        <div>{{event.startingDateTime}}</div>
+                        <div>{{event.endingDateTime}}</div>
+                        <div>{{event.allDay}}</div>
+                    </div>
                 </div>
                 <ng-template #emptyEvents>
                     <app-simple-empty></app-simple-empty>

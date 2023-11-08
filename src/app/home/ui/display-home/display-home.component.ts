@@ -22,6 +22,7 @@ import { MealsByMealKindService } from 'src/app/meal/service/meals-by-meal-kind.
 import { Action } from 'src/app/common/action';
 import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
 import { SimpleEmptyComponent } from "../../../common/empty/ui/simple-empty/simple-empty.component";
+import { EventRoutes } from 'src/app/event/route/event.routes';
 
 @Component({
     selector: 'app-display-home',
@@ -46,7 +47,7 @@ import { SimpleEmptyComponent } from "../../../common/empty/ui/simple-empty/simp
 export class DisplayHomeComponent {
   public readonly events$: Observable<Event[]> 
   = this.eventService
-  .loadAll();
+  .loadAllByDate(new Date());
 
   public readonly mealsByMealKinds$: Observable<MealsByMealKind[]> 
   = this.mealsByMealKindService
@@ -63,8 +64,8 @@ export class DisplayHomeComponent {
     private router: Router
   ) { }
 
-  public goToDisplayEvents(): void {
-
+  public goToDisplayEvents(): Promise<boolean> {
+    return this.router.navigate([EventRoutes.displayEventsRoute]);
   }
 
   public goToDisplayMeals(): Promise<boolean> {

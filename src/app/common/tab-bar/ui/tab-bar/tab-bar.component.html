@@ -34,10 +34,11 @@
         <button 
         mat-icon-button 
         [ngClass]="{ 'material-symbols-fill item--selected': selectedIndex === 3 }" 
+        (click)="goToEvents()"
         class="item">
             <div class="item__container">
                 <mat-icon class="material-symbols-outlined item__icon">event</mat-icon>
-                <div class="item__label">Calendrier</div>
+                <div class="item__label">Agenda</div>
             </div>
         </button>
     </div>

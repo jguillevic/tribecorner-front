@@ -20,6 +20,7 @@ import { MealService } from './app/meal/service/meal.service';
 import { EventService } from './app/event/service/event.service';
 import { MealsByMealKindService } from './app/meal/service/meals-by-meal-kind.service';
 import { ShoppingListCopierService } from './app/shopping-list/service/shopping-list-copier.service';
+import { EventRoutes } from './app/event/route/event.routes';
 
 const routes: Routes = [
     { 
@@ -49,6 +50,14 @@ const routes: Routes = [
         ],
         canActivate: [signedInGuard, hasFamilyGuard],
         children: MealRoutes.mealRoutes
+    },
+    {
+        path: '',
+        providers: [
+            EventService
+        ],
+        canActivate: [signedInGuard, hasFamilyGuard],
+        children: EventRoutes.eventRoutes
     },
     { 
         path: '',

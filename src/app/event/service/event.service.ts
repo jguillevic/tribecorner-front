@@ -5,9 +5,19 @@ import { Event } from 'src/app/event/model/event.model';
 @Injectable()
 export class EventService {
 
-  constructor() { }
+  public constructor() { }
 
-  public loadAll(): Observable<Event[]> {
-    return of([]);
+  public loadAllByDate(date: Date): Observable<Event[]> {
+    const event1 = new Event();
+    event1.name = 'Événement 1';
+    const event2 = new Event();
+    event2.name = 'Événement 2';
+
+    return of(
+      [
+        event1,
+        event2
+      ]
+      );
   }
 }

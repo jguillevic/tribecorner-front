@@ -1,13 +1,15 @@
 export class Event {
-    private _id: number;
-    public get id(): number {
-        return this._id;
-    }
-    public set id(value: number) {
-        this._id = value;
-    }
+    public id: number;
+    public name: string;
+    public startingDateTime: Date;
+    public endingDateTime: Date;
+    public allDay: boolean;
 
     public constructor() {
-        this._id = -1;
+        this.id = -1;
+        this.name = '';
+        this.startingDateTime = new Date();
+        this.endingDateTime = new Date();
+        this.allDay = false;
     }
 }

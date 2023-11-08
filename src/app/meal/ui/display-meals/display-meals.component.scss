@@ -1,15 +1,14 @@
 @import '../../../../styles.scss';
 
 .meals {
-    padding-top: 10px;
     width: 100%;
     padding-bottom: $padding-bottom-tab-bar;
+    padding-top: 10px;
     padding-left: 15px;
     padding-right: 15px;
 
     &__container {
-        width: 100%;
-        padding-top: 10px;     
+        width: 100%;     
         display: flex;
         flex-direction: column;
         justify-content: left;
@@ -36,6 +35,7 @@
     grid-template-columns: 80px auto 80px;
     grid-template-rows: 18px 22px 22px 18px;
     margin-top: 15px;
+
     &__img {
         width: 80px;
         height: 80px;
@@ -44,6 +44,7 @@
         grid-column: 1;
         grid-row: 1 / 4;
     }
+
     &__name {
         height: 40px;
         grid-column: 2;
@@ -58,6 +59,7 @@
         margin-bottom: 2px;
         overflow: hidden;
     }
+
     &__persons {
         height: 40px;
         grid-column: 2;
@@ -69,7 +71,8 @@
         justify-content: left;
         align-items: flex-start;
         padding-left: 10px;
-        margin-top: 2px;  
+        margin-top: 2px;
+
         &::before {
             font-family: 'Material Symbols Outlined';
             font-weight: normal;
@@ -87,6 +90,7 @@
             content: '\f233';
         }
     }
+    
     &__actions {
         grid-column: 3;
         grid-row: 1 / 4;

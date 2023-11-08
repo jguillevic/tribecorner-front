@@ -9,7 +9,7 @@
                 <li *ngIf="notCheckedItemShoppingLists.length > maxDisplayedItemsCount">...</li>
             </ul>
         </div>
-        <div *ngIf="this.checkedItemShoppingLists$ | async as checkedItemShoppingLists">
+        <div class="shopping-list-card__checked" *ngIf="this.checkedItemShoppingLists$ | async as checkedItemShoppingLists">
             <span *ngIf="this.checkedItemShoppingLists.length">+ {{this.checkedItemShoppingLists.length}} article(s) coché(s)</span>
         </div>
     </div>

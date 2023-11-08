@@ -38,6 +38,10 @@
         font-size: 14px;
     }
 
+    &__checked {
+        font-style: italic;
+    }
+
     &__actions {
         width: 100%;
         margin-left: auto;

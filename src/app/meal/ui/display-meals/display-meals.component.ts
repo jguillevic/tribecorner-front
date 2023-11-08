@@ -22,7 +22,7 @@ import { MtxButtonModule } from '@ng-matero/extensions/button';
     selector: 'app-display-meals',
     standalone: true,
     templateUrl: './display-meals.component.html',
-    styles: [],
+    styleUrls: ['display-meals.component.scss'],
     imports: [
         CommonModule,
         ProfileTopBarComponent,

@@ -1,24 +1,23 @@
 <div class="page">
     <app-profile-top-bar></app-profile-top-bar>
-    <div class="display-meals">
+    <div class="meals">
         <app-inline-calendar 
-        class="display-meals-calendar" 
         [defaultSelectedDate$]="defaultSelectedDate$" 
         (onSelectedDateChanged)="onSelectedDateChanged($event)">
         </app-inline-calendar>
         <div 
         *ngIf="this.mealsByMealKinds$ | async as mealsByMealKinds; else loading" 
-        class="display-meals-content">
-            <div class="display-meals-kind" *ngFor="let mealsByMealKind of mealsByMealKinds">
-                <div class="display-meals-kind-name">
+        class="meals__container">
+            <div class="meal-kind" *ngFor="let mealsByMealKind of mealsByMealKinds">
+                <div class="meal-kind__name">
                     {{ mealsByMealKind.mealKind.name }}
                 </div>
-                <div class="display-meals-meal" *ngFor="let meal of this.mealsByMealKind.meals">
-                    <img class="display-meals-meal-img" src="/assets/img/undraw_breakfast_psiw.svg">
-                    <div class="display-meals-meal-name">{{ meal.name }}</div>
-                    <div class="display-meals-meal-persons">{{ meal.numberOfPersons }} personnes</div>
-                    <div class="display-meals-meal-actions">
-                        <button mat-icon-button color="primary" (click)="goToUpdate(meal.id)">
+                <div class="meal" *ngFor="let meal of this.mealsByMealKind.meals">
+                    <img class="meal__img" src="/assets/img/undraw_breakfast_psiw.svg">
+                    <div class="meal__name">{{ meal.name }}</div>
+                    <div class="meal__persons">{{ meal.numberOfPersons }} personnes</div>
+                    <div class="meal__actions">
+                        <button mat-icon-button (click)="goToUpdate(meal.id)">
                             <mat-icon class="material-symbols-outlined">edit</mat-icon>
                         </button>
                         <button mat-icon-button color="warn" (click)="delete(meal)">

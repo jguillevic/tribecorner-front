@@ -6,9 +6,9 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './meal-card.component.html',
-  styles: [
-  ]
+  styleUrls: ['meal-card.component.scss']
 })
+
 export class MealCardComponent {
   @Input() public name: string|undefined;
 }

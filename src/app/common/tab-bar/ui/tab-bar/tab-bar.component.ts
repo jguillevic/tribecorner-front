@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { HomeRoutes } from 'src/app/home/route/home.routes';
 import { ShoppingListRoutes } from 'src/app/shopping-list/route/shopping-list.routes';
 import { MealRoutes } from 'src/app/meal/route/meal.routes';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-tab-bar',
@@ -13,10 +14,11 @@ import { MealRoutes } from 'src/app/meal/route/meal.routes';
   imports: [
     CommonModule, 
     MatButtonModule,
-    MatIconModule],
+    MatIconModule,
+    MatDividerModule
+  ],
   templateUrl: './tab-bar.component.html',
-  styles: [
-  ]
+  styleUrls: ['tab-bar.component.scss']
 })
 export class TabBarComponent {
   @Input() public selectedIndex: number = -1;

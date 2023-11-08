@@ -1,3 +1,5 @@
+@import '../../../../styles.scss';
+
 .meal-card {
     width: 100%;
     min-width: 95px;
@@ -7,18 +9,18 @@
     box-shadow: $card-shadow;
     display: inline-block;
 
-    &-container {
+    &__container {
         width: 100%;
         margin-left: auto;
         margin-right: auto;
     }
 
-    &-img {
+    &__img {
         width: 100%;
         display: block;
     }
 
-    &-name {
+    &__name {
         font-size: 16px;
         font-weight: 700;
         text-align: left;

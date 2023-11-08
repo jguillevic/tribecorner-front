@@ -1,0 +1,54 @@
+@import '../../../../../styles.scss';
+
+.tab-bar {
+    position: fixed;
+    bottom: 0px;
+    height: $tab-bar-height;
+    background-color: $light-color;
+    z-index: 99;
+
+    @include media-width;
+
+    &__container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
+.item {
+    //width: 15% !important;
+    color: $dark-color;
+
+    &--selected {
+        color: $primary-color;
+    }
+
+    &__container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__icon {
+        display: block;
+    }
+
+    &__label {
+        font-size: 14px;
+        font-weight: 400;
+    }
+}
+
+.action-button {
+    z-index: 2;
+    position: fixed;
+    right: calc(50% - 30px);
+    bottom: 32px;
+    color: $dark-color;
+    background-color: $primary-color;
+}

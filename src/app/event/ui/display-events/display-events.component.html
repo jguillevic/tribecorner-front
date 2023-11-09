@@ -3,14 +3,10 @@
     <div class="events">
         <app-inline-calendar></app-inline-calendar>
         <div *ngIf="this.events$ | async as events; else loading" class="events__container">
-            <div *ngIf="events.length">
-                <div *ngFor="let event of events">
-                    <div>{{event.name}}</div>
-                    <div>{{event.startingDateTime}}</div>
-                    <div>{{event.endingDateTime}}</div>
-                    <div>{{event.allDay}}</div>
-                </div>
-            </div>
+            <app-event-card *ngFor="let event of events"
+            class="event"
+            [event]="event">
+            </app-event-card>
             <app-event-large-empty *ngIf="!events.length"></app-event-large-empty>
         </div>
         <ng-template #loading>

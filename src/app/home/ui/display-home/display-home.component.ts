@@ -23,12 +23,13 @@ import { Action } from 'src/app/common/action';
 import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
 import { SimpleEmptyComponent } from "../../../common/empty/ui/simple-empty/simple-empty.component";
 import { EventRoutes } from 'src/app/event/route/event.routes';
+import { EventCardComponent } from "../../../event/ui/event-card/event-card.component";
 
 @Component({
     selector: 'app-display-home',
     standalone: true,
     templateUrl: './display-home.component.html',
-    styles: [],
+    styleUrls: ['display-home.component.scss'],
     imports: [
         CommonModule,
         FormsModule,
@@ -41,7 +42,8 @@ import { EventRoutes } from 'src/app/event/route/event.routes';
         MatDividerModule,
         MealCardComponent,
         SimpleLoadingComponent,
-        SimpleEmptyComponent
+        SimpleEmptyComponent,
+        EventCardComponent
     ]
 })
 export class DisplayHomeComponent {

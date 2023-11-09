@@ -7,7 +7,7 @@ import { InlineCalendarComponent } from "../../../common/calendar/ui/inline-cale
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MealService } from '../../service/meal.service';
-import { BehaviorSubject, Observable, Subscription, map, of, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, map, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MealRoutes } from '../../route/meal.routes';
 import * as moment from 'moment';

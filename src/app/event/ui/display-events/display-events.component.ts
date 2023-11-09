@@ -11,13 +11,14 @@ import * as moment from 'moment';
 import { EventService } from '../../service/event.service';
 import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
 import { EventLargeEmptyComponent } from "../event-large-empty/event-large-empty.component";
+import { EventCardComponent } from "../event-card/event-card.component";
 
 @Component({
     selector: 'app-display-events',
     standalone: true,
     templateUrl: './display-events.component.html',
     styleUrls: ['display-events.component.scss'],
-    imports: [CommonModule, ProfileTopBarComponent, InlineCalendarComponent, TabBarComponent, SimpleLoadingComponent, EventLargeEmptyComponent]
+    imports: [CommonModule, ProfileTopBarComponent, InlineCalendarComponent, TabBarComponent, SimpleLoadingComponent, EventLargeEmptyComponent, EventCardComponent]
 })
 export class DisplayEventsComponent {
   private selectedDateSubject: BehaviorSubject<Date> = new BehaviorSubject<Date>(new Date());

@@ -4,18 +4,12 @@
         <app-home-category
         categoryName="Mes événements" 
         (onSeeAllClicked)="goToDisplayEvents()">
-            <div *ngIf="this.events$ | async as events;else loadingEvents">
-                <div *ngIf="events.length;else emptyEvents">
-                    <div *ngFor="let event of events">
-                        <div>{{event.name}}</div>
-                        <div>{{event.startingDateTime}}</div>
-                        <div>{{event.endingDateTime}}</div>
-                        <div>{{event.allDay}}</div>
-                    </div>
-                </div>
-                <ng-template #emptyEvents>
-                    <app-simple-empty></app-simple-empty>
-                </ng-template>
+            <div *ngIf="this.events$ | async as events;else loadingEvents"
+            class="events__container">
+                <app-event-card *ngFor="let event of events"
+                [event]="event">
+                </app-event-card>
+                <app-simple-empty *ngIf="!events.length"></app-simple-empty>
             </div>
             <ng-template #loadingEvents>
                 <app-simple-loading></app-simple-loading>
@@ -26,14 +20,14 @@
         categoryName="Mes repas du jour" 
         (onSeeAllClicked)="goToDisplayMeals()">
             <div *ngIf="this.mealsByMealKinds$ | async as mealsByMealKinds;else loadingMeals"
-            class="display-home-meals-by-meal-kinds-container">
-                <div class="display-home-meals-by-meal-kind-container"
+            class="meals-by-meal-kinds__container">
+                <div class="meals-by-meal-kind__container"
                 *ngFor="let mealsByMealKind of mealsByMealKinds">
-                    <div class="display-home-meal-kind-name">
+                    <div class="meal-kind__name">
                         {{mealsByMealKind.mealKind.name}}
                     </div>
-                    <div class="display-home-meals-container">
-                        <app-meal-card class="display-home-meal"
+                    <div class="meals__container">
+                        <app-meal-card class="meal"
                         *ngFor="let meal of mealsByMealKind.meals"
                         [name]="meal.name">
                         </app-meal-card>
@@ -50,7 +44,7 @@
         categoryName="Mes listes" 
         (onSeeAllClicked)="goToDisplayShoppingLists()">
             <div *ngIf="this.shoppingLists$ | async as shoppingLists;else loadingShoppingLists"
-            class="display-home-shopping-lists-container">
+            class="shopping-lists__container">
                 <app-shopping-list-card *ngFor="let shoppingList of shoppingLists"
                 [shoppingList]="shoppingList"
                 (click)="goToDisplayShoppingList(shoppingList.id)">

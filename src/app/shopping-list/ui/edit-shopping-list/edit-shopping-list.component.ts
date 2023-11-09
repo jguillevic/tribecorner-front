@@ -17,6 +17,7 @@ import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { GoBackTopBarComponent } from "../../../common/top-bar/go-back/ui/go-back-top-bar.component";
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
     selector: 'app-display-shopping-list',
@@ -35,7 +36,8 @@ import { GoBackTopBarComponent } from "../../../common/top-bar/go-back/ui/go-bac
         MtxButtonModule,
         MatCheckboxModule,
         MatExpansionModule,
-        GoBackTopBarComponent
+        GoBackTopBarComponent,
+        MatDividerModule
     ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })

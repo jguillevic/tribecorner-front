@@ -56,8 +56,8 @@
                 </mat-expansion-panel>
             </div>
         </div>
-        <form class="add-form margin" [formGroup]="addNewItemShoppingListForm" (ngSubmit)="addItemShoppingList()">
-            <mat-form-field class="add-form__field">
+        <form class="add-form" [formGroup]="addNewItemShoppingListForm" (ngSubmit)="addItemShoppingList()">
+            <mat-form-field class="add-form__field margin">
                 <mat-label>Nouvel article</mat-label>
                 <input matInput type="text" formControlName="newItemShoppingListName">
                 <mat-error *ngIf="addNewItemShoppingListForm.controls['newItemShoppingListName'].hasError('maxlength')">

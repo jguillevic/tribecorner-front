@@ -11,7 +11,7 @@ import {
     MtxDatetimepickerType,
   } from '@ng-matero/extensions/datetimepicker';
 import { MtxDatetimepickerModule } from '@ng-matero/extensions/datetimepicker';
-import { MtxNativeDatetimeModule } from '@ng-matero/extensions/core';
+import { MtxMomentDatetimeModule } from '@ng-matero/extensions-moment-adapter';
 import { MTX_DATETIME_FORMATS } from '@ng-matero/extensions/core';
 
 @Component({
@@ -26,7 +26,7 @@ import { MTX_DATETIME_FORMATS } from '@ng-matero/extensions/core';
         MatInputModule,
         MatFormFieldModule,
         MtxDatetimepickerModule,
-        MtxNativeDatetimeModule
+        MtxMomentDatetimeModule
     ],
     providers: [
         {
@@ -60,7 +60,7 @@ export class EditEventComponent {
     public eventForm: FormGroup;
     public readonly eventNameMaxLength: number = 255;
 
-    public type: MtxDatetimepickerType = 'time';
+    public type: MtxDatetimepickerType = 'datetime';
     public mode: MtxDatetimepickerMode = 'auto';
     public startView: MtxCalendarView = 'clock';
     public multiYearSelector = false;

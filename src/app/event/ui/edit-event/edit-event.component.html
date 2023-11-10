@@ -2,6 +2,35 @@
     <app-go-back-top-bar></app-go-back-top-bar>
     <div class="margin">
         <div class="form m-t-30">
+            <form [formGroup]="this.eventForm">
+                <!--Nom.-->
+                <mat-form-field class="form-input">
+                    <mat-label>Nom</mat-label>
+                    <input matInput type="text" formControlName="name">
+                    <mat-error *ngIf="this.eventForm.controls['name'].hasError('maxlength')">
+                        Nom trop long (max. {{ this.eventNameMaxLength }} caractères)
+                    </mat-error>
+                    <mat-error *ngIf="this.eventForm.controls['name'].hasError('required')">
+                        Nom requis
+                    </mat-error>
+                </mat-form-field>
+                <!--Date de début.-->
+                <mat-form-field class="form-input">
+                    <mat-label>Date et heure de début</mat-label>
+                    <mtx-datetimepicker #datetimePicker
+                                        [type]="type"
+                                        [mode]="mode"
+                                        [multiYearSelector]="multiYearSelector"
+                                        [startView]="startView"
+                                        [twelvehour]="twelvehour"
+                                        [timeInterval]="timeInterval"
+                                        [touchUi]="touchUi"
+                                        [timeInput]="timeInput"></mtx-datetimepicker>
+                    <input [mtxDatetimepicker]="datetimePicker" formControlName="startingDateTime" matInput>
+                    <mtx-datetimepicker-toggle [for]="datetimePicker" matSuffix></mtx-datetimepicker-toggle>
+                  </mat-form-field>
+                <!--Date de fin.-->
+            </form>
         </div>
     </div>
 </div>

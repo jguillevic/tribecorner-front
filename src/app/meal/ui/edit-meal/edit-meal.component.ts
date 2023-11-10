@@ -12,8 +12,6 @@ import { ActivatedRoute } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
 import { MealKindService } from '../../service/meal-kind.service';
 import { MealKind } from '../../model/meal-kind.model';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
 import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
 import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { GoBackTopBarComponent } from "../../../common/top-bar/go-back/ui/go-back-top-bar.component";
@@ -30,8 +28,6 @@ import { GoBackTopBarComponent } from "../../../common/top-bar/go-back/ui/go-bac
         MatFormFieldModule,
         FormsModule,
         MatSelectModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
         ReactiveFormsModule,
         SimpleLoadingComponent,
         MtxButtonModule,

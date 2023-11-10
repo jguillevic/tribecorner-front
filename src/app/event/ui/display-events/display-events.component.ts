@@ -44,4 +44,8 @@ export class DisplayEventsComponent {
         } 
       });
   }
+
+  public onSelectedDateChanged(date: Date) {
+    this.selectedDateSubject.next(date);
+  }
 }

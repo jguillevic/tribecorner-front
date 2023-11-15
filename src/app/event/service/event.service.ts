@@ -4,12 +4,25 @@ import { Event } from 'src/app/event/model/event.model';
 
 @Injectable()
 export class EventService {
-
   public constructor() { }
 
   public loadAllByDate(date: Date): Observable<Event[]> {
     const events: Event[] = this.generateEvents();
     return of(this.getEventsOfDay(events, date));
+  }
+
+  public loadOneById(eventId: number): Observable<Event> {
+    const event:Event = new Event();
+    event.id = eventId;
+    return of(event);
+  }
+
+  public create(event: Event): Observable<Event> {
+    return of (event);
+  }
+
+  public update(event: Event): Observable<Event> {
+    return of (event);
   }
 
   private generateEvents(): Event[] {

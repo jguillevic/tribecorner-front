@@ -5,13 +5,12 @@ import { InlineCalendarComponent } from "../../../common/calendar/ui/inline-cale
 import { TabBarComponent } from "../../../common/tab-bar/ui/tab-bar/tab-bar.component";
 import { EventRoutes } from '../../route/event.routes';
 import { Router } from '@angular/router';
-import { Action } from 'src/app/common/action';
-import { BehaviorSubject, Observable, switchMap } from 'rxjs';
-import * as moment from 'moment';
+import { Observable, switchMap, take } from 'rxjs';
 import { EventService } from '../../service/event.service';
 import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
 import { EventLargeEmptyComponent } from "../event-large-empty/event-large-empty.component";
 import { EventCardComponent } from "../event-card/event-card.component";
+import { EventCurrentDateService } from '../../service/event-current-date.service';
 
 @Component({
     selector: 'app-display-events',
@@ -21,8 +20,11 @@ import { EventCardComponent } from "../event-card/event-card.component";
     imports: [CommonModule, ProfileTopBarComponent, InlineCalendarComponent, TabBarComponent, SimpleLoadingComponent, EventLargeEmptyComponent, EventCardComponent]
 })
 export class DisplayEventsComponent {
-  private selectedDateSubject: BehaviorSubject<Date> = new BehaviorSubject<Date>(new Date());
-  private selectedDate$: Observable<Date> = this.selectedDateSubject.asObservable();
+  private selectedDate$: Observable<Date> = this.eventCurrentDateService.currentDate$;
+  public defaultDate$: Observable<Date> = this.selectedDate$
+  .pipe(
+    take(1)
+  );
 
   public events$ 
   = this.selectedDate$
@@ -32,20 +34,15 @@ export class DisplayEventsComponent {
 
   public constructor(
     private router: Router,
-    private eventService: EventService
+    private eventService: EventService,
+    private eventCurrentDateService: EventCurrentDateService
   ) { }
 
   public goToCreate(): Promise<boolean> {
-    return this.router.navigate([EventRoutes.editEventRoute],
-      { 
-        queryParams: { 
-          action: Action.create,
-          defaultDate: moment(this.selectedDateSubject.value).format("YYYY-MM-DD") 
-        } 
-      });
+    return this.router.navigate([EventRoutes.editEventRoute]);
   }
 
   public onSelectedDateChanged(date: Date) {
-    this.selectedDateSubject.next(date);
+    this.eventCurrentDateService.selectDate(date);
   }
 }

@@ -2,15 +2,15 @@
     <app-go-back-top-bar></app-go-back-top-bar>
     <div class="margin">
         <div class="form m-t-30">
-            <form [formGroup]="this.eventForm">
+            <form *ngIf="editEventForm$ | async as editEventForm; else loadingForm" [formGroup]="editEventForm">
                 <!--Nom.-->
                 <mat-form-field class="form-input">
                     <mat-label>Nom</mat-label>
                     <input matInput type="text" formControlName="name">
-                    <mat-error *ngIf="this.eventForm.controls['name'].hasError('maxlength')">
+                    <mat-error *ngIf="editEventForm.controls['name'].hasError('maxlength')">
                         Nom trop long (max. {{ this.eventNameMaxLength }} caractères)
                     </mat-error>
-                    <mat-error *ngIf="this.eventForm.controls['name'].hasError('required')">
+                    <mat-error *ngIf="editEventForm.controls['name'].hasError('required')">
                         Nom requis
                     </mat-error>
                 </mat-form-field>
@@ -28,7 +28,7 @@
                                         [timeInput]="timeInput"></mtx-datetimepicker>
                     <input [mtxDatetimepicker]="datetimePickerStart" formControlName="startingDateTime" matInput>
                     <mtx-datetimepicker-toggle [for]="datetimePickerStart" matSuffix></mtx-datetimepicker-toggle>
-                    <mat-error *ngIf="this.eventForm.controls['startingDateTime'].hasError('required')">
+                    <mat-error *ngIf="editEventForm.controls['startingDateTime'].hasError('required')">
                         Date et heure de début requises
                     </mat-error>
                   </mat-form-field>
@@ -46,11 +46,14 @@
                                         [timeInput]="timeInput"></mtx-datetimepicker>
                     <input [mtxDatetimepicker]="datetimePickerEnd" formControlName="endingDateTime" matInput>
                     <mtx-datetimepicker-toggle [for]="datetimePickerEnd" matSuffix></mtx-datetimepicker-toggle>
-                    <mat-error *ngIf="this.eventForm.controls['endingDateTime'].hasError('required')">
+                    <mat-error *ngIf="editEventForm.controls['endingDateTime'].hasError('required')">
                         Date et heure de fin requises
                     </mat-error>
                   </mat-form-field>
             </form>
+            <ng-template #loadingForm>
+                <app-simple-loading></app-simple-loading>
+            </ng-template>
         </div>
     </div>
 </div>

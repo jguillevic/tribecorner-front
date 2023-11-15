@@ -1,7 +1,7 @@
 <div class="page">
     <app-profile-top-bar></app-profile-top-bar>
     <div class="events">
-        <app-inline-calendar (onSelectedDateChanged)="onSelectedDateChanged($event)">
+        <app-inline-calendar [defaultSelectedDate$]="defaultDate$" (onSelectedDateChanged)="onSelectedDateChanged($event)">
         </app-inline-calendar>
         <div *ngIf="this.events$ | async as events; else loading" class="events__container">
             <app-event-card *ngFor="let event of events"

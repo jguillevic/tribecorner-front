@@ -84,7 +84,7 @@ export class EditEventComponent implements OnInit, OnDestroy {
 
     private createEventForm(): FormGroup {
         return this.formBuilder.group({
-            name: ['', Validators.required, Validators.maxLength(this.eventNameMaxLength)],
+            name: ['', [Validators.required, Validators.maxLength(this.eventNameMaxLength)]],
             startingDateTime: [new Date(), Validators.required],
             endingDateTime: [new Date(), Validators.required],
             allDay: [false],

@@ -100,8 +100,7 @@ export class EditMealComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private mealKindService: MealKindService,
     private mealService: MealService
-    ) {
-  }
+  ) { }
 
   public ngOnInit(): void {
     this.autoSaveSubscription 

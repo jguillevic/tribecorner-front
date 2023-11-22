@@ -17,7 +17,7 @@ export class InlineCalendarComponent implements OnInit, OnDestroy {
   @Input() public defaultSelectedDate$: Observable<Date>|undefined;
   @Output() public onSelectedDateChanged: EventEmitter<Date> = new EventEmitter<Date>();
 
-  private numberOfDates: number = 7;
+  private numberOfDates: number = 30;
   private defaultSelectedDateSubscription: Subscription|undefined;
 
   public selectedCalendarDate: CalendarDate | undefined;

@@ -17,7 +17,15 @@ import { EventCurrentDateService } from '../../service/event-current-date.servic
     standalone: true,
     templateUrl: './display-events.component.html',
     styleUrls: ['display-events.component.scss'],
-    imports: [CommonModule, ProfileTopBarComponent, InlineCalendarComponent, TabBarComponent, SimpleLoadingComponent, EventLargeEmptyComponent, EventCardComponent]
+    imports: [
+      CommonModule,
+      ProfileTopBarComponent,
+      InlineCalendarComponent,
+      TabBarComponent,
+      SimpleLoadingComponent,
+      EventLargeEmptyComponent,
+      EventCardComponent
+    ]
 })
 export class DisplayEventsComponent {
   private selectedDate$: Observable<Date> = this.eventCurrentDateService.currentDate$;

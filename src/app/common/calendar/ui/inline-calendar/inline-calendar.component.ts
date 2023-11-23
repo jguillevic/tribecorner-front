@@ -3,7 +3,7 @@ import { CommonModule, registerLocaleData } from '@angular/common';
 import * as fr from '@angular/common/locales/fr';
 import { CalendarDate } from '../../model/calendar-date.model';
 import { Observable, Subscription, tap } from 'rxjs';
-import { DateHelper } from 'src/app/common/date/helper/date.helper';
+import { DateHelper } from '../../../date/helper/date.helper';
 
 @Component({
   selector: 'app-inline-calendar',

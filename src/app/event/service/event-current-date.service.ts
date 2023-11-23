@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { DateHelper } from 'src/app/common/date/helper/date.helper';
+import { DateHelper } from '../../common/date/helper/date.helper';
 
 @Injectable()
 export class EventCurrentDateService {

@@ -15,7 +15,7 @@ import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loadin
 import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { GoBackTopBarComponent } from "../../../common/top-bar/go-back/ui/go-back-top-bar.component";
 import { MealCurrentDateService } from '../../service/meal-current-date.service';
-import { DateHelper } from 'src/app/common/date/helper/date.helper';
+import { DateHelper } from '../../../common/date/helper/date.helper';
 
 @Component({
     selector: 'app-edit-meal',

@@ -1,4 +1,4 @@
-import { DateHelper } from "src/app/common/date/helper/date.helper";
+import { DateHelper } from "../../common/date/helper/date.helper";
 
 export class Meal {
     public id: number;

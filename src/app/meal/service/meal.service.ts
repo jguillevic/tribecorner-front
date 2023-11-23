@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { MealConverter } from '../converter/meal.converter';
 import { MealDto } from '../dto/meal.dto';
 import { ApiHttpClient } from '../../common/http/api-http-client';
+import { DateHelper } from '../../common/date/helper/date.helper';
 
 @Injectable()
 export class MealService {
@@ -16,7 +17,7 @@ export class MealService {
 
   public loadAllByDate(date: Date): Observable<Meal[]> {
     return this.apiHttp.get<MealDto[]>(
-      `${environment.apiUrl}${MealService.apiPath}?date=${date.toISOString()}`
+      `${environment.apiUrl}${MealService.apiPath}?date=${DateHelper.toUTCDateWithoutTimeString(date)}`
       )
       .pipe(
         map(mealDtos => 

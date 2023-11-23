@@ -107,21 +107,27 @@ describe('DateHelperService', () => {
         });
     });
 
-    describe('getInvarianteCurrentDateWithoutTimeZone', () => {
+    describe('getInvariantCurrentDateWithoutTimeZone', () => {
         it('should return the current date without timezone information', () => {
             const currentDate = new Date();
-            const result = DateHelper.getInvarianteCurrentDateWithoutTimeZone();
+            const result = DateHelper.getInvariantCurrentDateWithoutTimeZone();
 
-            // Vérifier que l'année, le mois et le jour correspondent
             expect(result.getUTCFullYear()).toBe(currentDate.getUTCFullYear());
             expect(result.getUTCMonth()).toBe(currentDate.getUTCMonth());
             expect(result.getUTCDate()).toBe(currentDate.getUTCDate());
-        
-            // Vérifier que l'heure, les minutes, les secondes et les millisecondes sont à zéro
             expect(result.getUTCHours()).toBe(0);
             expect(result.getUTCMinutes()).toBe(0);
             expect(result.getUTCSeconds()).toBe(0);
             expect(result.getUTCMilliseconds()).toBe(0);
         });
-      });
+    });
+
+    describe('toUTCDateWithoutTimeString', () => {
+        it('should return a string corresponding to the UTC date without time', () => {
+            const date = new Date('2023-12-15T02:35:25+03:00');
+            const result = DateHelper.toUTCDateWithoutTimeString(date);
+
+            expect(result).toBe('2023-12-14');
+        });
+    });
 });

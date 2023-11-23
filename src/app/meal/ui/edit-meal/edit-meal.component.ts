@@ -15,7 +15,7 @@ import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loadin
 import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { GoBackTopBarComponent } from "../../../common/top-bar/go-back/ui/go-back-top-bar.component";
 import { MealCurrentDateService } from '../../service/meal-current-date.service';
-import { DateHelperService } from 'src/app/common/date/service/date-helper.service';
+import { DateHelper } from 'src/app/common/date/helper/date.helper';
 
 @Component({
     selector: 'app-edit-meal',
@@ -55,7 +55,7 @@ export class EditMealComponent implements OnInit, OnDestroy {
       mealKindId: new FormControl(0, [Validators.required]),
       mealName: new FormControl('', [Validators.required, Validators.maxLength(this.mealNameMaxLength)]),
       mealDate: new FormControl(
-        this.dateHelperService.getInvarianteCurrentDateWithoutTimeZone(),
+        DateHelper.getInvarianteCurrentDateWithoutTimeZone(),
         [Validators.required]
       ),
       mealNumberOfPersons: new FormControl(0, [Validators.required])
@@ -74,8 +74,7 @@ export class EditMealComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private mealKindService: MealKindService,
     private mealService: MealService,
-    private mealCurrentDateService: MealCurrentDateService,
-    private dateHelperService: DateHelperService
+    private mealCurrentDateService: MealCurrentDateService
   ) { }
 
   public ngOnInit(): void {
@@ -107,11 +106,11 @@ export class EditMealComponent implements OnInit, OnDestroy {
           if (this.currentMealId) {
               return this.mealService.loadOneById(this.currentMealId);
           }
-          const meal: Meal = new Meal(this.dateHelperService);
+          const meal: Meal = new Meal();
           const defaultDate = result.currentDate;
 
           meal.name = '';
-          meal.date = this.dateHelperService.getInvariantDateWithoutTimeZone(defaultDate);
+          meal.date = DateHelper.getInvariantDateWithoutTimeZone(defaultDate);
           meal.mealKindId = 1;
           meal.numberOfPersons = 3;
           return of(meal);
@@ -127,7 +126,7 @@ export class EditMealComponent implements OnInit, OnDestroy {
 }
 
   private getMeal(): Meal {
-    const meal: Meal = new Meal(this.dateHelperService);
+    const meal: Meal = new Meal();
 
     if (this.currentMealId) {
       meal.id = this.currentMealId;

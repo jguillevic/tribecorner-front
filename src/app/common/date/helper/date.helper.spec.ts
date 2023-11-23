@@ -1,33 +1,23 @@
-import { DateHelperService } from './date-helper.service';
+import { DateHelper } from "./date.helper";
 
 describe('DateHelperService', () => {
-    let service: DateHelperService;
-
-    beforeEach(() => {
-        service = new DateHelperService();
-    });
-
-    it('should be created', () => {
-        expect(service).toBeTruthy();
-    });
-
     describe('areUTCDatesEqual', () => {
         it('should return true for equal dates', () => {
             const date1 = new Date('2023-01-01T12:00:00Z');
             const date2 = new Date('2023-01-01T12:00:00Z');
-            expect(service.areUTCDatesEqual(date1, date2)).toBe(true);
+            expect(DateHelper.areUTCDatesEqual(date1, date2)).toBe(true);
         });
 
         it('should return true for equal dates', () => {
             const date1 = new Date('2023-01-25T00:00:00+01:00');
             const date2 = new Date('2023-01-24T00:00:00Z');
-            expect(service.areUTCDatesEqual(date1, date2)).toBe(true);
+            expect(DateHelper.areUTCDatesEqual(date1, date2)).toBe(true);
         });
 
         it('should return false for different dates', () => {
             const date1 = new Date('2023-01-01T12:00:00Z');
             const date2 = new Date('2023-01-02T12:00:00Z');
-            expect(service.areUTCDatesEqual(date1, date2)).toBe(false);
+            expect(DateHelper.areUTCDatesEqual(date1, date2)).toBe(false);
         });
     });
 
@@ -35,19 +25,19 @@ describe('DateHelperService', () => {
         it('should return true for equal times', () => {
             const date1 = new Date('2023-01-01T12:34:56Z');
             const date2 = new Date('2023-01-01T12:34:56Z');
-            expect(service.areUTCTimesEqual(date1, date2)).toBe(true);
+            expect(DateHelper.areUTCTimesEqual(date1, date2)).toBe(true);
         });
 
         it('should return true for equal times', () => {
             const date1 = new Date('2023-01-01T12:34:56Z');
             const date2 = new Date('2023-01-01T14:34:56+02:00');
-            expect(service.areUTCTimesEqual(date1, date2)).toBe(true);
+            expect(DateHelper.areUTCTimesEqual(date1, date2)).toBe(true);
         });
 
         it('should return false for different times', () => {
             const date1 = new Date('2023-01-01T12:34:56Z');
             const date2 = new Date('2023-01-01T13:34:56Z');
-            expect(service.areUTCTimesEqual(date1, date2)).toBe(false);
+            expect(DateHelper.areUTCTimesEqual(date1, date2)).toBe(false);
         });
     });
 
@@ -55,26 +45,26 @@ describe('DateHelperService', () => {
         it('should return true for equal dates and times', () => {
             const date1 = new Date('2023-01-01T12:34:56Z');
             const date2 = new Date('2023-01-01T12:34:56Z');
-            expect(service.areUTCDatesAndTimesEqual(date1, date2)).toBe(true);
+            expect(DateHelper.areUTCDatesAndTimesEqual(date1, date2)).toBe(true);
         });
 
         it('should return false for different dates', () => {
             const date1 = new Date('2023-01-01T12:34:56Z');
             const date2 = new Date('2023-01-02T12:34:56Z');
-            expect(service.areUTCDatesAndTimesEqual(date1, date2)).toBe(false);
+            expect(DateHelper.areUTCDatesAndTimesEqual(date1, date2)).toBe(false);
         });
 
         it('should return false for different times', () => {
             const date1 = new Date('2023-01-01T12:34:56Z');
             const date2 = new Date('2023-01-01T13:34:56Z');
-            expect(service.areUTCDatesAndTimesEqual(date1, date2)).toBe(false);
+            expect(DateHelper.areUTCDatesAndTimesEqual(date1, date2)).toBe(false);
         });
     });
 
     describe('getInvariantDateWithoutTimeZone', () => {
         it('should return UTC date for a valid date', () => {
             const inputDate = new Date('2023-01-01T12:34:56Z');
-            const result = service.getInvariantDateWithoutTimeZone(inputDate);
+            const result = DateHelper.getInvariantDateWithoutTimeZone(inputDate);
 
             const expectedYear = 2023;
             const expectedMonth = 0;
@@ -93,7 +83,7 @@ describe('DateHelperService', () => {
 
         it('should return UTC date for a date with timezone +03:00', () => {
             const inputDate = new Date('2023-01-15T00:00:00+03:00');
-            const result = service.getInvariantDateWithoutTimeZone(inputDate);
+            const result = DateHelper.getInvariantDateWithoutTimeZone(inputDate);
 
             const expectedYear = 2023;
             const expectedMonth = 0;
@@ -112,7 +102,7 @@ describe('DateHelperService', () => {
 
         it('should return UTC date for an invalid date', () => {
             const inputDate = new Date('invalid');
-            const result = service.getInvariantDateWithoutTimeZone(inputDate);
+            const result = DateHelper.getInvariantDateWithoutTimeZone(inputDate);
             expect(isNaN(result.getTime())).toBe(true);
         });
     });
@@ -120,7 +110,7 @@ describe('DateHelperService', () => {
     describe('getInvarianteCurrentDateWithoutTimeZone', () => {
         it('should return the current date without timezone information', () => {
             const currentDate = new Date();
-            const result = service.getInvarianteCurrentDateWithoutTimeZone();
+            const result = DateHelper.getInvarianteCurrentDateWithoutTimeZone();
 
             // Vérifier que l'année, le mois et le jour correspondent
             expect(result.getUTCFullYear()).toBe(currentDate.getUTCFullYear());

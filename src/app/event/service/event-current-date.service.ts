@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { DateHelperService } from 'src/app/common/date/service/date-helper.service';
+import { DateHelper } from 'src/app/common/date/helper/date.helper';
 
 @Injectable()
 export class EventCurrentDateService {
   private currentDateSubject: BehaviorSubject<Date> 
   = new BehaviorSubject<Date>(
-    this.dateHelperService.getInvarianteCurrentDateWithoutTimeZone()
+    DateHelper.getInvarianteCurrentDateWithoutTimeZone()
   );
   public currentDate$ = this.currentDateSubject.asObservable();
 
-  public constructor(private dateHelperService: DateHelperService) { }
+  public constructor() { }
 
   public selectDate(date: Date): void {
     this.currentDateSubject.next(date);

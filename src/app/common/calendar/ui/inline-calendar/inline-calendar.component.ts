@@ -3,7 +3,7 @@ import { CommonModule, registerLocaleData } from '@angular/common';
 import * as fr from '@angular/common/locales/fr';
 import { CalendarDate } from '../../model/calendar-date.model';
 import { Observable, Subscription, tap } from 'rxjs';
-import { DateHelperService } from 'src/app/common/date/service/date-helper.service';
+import { DateHelper } from 'src/app/common/date/helper/date.helper';
 
 @Component({
   selector: 'app-inline-calendar',
@@ -24,9 +24,7 @@ export class InlineCalendarComponent implements OnInit, OnDestroy {
   public selectedCalendarDate: CalendarDate | undefined;
   public calendarDates: CalendarDate[] = [];
 
-  public constructor(
-    private dateHelperService: DateHelperService
-  ) {
+  public constructor() {
     registerLocaleData(fr.default);
   }
 
@@ -36,9 +34,9 @@ export class InlineCalendarComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     for (let i = 0; i < this.numberOfDates; i++) {
-      const date: Date = this.dateHelperService.getInvarianteCurrentDateWithoutTimeZone();
+      const date: Date = DateHelper.getInvarianteCurrentDateWithoutTimeZone();
       date.setDate(date.getDate() + i);
-      const calendarDate: CalendarDate = new CalendarDate(this.dateHelperService);
+      const calendarDate: CalendarDate = new CalendarDate();
       calendarDate.date = date;
       this.calendarDates.push(calendarDate);
     }
@@ -48,7 +46,7 @@ export class InlineCalendarComponent implements OnInit, OnDestroy {
       .pipe(
         tap(defaultSelectedDate => {
           this.calendarDates.forEach(calendarDate => {
-            if (this.dateHelperService.areUTCDatesEqual(defaultSelectedDate, calendarDate.date)) {
+            if (DateHelper.areUTCDatesEqual(defaultSelectedDate, calendarDate.date)) {
               this.selectedCalendarDate = calendarDate;
               this.selectedCalendarDate.isSelected = true;
               this.onSelectedDateChanged.emit(this.selectedCalendarDate.date);

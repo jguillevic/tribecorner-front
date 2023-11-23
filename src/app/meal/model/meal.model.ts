@@ -1,4 +1,4 @@
-import { DateHelperService } from "src/app/common/date/service/date-helper.service";
+import { DateHelper } from "src/app/common/date/helper/date.helper";
 
 export class Meal {
     public id: number;
@@ -8,13 +8,11 @@ export class Meal {
     public numberOfPersons: number;
     public mealKindId: number;
     
-    public constructor(
-        private dateHelperService: DateHelperService
-    ) {
+    public constructor() {
         this.id = -1;
         this.familyId = -1;
         this.name = '';
-        this.date = this.dateHelperService.getInvarianteCurrentDateWithoutTimeZone();
+        this.date = DateHelper.getInvarianteCurrentDateWithoutTimeZone();
         this.numberOfPersons = 1;
         this.mealKindId = -1;
     }

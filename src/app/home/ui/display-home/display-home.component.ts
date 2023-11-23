@@ -24,7 +24,7 @@ import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loadin
 import { SimpleEmptyComponent } from "../../../common/empty/ui/simple-empty/simple-empty.component";
 import { EventRoutes } from 'src/app/event/route/event.routes';
 import { EventCardComponent } from "../../../event/ui/event-card/event-card.component";
-import { DateHelperService } from 'src/app/common/date/service/date-helper.service';
+import { DateHelper } from 'src/app/common/date/helper/date.helper';
 
 @Component({
     selector: 'app-display-home',
@@ -50,11 +50,11 @@ import { DateHelperService } from 'src/app/common/date/service/date-helper.servi
 export class DisplayHomeComponent {
   public readonly events$: Observable<Event[]> 
   = this.eventService
-  .loadAllByDate(this.dateHelperService.getInvarianteCurrentDateWithoutTimeZone());
+  .loadAllByDate(DateHelper.getInvarianteCurrentDateWithoutTimeZone());
 
   public readonly mealsByMealKinds$: Observable<MealsByMealKind[]> 
   = this.mealsByMealKindService
-  .loadAllByDate(this.dateHelperService.getInvarianteCurrentDateWithoutTimeZone());
+  .loadAllByDate(DateHelper.getInvarianteCurrentDateWithoutTimeZone());
 
   public readonly shoppingLists$: Observable<ShoppingList[]> 
   = this.shoppingListService
@@ -64,7 +64,6 @@ export class DisplayHomeComponent {
     private eventService: EventService,
     private mealsByMealKindService: MealsByMealKindService,
     private shoppingListService: ShoppingListService,
-    private dateHelperService: DateHelperService,
     private router: Router
   ) { }
 

@@ -107,10 +107,10 @@ describe('DateHelperService', () => {
         });
     });
 
-    describe('getInvariantCurrentDateWithoutTimeZone', () => {
+    describe('getInvariantCurrentDateWithoutTime', () => {
         it('should return the current date without timezone information', () => {
             const currentDate = new Date();
-            const result = DateHelper.getInvariantCurrentDateWithoutTimeZone();
+            const result = DateHelper.getInvariantCurrentDateWithoutTime();
 
             expect(result.getUTCFullYear()).toBe(currentDate.getUTCFullYear());
             expect(result.getUTCMonth()).toBe(currentDate.getUTCMonth());

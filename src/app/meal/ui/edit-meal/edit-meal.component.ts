@@ -55,7 +55,7 @@ export class EditMealComponent implements OnInit, OnDestroy {
       mealKindId: new FormControl(0, [Validators.required]),
       mealName: new FormControl('', [Validators.required, Validators.maxLength(this.mealNameMaxLength)]),
       mealDate: new FormControl(
-        DateHelper.getInvariantCurrentDateWithoutTimeZone(),
+        DateHelper.getInvariantCurrentDateWithoutTime(),
         [Validators.required]
       ),
       mealNumberOfPersons: new FormControl(0, [Validators.required])

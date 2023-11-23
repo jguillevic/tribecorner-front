@@ -10,5 +10,4 @@ import { LargeEmptyComponent } from "../../../common/empty/ui/large-empty/large-
     imports: [CommonModule, LargeEmptyComponent]
 })
 export class EventLargeEmptyComponent {
-
 }

@@ -34,7 +34,7 @@ export class InlineCalendarComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     for (let i = 0; i < this.numberOfDates; i++) {
-      const date: Date = DateHelper.getInvariantCurrentDateWithoutTimeZone();
+      const date: Date = DateHelper.getInvariantCurrentDateWithoutTime();
       date.setDate(date.getDate() + i);
       const calendarDate: CalendarDate = new CalendarDate();
       calendarDate.date = date;

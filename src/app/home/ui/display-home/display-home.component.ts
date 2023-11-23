@@ -50,11 +50,11 @@ import { DateHelper } from '../../../common/date/helper/date.helper';
 export class DisplayHomeComponent {
   public readonly events$: Observable<Event[]> 
   = this.eventService
-  .loadAllByDate(DateHelper.getInvariantCurrentDateWithoutTimeZone());
+  .loadAllByDate(DateHelper.getInvariantCurrentDateWithoutTime());
 
   public readonly mealsByMealKinds$: Observable<MealsByMealKind[]> 
   = this.mealsByMealKindService
-  .loadAllByDate(DateHelper.getInvariantCurrentDateWithoutTimeZone());
+  .loadAllByDate(DateHelper.getInvariantCurrentDateWithoutTime());
 
   public readonly shoppingLists$: Observable<ShoppingList[]> 
   = this.shoppingListService

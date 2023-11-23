@@ -12,7 +12,7 @@ export class Meal {
         this.id = -1;
         this.familyId = -1;
         this.name = '';
-        this.date = DateHelper.getInvariantCurrentDateWithoutTimeZone();
+        this.date = DateHelper.getInvariantCurrentDateWithoutTime();
         this.numberOfPersons = 1;
         this.mealKindId = -1;
     }

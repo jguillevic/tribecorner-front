@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { MealCurrentDateService } from './meal-current-date.service';
+import { EventCurrentDateService } from './event-current-date.service';
 import { BehaviorSubject, of } from 'rxjs';
 import { DateHelper } from '../../common/date/helper/date.helper';
 
 describe('MealCurrentDateService', () => {
-  let service: MealCurrentDateService;
+  let service: EventCurrentDateService;
   let currentDateSubjectMock: BehaviorSubject<Date>;
 
   beforeEach(() => {
@@ -14,12 +14,12 @@ describe('MealCurrentDateService', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        MealCurrentDateService,
+        EventCurrentDateService,
         { provide: BehaviorSubject, useValue: currentDateSubjectMock },
       ],
     });
 
-    service = TestBed.inject(MealCurrentDateService);
+    service = TestBed.inject(EventCurrentDateService);
   });
 
   it('should be created', () => {
@@ -28,7 +28,7 @@ describe('MealCurrentDateService', () => {
 
   describe('initialize currentDate$ with invariable current date without timezone', () => {
     it('should set currentDate$ with invariable current date without timezone', () => {
-      service = TestBed.inject(MealCurrentDateService);
+      service = TestBed.inject(EventCurrentDateService);
 
       service.currentDate$.subscribe((currentDate) => {
         expect(currentDate).toEqual(DateHelper.getInvariantCurrentDateWithoutTime());

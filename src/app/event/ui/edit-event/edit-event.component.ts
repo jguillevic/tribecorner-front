@@ -14,6 +14,7 @@ import { EventService } from '../../service/event.service';
 import { ActivatedRoute } from '@angular/router';
 import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
 import { EventCurrentDateService } from '../../service/event-current-date.service';
+import { DateHelper } from 'src/app/common/date/helper/date.helper';
 
 @Component({
     selector: 'app-edit-event',
@@ -85,8 +86,8 @@ export class EditEventComponent implements OnInit, OnDestroy {
     private createEventForm(): FormGroup {
         return this.formBuilder.group({
             eventName: ['', [Validators.required, Validators.maxLength(this.eventNameMaxLength)]],
-            eventStartingDateTime: [new Date(), Validators.required],
-            eventEndingDateTime: [new Date(), Validators.required],
+            eventStartingDateTime: [DateHelper.getInvariantCurrentDateWithoutTime(), Validators.required],
+            eventEndingDateTime: [DateHelper.getInvariantCurrentDateWithoutTime(), Validators.required],
             eventAllDay: [false],
         });
     }
@@ -129,8 +130,8 @@ export class EditEventComponent implements OnInit, OnDestroy {
                 }
                 const event: Event = new Event();
                 const defaultDate = result.currentDate;
-                event.startingDateTime = new Date(defaultDate);
-                event.endingDateTime = new Date(defaultDate);
+                event.startingDateTime = DateHelper.getInvariantDateWithoutTimeZone(defaultDate);
+                event.endingDateTime = DateHelper.getInvariantDateWithoutTimeZone(defaultDate);
                 event.endingDateTime.setHours(event.endingDateTime.getHours() + 1);
                 return of(event);
                 }),
@@ -147,7 +148,7 @@ export class EditEventComponent implements OnInit, OnDestroy {
     private save(): Observable<Event> {
         const event: Event = this.getEvent();
     
-        if (this.currentEventId !== undefined) {
+        if (!this.currentEventId) {
           return this.eventService.update(event);
         }
     

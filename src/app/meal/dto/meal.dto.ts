@@ -11,7 +11,7 @@ export class MealDto {
     public constructor() {
         this.familyId = -1;
         this.name = '';
-        this.date = DateHelper.getInvariantCurrentDateWithoutTimeZone();
+        this.date = DateHelper.getInvariantCurrentDateWithoutTime();
         this.numberOfPersons = 1;
         this.mealKindId = -1;
     }

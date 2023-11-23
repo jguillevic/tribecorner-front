@@ -1,6 +1,6 @@
 import { DateHelper } from "../../common/date/helper/date.helper";
 
-export class Event {
+export class LoadEventDto {
     public id: number;
     public name: string;
     public startingDateTime: Date;

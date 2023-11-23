@@ -33,7 +33,7 @@ export abstract class DateHelper {
     return new Date(utcDate);
   }
 
-  public static getInvariantCurrentDateWithoutTimeZone(): Date {
+  public static getInvariantCurrentDateWithoutTime(): Date {
     const date = new Date();
     const utcDate = Date.UTC(
       date.getFullYear(),
@@ -43,6 +43,21 @@ export abstract class DateHelper {
       0,
       0,
       0
+    );
+    
+    return new Date(utcDate);
+  }
+
+  public static getInvariantCurrentDateTime(): Date {
+    const date = new Date();
+    const utcDate = Date.UTC(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      date.getHours(),
+      date.getMinutes(),
+      date.getSeconds(),
+      date.getMilliseconds()
     );
     
     return new Date(utcDate);

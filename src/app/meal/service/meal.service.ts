@@ -11,13 +11,9 @@ import { ApiHttpClient } from 'src/app/common/http/api-http-client';
 export class MealService {
   private static apiPath: string = "meals";
 
-  private mealConverter: MealConverter;
-
   public constructor(
     private apiHttp: ApiHttpClient
-  ) { 
-    this.mealConverter = new MealConverter();
-  }
+  ) { }
 
   public loadAllByDate(date: Date): Observable<Meal[]> {
     return this.apiHttp.get<MealDto[]>(
@@ -26,7 +22,7 @@ export class MealService {
       .pipe(
         map(mealDtos => 
           mealDtos.map(mealDto => 
-            this.mealConverter.fromDtoToModel(mealDto)
+            MealConverter.fromDtoToModel(mealDto)
           )
         )
       );
@@ -39,13 +35,13 @@ export class MealService {
       )
       .pipe(
         map(mealDto => 
-          this.mealConverter.fromDtoToModel(mealDto)
+          MealConverter.fromDtoToModel(mealDto)
         )
       );
   }
 
   public create(meal: Meal): Observable<Meal> {
-    const mealDto = this.mealConverter.fromModelToDto(meal);
+    const mealDto = MealConverter.fromModelToDto(meal);
     const body: string = JSON.stringify(mealDto);
 
     return this.apiHttp.post<MealDto>(
@@ -54,13 +50,13 @@ export class MealService {
       )
       .pipe(
         map(mealDto => 
-            this.mealConverter.fromDtoToModel(mealDto)
+            MealConverter.fromDtoToModel(mealDto)
         )
       );
   }
 
   public update(meal: Meal): Observable<Meal> {
-    const mealDto = this.mealConverter.fromModelToDto(meal);
+    const mealDto = MealConverter.fromModelToDto(meal);
     const body: string = JSON.stringify(mealDto);
 
     return this.apiHttp.put<MealDto>(
@@ -69,7 +65,7 @@ export class MealService {
       )
       .pipe(
         map(mealDto => 
-            this.mealConverter.fromDtoToModel(mealDto)
+            MealConverter.fromDtoToModel(mealDto)
         )
       );
   }

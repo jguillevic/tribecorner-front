@@ -1,8 +1,8 @@
 import { MealDto } from "../dto/meal.dto";
 import { Meal } from "../model/meal.model";
 
-export class MealConverter {
-    public fromDtoToModel(mealDto: MealDto): Meal {
+export abstract class MealConverter {
+    public static fromDtoToModel(mealDto: MealDto): Meal {
         const meal = new Meal();
         meal.id = mealDto.id ?? -1;
         meal.familyId = mealDto.familyId;
@@ -13,7 +13,7 @@ export class MealConverter {
         return meal;
     }
 
-    public fromModelToDto(meal: Meal): MealDto {
+    public static fromModelToDto(meal: Meal): MealDto {
         const mealDto = new MealDto();
         mealDto.familyId = meal.familyId;
         mealDto.name = meal.name;

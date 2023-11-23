@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, map, shareReplay } from 'rxjs';
 import { MealKind } from '../model/meal-kind.model';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../environments/environment';
 import { MealKindDto } from '../dto/meal-kind.dto';
-import { ApiHttpClient } from 'src/app/common/http/api-http-client';
+import { ApiHttpClient } from '../../common/http/api-http-client';
 import { MealKindConverter } from '../converter/meal-kind.converter';
 
 @Injectable()

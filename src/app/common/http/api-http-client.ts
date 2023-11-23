@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, exhaustMap } from "rxjs";
-import { UserService } from "src/app/user/service/user.service";
+import { UserService } from "../../user/service/user.service";
 
 @Injectable({
     providedIn: 'root'

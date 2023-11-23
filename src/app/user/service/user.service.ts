@@ -6,8 +6,8 @@ import { Observable, Subscription, exhaustMap, from, map, of, tap } from 'rxjs';
 import { SignInUser } from '../model/sign-in-user.model';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { LoadUserDto } from '../dto/load-user.dto';
-import { SessionStorageService } from 'src/app/common/storage/service/session-storage.service';
-import { environment } from 'src/environments/environment';
+import { SessionStorageService } from '../../common/storage/service/session-storage.service';
+import { environment } from '../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FirebaseApp, initializeApp } from 'firebase/app';
 

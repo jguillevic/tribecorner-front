@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { MealCurrentDateService } from './meal-current-date.service';
 import { BehaviorSubject, of } from 'rxjs';
-import { mock, instance, when } from 'ts-mockito';
 import { DateHelper } from '../../common/date/helper/date.helper';
 
 describe('MealCurrentDateService', () => {
@@ -9,13 +8,14 @@ describe('MealCurrentDateService', () => {
   let currentDateSubjectMock: BehaviorSubject<Date>;
 
   beforeEach(() => {
-    currentDateSubjectMock = mock(BehaviorSubject);
-    when(currentDateSubjectMock.asObservable()).thenReturn(of(new Date()));
+    currentDateSubjectMock = new BehaviorSubject<Date>(new Date());
+
+    jest.spyOn(currentDateSubjectMock, 'asObservable').mockReturnValue(of(new Date()));
 
     TestBed.configureTestingModule({
       providers: [
         MealCurrentDateService,
-        { provide: BehaviorSubject, useFactory: () => instance(currentDateSubjectMock) },
+        { provide: BehaviorSubject, useValue: currentDateSubjectMock },
       ],
     });
 

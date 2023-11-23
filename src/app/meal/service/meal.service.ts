@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { Meal } from '../model/meal.model';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../environments/environment';
 import { MealConverter } from '../converter/meal.converter';
 import { MealDto } from '../dto/meal.dto';
-import * as moment from 'moment';
-import { ApiHttpClient } from 'src/app/common/http/api-http-client';
+import { ApiHttpClient } from '../../common/http/api-http-client';
 
 @Injectable()
 export class MealService {
@@ -17,7 +16,7 @@ export class MealService {
 
   public loadAllByDate(date: Date): Observable<Meal[]> {
     return this.apiHttp.get<MealDto[]>(
-      `${environment.apiUrl}${MealService.apiPath}?date=${moment(date).format("YYYY-MM-DD")}`
+      `${environment.apiUrl}${MealService.apiPath}?date=${date.toISOString()}`
       )
       .pipe(
         map(mealDtos => 

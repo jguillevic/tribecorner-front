@@ -1,3 +1,5 @@
+import { DateHelperService } from "src/app/common/date/service/date-helper.service";
+
 export class MealDto {
     public id: number|undefined;
     public familyId: number;
@@ -6,10 +8,12 @@ export class MealDto {
     public numberOfPersons: number;
     public mealKindId: number;
 
-    public constructor() {
+    public constructor(
+        private dateHelperService:DateHelperService
+    ) {
         this.familyId = -1;
         this.name = '';
-        this.date = new Date();
+        this.date = this.dateHelperService.getInvarianteCurrentDateWithoutTimeZone();
         this.numberOfPersons = 1;
         this.mealKindId = -1;
     }

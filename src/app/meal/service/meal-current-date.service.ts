@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { DateHelperService } from 'src/app/common/date/service/date-helper.service';
 
 @Injectable()
-export class EventCurrentDateService {
+export class MealCurrentDateService {
   private currentDateSubject: BehaviorSubject<Date> 
   = new BehaviorSubject<Date>(
     this.dateHelperService.getInvarianteCurrentDateWithoutTimeZone()

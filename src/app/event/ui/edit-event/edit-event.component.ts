@@ -59,7 +59,7 @@ import { EventCurrentDateService } from '../../service/event-current-date.servic
 export class EditEventComponent implements OnInit, OnDestroy {
     private currentEventId: number = -1;
     private readonly editEventForm: FormGroup;
-    private destroy$ = new Subject<void>();
+    private readonly destroy$ = new Subject<boolean>();
 
     public readonly eventNameMaxLength: number = 255;
     public editEventForm$ = this.getEditEventForm$();
@@ -84,10 +84,10 @@ export class EditEventComponent implements OnInit, OnDestroy {
 
     private createEventForm(): FormGroup {
         return this.formBuilder.group({
-            name: ['', [Validators.required, Validators.maxLength(this.eventNameMaxLength)]],
-            startingDateTime: [new Date(), Validators.required],
-            endingDateTime: [new Date(), Validators.required],
-            allDay: [false],
+            eventName: ['', [Validators.required, Validators.maxLength(this.eventNameMaxLength)]],
+            eventStartingDateTime: [new Date(), Validators.required],
+            eventEndingDateTime: [new Date(), Validators.required],
+            eventAllDay: [false],
         });
     }
 
@@ -102,7 +102,7 @@ export class EditEventComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy(): void {
-        this.destroy$.next();
+        this.destroy$.next(true);
         this.destroy$.complete();
     }
     
@@ -135,10 +135,10 @@ export class EditEventComponent implements OnInit, OnDestroy {
                 return of(event);
                 }),
                 tap(event => {
-                this.editEventForm.controls['name'].setValue(event.name);
-                this.editEventForm.controls['startingDateTime'].setValue(event.startingDateTime);
-                this.editEventForm.controls['endingDateTime'].setValue(event.endingDateTime);
-                this.editEventForm.controls['allDay'].setValue(event.allDay);
+                this.editEventForm.controls['eventName'].setValue(event.name);
+                this.editEventForm.controls['eventStartingDateTime'].setValue(event.startingDateTime);
+                this.editEventForm.controls['eventEndingDateTime'].setValue(event.endingDateTime);
+                this.editEventForm.controls['eventAllDay'].setValue(event.allDay);
             }),
             map(() => this.editEventForm)
         );

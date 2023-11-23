@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProfileTopBarComponent } from "../../../common/top-bar/profile/ui/profile-top-bar.component";
 import { TabBarComponent } from "../../../common/tab-bar/ui/tab-bar/tab-bar.component";
@@ -7,16 +7,15 @@ import { InlineCalendarComponent } from "../../../common/calendar/ui/inline-cale
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MealService } from '../../service/meal.service';
-import { BehaviorSubject, Observable, Subscription, map, tap } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, Subject, switchMap, take, takeUntil, tap } from 'rxjs';
+import { Router } from '@angular/router';
 import { MealRoutes } from '../../route/meal.routes';
-import * as moment from 'moment';
 import { MealsByMealKind } from '../../model/meals-by-meal-kind.model';
 import { MealsByMealKindService } from '../../service/meals-by-meal-kind.service';
-import { Action } from 'src/app/common/action';
 import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
 import { LargeEmptyComponent } from "../../../common/empty/ui/large-empty/large-empty.component";
 import { MtxButtonModule } from '@ng-matero/extensions/button';
+import { MealCurrentDateService } from '../../service/meal-current-date.service';
 
 @Component({
     selector: 'app-display-meals',
@@ -35,68 +34,56 @@ import { MtxButtonModule } from '@ng-matero/extensions/button';
         MtxButtonModule
     ]
 })
-export class DisplayMealsComponent implements OnInit, OnDestroy {
-  private deleteSubscription: Subscription|undefined;
-  private selectedDate: Date = new Date();
-
-  private defaultSelectedDateSubject: BehaviorSubject<Date> = new BehaviorSubject(new Date());
-  public defaultSelectedDate$ = this.defaultSelectedDateSubject.asObservable();
+export class DisplayMealsComponent implements OnDestroy {
+  private readonly destroy$ = new Subject<boolean>();
+  private readonly selectedDate$: Observable<Date> = this.mealCurrentDateService.currentDate$;
+  public readonly defaultDate$: Observable<Date> = this.selectedDate$
+  .pipe(
+    take(1)
+  );
 
   public mealsByMealKinds$: Observable<MealsByMealKind[]> 
-  = this.mealsByMealKindService
-  .loadAllByDate(this.selectedDate);
+  = this.getMealsByMealKinds$()
 
   public constructor(
-    private activatedRoute: ActivatedRoute,
     private mealService: MealService,
     private mealsByMealKindService: MealsByMealKindService,
+    private mealCurrentDateService: MealCurrentDateService,
     private router: Router
   ) { }
 
-  public ngOnInit(): void {
-    this.activatedRoute.queryParams.pipe(
-      map(params => {
-        if (params["defaultSelectedDate"]) {
-          return new Date(params["defaultSelectedDate"]);
-        } else {
-          return new Date();
-        }
-      }),
-      tap(date => this.defaultSelectedDateSubject.next(date))
-    )
-    .subscribe();
-  }
-
   public ngOnDestroy(): void {
-    this.deleteSubscription?.unsubscribe();
+    this.destroy$.next(true);
+    this.destroy$.complete();
   }
 
   public onSelectedDateChanged(date: Date) {
-    this.selectedDate = date;
-    this.mealsByMealKinds$ = this.mealsByMealKindService.loadAllByDate(this.selectedDate);
+    this.mealCurrentDateService.selectDate(date);
   }
 
   public goToCreate(): Promise<boolean> {
-    return this.router.navigate([MealRoutes.editMealRoute],
-      { 
-        queryParams: { 
-          action: Action.create,
-          defaultDate: moment(this.selectedDate).format("YYYY-MM-DD") 
-        } 
-      });
+    return this.router.navigate([MealRoutes.editMealRoute]);
   }
 
   public goToUpdate(mealId: number): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
-      resolve(this.router.navigate([MealRoutes.editMealRoute], { queryParams: { action: Action.update, id: mealId } }));
+    return new Promise<boolean>((resolve) => {
+      resolve(this.router.navigate([MealRoutes.editMealRoute], { queryParams: { id: mealId } }));
     }); 
   }
 
+  public getMealsByMealKinds$(): Observable<MealsByMealKind[]> {
+    return this.selectedDate$
+    .pipe(
+      switchMap(date => this.mealsByMealKindService.loadAllByDate(date))
+    );
+  } 
+
   public delete(meal: Meal): void {
-    this.deleteSubscription = this.mealService
+    this.mealService
     .delete(meal.id)
     .pipe(
-      tap(() => this.mealsByMealKinds$ = this.mealsByMealKindService.loadAllByDate(this.selectedDate))
+      takeUntil(this.destroy$),
+      tap(() => this.mealsByMealKinds$ = this.getMealsByMealKinds$())
     )
     .subscribe();
   }

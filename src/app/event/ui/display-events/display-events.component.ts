@@ -28,13 +28,13 @@ import { EventCurrentDateService } from '../../service/event-current-date.servic
     ]
 })
 export class DisplayEventsComponent {
-  private selectedDate$: Observable<Date> = this.eventCurrentDateService.currentDate$;
-  public defaultDate$: Observable<Date> = this.selectedDate$
+  private readonly selectedDate$: Observable<Date> = this.eventCurrentDateService.currentDate$;
+  public readonly defaultDate$: Observable<Date> = this.selectedDate$
   .pipe(
     take(1)
   );
 
-  public events$ 
+  public readonly events$ 
   = this.selectedDate$
   .pipe(
     switchMap(date => this.eventService.loadAllByDate(date))

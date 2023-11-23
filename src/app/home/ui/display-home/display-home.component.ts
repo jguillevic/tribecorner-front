@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { TabBarComponent } from 'src/app/common/tab-bar/ui/tab-bar/tab-bar.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { ShoppingListService } from 'src/app/shopping-list/service/shopping-list.service';
 import { ShoppingList } from 'src/app/shopping-list/model/shopping-list.model';
@@ -24,6 +24,7 @@ import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loadin
 import { SimpleEmptyComponent } from "../../../common/empty/ui/simple-empty/simple-empty.component";
 import { EventRoutes } from 'src/app/event/route/event.routes';
 import { EventCardComponent } from "../../../event/ui/event-card/event-card.component";
+import { DateHelperService } from 'src/app/common/date/service/date-helper.service';
 
 @Component({
     selector: 'app-display-home',
@@ -49,11 +50,11 @@ import { EventCardComponent } from "../../../event/ui/event-card/event-card.comp
 export class DisplayHomeComponent {
   public readonly events$: Observable<Event[]> 
   = this.eventService
-  .loadAllByDate(new Date());
+  .loadAllByDate(this.dateHelperService.getInvarianteCurrentDateWithoutTimeZone());
 
   public readonly mealsByMealKinds$: Observable<MealsByMealKind[]> 
   = this.mealsByMealKindService
-  .loadAllByDate(new Date());
+  .loadAllByDate(this.dateHelperService.getInvarianteCurrentDateWithoutTimeZone());
 
   public readonly shoppingLists$: Observable<ShoppingList[]> 
   = this.shoppingListService
@@ -63,6 +64,7 @@ export class DisplayHomeComponent {
     private eventService: EventService,
     private mealsByMealKindService: MealsByMealKindService,
     private shoppingListService: ShoppingListService,
+    private dateHelperService: DateHelperService,
     private router: Router
   ) { }
 

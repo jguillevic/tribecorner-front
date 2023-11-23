@@ -22,6 +22,7 @@ import { MealsByMealKindService } from './app/meal/service/meals-by-meal-kind.se
 import { ShoppingListCopierService } from './app/shopping-list/service/shopping-list-copier.service';
 import { EventRoutes } from './app/event/route/event.routes';
 import { EventCurrentDateService } from './app/event/service/event-current-date.service';
+import { MealCurrentDateService } from './app/meal/service/meal-current-date.service';
 
 const routes: Routes = [
     { 
@@ -47,7 +48,8 @@ const routes: Routes = [
         providers: [
             MealKindService,
             MealService,
-            MealsByMealKindService
+            MealsByMealKindService,
+            MealCurrentDateService
         ],
         canActivate: [signedInGuard, hasFamilyGuard],
         children: MealRoutes.mealRoutes

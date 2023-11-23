@@ -6,6 +6,7 @@ import { MealConverter } from '../converter/meal.converter';
 import { MealDto } from '../dto/meal.dto';
 import * as moment from 'moment';
 import { ApiHttpClient } from 'src/app/common/http/api-http-client';
+import { DateHelperService } from 'src/app/common/date/service/date-helper.service';
 
 @Injectable()
 export class MealService {
@@ -14,9 +15,10 @@ export class MealService {
   private mealConverter: MealConverter;
 
   public constructor(
+    private dateHelperService: DateHelperService,
     private apiHttp: ApiHttpClient
     ) { 
-      this.mealConverter = new MealConverter();
+      this.mealConverter = new MealConverter(this.dateHelperService);
     }
 
   public loadAllByDate(date: Date): Observable<Meal[]> {

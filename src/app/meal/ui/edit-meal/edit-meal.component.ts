@@ -5,9 +5,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Action } from 'src/app/common/action';
 import { MealService } from '../../service/meal.service';
-import { BehaviorSubject, Observable, Subscription, combineLatest, debounceTime, filter, map, mergeMap, of, switchMap, tap } from 'rxjs';
+import { Observable, Subject, combineLatest, debounceTime, filter, map, mergeMap, of, switchMap, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
 import { MealKindService } from '../../service/meal-kind.service';
@@ -15,6 +14,8 @@ import { MealKind } from '../../model/meal-kind.model';
 import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
 import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { GoBackTopBarComponent } from "../../../common/top-bar/go-back/ui/go-back-top-bar.component";
+import { MealCurrentDateService } from '../../service/meal-current-date.service';
+import { DateHelperService } from 'src/app/common/date/service/date-helper.service';
 
 @Component({
     selector: 'app-edit-meal',
@@ -36,18 +37,12 @@ import { GoBackTopBarComponent } from "../../../common/top-bar/go-back/ui/go-bac
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditMealComponent implements OnInit, OnDestroy {
-  private autoSaveSubscription: Subscription|undefined;
+  private destroy$: Subject<boolean> = new Subject<boolean>();
   private currentMealId: number|undefined;
 
   private readonly mealKinds$: Observable<MealKind[]> 
   = this.mealKindService
   .loadAll();
-
-  private readonly isSavingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public readonly isSaving$: Observable<boolean> = this.isSavingSubject.asObservable();
-
-  private readonly isClosingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public readonly isClosing$: Observable<boolean> = this.isClosingSubject.asObservable();
 
   public readonly numbersOfPersons: number[] = [1, 2, 3, 4, 5, 6, 7, 8];
 
@@ -59,36 +54,15 @@ export class EditMealComponent implements OnInit, OnDestroy {
     {
       mealKindId: new FormControl(0, [Validators.required]),
       mealName: new FormControl('', [Validators.required, Validators.maxLength(this.mealNameMaxLength)]),
-      mealDate: new FormControl(new Date(), [Validators.required]),
+      mealDate: new FormControl(
+        this.dateHelperService.getInvarianteCurrentDateWithoutTimeZone(),
+        [Validators.required]
+      ),
       mealNumberOfPersons: new FormControl(0, [Validators.required])
     }
   );
 
-  private readonly editMealForm$: Observable<FormGroup> = this.activatedRoute.queryParams
-  .pipe(
-    mergeMap(params => {
-      const currentAction = params['action'];   
-      const defaultDate = params['defaultDate'];
-
-      if (currentAction === Action.update) {
-        this.currentMealId = params['id'];
-        if (this.currentMealId) {
-          return this.mealService.loadOneById(this.currentMealId);
-        }
-      }
-      const meal: Meal = new Meal();
-      meal.date = new Date(defaultDate);
-      meal.numberOfPersons = 3;
-      return of(meal);
-    }),
-    tap(meal => {
-      this.editMealForm.controls['mealKindId'].setValue(meal.mealKindId ?? 1);
-      this.editMealForm.controls['mealName'].setValue(meal.name);
-      this.editMealForm.controls['mealDate'].setValue(meal.date);
-      this.editMealForm.controls['mealNumberOfPersons'].setValue(meal.numberOfPersons ?? 3);
-    }),
-    map(() => this.editMealForm)
-  );
+  private readonly editMealForm$: Observable<FormGroup> = this.getEditMealForm$();
 
   public readonly editMealFormData$ 
   = combineLatest({
@@ -99,13 +73,15 @@ export class EditMealComponent implements OnInit, OnDestroy {
   public constructor(
     private activatedRoute: ActivatedRoute,
     private mealKindService: MealKindService,
-    private mealService: MealService
+    private mealService: MealService,
+    private mealCurrentDateService: MealCurrentDateService,
+    private dateHelperService: DateHelperService
   ) { }
 
   public ngOnInit(): void {
-    this.autoSaveSubscription 
-    = this.editMealForm.valueChanges
+    this.editMealForm.valueChanges
     .pipe(
+      takeUntil(this.destroy$),
       debounceTime(500),
       filter(() => !this.editMealForm.pristine && this.editMealForm.valid),
       switchMap(() => this.save())
@@ -114,11 +90,44 @@ export class EditMealComponent implements OnInit, OnDestroy {
   }
   
   public ngOnDestroy(): void {
-    this.autoSaveSubscription?.unsubscribe();
+    this.destroy$.next(true);
+    this.destroy$.complete();
   }
 
+  private getEditMealForm$(): Observable<FormGroup> {
+    return combineLatest(
+      {
+          params: this.activatedRoute.queryParams,
+          currentDate: this.mealCurrentDateService.currentDate$
+      }
+    )
+    .pipe(
+        mergeMap(result => {    
+          this.currentMealId = result.params['id']
+          if (this.currentMealId) {
+              return this.mealService.loadOneById(this.currentMealId);
+          }
+          const meal: Meal = new Meal(this.dateHelperService);
+          const defaultDate = result.currentDate;
+
+          meal.name = '';
+          meal.date = this.dateHelperService.getInvariantDateWithoutTimeZone(defaultDate);
+          meal.mealKindId = 1;
+          meal.numberOfPersons = 3;
+          return of(meal);
+          }),
+          tap(meal => {
+            this.editMealForm.controls['mealKindId'].setValue(meal.mealKindId);
+            this.editMealForm.controls['mealName'].setValue(meal.name);
+            this.editMealForm.controls['mealDate'].setValue(meal.date);
+            this.editMealForm.controls['mealNumberOfPersons'].setValue(meal.numberOfPersons);
+        }),
+        map(() => this.editMealForm)
+    );
+}
+
   private getMeal(): Meal {
-    const meal: Meal = new Meal();
+    const meal: Meal = new Meal(this.dateHelperService);
 
     if (this.currentMealId) {
       meal.id = this.currentMealId;

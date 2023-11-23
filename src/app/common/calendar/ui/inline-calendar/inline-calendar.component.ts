@@ -3,6 +3,7 @@ import { CommonModule, registerLocaleData } from '@angular/common';
 import * as fr from '@angular/common/locales/fr';
 import { CalendarDate } from '../../model/calendar-date.model';
 import { Observable, Subscription, tap } from 'rxjs';
+import { DateHelperService } from 'src/app/common/date/service/date-helper.service';
 
 @Component({
   selector: 'app-inline-calendar',
@@ -23,7 +24,9 @@ export class InlineCalendarComponent implements OnInit, OnDestroy {
   public selectedCalendarDate: CalendarDate | undefined;
   public calendarDates: CalendarDate[] = [];
 
-  public constructor() {
+  public constructor(
+    private dateHelperService: DateHelperService
+  ) {
     registerLocaleData(fr.default);
   }
 
@@ -33,10 +36,9 @@ export class InlineCalendarComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     for (let i = 0; i < this.numberOfDates; i++) {
-      const date: Date = new Date();
+      const date: Date = this.dateHelperService.getInvarianteCurrentDateWithoutTimeZone();
       date.setDate(date.getDate() + i);
-      date.setHours(0,0,0,0);
-      const calendarDate: CalendarDate = new CalendarDate();
+      const calendarDate: CalendarDate = new CalendarDate(this.dateHelperService);
       calendarDate.date = date;
       this.calendarDates.push(calendarDate);
     }
@@ -45,9 +47,8 @@ export class InlineCalendarComponent implements OnInit, OnDestroy {
       this.defaultSelectedDateSubscription = this.defaultSelectedDate$
       .pipe(
         tap(defaultSelectedDate => {
-          defaultSelectedDate.setHours(0,0,0,0);
           this.calendarDates.forEach(calendarDate => {
-            if (defaultSelectedDate && defaultSelectedDate.getTime() === calendarDate.date.getTime()) {
+            if (this.dateHelperService.areUTCDatesEqual(defaultSelectedDate, calendarDate.date)) {
               this.selectedCalendarDate = calendarDate;
               this.selectedCalendarDate.isSelected = true;
               this.onSelectedDateChanged.emit(this.selectedCalendarDate.date);

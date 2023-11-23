@@ -1,4 +1,4 @@
-export class DateHelper {
+export abstract class DateHelper {
   public constructor() { }
 
   public static areUTCDatesEqual(date1: Date, date2: Date): boolean {

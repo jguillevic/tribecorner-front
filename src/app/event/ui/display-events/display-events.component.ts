@@ -5,7 +5,7 @@ import { InlineCalendarComponent } from "../../../common/calendar/ui/inline-cale
 import { TabBarComponent } from "../../../common/tab-bar/ui/tab-bar/tab-bar.component";
 import { EventRoutes } from '../../route/event.routes';
 import { Router } from '@angular/router';
-import { Observable, switchMap, take } from 'rxjs';
+import { Observable, switchMap, take, tap } from 'rxjs';
 import { EventService } from '../../service/event.service';
 import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
 import { EventLargeEmptyComponent } from "../event-large-empty/event-large-empty.component";

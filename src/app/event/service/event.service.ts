@@ -1,75 +1,78 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
+import { ApiHttpClient } from 'src/app/common/http/api-http-client';
 import { Event } from 'src/app/event/model/event.model';
+import { environment } from 'src/environments/environment';
+import { LoadEventDto } from '../dto/load-event.dto';
+import { EventConverter } from '../converter/event.converter';
+import { EditEventDto } from '../dto/edit-event.dto';
+import { DateHelper } from '../../common/date/helper/date.helper';
 
 @Injectable()
 export class EventService {
-  public constructor() { }
+  private static apiPath: string = "events";
+
+  public constructor(private apiHttp: ApiHttpClient) { }
 
   public loadAllByDate(date: Date): Observable<Event[]> {
-    const events: Event[] = this.generateEvents();
-    return of(this.getEventsOfDay(events, date));
+    const dateStr: string = DateHelper.toUTCDateWithoutTimeString(date);
+    return this.apiHttp.get<LoadEventDto[]>(
+      `${environment.apiUrl}${EventService.apiPath}?date=${dateStr}`
+    )
+    .pipe(
+      map(loadEventDtos => 
+        loadEventDtos.map(loadEventDto =>
+          EventConverter.fromDtoToModel(loadEventDto)
+        )
+      )
+    );
   }
 
   public loadOneById(eventId: number): Observable<Event> {
-    const event:Event = new Event();
-    event.id = eventId;
-    return of(event);
+    return this.apiHttp.get<LoadEventDto>(
+      `${environment.apiUrl}${EventService.apiPath}/${eventId}`
+    )
+    .pipe(
+      map(
+        loadEventDto => 
+        EventConverter.fromDtoToModel(loadEventDto)
+      )
+    );
   }
 
   public create(event: Event): Observable<Event> {
-    return of (event);
+    const editEventDto: EditEventDto = EventConverter.fromModelToDto(event);
+    const body: string = JSON.stringify(editEventDto);
+
+    return this.apiHttp.post<LoadEventDto>(
+      `${environment.apiUrl}${EventService.apiPath}`,
+      body
+    )
+    .pipe(
+      map(loadEventDto => 
+          EventConverter.fromDtoToModel(loadEventDto)
+      )
+    );
   }
 
   public update(event: Event): Observable<Event> {
-    return of (event);
-  }
+    const editEventDto: EditEventDto = EventConverter.fromModelToDto(event);
+    const body: string = JSON.stringify(editEventDto);
 
-  private generateEvents(): Event[] {
-    const events: Event[] = [];
-    const currentDate = new Date();
-    const eventNames = [
-      'Réunion d\'équipe',
-      'Conférence client',
-      'Formation interne',
-      'Déjeuner avec partenaires',
-      'Présentation du projet',
-      'Entretiens de recrutement',
-      'Réunion de planification',
-      'Atelier de brainstorming',
-      'Développement de nouvelles fonctionnalités',
-      'Pause café'
-    ];
-
-    for (let i = 0; i < 25; i++) {
-      const newEvent = new Event();
-      newEvent.id = i + 1;
-      newEvent.name = eventNames[i % eventNames.length];
-      newEvent.allDay = false;
-
-      // Générer une durée aléatoire entre 30 minutes et 4 heures (en millisecondes)
-      const duration = Math.floor(Math.random() * (4 * 60 - 30 + 1) + 30) * 60000;
-
-      // Répartir les événements sur 10 jours (86400000 ms par jour)
-      const daysToAdd = i % 10;
-      newEvent.startingDateTime = new Date(currentDate.getTime() + daysToAdd * 86400000);
-      newEvent.endingDateTime = new Date(newEvent.startingDateTime.getTime() + duration);
-
-      events.push(newEvent);
-    }
-
-    return events;
-  }
-
-  // Méthode pour récupérer les événements d'un jour en particulier.
-  private getEventsOfDay(events: Event[], date: Date): Event[] {
-    const eventsOfDay: Event[] = events.filter(
-      (event) =>
-        event.startingDateTime.toDateString() === date.toDateString() ||
-        (event.endingDateTime.toDateString() === date.toDateString() &&
-          event.endingDateTime.getDate() !== event.startingDateTime.getDate())
+    return this.apiHttp.put<LoadEventDto>(
+      `${environment.apiUrl}${EventService.apiPath}/${event.id}`,
+      body
+    )
+    .pipe(
+      map(loadEventDto => 
+        EventConverter.fromDtoToModel(loadEventDto)
+      )
     );
+  }
 
-    return eventsOfDay;
+  public delete(eventId: number): Observable<void> {
+    return this.apiHttp.delete<void>(
+      `${environment.apiUrl}${EventService.apiPath}/${eventId}`
+    );
   }
 }

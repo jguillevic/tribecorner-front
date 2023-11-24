@@ -16,8 +16,10 @@ export class MealService {
   ) { }
 
   public loadAllByDate(date: Date): Observable<Meal[]> {
+    const dateStr: string = DateHelper.toUTCDateWithoutTimeString(date);
+
     return this.apiHttp.get<MealDto[]>(
-      `${environment.apiUrl}${MealService.apiPath}?date=${DateHelper.toUTCDateWithoutTimeString(date)}`
+      `${environment.apiUrl}${MealService.apiPath}?date=${dateStr}`
       )
       .pipe(
         map(mealDtos => 

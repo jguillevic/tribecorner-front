@@ -58,7 +58,7 @@ import { DateHelper } from 'src/app/common/date/helper/date.helper';
     ]
 })
 export class EditEventComponent implements OnInit, OnDestroy {
-    private currentEventId: number = -1;
+    private currentEventId: number = 0;
     private readonly editEventForm: FormGroup;
     private readonly destroy$ = new Subject<boolean>();
 
@@ -85,10 +85,10 @@ export class EditEventComponent implements OnInit, OnDestroy {
 
     private createEventForm(): FormGroup {
         return this.formBuilder.group({
-            eventName: ['', [Validators.required, Validators.maxLength(this.eventNameMaxLength)]],
-            eventStartingDateTime: [DateHelper.getInvariantCurrentDateWithoutTime(), Validators.required],
-            eventEndingDateTime: [DateHelper.getInvariantCurrentDateWithoutTime(), Validators.required],
-            eventAllDay: [false],
+            name: ['', [Validators.required, Validators.maxLength(this.eventNameMaxLength)]],
+            startingDateTime: [DateHelper.getInvariantCurrentDateWithoutTime(), Validators.required],
+            endingDateTime: [DateHelper.getInvariantCurrentDateWithoutTime(), Validators.required],
+            allDay: [false],
         });
     }
 
@@ -136,10 +136,10 @@ export class EditEventComponent implements OnInit, OnDestroy {
                 return of(event);
                 }),
                 tap(event => {
-                this.editEventForm.controls['eventName'].setValue(event.name);
-                this.editEventForm.controls['eventStartingDateTime'].setValue(event.startingDateTime);
-                this.editEventForm.controls['eventEndingDateTime'].setValue(event.endingDateTime);
-                this.editEventForm.controls['eventAllDay'].setValue(event.allDay);
+                this.editEventForm.controls['name'].setValue(event.name);
+                this.editEventForm.controls['startingDateTime'].setValue(event.startingDateTime);
+                this.editEventForm.controls['endingDateTime'].setValue(event.endingDateTime);
+                this.editEventForm.controls['allDay'].setValue(event.allDay);
             }),
             map(() => this.editEventForm)
         );
@@ -148,7 +148,7 @@ export class EditEventComponent implements OnInit, OnDestroy {
     private save(): Observable<Event> {
         const event: Event = this.getEvent();
     
-        if (!this.currentEventId) {
+        if (this.currentEventId) {
           return this.eventService.update(event);
         }
     

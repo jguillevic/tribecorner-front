@@ -51,7 +51,7 @@ export class ShoppingListService {
   }
 
   public create(shoppingList: ShoppingList): Observable<ShoppingList> {
-    const editShoppingListDto = ShoppingListService.fromShoppingListToEditShoppingListDto(shoppingList);
+    const editShoppingListDto: EditShoppingListDto = ShoppingListService.fromShoppingListToEditShoppingListDto(shoppingList);
     const body: string = JSON.stringify(editShoppingListDto);
 
     return this.apiHttp.post<LoadShoppingListDto>(
@@ -66,7 +66,7 @@ export class ShoppingListService {
   }
 
   public update(shoppingList: ShoppingList): Observable<ShoppingList> {
-    const editShoppingListDto = ShoppingListService.fromShoppingListToEditShoppingListDto(shoppingList);
+    const editShoppingListDto: EditShoppingListDto = ShoppingListService.fromShoppingListToEditShoppingListDto(shoppingList);
     const body: string = JSON.stringify(editShoppingListDto);
 
     return this.apiHttp.put<LoadShoppingListDto>(

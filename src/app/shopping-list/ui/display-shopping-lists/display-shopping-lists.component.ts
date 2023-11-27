@@ -115,18 +115,6 @@ export class DisplayShoppingListsComponent implements OnDestroy {
     }); 
   }
 
-  public delete(shoppingList: ShoppingList): void {
-    if (shoppingList.id) {
-      this.deleteSubscription = this.shoppingListService.delete(shoppingList.id)
-      .pipe(
-        tap(() => 
-          this.deletedShoppingListSubject.next([...this.deletedShoppingListSubject.value, shoppingList])
-        )
-      )
-      .subscribe();
-    }
-  }
-
   public onShoppingListCopied(copiedShoppingList: ShoppingList) {
     this.addedShoppingListsSubject.next(
       [

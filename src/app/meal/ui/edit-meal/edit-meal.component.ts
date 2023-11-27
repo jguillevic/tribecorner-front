@@ -37,7 +37,7 @@ import { DateHelper } from '../../../common/date/helper/date.helper';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditMealComponent implements OnInit, OnDestroy {
-  private destroy$: Subject<boolean> = new Subject<boolean>();
+  private readonly destroy$: Subject<void> = new Subject<void>();
   private currentMealId: number|undefined;
 
   private readonly mealKinds$: Observable<MealKind[]> 
@@ -89,7 +89,6 @@ export class EditMealComponent implements OnInit, OnDestroy {
   }
   
   public ngOnDestroy(): void {
-    this.destroy$.next(true);
     this.destroy$.complete();
   }
 

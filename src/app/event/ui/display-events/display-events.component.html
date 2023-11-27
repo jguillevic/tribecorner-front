@@ -7,6 +7,10 @@
             <app-event-card *ngFor="let event of events"
             class="event"
             [event]="event">
+                <app-event-delete-button 
+                [eventToDelete]="event"
+                (onEventDeleted)="onEventDeleted(event)">
+                </app-event-delete-button>
             </app-event-card>
             <app-event-large-empty *ngIf="!events.length"></app-event-large-empty>
         </div>

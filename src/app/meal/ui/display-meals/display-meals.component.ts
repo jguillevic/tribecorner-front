@@ -35,7 +35,7 @@ import { MealCurrentDateService } from '../../service/meal-current-date.service'
     ]
 })
 export class DisplayMealsComponent implements OnDestroy {
-  private readonly destroy$ = new Subject<boolean>();
+  private readonly destroy$: Subject<void> = new Subject<void>();
   private readonly selectedDate$: Observable<Date> = this.mealCurrentDateService.currentDate$;
   public readonly defaultDate$: Observable<Date> = this.selectedDate$
   .pipe(
@@ -53,7 +53,6 @@ export class DisplayMealsComponent implements OnDestroy {
   ) { }
 
   public ngOnDestroy(): void {
-    this.destroy$.next(true);
     this.destroy$.complete();
   }
 

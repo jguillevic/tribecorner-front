@@ -8,7 +8,7 @@ export class Event {
     public allDay: boolean;
 
     public constructor(
-        id: number = -1,      
+        id: number = 0,      
         name: string = '',
         startingDateTime: Date = DateHelper.getInvariantCurrentDateTime(),
         endingDateTime: Date = DateHelper.getInvariantCurrentDateTime(),

@@ -60,7 +60,7 @@ import { DateHelper } from 'src/app/common/date/helper/date.helper';
 export class EditEventComponent implements OnInit, OnDestroy {
     private currentEventId: number = 0;
     private readonly editEventForm: FormGroup;
-    private readonly destroy$ = new Subject<boolean>();
+    private readonly destroy$ = new Subject<void>();
 
     public readonly eventNameMaxLength: number = 255;
     public editEventForm$ = this.getEditEventForm$();
@@ -103,7 +103,6 @@ export class EditEventComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy(): void {
-        this.destroy$.next(true);
         this.destroy$.complete();
     }
     

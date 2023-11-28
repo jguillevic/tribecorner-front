@@ -13,6 +13,7 @@ import { EventCardComponent } from "../event-card/event-card.component";
 import { EventCurrentDateService } from '../../service/event-current-date.service';
 import { Event } from '../../model/event.model';
 import { EventDeleteButtonComponent } from "../event-delete-button/event-delete-button.component";
+import { EventEditButtonComponent } from "../event-edit-button/event-edit-button.component";
 
 @Component({
     selector: 'app-display-events',
@@ -27,7 +28,8 @@ import { EventDeleteButtonComponent } from "../event-delete-button/event-delete-
         SimpleLoadingComponent,
         EventLargeEmptyComponent,
         EventCardComponent,
-        EventDeleteButtonComponent
+        EventDeleteButtonComponent,
+        EventEditButtonComponent
     ]
 })
 export class DisplayEventsComponent {

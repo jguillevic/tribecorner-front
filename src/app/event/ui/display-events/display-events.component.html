@@ -7,6 +7,9 @@
             <app-event-card *ngFor="let event of events"
             class="event"
             [event]="event">
+                <app-event-edit-button
+                [eventId]="event.id">
+                </app-event-edit-button>
                 <app-event-delete-button 
                 [eventToDelete]="event"
                 (onEventDeleted)="onEventDeleted(event)">

@@ -49,7 +49,11 @@
                     <mat-error *ngIf="editEventForm.controls['endingDateTime'].hasError('required')">
                         Date et heure de fin requises
                     </mat-error>
-                  </mat-form-field>
+                </mat-form-field>
+                <!--Toute la journée.-->
+                <mat-slide-toggle color="primary" formControlName="allDay">
+                    Toute la journée ?
+                </mat-slide-toggle>
             </form>
             <ng-template #loadingForm>
                 <app-simple-loading></app-simple-loading>

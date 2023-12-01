@@ -15,6 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
 import { EventCurrentDateService } from '../../service/event-current-date.service';
 import { DateHelper } from 'src/app/common/date/helper/date.helper';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
     selector: 'app-edit-event',
@@ -54,7 +55,8 @@ import { DateHelper } from 'src/app/common/date/helper/date.helper';
         MatFormFieldModule,
         MtxDatetimepickerModule,
         MtxMomentDatetimeModule,
-        SimpleLoadingComponent
+        SimpleLoadingComponent,
+        MatSlideToggleModule
     ]
 })
 export class EditEventComponent implements OnInit, OnDestroy {

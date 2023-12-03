@@ -23,6 +23,7 @@ import { ShoppingListCopierService } from './app/shopping-list/service/shopping-
 import { EventRoutes } from './app/event/route/event.routes';
 import { EventCurrentDateService } from './app/event/service/event-current-date.service';
 import { MealCurrentDateService } from './app/meal/service/meal-current-date.service';
+import { EditEventService } from './app/event/service/edit-event.service';
 
 const routes: Routes = [
     { 
@@ -58,7 +59,8 @@ const routes: Routes = [
         path: '',
         providers: [
             EventCurrentDateService,
-            EventService
+            EventService,
+            EditEventService
         ],
         canActivate: [signedInGuard, hasFamilyGuard],
         children: EventRoutes.eventRoutes

@@ -7,8 +7,8 @@ export abstract class EventConverter {
         return new Event(
             loadEventDto.id,
             loadEventDto.name,
-            loadEventDto.startingDateTime,
-            loadEventDto.endingDateTime,
+            new Date(loadEventDto.startingDateTime),
+            new Date(loadEventDto.endingDateTime),
             loadEventDto.allDay
         );
     }

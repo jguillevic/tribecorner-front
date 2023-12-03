@@ -61,10 +61,10 @@ describe('DateHelperService', () => {
         });
     });
 
-    describe('getInvariantDateWithoutTimeZone', () => {
+    describe('getInvariantDate', () => {
         it('should return UTC date for a valid date', () => {
             const inputDate = new Date('2023-01-01T12:34:56Z');
-            const result = DateHelper.getInvariantDateWithoutTimeZone(inputDate);
+            const result = DateHelper.getInvariantDate(inputDate);
 
             const expectedYear = 2023;
             const expectedMonth = 0;
@@ -83,7 +83,7 @@ describe('DateHelperService', () => {
 
         it('should return UTC date for a date with timezone +03:00', () => {
             const inputDate = new Date('2023-01-15T00:00:00+03:00');
-            const result = DateHelper.getInvariantDateWithoutTimeZone(inputDate);
+            const result = DateHelper.getInvariantDate(inputDate);
 
             const expectedYear = 2023;
             const expectedMonth = 0;
@@ -102,15 +102,15 @@ describe('DateHelperService', () => {
 
         it('should return UTC date for an invalid date', () => {
             const inputDate = new Date('invalid');
-            const result = DateHelper.getInvariantDateWithoutTimeZone(inputDate);
+            const result = DateHelper.getInvariantDate(inputDate);
             expect(isNaN(result.getTime())).toBe(true);
         });
     });
 
-    describe('getInvariantCurrentDateWithoutTime', () => {
+    describe('getInvariantCurrentDate', () => {
         it('should return the current date without timezone information', () => {
             const currentDate = new Date();
-            const result = DateHelper.getInvariantCurrentDateWithoutTime();
+            const result = DateHelper.getInvariantCurrentDate();
 
             expect(result.getUTCFullYear()).toBe(currentDate.getUTCFullYear());
             expect(result.getUTCMonth()).toBe(currentDate.getUTCMonth());

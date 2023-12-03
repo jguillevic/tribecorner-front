@@ -60,9 +60,9 @@ export class EditEventComponent implements OnInit, OnDestroy {
     private createEventForm(): FormGroup {
         return this.formBuilder.group({
             name: ['', [Validators.required, Validators.maxLength(this.eventNameMaxLength)]],
-            startingDate: [DateHelper.getInvariantCurrentDateWithoutTime(), Validators.required],
+            startingDate: [DateHelper.getInvariantCurrentDate(), Validators.required],
             startingTime: [0, Validators.required],
-            endingDate: [DateHelper.getInvariantCurrentDateWithoutTime(), Validators.required],
+            endingDate: [DateHelper.getInvariantCurrentDate(), Validators.required],
             endingTime: [0, Validators.required],
             allDay: [false],
         });
@@ -161,9 +161,9 @@ export class EditEventComponent implements OnInit, OnDestroy {
                 const editEventViewModel: EditEventViewModel = new EditEventViewModel(
                     0,
                     '',
-                    DateHelper.getInvariantDateWithoutTimeZone(defaultDate),
+                    DateHelper.getInvariantDate(defaultDate),
                     EditEventComponent.getDefaultStartingTime(),
-                    DateHelper.getInvariantDateWithoutTimeZone(defaultDate),
+                    DateHelper.getInvariantDate(defaultDate),
                     EditEventComponent.getDefaultEndingTime(),
                     false
                 );

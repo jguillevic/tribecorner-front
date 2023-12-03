@@ -55,7 +55,7 @@ export class EditMealComponent implements OnInit, OnDestroy {
       mealKindId: new FormControl(0, [Validators.required]),
       mealName: new FormControl('', [Validators.required, Validators.maxLength(this.mealNameMaxLength)]),
       mealDate: new FormControl(
-        DateHelper.getInvariantCurrentDateWithoutTime(),
+        DateHelper.getInvariantCurrentDate(),
         [Validators.required]
       ),
       mealNumberOfPersons: new FormControl(0, [Validators.required])
@@ -109,7 +109,7 @@ export class EditMealComponent implements OnInit, OnDestroy {
           const defaultDate = result.currentDate;
 
           meal.name = '';
-          meal.date = DateHelper.getInvariantDateWithoutTimeZone(defaultDate);
+          meal.date = DateHelper.getInvariantDate(defaultDate);
           meal.mealKindId = 1;
           meal.numberOfPersons = 3;
           return of(meal);

@@ -31,7 +31,7 @@ describe('MealCurrentDateService', () => {
       service = TestBed.inject(EventCurrentDateService);
 
       service.currentDate$.subscribe((currentDate) => {
-        expect(currentDate).toEqual(DateHelper.getInvariantCurrentDateWithoutTime());
+        expect(currentDate).toEqual(DateHelper.getInvariantCurrentDate());
       });
     });
   });

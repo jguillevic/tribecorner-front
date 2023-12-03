@@ -19,7 +19,7 @@ export abstract class DateHelper {
     DateHelper.areUTCTimesEqual(date1, date2);
   }
 
-  public static getInvariantDateWithoutTimeZone(date: Date): Date {
+  public static getInvariantDate(date: Date): Date {
     const utcDate = Date.UTC(
       date.getFullYear(),
       date.getMonth(),
@@ -33,9 +33,9 @@ export abstract class DateHelper {
     return new Date(utcDate);
   }
 
-  public static getInvariantCurrentDateWithoutTime(): Date {
+  public static getInvariantCurrentDate(): Date {
     const date = new Date();
-    return DateHelper.getInvariantDateWithoutTimeZone(date);
+    return DateHelper.getInvariantDate(date);
   }
 
   public static getInvariantDateTime(dateTime: Date): Date {

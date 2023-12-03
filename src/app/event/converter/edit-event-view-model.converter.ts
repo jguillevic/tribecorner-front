@@ -7,9 +7,9 @@ export abstract class EditEventViewModelConverter {
         return new EditEventViewModel(
             event.id,
             event.name,
-            DateHelper.getInvariantDateWithoutTimeZone(event.startingDateTime),
+            DateHelper.getInvariantDate(event.startingDateTime),
             event.startingDateTime.getUTCHours() * 60 + event.startingDateTime.getUTCMinutes(),
-            DateHelper.getInvariantDateWithoutTimeZone(event.endingDateTime),
+            DateHelper.getInvariantDate(event.endingDateTime),
             event.endingDateTime.getUTCHours() * 60 + event.endingDateTime.getUTCMinutes(),
             event.allDay
           );

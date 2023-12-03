@@ -8,9 +8,9 @@ export abstract class EditEventViewModelConverter {
             event.id,
             event.name,
             DateHelper.getInvariantDateWithoutTimeZone(event.startingDateTime),
-            event.startingDateTime.getHours() * 60 + event.startingDateTime.getMinutes(),
+            event.startingDateTime.getUTCHours() * 60 + event.startingDateTime.getUTCMinutes(),
             DateHelper.getInvariantDateWithoutTimeZone(event.endingDateTime),
-            event.endingDateTime.getHours() * 60 + event.endingDateTime.getMinutes(),
+            event.endingDateTime.getUTCHours() * 60 + event.endingDateTime.getUTCMinutes(),
             event.allDay
           );
     }
@@ -41,12 +41,14 @@ export abstract class EditEventViewModelConverter {
         const minutes: number = time % 60;
         
         return new Date(
-            date.getFullYear(),
-            date.getMonth(),
-            date.getDate(),
-            hours,
-            minutes,
-            0
+            Date.UTC(
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate(),
+                hours,
+                minutes,
+                0
+            )
         );
     }
 }

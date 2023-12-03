@@ -15,7 +15,7 @@ export class EventService {
   public constructor(private apiHttp: ApiHttpClient) { }
 
   public loadAllByDate(date: Date): Observable<Event[]> {
-    const dateStr: string = DateHelper.toUTCDateWithoutTimeString(date);
+    const dateStr: string = DateHelper.getUTCISOStr(date);
     return this.apiHttp.get<LoadEventDto[]>(
       `${environment.apiUrl}${EventService.apiPath}?date=${dateStr}`
     )

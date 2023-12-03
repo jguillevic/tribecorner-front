@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Event } from 'src/app/event/model/event.model';
-import * as moment from 'moment';
+import { Event } from '../../../event/model/event.model';
+import { DateHelper } from '../../../common/date/helper/date.helper';
 
 @Component({
   selector: 'app-event-card',
@@ -13,9 +13,28 @@ import * as moment from 'moment';
 export class EventCardComponent {
   @Input() public event: Event = new Event();
 
-  public get dates(): string {
-    const startingDateStr: string = moment(this.event.startingDateTime).format('HH:mm');
-    const endingDateStr: string = moment(this.event.endingDateTime).format('HH:mm');
-    return `${startingDateStr} - ${endingDateStr}`;
+  public get durationLabel(): string {
+    const startingDateStr: string = DateHelper.getUTCStr(this.event.startingDateTime);
+    const endingDateStr: string = DateHelper.getUTCStr(this.event.endingDateTime);
+    const startingTimeStr: string = DateHelper.getUTCHoursAndMinutesStr(this.event.startingDateTime);
+    const endingTimeStr: string = DateHelper.getUTCHoursAndMinutesStr(this.event.endingDateTime);
+
+    if (this.event.allDay) {
+      if (!DateHelper.areUTCDatesEqual(
+        this.event.startingDateTime, this.event.endingDateTime
+      )) {
+        return `${startingDateStr} - ${endingDateStr}`;
+      }
+
+      return '';
+    }
+
+    if (DateHelper.areUTCDatesEqual(
+      this.event.startingDateTime, this.event.endingDateTime
+    )) {
+      return `${startingTimeStr} - ${endingTimeStr}`;
+    }
+
+    return `${startingDateStr} ${startingTimeStr} - ${endingDateStr} ${endingTimeStr}`;
   }
 }

@@ -35,39 +35,48 @@ export abstract class DateHelper {
 
   public static getInvariantCurrentDateWithoutTime(): Date {
     const date = new Date();
+    return DateHelper.getInvariantDateWithoutTimeZone(date);
+  }
+
+  public static getInvariantDateTime(dateTime: Date): Date {
     const utcDate = Date.UTC(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      0,
-      0,
-      0,
-      0
+      dateTime.getFullYear(),
+      dateTime.getMonth(),
+      dateTime.getDate(),
+      dateTime.getHours(),
+      dateTime.getMinutes(),
+      dateTime.getSeconds(),
+      dateTime.getMilliseconds()
     );
     
     return new Date(utcDate);
   }
 
   public static getInvariantCurrentDateTime(): Date {
-    const date = new Date();
-    const utcDate = Date.UTC(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      date.getHours(),
-      date.getMinutes(),
-      date.getSeconds(),
-      date.getMilliseconds()
-    );
-    
-    return new Date(utcDate);
+    const currentDateTime = new Date();
+    return DateHelper.getInvariantDateTime(currentDateTime);
   }
 
-  public static toUTCDateWithoutTimeString(date: Date): string {
+  public static getUTCISOStr(date: Date): string {
     return [
       date.getUTCFullYear(),
       (date.getUTCMonth() + 1).toString().padStart(2, '0'),
       date.getUTCDate().toString().padStart(2, '0'),
     ].join('-');
+  }
+
+  public static getUTCStr(date: Date): string {
+    return [
+      date.getUTCDate().toString().padStart(2, '0'),
+      (date.getUTCMonth() + 1).toString().padStart(2, '0'),
+      date.getUTCFullYear()
+    ].join('/');
+  }
+
+  public static getUTCHoursAndMinutesStr(date: Date): string {
+    return [
+      date.getUTCHours().toString().padStart(2, '0'),
+      date.getUTCMinutes().toString().padStart(2, '0')
+    ].join(':');
   }
 }

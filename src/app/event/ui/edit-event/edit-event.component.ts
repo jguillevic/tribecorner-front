@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GoBackTopBarComponent } from "../../../common/top-bar/go-back/ui/go-back-top-bar.component";
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -34,7 +34,8 @@ import { TimeToStringPipe } from "../../../common/date/pipe/time-to-string.pipe"
         MatNativeDateModule,
         MatSelectModule,
         TimeToStringPipe
-    ]
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditEventComponent implements OnInit, OnDestroy {
     private currentEventId: number = 0;

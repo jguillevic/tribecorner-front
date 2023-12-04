@@ -1,7 +1,7 @@
 <div class="page">
     <app-go-back-top-bar></app-go-back-top-bar>
     <div>
-        <div class="margin shopping-list">
+        <div class="padding shopping-list">
             <form class="form m-t-30" *ngIf="editShoppingListForm$ | async as editShoppingListForm; else loadingForm" [formGroup]="editShoppingListForm">
                 <div class="form-inputs">
                     <mat-form-field class="form-input">
@@ -56,8 +56,8 @@
                 </mat-expansion-panel>
             </div>
         </div>
-        <form class="add-form" [formGroup]="addNewItemShoppingListForm" (ngSubmit)="addItemShoppingList()">
-            <mat-form-field class="add-form__field margin">
+        <form class="add-form padding" [formGroup]="addNewItemShoppingListForm" (ngSubmit)="addItemShoppingList()">
+            <mat-form-field class="add-form__field">
                 <mat-label>Nouvel article</mat-label>
                 <input matInput type="text" formControlName="newItemShoppingListName">
                 <mat-error *ngIf="addNewItemShoppingListForm.controls['newItemShoppingListName'].hasError('maxlength')">

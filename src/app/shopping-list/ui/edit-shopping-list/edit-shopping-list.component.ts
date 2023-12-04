@@ -38,8 +38,7 @@ import { MatDividerModule } from '@angular/material/divider';
         MatExpansionModule,
         GoBackTopBarComponent,
         MatDividerModule
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    ]
 })
 export class EditShoppingListComponent implements OnInit, OnDestroy {
   private autoSaveSubscription: Subscription|undefined;

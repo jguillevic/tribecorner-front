@@ -163,6 +163,11 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
       const newItemShoppingListName: string = this.addNewItemShoppingListForm.controls['newItemShoppingListName'].value;
 
       if (newItemShoppingListName.length) {
+        if (this.itemShoppingListsSubject.value.find(item => item.name === newItemShoppingListName)) {
+          this.addNewItemShoppingListForm.controls['newItemShoppingListName'].setErrors({'already-added': true});
+          return;
+        }
+
         const itemShoppingList: ItemShoppingList  = new ItemShoppingList();
         itemShoppingList.name = newItemShoppingListName;
         this.itemShoppingListsSubject.next([...this.itemShoppingListsSubject.value, itemShoppingList]);

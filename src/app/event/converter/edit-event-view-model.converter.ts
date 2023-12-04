@@ -4,15 +4,16 @@ import { DateHelper } from "../../common/date/helper/date.helper";
 
 export abstract class EditEventViewModelConverter {
     public static fromModelToViewModel(event: Event): EditEventViewModel {
-        return new EditEventViewModel(
+        const editEventViewModel = new EditEventViewModel(
             event.id,
             event.name,
-            DateHelper.getInvariantDate(event.startingDateTime),
+            DateHelper.getUTCDate(event.startingDateTime),
             event.startingDateTime.getUTCHours() * 60 + event.startingDateTime.getUTCMinutes(),
-            DateHelper.getInvariantDate(event.endingDateTime),
+            DateHelper.getUTCDate(event.endingDateTime),
             event.endingDateTime.getUTCHours() * 60 + event.endingDateTime.getUTCMinutes(),
             event.allDay
-          );
+        );
+        return editEventViewModel;
     }
 
     public static fromViewModelToModel(editEventViewModel: EditEventViewModel) {
@@ -27,13 +28,15 @@ export abstract class EditEventViewModelConverter {
             editEventViewModel.endingTime
         );
 
-        return new Event(
+        const event: Event = new Event(
             editEventViewModel.id,
             editEventViewModel.name,
             startingDateTime,
             endingDateTime,
             editEventViewModel.allDay
         );
+
+        return event;
     }
 
     public static convertToDateTime(date: Date, time: number): Date {
@@ -42,9 +45,9 @@ export abstract class EditEventViewModelConverter {
         
         return new Date(
             Date.UTC(
-                date.getFullYear(),
-                date.getMonth(),
-                date.getDate(),
+                date.getUTCFullYear(),
+                date.getUTCMonth(),
+                date.getUTCDate(),
                 hours,
                 minutes,
                 0

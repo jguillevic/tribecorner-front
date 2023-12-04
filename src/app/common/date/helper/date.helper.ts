@@ -19,6 +19,20 @@ export abstract class DateHelper {
     DateHelper.areUTCTimesEqual(date1, date2);
   }
 
+  public static getUTCDate(date: Date): Date {
+    const utcDate = Date.UTC(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate(),
+      0,
+      0,
+      0,
+      0
+    );
+    
+    return new Date(utcDate);
+  }
+
   public static getInvariantDate(date: Date): Date {
     const utcDate = Date.UTC(
       date.getFullYear(),

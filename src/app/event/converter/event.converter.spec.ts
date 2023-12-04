@@ -10,8 +10,8 @@ describe('EventConverter', () => {
       const loadEventDto: LoadEventDto = {
         id: 1,
         name: 'Test Event',
-        startingDateTime: new Date('2023-01-01T10:00:00'),
-        endingDateTime: new Date('2023-01-01T12:00:00'),
+        startingDateTime: '2023-01-01T10:00:00',
+        endingDateTime: '2023-01-01T12:00:00',
         allDay: false,
       };
 

@@ -5,7 +5,7 @@ export class CalendarDate {
     public isSelected: boolean;
 
     public constructor() {
-        this.date = DateHelper.getInvariantCurrentDate();
+        this.date = DateHelper.getCurrentDate();
         this.isSelected = false;
     }
 }

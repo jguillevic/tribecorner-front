@@ -8,7 +8,6 @@ import { Observable, Subject, combineLatest, debounceTime, filter, map, mergeMap
 import { ActivatedRoute } from '@angular/router';
 import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
 import { EventCurrentDateService } from '../../service/event-current-date.service';
-import { DateHelper } from 'src/app/common/date/helper/date.helper';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -60,9 +59,9 @@ export class EditEventComponent implements OnInit, OnDestroy {
     private createEventForm(): FormGroup {
         return this.formBuilder.group({
             name: ['', [Validators.required, Validators.maxLength(this.eventNameMaxLength)]],
-            startingDate: [DateHelper.getInvariantCurrentDate(), Validators.required],
+            startingDate: [new Date(), Validators.required],
             startingTime: [0, Validators.required],
-            endingDate: [DateHelper.getInvariantCurrentDate(), Validators.required],
+            endingDate: [new Date(), Validators.required],
             endingTime: [0, Validators.required],
             allDay: [false],
         });
@@ -161,9 +160,9 @@ export class EditEventComponent implements OnInit, OnDestroy {
                 const editEventViewModel: EditEventViewModel = new EditEventViewModel(
                     0,
                     '',
-                    DateHelper.getInvariantDate(defaultDate),
+                    defaultDate,
                     EditEventComponent.getDefaultStartingTime(),
-                    DateHelper.getInvariantDate(defaultDate),
+                    defaultDate,
                     EditEventComponent.getDefaultEndingTime(),
                     false
                 );

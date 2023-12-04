@@ -3,15 +3,15 @@ import { DateHelper } from "../../common/date/helper/date.helper";
 export class LoadEventDto {
     public id: number;
     public name: string;
-    public startingDateTime: Date;
-    public endingDateTime: Date;
+    public startingDateTime: string;
+    public endingDateTime: string;
     public allDay: boolean;
 
     public constructor(
-        id: number = -1,      
-        name: string = '',
-        startingDateTime: Date = DateHelper.getInvariantCurrentDateTime(),
-        endingDateTime: Date = DateHelper.getInvariantCurrentDateTime(),
+        id: number,      
+        name: string,
+        startingDateTime: string,
+        endingDateTime: string ,
         allDay: boolean = false
     ) {
         this.id = id;

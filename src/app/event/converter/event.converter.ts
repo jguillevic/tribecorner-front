@@ -16,8 +16,8 @@ export abstract class EventConverter {
     public static fromModelToDto(event: Event): EditEventDto {
         return new EditEventDto(
             event.name,
-            event.startingDateTime,
-            event.endingDateTime,
+            event.startingDateTime.toUTCString(),
+            event.endingDateTime.toUTCString(),
             event.allDay
         );
     }

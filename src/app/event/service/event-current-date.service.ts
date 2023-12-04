@@ -6,7 +6,7 @@ import { DateHelper } from '../../common/date/helper/date.helper';
 export class EventCurrentDateService {
   private currentDateSubject: BehaviorSubject<Date> 
   = new BehaviorSubject<Date>(
-    DateHelper.getInvariantCurrentDate()
+    DateHelper.getCurrentDate()
   );
   public currentDate$ = this.currentDateSubject.asObservable();
 

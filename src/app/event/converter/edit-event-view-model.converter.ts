@@ -7,12 +7,13 @@ export abstract class EditEventViewModelConverter {
         const editEventViewModel = new EditEventViewModel(
             event.id,
             event.name,
-            DateHelper.getUTCDate(event.startingDateTime),
-            event.startingDateTime.getUTCHours() * 60 + event.startingDateTime.getUTCMinutes(),
-            DateHelper.getUTCDate(event.endingDateTime),
-            event.endingDateTime.getUTCHours() * 60 + event.endingDateTime.getUTCMinutes(),
+            DateHelper.getDate(event.startingDateTime),
+            event.startingDateTime.getHours() * 60 + event.startingDateTime.getMinutes(),
+            DateHelper.getDate(event.endingDateTime),
+            event.endingDateTime.getHours() * 60 + event.endingDateTime.getMinutes(),
             event.allDay
         );
+
         return editEventViewModel;
     }
 
@@ -44,14 +45,12 @@ export abstract class EditEventViewModelConverter {
         const minutes: number = time % 60;
         
         return new Date(
-            Date.UTC(
-                date.getUTCFullYear(),
-                date.getUTCMonth(),
-                date.getUTCDate(),
-                hours,
-                minutes,
-                0
-            )
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate(),
+            hours,
+            minutes,
+            0
         );
     }
 }

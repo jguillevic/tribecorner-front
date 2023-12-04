@@ -1,7 +1,7 @@
 <div class="event-card">
     <div class="event-card__container">
-        <div class="event-card__label">{{ event.name }}</div>
-        <div class="event-card__all-day" *ngIf="event.allDay">Toute la journée</div>
+        <div class="event-card__label">{{ event?.name }}</div>
+        <div class="event-card__all-day" *ngIf="event?.allDay">Toute la journée</div>
         <div class="event-card__duration">{{ this.durationLabel }}</div>
     </div>
     <div class="event-card__actions">

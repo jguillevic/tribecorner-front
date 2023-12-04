@@ -9,10 +9,10 @@ export class Meal {
     public mealKindId: number;
     
     public constructor() {
-        this.id = -1;
-        this.familyId = -1;
+        this.id = 0;
+        this.familyId = 0;
         this.name = '';
-        this.date = DateHelper.getInvariantCurrentDate();
+        this.date = DateHelper.getCurrentDate();
         this.numberOfPersons = 1;
         this.mealKindId = -1;
     }

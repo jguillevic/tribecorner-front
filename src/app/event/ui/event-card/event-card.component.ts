@@ -11,30 +11,33 @@ import { DateHelper } from '../../../common/date/helper/date.helper';
   styleUrls: ['event-card.component.scss']
 })
 export class EventCardComponent {
-  @Input() public event: Event = new Event();
+  @Input() public event: Event|undefined;
 
   public get durationLabel(): string {
-    const startingDateStr: string = DateHelper.getUTCStr(this.event.startingDateTime);
-    const endingDateStr: string = DateHelper.getUTCStr(this.event.endingDateTime);
-    const startingTimeStr: string = DateHelper.getUTCHoursAndMinutesStr(this.event.startingDateTime);
-    const endingTimeStr: string = DateHelper.getUTCHoursAndMinutesStr(this.event.endingDateTime);
+    if (this.event) {
+      const startingDateStr: string = DateHelper.toDate(this.event.startingDateTime);
+      const endingDateStr: string = DateHelper.toDate(this.event.endingDateTime);
+      const startingTimeStr: string = DateHelper.toHoursAndMinutes(this.event.startingDateTime);
+      const endingTimeStr: string = DateHelper.toHoursAndMinutes(this.event.endingDateTime);
 
-    if (this.event.allDay) {
-      if (!DateHelper.areUTCDatesEqual(
-        this.event.startingDateTime, this.event.endingDateTime
-      )) {
-        return `${startingDateStr} - ${endingDateStr}`;
+      if (this.event.allDay) {
+        if (!DateHelper.areDatesEqual(
+          this.event.startingDateTime, this.event.endingDateTime
+        )) {
+          return `${startingDateStr} - ${endingDateStr}`;
+        }
+
+        return '';
       }
 
-      return '';
-    }
+      if (DateHelper.areDatesEqual(
+        this.event.startingDateTime, this.event.endingDateTime
+      )) {
+        return `${startingTimeStr} - ${endingTimeStr}`;
+      }
 
-    if (DateHelper.areUTCDatesEqual(
-      this.event.startingDateTime, this.event.endingDateTime
-    )) {
-      return `${startingTimeStr} - ${endingTimeStr}`;
+      return `${startingDateStr} ${startingTimeStr} - ${endingDateStr} ${endingTimeStr}`;
     }
-
-    return `${startingDateStr} ${startingTimeStr} - ${endingDateStr} ${endingTimeStr}`;
+    return '';
   }
 }

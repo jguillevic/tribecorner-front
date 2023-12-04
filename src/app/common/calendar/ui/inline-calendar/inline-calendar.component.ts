@@ -34,7 +34,7 @@ export class InlineCalendarComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     for (let i = 0; i < this.numberOfDates; i++) {
-      const date: Date = DateHelper.getInvariantCurrentDate();
+      const date: Date = DateHelper.getCurrentDate();
       date.setDate(date.getDate() + i);
       const calendarDate: CalendarDate = new CalendarDate();
       calendarDate.date = date;
@@ -46,7 +46,7 @@ export class InlineCalendarComponent implements OnInit, OnDestroy {
       .pipe(
         tap(defaultSelectedDate => {
           this.calendarDates.forEach(calendarDate => {
-            if (DateHelper.areUTCDatesEqual(defaultSelectedDate, calendarDate.date)) {
+            if (DateHelper.areDatesEqual(defaultSelectedDate, calendarDate.date)) {
               this.selectedCalendarDate = calendarDate;
               this.selectedCalendarDate.isSelected = true;
               this.onSelectedDateChanged.emit(this.selectedCalendarDate.date);

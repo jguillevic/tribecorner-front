@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, map, of } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { ApiHttpClient } from 'src/app/common/http/api-http-client';
 import { Event } from 'src/app/event/model/event.model';
 import { environment } from 'src/environments/environment';
@@ -15,7 +15,7 @@ export class EventService {
   public constructor(private apiHttp: ApiHttpClient) { }
 
   public loadAllByDate(date: Date): Observable<Event[]> {
-    const dateStr: string = DateHelper.getUTCISOStr(date);
+    const dateStr: string = DateHelper.toISOUTC(date);
     return this.apiHttp.get<LoadEventDto[]>(
       `${environment.apiUrl}${EventService.apiPath}?date=${dateStr}`
     )

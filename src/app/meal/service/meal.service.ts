@@ -3,9 +3,10 @@ import { Observable, map } from 'rxjs';
 import { Meal } from '../model/meal.model';
 import { environment } from '../../../environments/environment';
 import { MealConverter } from '../converter/meal.converter';
-import { MealDto } from '../dto/meal.dto';
+import { LoadMealDto } from '../dto/load-meal.dto';
 import { ApiHttpClient } from '../../common/http/api-http-client';
 import { DateHelper } from '../../common/date/helper/date.helper';
+import { EditMealDto } from '../dto/edit-meal.dto';
 
 @Injectable()
 export class MealService {
@@ -18,7 +19,7 @@ export class MealService {
   public loadAllByDate(date: Date): Observable<Meal[]> {
     const dateStr: string = DateHelper.toISODate(date);
 
-    return this.apiHttp.get<MealDto[]>(
+    return this.apiHttp.get<LoadMealDto[]>(
       `${environment.apiUrl}${MealService.apiPath}?date=${dateStr}`
       )
       .pipe(
@@ -32,7 +33,7 @@ export class MealService {
 
   public loadOneById(mealId: number): Observable<Meal>
   {
-    return this.apiHttp.get<MealDto>(
+    return this.apiHttp.get<LoadMealDto>(
       `${environment.apiUrl}${MealService.apiPath}/${mealId}`
       )
       .pipe(
@@ -43,31 +44,31 @@ export class MealService {
   }
 
   public create(meal: Meal): Observable<Meal> {
-    const mealDto = MealConverter.fromModelToDto(meal);
-    const body: string = JSON.stringify(mealDto);
+    const editMealDto = MealConverter.fromModelToDto(meal);
+    const body: string = JSON.stringify(editMealDto);
 
-    return this.apiHttp.post<MealDto>(
+    return this.apiHttp.post<LoadMealDto>(
       `${environment.apiUrl}${MealService.apiPath}`,
       body
       )
       .pipe(
-        map(mealDto => 
-            MealConverter.fromDtoToModel(mealDto)
+        map(loadMealDto => 
+            MealConverter.fromDtoToModel(loadMealDto)
         )
       );
   }
 
   public update(meal: Meal): Observable<Meal> {
-    const mealDto = MealConverter.fromModelToDto(meal);
-    const body: string = JSON.stringify(mealDto);
+    const editMealDto = MealConverter.fromModelToDto(meal);
+    const body: string = JSON.stringify(editMealDto);
 
-    return this.apiHttp.put<MealDto>(
+    return this.apiHttp.put<LoadMealDto>(
       `${environment.apiUrl}${MealService.apiPath}/${meal.id}`,
       body
       )
       .pipe(
-        map(mealDto => 
-            MealConverter.fromDtoToModel(mealDto)
+        map(loadMealDto => 
+            MealConverter.fromDtoToModel(loadMealDto)
         )
       );
   }

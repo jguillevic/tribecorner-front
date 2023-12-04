@@ -1,4 +1,4 @@
-export class MealKindDto {
+export class LoadMealKindDto {
     public readonly id: number;
     public readonly name: string;
     public readonly position: number;

@@ -44,7 +44,7 @@ export class MealService {
   }
 
   public create(meal: Meal): Observable<Meal> {
-    const editMealDto = MealConverter.fromModelToDto(meal);
+    const editMealDto: EditMealDto = MealConverter.fromModelToDto(meal);
     const body: string = JSON.stringify(editMealDto);
 
     return this.apiHttp.post<LoadMealDto>(
@@ -59,7 +59,7 @@ export class MealService {
   }
 
   public update(meal: Meal): Observable<Meal> {
-    const editMealDto = MealConverter.fromModelToDto(meal);
+    const editMealDto: EditMealDto = MealConverter.fromModelToDto(meal);
     const body: string = JSON.stringify(editMealDto);
 
     return this.apiHttp.put<LoadMealDto>(

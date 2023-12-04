@@ -38,7 +38,7 @@ import { DateHelper } from '../../../common/date/helper/date.helper';
 })
 export class EditMealComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject<void>();
-  private currentMealId: number|undefined;
+  private currentMealId: number = 0;
 
   private readonly mealKinds$: Observable<MealKind[]> 
   = this.mealKindService
@@ -53,12 +53,12 @@ export class EditMealComponent implements OnInit, OnDestroy {
   = new FormGroup(
     {
       mealKindId: new FormControl(0, [Validators.required]),
-      mealName: new FormControl('', [Validators.required, Validators.maxLength(this.mealNameMaxLength)]),
-      mealDate: new FormControl(
+      name: new FormControl('', [Validators.required, Validators.maxLength(this.mealNameMaxLength)]),
+      date: new FormControl(
         DateHelper.getCurrentDate(),
         [Validators.required]
       ),
-      mealNumberOfPersons: new FormControl(0, [Validators.required])
+      numberOfPersons: new FormControl(0, [Validators.required])
     }
   );
 
@@ -105,36 +105,29 @@ export class EditMealComponent implements OnInit, OnDestroy {
           if (this.currentMealId) {
               return this.mealService.loadOneById(this.currentMealId);
           }
-          const meal: Meal = new Meal();
           const defaultDate = result.currentDate;
-
-          meal.name = '';
-          meal.date = defaultDate;
-          meal.mealKindId = 1;
-          meal.numberOfPersons = 3;
+          const meal: Meal = new Meal(
+            0,
+            '',
+            defaultDate,
+            3,
+            1
+          );
           return of(meal);
           }),
           tap(meal => {
             this.editMealForm.controls['mealKindId'].setValue(meal.mealKindId);
-            this.editMealForm.controls['mealName'].setValue(meal.name);
-            this.editMealForm.controls['mealDate'].setValue(meal.date);
-            this.editMealForm.controls['mealNumberOfPersons'].setValue(meal.numberOfPersons);
+            this.editMealForm.controls['name'].setValue(meal.name);
+            this.editMealForm.controls['date'].setValue(meal.date);
+            this.editMealForm.controls['numberOfPersons'].setValue(meal.numberOfPersons);
         }),
         map(() => this.editMealForm)
     );
 }
 
   private getMeal(): Meal {
-    const meal: Meal = new Meal();
-
-    if (this.currentMealId) {
-      meal.id = this.currentMealId;
-    }
-    meal.mealKindId = this.editMealForm?.controls['mealKindId'].value;
-    meal.name = this.editMealForm?.controls['mealName'].value;
-    meal.date = this.editMealForm?.controls['mealDate'].value;
-    meal.numberOfPersons = this.editMealForm?.controls['mealNumberOfPersons'].value;
-
+    const meal: Meal = this.editMealForm.value as Meal;
+    meal.id = this.currentMealId;
     return meal;
   }
 

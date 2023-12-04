@@ -1,16 +1,21 @@
 export class MealDto {
-    public id: number|undefined;
-    public familyId: number;
-    public name: string;
-    public date: string;
-    public numberOfPersons: number;
-    public mealKindId: number;
+    public id: number;
+    public readonly name: string;
+    public readonly date: string;
+    public readonly numberOfPersons: number;
+    public readonly mealKindId: number;
 
-    public constructor() {
-        this.familyId = 0;
-        this.name = '';
-        this.date = '';
-        this.numberOfPersons = 1;
-        this.mealKindId = -1;
+    public constructor(
+        id: number,
+        name: string,
+        date: string,
+        numberOfPersons: number,
+        mealKindId: number
+    ) {
+        this.id = id;
+        this.name = name;
+        this.date = date;
+        this.numberOfPersons = numberOfPersons;
+        this.mealKindId = mealKindId;
     }
 }

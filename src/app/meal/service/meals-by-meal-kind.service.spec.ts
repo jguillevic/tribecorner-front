@@ -39,31 +39,19 @@ describe('MealsByMealKindService', () => {
 
     it('should load all meals by date grouped by meal kind', async () => {
         const date: Date = new Date();
-        const mealKind1: MealKind = new MealKind();
-        mealKind1.id = 1;
-        mealKind1.name = 'Petit-déjeuner';
-        //mealKind1.position = 1;
-        const mealKind2: MealKind = new MealKind();
-        mealKind2.id = 2;
-        mealKind2.name = 'Déjeuner';
-        //mealKind2.position = 2;
-        const mealKind3: MealKind = new MealKind();
-        mealKind3.id = 3;
-        mealKind3.name = 'Dîner';
-        //mealKind3.position = 3;
+        const mealKind1: MealKind 
+        = new MealKind(1, 'Petit-déjeuner', 0);
+        const mealKind2: MealKind 
+        = new MealKind(2, 'Déjeuner', 1);
+        const mealKind3: MealKind 
+        = new MealKind(3, 'Dîner', 2);
         mealKindServiceMock.loadAll = () => of([mealKind2, mealKind3, mealKind1]);
-        const meal1: Meal = new Meal();
-        meal1.id = 1;
-        meal1.mealKindId = 3;
-        meal1.name = 'Omelette';
-        const meal2: Meal = new Meal();
-        meal2.id = 2;
-        meal2.mealKindId = 1;
-        meal2.name = 'Pain perdu';
-        const meal3: Meal = new Meal();
-        meal3.id = 3;
-        meal3.mealKindId = 3;
-        meal3.name = 'Frites';
+        const meal1: Meal 
+        = new Meal(1, 'Omelette', new Date(), 1, 3);
+        const meal2: Meal 
+        = new Meal(2, 'Pain perdu', new Date(), 1, 1);
+        const meal3: Meal 
+        = new Meal(3, 'Frites', new Date(), 1, 3);
         mealServiceMock.loadAllByDate = () => of([meal1, meal2, meal3]);
 
         const result: MealsByMealKind[] = await lastValueFrom(service.loadAllByDate(date));

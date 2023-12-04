@@ -10,8 +10,8 @@ describe('EventConverter', () => {
       const loadEventDto: LoadEventDto = {
         id: 1,
         name: 'Test Event',
-        startingDateTime: '2023-01-01T10:00:00',
-        endingDateTime: '2023-01-01T12:00:00',
+        startingDateTime: '2023-01-01T10:00:00.000Z',
+        endingDateTime: '2023-01-01T12:00:00.000Z',
         allDay: false,
       };
 
@@ -21,8 +21,8 @@ describe('EventConverter', () => {
       // Assert
       expect(result.id).toBe(loadEventDto.id);
       expect(result.name).toBe(loadEventDto.name);
-      expect(result.startingDateTime).toEqual(loadEventDto.startingDateTime);
-      expect(result.endingDateTime).toEqual(loadEventDto.endingDateTime);
+      expect(result.startingDateTime).toEqual(new Date(loadEventDto.startingDateTime));
+      expect(result.endingDateTime).toEqual(new Date(loadEventDto.endingDateTime));
       expect(result.allDay).toBe(loadEventDto.allDay);
     });
   });
@@ -33,8 +33,8 @@ describe('EventConverter', () => {
       const event: Event = new Event(
         1,
         'Test Event',
-        new Date('2023-01-01T10:00:00'),
-        new Date('2023-01-01T12:00:00'),
+        new Date('2023-01-01T10:00:00Z'),
+        new Date('2023-01-01T12:00:00Z'),
         false
       );
 
@@ -43,8 +43,8 @@ describe('EventConverter', () => {
 
       // Assert
       expect(result.name).toBe(event.name);
-      expect(result.startingDateTime).toEqual(event.startingDateTime);
-      expect(result.endingDateTime).toEqual(event.endingDateTime);
+      expect(result.startingDateTime).toEqual(event.startingDateTime.toUTCString());
+      expect(result.endingDateTime).toEqual(event.endingDateTime.toUTCString());
       expect(result.allDay).toBe(event.allDay);
     });
   });

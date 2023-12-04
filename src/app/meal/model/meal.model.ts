@@ -1,19 +1,21 @@
-import { DateHelper } from "../../common/date/helper/date.helper";
-
 export class Meal {
     public id: number;
-    public familyId: number;
-    public name: string;
-    public date: Date;
-    public numberOfPersons: number;
-    public mealKindId: number;
+    public readonly name: string;
+    public readonly date: Date;
+    public readonly numberOfPersons: number;
+    public readonly mealKindId: number;
     
-    public constructor() {
-        this.id = 0;
-        this.familyId = 0;
-        this.name = '';
-        this.date = DateHelper.getCurrentDate();
-        this.numberOfPersons = 1;
-        this.mealKindId = -1;
+    public constructor(
+        id: number,
+        name: string,
+        date: Date,
+        numberOfPersons: number,
+        mealKindId: number
+    ) {
+        this.id = id;
+        this.name = name;
+        this.date = date;
+        this.numberOfPersons = numberOfPersons;
+        this.mealKindId = mealKindId;
     }
 }

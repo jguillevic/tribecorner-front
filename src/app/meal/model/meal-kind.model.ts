@@ -1,11 +1,15 @@
 export class MealKind {
-    public id: number;
-    public name: string;
-    public position: number;
+    public readonly id: number;
+    public readonly name: string;
+    public readonly position: number;
 
-    public constructor() {
-        this.id = -1;
-        this.name = '';
-        this.position = -1;
+    public constructor(
+        id: number,
+        name: string,
+        position: number,
+    ) {
+        this.id = id;
+        this.name = name;
+        this.position = position;
     }
 }

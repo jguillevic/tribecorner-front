@@ -19,23 +19,23 @@
                     <!--Nom.-->
                     <mat-form-field class="form-input">
                         <mat-label>Nom</mat-label>
-                        <input matInput type="text" formControlName="mealName">
-                        <mat-error *ngIf="editMealFormData.editMealForm.controls['mealName'].hasError('maxlength')">
+                        <input matInput type="text" formControlName="name">
+                        <mat-error *ngIf="editMealFormData.editMealForm.controls['name'].hasError('maxlength')">
                             Nom trop long (max. {{ this.mealNameMaxLength }} caractères)
                         </mat-error>
-                        <mat-error *ngIf="editMealFormData.editMealForm.controls['mealName'].hasError('required')">
+                        <mat-error *ngIf="editMealFormData.editMealForm.controls['name'].hasError('required')">
                             Nom requis
                         </mat-error>
                     </mat-form-field>
                     <!--Nombre de personnes.-->
                     <mat-form-field class="form-input">
                         <mat-label>Repas pour ?</mat-label>
-                        <mat-select formControlName="mealNumberOfPersons">
+                        <mat-select formControlName="numberOfPersons">
                             <mat-option *ngFor="let numberOfPersons of numbersOfPersons" [value]="numberOfPersons">
                                 {{ numberOfPersons }}
                             </mat-option>
                         </mat-select>
-                        <mat-error *ngIf="editMealFormData.editMealForm.controls['mealNumberOfPersons'].hasError('required')">
+                        <mat-error *ngIf="editMealFormData.editMealForm.controls['numberOfPersons'].hasError('required')">
                             Nombre de personnes requis
                         </mat-error>
                     </mat-form-field>

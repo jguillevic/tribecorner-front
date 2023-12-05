@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ShoppingList } from '../../model/shopping-list.model';
 import { ShoppingListService } from '../../service/shopping-list.service';
-import { Subscription, tap } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'app-shopping-list-archive-toggle',
@@ -24,7 +24,7 @@ export class ShoppingListArchiveToggleComponent implements OnDestroy {
   @Input() public shoppingListToToggleArchive: ShoppingList|undefined;
   @Output() public onShoppingListArchiveToggled: EventEmitter<ShoppingList> = new EventEmitter<ShoppingList>();
 
-  private toggleArchiveSubscription: Subscription|undefined;
+  private readonly destroy$ = new Subject<void>();
 
   public isTogglingArchive: boolean = false;
 
@@ -33,16 +33,15 @@ export class ShoppingListArchiveToggleComponent implements OnDestroy {
   ) { }
 
   public ngOnDestroy(): void {
-    this.toggleArchiveSubscription?.unsubscribe();
+    this.destroy$.complete();
   }
 
   public toggleArchive(): void {
     this.isTogglingArchive = true;
     if (this.shoppingListToToggleArchive) {
-      this.shoppingListToToggleArchive.isArchived = !this.shoppingListToToggleArchive.isArchived;
-      this.toggleArchiveSubscription 
-      = this.shoppingListService.update(this.shoppingListToToggleArchive)
+      this.shoppingListService.toggleArchive(this.shoppingListToToggleArchive)
       .pipe(
+        takeUntil(this.destroy$),
         tap(updatedShoppingList => this.onShoppingListArchiveToggled.emit(updatedShoppingList)),
         tap(() => this.isTogglingArchive = false)
       )

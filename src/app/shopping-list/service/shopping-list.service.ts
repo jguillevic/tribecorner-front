@@ -83,4 +83,9 @@ export class ShoppingListService {
       `${environment.apiUrl}${ShoppingListService.apiPath}/${shoppingListId}`
       );
   }
+
+  public toggleArchive(shoppingList: ShoppingList): Observable<ShoppingList> {
+    shoppingList.isArchived = !shoppingList.isArchived;
+    return this.update(shoppingList);
+  }
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ShoppingListService } from '../../service/shopping-list.service';
 import { ShoppingList } from '../../model/shopping-list.model';
@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ItemShoppingList } from '../../model/item-shopping-list.model';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { BehaviorSubject, Observable, Subscription, combineLatest, debounceTime, filter, map, mergeMap, of, skip, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, combineLatest, debounceTime, filter, map, mergeMap, of, skip, switchMap, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Action } from 'src/app/common/action';
 import { ShoppingListRoutes } from '../../route/shopping-list.routes';
@@ -18,6 +18,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { GoBackTopBarComponent } from "../../../common/top-bar/go-back/ui/go-back-top-bar.component";
 import { MatDividerModule } from '@angular/material/divider';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ShoppingListCompletedDialogComponent } from '../shopping-list-completed-dialog/shopping-list-completed-dialog.component';
 
 @Component({
     selector: 'app-display-shopping-list',
@@ -37,12 +39,14 @@ import { MatDividerModule } from '@angular/material/divider';
         MatCheckboxModule,
         MatExpansionModule,
         GoBackTopBarComponent,
-        MatDividerModule
+        MatDividerModule,
+        MatDialogModule
     ]
 })
 export class EditShoppingListComponent implements OnInit, OnDestroy {
-  private autoSaveSubscription: Subscription|undefined;
+  private readonly destroy$ = new Subject<void>();
   private currentShoppingListId: number|undefined;
+  private isArchived: boolean = false;
 
   private itemShoppingListsSubject: BehaviorSubject<ItemShoppingList[]> = new BehaviorSubject<ItemShoppingList[]>([]);
   public itemShoppingLists$: Observable<ItemShoppingList[]> = this.itemShoppingListsSubject.asObservable();
@@ -86,6 +90,7 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
       const shoppingList: ShoppingList = new ShoppingList();
       return of(shoppingList);
     }),
+    tap(shoppingList => this.isArchived = shoppingList.isArchived),
     tap(shoppingList => this.itemShoppingListsSubject.next(shoppingList.items)),
     tap(shoppingList => this.editShoppingListForm.controls['shoppingListName'].setValue(shoppingList.name)),
     map(() => this.editShoppingListForm)
@@ -102,11 +107,11 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
   public constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private shoppingListService: ShoppingListService
+    private shoppingListService: ShoppingListService,
+    private dialog: MatDialog
   ) { }
 
   public ngOnInit(): void {
-    this.autoSaveSubscription = 
     combineLatest(
       { 
         valueChanged: this.editShoppingListForm.valueChanges,
@@ -114,16 +119,31 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
       }
     )
     .pipe(
+      takeUntil(this.destroy$),
       skip(1),
       debounceTime(500),
       filter(() => this.editShoppingListForm.valid),
       switchMap(() => this.save())
     )
     .subscribe();
+
+    this.itemShoppingLists$.pipe(
+      takeUntil(this.destroy$),
+      tap(itemShoppingLists => {
+        if (this.editShoppingListForm.valid &&
+          !this.isArchived &&
+          itemShoppingLists.length > 0 &&
+          !itemShoppingLists.filter(itemShoppingList => !itemShoppingList.isChecked).length
+        ) {
+          this.openShoppingListCompletedDialog();
+        }
+      })
+    )
+    .subscribe();
   }
 
   public ngOnDestroy(): void {
-    this.autoSaveSubscription?.unsubscribe();
+    this.destroy$.complete();
   }
 
   private getShoppingList(): ShoppingList {
@@ -132,6 +152,7 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
     if (this.currentShoppingListId) {
       shoppingList.id = this.currentShoppingListId;
     }
+    shoppingList.isArchived = this.isArchived;
     shoppingList.name = this.editShoppingListForm.controls['shoppingListName'].value;
     shoppingList.items = this.itemShoppingListsSubject.value;
 
@@ -186,5 +207,15 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
   public toggleItemShoppingList(itemShoppingList: ItemShoppingList) {
     itemShoppingList.isChecked = !itemShoppingList.isChecked;
     this.itemShoppingListsSubject.next([...this.itemShoppingListsSubject.value]);
+  }
+
+  private openShoppingListCompletedDialog() {
+    const dialogRef = this.dialog.open(ShoppingListCompletedDialogComponent, { data: this.getShoppingList() });
+
+    dialogRef.afterClosed()
+    .pipe(
+      takeUntil(this.destroy$)
+    )
+    .subscribe();
   }
 }

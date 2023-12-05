@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TabBarComponent } from 'src/app/common/tab-bar/ui/tab-bar/tab-bar.component';
 import { Router } from '@angular/router';
 import { ShoppingList } from '../../model/shopping-list.model';
-import { BehaviorSubject, Observable, Subscription, combineLatest, filter, map, shareReplay, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, combineLatest, map, shareReplay } from 'rxjs';
 import { ShoppingListRoutes } from '../../route/shopping-list.routes';
 import { ShoppingListService } from '../../service/shopping-list.service';
 import { MatButtonModule } from '@angular/material/button';

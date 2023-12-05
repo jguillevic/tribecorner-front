@@ -17,7 +17,9 @@ import { MatButtonModule } from '@angular/material/button';
 export class GoBackTopBarComponent {
   public isGoingBack: boolean = false;
 
-  public constructor(private location: Location) { }
+  public constructor(
+    private location: Location
+  ) { }
 
   public goBack(): void {
     this. isGoingBack = true;

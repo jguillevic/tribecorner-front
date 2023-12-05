@@ -16,7 +16,7 @@ import { HomeCategoryComponent } from "../home-category/home-category.component"
 import { MatDividerModule } from '@angular/material/divider';
 import { Event } from 'src/app/event/model/event.model';
 import { EventService } from 'src/app/event/service/event.service';
-import { MealCardComponent } from "../../../meal/ui/meal-card/meal-card.component";
+import { SimpleMealCardComponent } from "../../../meal/ui/simple-meal-card/simple-meal-card.component";
 import { MealsByMealKind } from 'src/app/meal/model/meals-by-meal-kind.model';
 import { MealsByMealKindService } from 'src/app/meal/service/meals-by-meal-kind.service';
 import { Action } from 'src/app/common/action';
@@ -41,7 +41,7 @@ import { DateHelper } from '../../../common/date/helper/date.helper';
         ShoppingListCardComponent,
         HomeCategoryComponent,
         MatDividerModule,
-        MealCardComponent,
+        SimpleMealCardComponent,
         SimpleLoadingComponent,
         SimpleEmptyComponent,
         EventCardComponent

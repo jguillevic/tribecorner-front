@@ -5,10 +5,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { Observable, from } from 'rxjs';
 import { Router } from '@angular/router';
-import { EventRoutes } from '../../route/event.routes';
+import { MealRoutes } from '../../route/meal.routes';
 
 @Component({
-  selector: 'app-event-edit-button',
+  selector: 'app-meal-edit-button',
   standalone: true,
   imports: [
     CommonModule,
@@ -16,12 +16,12 @@ import { EventRoutes } from '../../route/event.routes';
     MatIconModule,
     MtxButtonModule
   ],
-  templateUrl: './event-edit-button.component.html',
+  templateUrl: './meal-edit-button.component.html',
   styles: [
   ]
 })
-export class EventEditButtonComponent {
-  @Input() public eventId: number = 0;
+export class MealEditButtonComponent {
+  @Input() public mealId: number = 0;
 
   public isGoingToEdit: boolean = false;
 
@@ -31,6 +31,6 @@ export class EventEditButtonComponent {
 
   public goToEdit(): Observable<boolean> {
     this.isGoingToEdit = true;
-    return from(this.router.navigate([EventRoutes.editEventRoute], { queryParams: { id: this.eventId } }));
+    return from(this.router.navigate([MealRoutes.editMealRoute], { queryParams: { id: this.mealId } }));
   }
 }

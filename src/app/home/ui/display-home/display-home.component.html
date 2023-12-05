@@ -27,10 +27,10 @@
                         {{mealsByMealKind.mealKind.name}}
                     </div>
                     <div class="meals__container">
-                        <app-meal-card class="meal"
+                        <app-simple-meal-card class="meal"
                         *ngFor="let meal of mealsByMealKind.meals"
                         [name]="meal.name">
-                        </app-meal-card>
+                        </app-simple-meal-card>
                     </div>
                 </div>
                 <app-simple-empty *ngIf="!mealsByMealKinds.length"></app-simple-empty>

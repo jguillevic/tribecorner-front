@@ -2,12 +2,10 @@ import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProfileTopBarComponent } from "../../../common/top-bar/profile/ui/profile-top-bar.component";
 import { TabBarComponent } from "../../../common/tab-bar/ui/tab-bar/tab-bar.component";
-import { Meal } from '../../model/meal.model';
 import { InlineCalendarComponent } from "../../../common/calendar/ui/inline-calendar/inline-calendar.component";
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MealService } from '../../service/meal.service';
-import { Observable, Subject, switchMap, take, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, switchMap, take } from 'rxjs';
 import { Router } from '@angular/router';
 import { MealRoutes } from '../../route/meal.routes';
 import { MealsByMealKind } from '../../model/meals-by-meal-kind.model';
@@ -16,6 +14,11 @@ import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loadin
 import { LargeEmptyComponent } from "../../../common/empty/ui/large-empty/large-empty.component";
 import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { MealCurrentDateService } from '../../service/meal-current-date.service';
+import { LargeMealCardComponent } from "../large-meal-card/large-meal-card.component";
+import { MealEditButtonComponent } from "../meal-edit-button/meal-edit-button.component";
+import { MealDeleteButtonComponent } from "../meal-delete-button/meal-delete-button.component";
+import { Meal } from '../../model/meal.model';
+import { MealCopyButtonComponent } from "../meal-copy-button/meal-copy-button.component";
 
 @Component({
     selector: 'app-display-meals',
@@ -31,7 +34,11 @@ import { MealCurrentDateService } from '../../service/meal-current-date.service'
         MatButtonModule,
         SimpleLoadingComponent,
         LargeEmptyComponent,
-        MtxButtonModule
+        MtxButtonModule,
+        LargeMealCardComponent,
+        MealEditButtonComponent,
+        MealDeleteButtonComponent,
+        MealCopyButtonComponent
     ]
 })
 export class DisplayMealsComponent implements OnDestroy {
@@ -43,10 +50,9 @@ export class DisplayMealsComponent implements OnDestroy {
   );
 
   public mealsByMealKinds$: Observable<MealsByMealKind[]> 
-  = this.getMealsByMealKinds$()
+  = this.getMealsByMealKinds$();
 
   public constructor(
-    private mealService: MealService,
     private mealsByMealKindService: MealsByMealKindService,
     private mealCurrentDateService: MealCurrentDateService,
     private router: Router
@@ -64,26 +70,30 @@ export class DisplayMealsComponent implements OnDestroy {
     return this.router.navigate([MealRoutes.editMealRoute]);
   }
 
-  public goToUpdate(mealId: number): Promise<boolean> {
-    return new Promise<boolean>((resolve) => {
-      resolve(this.router.navigate([MealRoutes.editMealRoute], { queryParams: { id: mealId } }));
-    }); 
-  }
-
-  public getMealsByMealKinds$(): Observable<MealsByMealKind[]> {
+  private getMealsByMealKinds$(): Observable<MealsByMealKind[]> {
     return this.selectedDate$
     .pipe(
       switchMap(date => this.mealsByMealKindService.loadAllByDate(date))
     );
-  } 
+  }
 
-  public delete(meal: Meal): void {
-    this.mealService
-    .delete(meal.id)
-    .pipe(
-      takeUntil(this.destroy$),
-      tap(() => this.mealsByMealKinds$ = this.getMealsByMealKinds$())
-    )
-    .subscribe();
+  public onMealDeleted(deletedMeal: Meal) {
+    // this.deletedEventsSubject.next(
+    //   [
+    //     ...this.deletedEventsSubject.value,
+    //     deletedEvent
+    //   ]
+    // );
+    this.mealsByMealKinds$ = this.getMealsByMealKinds$();
+  }
+
+  public onMealCopied(copiedMeal: Meal) {
+    // this.addedShoppingListsSubject.next(
+    //   [
+    //     ...this.addedShoppingListsSubject.value,
+    //     copiedShoppingList
+    //   ]
+    // );
+    this.mealsByMealKinds$ = this.getMealsByMealKinds$();
   }
 }

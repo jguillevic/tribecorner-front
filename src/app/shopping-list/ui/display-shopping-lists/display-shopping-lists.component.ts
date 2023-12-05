@@ -119,8 +119,9 @@ export class DisplayShoppingListsComponent implements OnDestroy {
     this.addedShoppingListsSubject.next(
       [
         ...this.addedShoppingListsSubject.value,
-        copiedShoppingList]
-      );
+        copiedShoppingList
+      ]
+    );
   }
 
   public onShoppingListDeleted(deletedShoppingList: ShoppingList) {

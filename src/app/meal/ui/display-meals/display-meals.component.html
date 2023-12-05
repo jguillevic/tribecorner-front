@@ -12,19 +12,19 @@
                 <div class="meal-kind__name">
                     {{ mealsByMealKind.mealKind.name }}
                 </div>
-                <div class="meal" *ngFor="let meal of this.mealsByMealKind.meals">
-                    <img class="meal__img" src="/assets/img/undraw_breakfast_psiw.svg">
-                    <div class="meal__name">{{ meal.name }}</div>
-                    <div class="meal__persons">{{ meal.numberOfPersons }} personnes</div>
-                    <div class="meal__actions">
-                        <button mat-icon-button (click)="goToUpdate(meal.id)">
-                            <mat-icon class="material-symbols-outlined">edit</mat-icon>
-                        </button>
-                        <button mat-icon-button color="warn" (click)="delete(meal)">
-                            <mat-icon class="material-symbols-outlined">delete</mat-icon>
-                        </button>
-                    </div>
-                </div>
+                <app-large-meal-card *ngFor="let meal of this.mealsByMealKind.meals" [meal]="meal">
+                    <app-meal-edit-button 
+                    [mealId]="meal.id">
+                    </app-meal-edit-button>
+                    <app-meal-copy-button 
+                    [mealToCopy]="meal"
+                    (onMealCopied)="onMealCopied(meal)">
+                    </app-meal-copy-button>
+                    <app-meal-delete-button 
+                    [mealToDelete]="meal"
+                    (onMealDeleted)="onMealDeleted(meal)">
+                    </app-meal-delete-button>
+                </app-large-meal-card>
             </div>
             <app-large-empty 
             *ngIf="!this.mealsByMealKinds.length"

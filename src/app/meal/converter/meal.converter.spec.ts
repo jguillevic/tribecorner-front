@@ -1,12 +1,13 @@
 import { MealConverter } from './meal.converter';
-import { MealDto } from '../dto/load-meal.dto';
+import { LoadMealDto } from '../dto/load-meal.dto';
 import { Meal } from '../model/meal.model';
 import { DateHelper } from '../../common/date/helper/date.helper';
+import { EditMealDto } from '../dto/edit-meal.dto';
 
 describe('MealConverter', () => {
     describe('fromDtoToModel', () => {
         it('should convert MealDto to Meal', () => {
-            const mealDto: MealDto = {
+            const mealDto: LoadMealDto = {
                 id: 1,
                 name: 'Lunch',
                 date: DateHelper.toISODate(new Date()),
@@ -35,7 +36,7 @@ describe('MealConverter', () => {
                 mealKindId: 2,
             };
 
-            const result: MealDto = MealConverter.fromModelToDto(meal);
+            const result: EditMealDto = MealConverter.fromModelToDto(meal);
 
             expect(result).toBeDefined();
             expect(result.name).toBe(meal.name);

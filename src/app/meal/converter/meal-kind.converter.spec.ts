@@ -1,11 +1,11 @@
 import { MealKindConverter } from './meal-kind.converter';
-import { MealKindDto } from '../dto/load-meal-kind.dto';
+import { LoadMealKindDto } from '../dto/load-meal-kind.dto';
 import { MealKind } from '../model/meal-kind.model';
 
 describe('MealKindConverter', () => {
     describe('fromDtoToModel', () => {
         it('should convert MealKindDto to MealKind', () => {
-            const mealKindDto: MealKindDto = {
+            const mealKindDto: LoadMealKindDto = {
                 id: 1,
                 name: 'Breakfast',
                 position: 1,

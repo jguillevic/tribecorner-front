@@ -43,8 +43,8 @@ describe('EventConverter', () => {
 
       // Assert
       expect(result.name).toBe(event.name);
-      expect(result.startingDateTime).toEqual(event.startingDateTime.toUTCString());
-      expect(result.endingDateTime).toEqual(event.endingDateTime.toUTCString());
+      expect(result.startingDateTime).toEqual(event.startingDateTime.toISOString());
+      expect(result.endingDateTime).toEqual(event.endingDateTime.toISOString());
       expect(result.allDay).toBe(event.allDay);
     });
   });

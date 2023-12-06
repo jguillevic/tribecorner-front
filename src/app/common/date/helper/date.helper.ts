@@ -22,32 +22,12 @@ export abstract class DateHelper {
     return DateHelper.getDate(date);
   }
 
-  public static toISOUTCDate(date: Date): string {
-    return [
-      date.getUTCFullYear(),
-      (date.getUTCMonth() + 1).toString().padStart(2, '0'),
-      date.getUTCDate().toString().padStart(2, '0'),
-    ].join('-');
-  }
-
   public static toISODate(date: Date): string {
     return [
       date.getFullYear(),
       (date.getMonth() + 1).toString().padStart(2, '0'),
       date.getDate().toString().padStart(2, '0'),
     ].join('-');
-  }
-
-  public static toISOUTCTime(date: Date): string {
-    return [
-      date.getUTCHours().toString().padStart(2, '0'),
-      date.getUTCMinutes().toString().padStart(2, '0'),
-      date.getUTCSeconds().toString().padStart(2, '0')
-    ].join(':');
-  }
-
-  public static toISOUTC(date: Date): string {
-    return `${DateHelper.toISOUTCDate(date)}T${DateHelper.toISOUTCTime(date)}Z`;
   }
 
   public static toDate(date: Date): string {

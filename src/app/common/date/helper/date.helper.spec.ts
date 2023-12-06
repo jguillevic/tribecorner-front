@@ -32,28 +32,10 @@ describe('DateHelper', () => {
       expect(result.getTime()).toBeLessThanOrEqual(currentDate);
     });
   
-    test('toISOUTCDate should convert date to ISO string in UTC', () => {
-      const date = new Date('2023-01-01T15:30:00Z');
-      const result = DateHelper.toISOUTCDate(date);
-      expect(result).toBe('2023-01-01');
-    });
-  
     test('toISODate should convert date to ISO string', () => {
       const date = new Date('2023-01-01T15:30:00Z');
       const result = DateHelper.toISODate(date);
       expect(result).toBe('2023-01-01');
-    });
-  
-    test('toISOUTCTime should convert date to ISO time in UTC', () => {
-      const date = new Date('2023-01-01T15:30:00Z');
-      const result = DateHelper.toISOUTCTime(date);
-      expect(result).toBe('15:30:00');
-    });
-  
-    test('toISOUTC should convert date to full ISO string in UTC', () => {
-      const date = new Date('2023-01-01T15:30:00Z');
-      const result = DateHelper.toISOUTC(date);
-      expect(result).toBe('2023-01-01T15:30:00Z');
     });
   
     test('toDate should convert date to formatted string', () => {

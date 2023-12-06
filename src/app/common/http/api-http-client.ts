@@ -24,7 +24,7 @@ export class ApiHttpClient {
             return this.http.get<T>(
               url,
               { 'headers': headers }
-              );
+            );
           })
         );
     }

@@ -44,6 +44,7 @@ import { MealCopyButtonComponent } from "../meal-copy-button/meal-copy-button.co
 export class DisplayMealsComponent implements OnDestroy {
   private readonly destroy$: Subject<void> = new Subject<void>();
   private readonly selectedDate$: Observable<Date> = this.mealCurrentDateService.currentDate$;
+  
   public readonly defaultDate$: Observable<Date> = this.selectedDate$
   .pipe(
     take(1)

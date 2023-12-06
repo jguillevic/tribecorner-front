@@ -7,13 +7,5 @@ export class EditEventViewModel {
         public readonly endingDate: Date,
         public readonly endingTime: number,
         public readonly allDay: boolean
-    ) {
-        this.id = id;
-        this.name = name;
-        this.startingDate = startingDate;
-        this.startingTime = startingTime;
-        this.endingDate = endingDate;
-        this.endingTime = endingTime;
-        this.allDay = allDay;
-    }
+    ) { }
 }

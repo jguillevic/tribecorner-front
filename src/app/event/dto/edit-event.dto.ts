@@ -4,10 +4,5 @@ export class EditEventDto {
         public readonly startingDateTime: string,
         public readonly endingDateTime: string,
         public readonly allDay: boolean
-    ) {
-        this.name = name;
-        this.startingDateTime = startingDateTime;
-        this.endingDateTime = endingDateTime;
-        this.allDay = allDay;
-    }
+    ) { }
 }

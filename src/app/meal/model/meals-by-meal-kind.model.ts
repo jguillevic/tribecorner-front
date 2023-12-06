@@ -5,8 +5,5 @@ export class MealsByMealKind {
     public constructor(
         public readonly mealKind: MealKind, 
         public readonly meals: Meal[]
-    ) {
-        this.mealKind = mealKind;
-        this.meals = meals;
-    }
+    ) { }
 }

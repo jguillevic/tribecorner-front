@@ -5,11 +5,5 @@ export class LoadEventDto {
         public readonly startingDateTime: string,
         public readonly endingDateTime: string ,
         public readonly allDay: boolean = false
-    ) {
-        this.id = id;
-        this.name = name;
-        this.startingDateTime = startingDateTime;
-        this.endingDateTime = endingDateTime;
-        this.allDay = allDay;
-    }
+    ) { }
 }

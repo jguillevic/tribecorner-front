@@ -1,14 +1,9 @@
 export class UserInfo {
-    public id: number;
-    public firebaseId: string
-    public email: string;
-    public username: string;
-    public familyId: number|undefined;
-
-    constructor() {
-        this.id = -1;
-        this.firebaseId = "";
-        this.email = "";
-        this.username = "";
-    }
+    public constructor(
+        public readonly id: number,
+        public readonly firebaseId: string,
+        public readonly email: string,
+        public readonly username: string,
+        public readonly familyId: number|undefined
+    ) { }
 }

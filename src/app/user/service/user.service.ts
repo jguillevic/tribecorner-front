@@ -10,6 +10,7 @@ import { SessionStorageService } from '../../common/storage/service/session-stor
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FirebaseApp, initializeApp } from 'firebase/app';
+import { UserConverter } from '../converter/user.converter';
 
 @Injectable({
   providedIn: 'root',
@@ -52,7 +53,7 @@ export class UserService implements OnDestroy {
   }
 
   private createUser(userCredential: UserCredential, signUpUser: SignUpUser): Observable<UserInfo> {
-    const createUserDto: CreateUserDto = UserService.fromSignUpUserToCreateUserDto(userCredential.user.uid, signUpUser);
+    const createUserDto: CreateUserDto = UserConverter.fromModelToDto(userCredential.user.uid, signUpUser);
     const body: string = JSON.stringify(createUserDto);
 
     return this.getFirebaseJWT()
@@ -70,7 +71,7 @@ export class UserService implements OnDestroy {
           )
       }),
       map(LoadUserDto => 
-        UserService.fromLoadUserDtoToUserInfo(LoadUserDto)
+        UserConverter.fromDtoToModel(LoadUserDto)
       )
     );
   }
@@ -90,7 +91,7 @@ export class UserService implements OnDestroy {
           )
       }),
       map(loadUserDtos => 
-          UserService.fromLoadUserDtoToUserInfo(loadUserDtos[0])
+          UserConverter.fromDtoToModel(loadUserDtos[0])
       )
     );
   }
@@ -195,27 +196,5 @@ export class UserService implements OnDestroy {
 
   public firebaseSignInWithEmailAndPassword(email: string, password: string): Observable<UserCredential> {
     return from(signInWithEmailAndPassword(this.firebaseAuth, email, password));
-  }
-
-  private static fromSignUpUserToCreateUserDto(firebaseId: string, signUpUser: SignUpUser): CreateUserDto {
-    const createUserDto = new CreateUserDto();
-
-    createUserDto.firebaseId = firebaseId;
-    createUserDto.email = signUpUser.email;
-    createUserDto.username = signUpUser.username;
-
-    return createUserDto;
-  }
-
-  private static fromLoadUserDtoToUserInfo(loadUserDto: LoadUserDto): UserInfo {
-    const userInfo = new UserInfo();
-
-    userInfo.id = loadUserDto.id;
-    userInfo.firebaseId = loadUserDto.firebaseId;
-    userInfo.email = loadUserDto.email;
-    userInfo.username = loadUserDto.username;
-    userInfo.familyId = loadUserDto.familyId;
-
-    return userInfo;
   }
 }

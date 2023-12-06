@@ -1,11 +1,7 @@
 export class CreateUserDto {
-    public firebaseId: string;
-    public email: string;
-    public username: string;
-
-    constructor() {
-        this.firebaseId = "";
-        this.email = "";
-        this.username = "";
-    }
+    public constructor(
+        public readonly firebaseId: string,
+        public readonly email: string,
+        public readonly username: string
+    ) { }
 }

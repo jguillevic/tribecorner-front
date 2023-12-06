@@ -1,9 +1,6 @@
 export class SignInUser {
-    public email: string;
-    public password: string;
-
-    constructor() {
-        this.email = "";
-        this.password = "";
-    }
+    public constructor(
+        public readonly email: string,
+        public readonly password: string
+    ) { }
 }

@@ -84,10 +84,8 @@ export class SignUpUserComponent implements OnDestroy {
     if (this.signUpForm.valid) {
       this.isSigningUp = true;
 
-      const signUpUser: SignUpUser = new SignUpUser();
-      signUpUser.username = this.signUpForm.controls['username'].value;
-      signUpUser.email = this.signUpForm.controls['email'].value;
-      signUpUser.password = this.signUpForm.controls['password'].value;
+      const signUpUser: SignUpUser 
+      = this.signUpForm.value as SignUpUser;
 
       this.userService.signUp(signUpUser)
       .subscribe({ 

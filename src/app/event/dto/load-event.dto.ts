@@ -1,18 +1,10 @@
-import { DateHelper } from "../../common/date/helper/date.helper";
-
 export class LoadEventDto {
-    public id: number;
-    public name: string;
-    public startingDateTime: string;
-    public endingDateTime: string;
-    public allDay: boolean;
-
     public constructor(
-        id: number,      
-        name: string,
-        startingDateTime: string,
-        endingDateTime: string ,
-        allDay: boolean = false
+        public readonly id: number,      
+        public readonly name: string,
+        public readonly startingDateTime: string,
+        public readonly endingDateTime: string ,
+        public readonly allDay: boolean = false
     ) {
         this.id = id;
         this.name = name;

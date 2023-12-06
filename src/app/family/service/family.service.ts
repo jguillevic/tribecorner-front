@@ -43,11 +43,11 @@ export class FamilyService {
   }
 
   private static createCreateFamilyDto(familyName: string, userId: number) {
-    const createFamilyDto: CreateFamilyDto = new CreateFamilyDto();
-    createFamilyDto.name = familyName;
+    const createFamilyDto: CreateFamilyDto 
+    = new CreateFamilyDto(familyName);
 
-    const createFamilyMemberDto: CreateFamilyMemberDto = new CreateFamilyMemberDto();
-    createFamilyMemberDto.userId = userId;
+    const createFamilyMemberDto: CreateFamilyMemberDto 
+    = new CreateFamilyMemberDto(userId);
     
     createFamilyDto.members.push(createFamilyMemberDto);
 
@@ -71,8 +71,7 @@ export class FamilyService {
   }
 
   public createFamilyMember(familyId: number, userId: number): Observable<FamilyMember> {
-    const createFamilyMemberDto = new CreateFamilyMemberDto();
-    createFamilyMemberDto.userId = userId;
+    const createFamilyMemberDto = new CreateFamilyMemberDto(userId);
     const body: string = JSON.stringify(createFamilyMemberDto);
 
     return this.apiHttp.post<LoadFamilyMemberDto>(
@@ -104,11 +103,13 @@ export class FamilyService {
   }
 
   private static fromLoadFamilyDtoToFamily(loadFamilyDto: LoadFamilyDto): Family {
-    const family: Family = new Family();
+    const family: Family 
+    = new Family(
+      loadFamilyDto.id,
+      loadFamilyDto.name,
+      loadFamilyDto.associationCode
+    );
 
-    family.id = loadFamilyDto.id;
-    family.name = loadFamilyDto.name;
-    family.associationCode = loadFamilyDto.associationCode;
     loadFamilyDto.members.forEach(loadFamilyMemberDto => {
       const familyMember: FamilyMember = FamilyService.fromLoadFamilyMemberDtoToFamilyMember(loadFamilyMemberDto);
       family.members.push(familyMember);
@@ -118,13 +119,11 @@ export class FamilyService {
   }
 
   private static fromLoadFamilyMemberDtoToFamilyMember(loadFamilyMemberDto: LoadFamilyMemberDto): FamilyMember {
-    const familyMember = new FamilyMember();
-
-    familyMember.id = loadFamilyMemberDto.id;
-    familyMember.name = loadFamilyMemberDto.name;
-    familyMember.userId = loadFamilyMemberDto.userId;
-    familyMember.username = loadFamilyMemberDto.username;
-
-    return familyMember;
+    return new FamilyMember(
+      loadFamilyMemberDto.id,
+      loadFamilyMemberDto.name,
+      loadFamilyMemberDto.userId,
+      loadFamilyMemberDto.username
+    );
   } 
 }

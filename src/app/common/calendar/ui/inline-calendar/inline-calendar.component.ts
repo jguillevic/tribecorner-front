@@ -36,8 +36,11 @@ export class InlineCalendarComponent implements OnInit, OnDestroy {
     for (let i = 0; i < this.numberOfDates; i++) {
       const date: Date = DateHelper.getCurrentDate();
       date.setDate(date.getDate() + i);
-      const calendarDate: CalendarDate = new CalendarDate();
-      calendarDate.date = date;
+      const calendarDate: CalendarDate 
+      = new CalendarDate(
+        date,
+        false
+      );
       this.calendarDates.push(calendarDate);
     }
 

@@ -1,11 +1,9 @@
-import { DateHelper } from "../../date/helper/date.helper";
-
 export class CalendarDate {
-    public date: Date;
-    public isSelected: boolean;
-
-    public constructor() {
-        this.date = DateHelper.getCurrentDate();
-        this.isSelected = false;
+    public constructor(
+        public date: Date,
+        public isSelected: boolean
+    ) {
+        this.date = date;
+        this.isSelected = isSelected;
     }
 }

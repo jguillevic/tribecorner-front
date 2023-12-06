@@ -1,11 +1,11 @@
 import { CreateFamilyMemberDto } from "./create-family-member.dto";
 
 export class CreateFamilyDto {
-    public name: string;
-    public members: CreateFamilyMemberDto[];
+    public readonly members: CreateFamilyMemberDto[] = [];
 
-    constructor() {
-        this.name = "";
-        this.members = [];
+    public constructor(
+        public readonly name: string
+    ) {
+        this.name = name;
     }
 }

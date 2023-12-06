@@ -1,15 +1,15 @@
 import { LoadFamilyMemberDto } from "./load-family-member.dto";
 
 export class LoadFamilyDto {
-    public id: number;
-    public name: string;
-    public associationCode: string;
-    public members: LoadFamilyMemberDto[];
+    public readonly members: LoadFamilyMemberDto[] = [];
 
-    constructor() {
-        this.id = -1;
-        this.name = "";
-        this.associationCode = "";
-        this.members = [];
+    public constructor(
+        public readonly id: number,
+        public readonly name: string,
+        public readonly associationCode: string
+    ) {
+        this.id = id;
+        this.name = name;
+        this.associationCode = associationCode;
     }
 }

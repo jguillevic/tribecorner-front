@@ -1,20 +1,12 @@
 export class EditEventViewModel {
-    public id: number;
-    public readonly name: string;
-    public readonly startingDate: Date;
-    public readonly startingTime: number;
-    public readonly endingDate: Date;
-    public readonly endingTime: number;
-    public readonly allDay: boolean;
-
     public constructor(
-        id: number,  
-        name: string,
-        startingDate: Date,
-        startingTime: number,
-        endingDate: Date,
-        endingTime: number,
-        allDay: boolean
+        public id: number,  
+        public readonly name: string,
+        public readonly startingDate: Date,
+        public readonly startingTime: number,
+        public readonly endingDate: Date,
+        public readonly endingTime: number,
+        public readonly allDay: boolean
     ) {
         this.id = id;
         this.name = name;

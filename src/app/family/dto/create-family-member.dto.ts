@@ -1,7 +1,7 @@
 export class CreateFamilyMemberDto {
-    public userId: number;
-
-    constructor() {
-        this.userId = -1;
+    public constructor(
+        public readonly userId: number
+    ) {
+        this.userId = userId;
     }
 }

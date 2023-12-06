@@ -9,6 +9,8 @@ import { CreateFamilyDto } from '../dto/create-family.dto';
 import { CreateFamilyMemberDto } from '../dto/create-family-member.dto';
 import { AssociationCodeNotFoundError } from '../error/association-code-not-found.error';
 import { ApiHttpClient } from 'src/app/common/http/api-http-client';
+import { FamilyConverter } from '../converter/family.converter';
+import { FamilyMemberConverter } from '../converter/family-member.converter';
 
 @Injectable()
 export class FamilyService {
@@ -22,7 +24,7 @@ export class FamilyService {
       )
       .pipe(
         map(loadFamilyDto => 
-          FamilyService.fromLoadFamilyDtoToFamily(loadFamilyDto)
+          FamilyConverter.fromDtoToModel(loadFamilyDto)
         )
       );
   }
@@ -37,7 +39,7 @@ export class FamilyService {
       )
       .pipe(
         map(loadFamilyDto => 
-          FamilyService.fromLoadFamilyDtoToFamily(loadFamilyDto)
+          FamilyConverter.fromDtoToModel(loadFamilyDto)
         )
       );
   }
@@ -61,7 +63,7 @@ export class FamilyService {
       .pipe(
         map(loadFamilyDtos => {
             if (loadFamilyDtos.length) {
-            return FamilyService.fromLoadFamilyDtoToFamily(loadFamilyDtos[0]);
+            return FamilyConverter.fromDtoToModel(loadFamilyDtos[0]);
             } else {
               return undefined;
             }
@@ -80,7 +82,7 @@ export class FamilyService {
       )
       .pipe(
         map(loadFamilyMemberDto => 
-            FamilyService.fromLoadFamilyMemberDtoToFamilyMember(loadFamilyMemberDto)
+            FamilyMemberConverter.fromDtoToModel(loadFamilyMemberDto)
         )
       );
   }
@@ -101,29 +103,4 @@ export class FamilyService {
       })
     )
   }
-
-  private static fromLoadFamilyDtoToFamily(loadFamilyDto: LoadFamilyDto): Family {
-    const family: Family 
-    = new Family(
-      loadFamilyDto.id,
-      loadFamilyDto.name,
-      loadFamilyDto.associationCode
-    );
-
-    loadFamilyDto.members.forEach(loadFamilyMemberDto => {
-      const familyMember: FamilyMember = FamilyService.fromLoadFamilyMemberDtoToFamilyMember(loadFamilyMemberDto);
-      family.members.push(familyMember);
-    });
-
-    return family;
-  }
-
-  private static fromLoadFamilyMemberDtoToFamilyMember(loadFamilyMemberDto: LoadFamilyMemberDto): FamilyMember {
-    return new FamilyMember(
-      loadFamilyMemberDto.id,
-      loadFamilyMemberDto.name,
-      loadFamilyMemberDto.userId,
-      loadFamilyMemberDto.username
-    );
-  } 
 }

@@ -1,0 +1,28 @@
+.large-empty {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &-illustration {
+        width: 200px;
+    }
+
+    &-title {
+        margin: 0;
+        padding: 0;
+        padding-top: 20px;
+        padding-bottom: 10px;
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    &-message {
+        width: 200px;
+        margin: 0;
+        padding: 0;
+        font-size: 16px;
+        text-align: center;
+    }
+}

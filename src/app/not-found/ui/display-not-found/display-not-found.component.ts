@@ -8,8 +8,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, MatButtonModule],
   templateUrl: './display-not-found.component.html',
-  styles: [
-  ]
+  styleUrls: ['./display-not-found.component.scss']
 })
 export class NotFoundComponent {
   public constructor(private router: Router) { }

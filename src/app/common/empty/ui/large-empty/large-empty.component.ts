@@ -6,8 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './large-empty.component.html',
-  styles: [
-  ]
+  styleUrls: ['./large-empty.component.scss']
 })
 export class LargeEmptyComponent {
   @Input() public illustrationSource: string = '';

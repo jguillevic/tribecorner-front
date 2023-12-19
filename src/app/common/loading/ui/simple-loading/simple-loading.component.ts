@@ -10,8 +10,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatProgressSpinnerModule
   ],
   templateUrl: './simple-loading.component.html',
-  styles: [
-  ]
+  styleUrls: ['./simple-loading.component.scss']
 })
 export class SimpleLoadingComponent {
 

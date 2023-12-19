@@ -6,7 +6,7 @@ import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loadin
     selector: 'app-home-category',
     standalone: true,
     templateUrl: './home-category.component.html',
-    styles: [],
+    styleUrls: ['./home-category.component.scss'],
     imports: [
         CommonModule,
         SimpleLoadingComponent

@@ -16,7 +16,7 @@ import { SignOutButtonComponent } from 'src/app/common/button/ui/sign-out/sign-o
     selector: 'app-profile-top-bar',
     standalone: true,
     templateUrl: './profile-top-bar.component.html',
-    styles: [],
+    styleUrls: ['./profile-top-bar.component.scss'],
     imports: [
         CommonModule,
         MatMenuModule,

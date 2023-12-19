@@ -10,8 +10,7 @@ import { DateHelper } from '../../../date/helper/date.helper';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './inline-calendar.component.html',
-  styles: [
-  ],
+  styleUrls: ['./inline-calendar.component.scss'],
   providers: [{ provide: LOCALE_ID, useValue: 'fr-FR' }]
 })
 export class InlineCalendarComponent implements OnInit, OnDestroy {

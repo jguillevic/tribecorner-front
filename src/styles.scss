@@ -12,27 +12,12 @@
 @import 'styles/helpers/commons';
 @import 'styles/helpers/mixins';
 
-
 /* components */
 @import 'styles/components/pages';
 @import 'styles/components/forms';
 @import 'styles/components/loading';
-/* button */
-@import 'styles/components/common/button/buttons';
-/* calendar */
-@import 'styles/components/common/calendar/inline-calendar';
-/* empty */
-@import 'styles/components/common/empty/simple-empty';
-@import 'styles/components/common/empty/large-empty';
-/* loading */
-@import 'styles/components/common/loading/simple-loading';
 /* top-bar */
 @import 'styles/components/common/top-bar/top-bar';
-@import 'styles/components/common/top-bar/profile-top-bar';
-/* home */
-@import 'styles/components/home/home-category';
-/* not-found */
-@import 'styles/components/not-found/display-not-found';
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

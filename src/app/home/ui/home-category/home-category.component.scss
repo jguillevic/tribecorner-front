@@ -1,0 +1,46 @@
+@import '../../../../styles/helpers/colors';
+
+.home-category {
+    width: 100%;
+    display: block;
+    padding-top: 15px;
+    padding-bottom: 20px;
+
+    &-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 15px;
+        padding-left: 15px;
+        padding-right: 15px;
+
+        &-name {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        &-see-all {
+            font-size: 14px;
+            font-weight: 700;
+            color: $primary-color;
+
+            &::after {
+                font-family: 'Material Symbols Outlined';
+                font-weight: normal;
+                font-style: normal;
+                font-size: 24px;
+                display: inline-block;
+                line-height: 1;
+                text-transform: none;
+                letter-spacing: normal;
+                word-wrap: normal;
+                white-space: nowrap;
+                direction: ltr;
+                vertical-align: middle;
+                content: '\e409';
+            }
+        }
+    }
+}

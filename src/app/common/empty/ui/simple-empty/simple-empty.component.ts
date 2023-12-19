@@ -6,8 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './simple-empty.component.html',
-  styles: [
-  ]
+  styleUrls: ['./simple-empty.component.scss']
 })
 export class SimpleEmptyComponent {
 

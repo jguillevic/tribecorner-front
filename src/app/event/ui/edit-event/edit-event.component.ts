@@ -40,8 +40,20 @@ import { TimeToStringPipe } from "../../../common/date/pipe/time-to-string.pipe"
 export class EditEventComponent implements OnInit, OnDestroy {
     private currentEventId: number = 0;
     private previousAllDay: boolean|undefined;
-    private readonly editEventForm: FormGroup;
+    private readonly editEventForm: FormGroup = this.createEventForm();
     private readonly destroy$ = new Subject<void>();
+
+    public readonly nameCode: string = 'name';
+    public readonly startingDateCode: string = 'startingDate';
+    public readonly startingTimeCode: string = 'startingTime';
+    public readonly endingDateCode: string = 'endingDate';
+    public readonly endingTimeCode: string = 'endingTime';
+    public readonly allDayCode: string = 'allDay';
+
+    public readonly maxLengthErrorCode: string = 'maxlength';
+    public readonly requiredErrorCode: string = 'required';
+    public readonly greaterThanEndingDateTimeErrorCode: string = 'greater-than-ending-date-time';
+    public readonly smallerThanStartingDateTimeErrorCode: string = 'smaller-than-starting-date-time';
 
     public readonly eventNameMaxLength: number = 255;
     public readonly editEventForm$ = this.getEditEventForm$();
@@ -53,9 +65,7 @@ export class EditEventComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private editEventService: EditEventService,
         private eventCurrentDateService: EventCurrentDateService
-    ) {
-        this.editEventForm = this.createEventForm();
-    }
+    ) { }
 
     private createEventForm(): FormGroup {
         return this.formBuilder.group({
@@ -71,10 +81,10 @@ export class EditEventComponent implements OnInit, OnDestroy {
     public ngOnInit(): void {
         this.editEventForm.valueChanges.pipe(
             tap(form => {
-                const allDay: boolean = form['allDay'];
+                const allDay: boolean = form[this.allDayCode];
                 if (this.previousAllDay !== undefined && this.previousAllDay !== allDay) {
-                    const startingTimeControl: AbstractControl = this.editEventForm.controls['startingTime'];
-                    const endingTimeControl: AbstractControl = this.editEventForm.controls['endingTime'];
+                    const startingTimeControl: AbstractControl = this.editEventForm.controls[this.startingTimeCode];
+                    const endingTimeControl: AbstractControl = this.editEventForm.controls[this.endingTimeCode];
                     if (allDay) {
                         startingTimeControl.setValue(0, { emitEvent: false });
                         startingTimeControl.disable({emitEvent: false});
@@ -90,18 +100,71 @@ export class EditEventComponent implements OnInit, OnDestroy {
 
                 this.previousAllDay = allDay;
             }),
-            takeUntil(this.destroy$),
             debounceTime(500),
             filter(() => !this.editEventForm.pristine && this.editEventForm.valid),
-            switchMap(() => this.save())
+            switchMap(() => this.save()),
+            takeUntil(this.destroy$)
         )
         .subscribe();
+
+        this.checkStartingDateConsistency();
+        this.checkStartingTimeConsistency();
+        this.checkEndingDateConsistency();
+        this.checkEndingTimeConsistency();
     }
 
     public ngOnDestroy(): void {
         this.destroy$.complete();
     }
     
+    private checkStartingDateConsistency(): void {
+        this.editEventForm.controls[this.startingDateCode].valueChanges.
+        pipe(
+            tap(() => {
+                if (this.editEventService.isStartingDateTimeGreaterThanEndingDateTime(this.getEditEventViewModel())) {
+                    this.editEventForm.controls[this.startingDateCode].setErrors({[this.greaterThanEndingDateTimeErrorCode]: true});
+                }
+            }),
+            takeUntil(this.destroy$)
+        ).subscribe();
+    }
+
+    private checkStartingTimeConsistency(): void {
+        this.editEventForm.controls[this.startingTimeCode].valueChanges.
+        pipe(
+            tap(() => {
+                if (this.editEventService.isStartingDateTimeGreaterThanEndingDateTime(this.getEditEventViewModel())) {
+                    this.editEventForm.controls[this.startingTimeCode].setErrors({[this.greaterThanEndingDateTimeErrorCode]: true});
+                }
+            }),
+            takeUntil(this.destroy$)
+        ).subscribe();
+    }
+
+    private checkEndingDateConsistency(): void {
+        this.editEventForm.controls[this.endingDateCode].valueChanges.
+        pipe(
+            tap(() => {
+                if (this.editEventService.isStartingDateTimeGreaterThanEndingDateTime(this.getEditEventViewModel())) {
+                    this.editEventForm.controls[this.endingDateCode].setErrors({[this.smallerThanStartingDateTimeErrorCode]: true});
+                }
+            }),
+            takeUntil(this.destroy$)
+        ).subscribe();
+    }
+
+    private checkEndingTimeConsistency(): void {
+        this.editEventForm.controls[this.endingTimeCode].valueChanges.
+        pipe(
+            tap(() => {
+                if (this.editEventService.isStartingDateTimeGreaterThanEndingDateTime(this.getEditEventViewModel())) {
+                    this.editEventForm.controls[this.endingTimeCode].setErrors({[this.smallerThanStartingDateTimeErrorCode]: true});
+                }
+            }),
+            takeUntil(this.destroy$)
+        ).subscribe();
+    }
+
     private static getTimes(): number[] {
         const times: number[] = [];
 
@@ -170,12 +233,12 @@ export class EditEventComponent implements OnInit, OnDestroy {
                 return of(editEventViewModel);
                 }),
                 tap(event => {
-                this.editEventForm.controls['name'].setValue(event.name);
-                this.editEventForm.controls['startingDate'].setValue(event.startingDate);
-                this.editEventForm.controls['startingTime'].setValue(event.startingTime);
-                this.editEventForm.controls['endingDate'].setValue(event.endingDate);
-                this.editEventForm.controls['endingTime'].setValue(event.endingTime);
-                this.editEventForm.controls['allDay'].setValue(event.allDay);
+                this.editEventForm.controls[this.nameCode].setValue(event.name);
+                this.editEventForm.controls[this.startingDateCode].setValue(event.startingDate);
+                this.editEventForm.controls[this.startingTimeCode].setValue(event.startingTime);
+                this.editEventForm.controls[this.endingDateCode].setValue(event.endingDate);
+                this.editEventForm.controls[this.endingTimeCode].setValue(event.endingTime);
+                this.editEventForm.controls[this.allDayCode].setValue(event.allDay);
             }),
             map(() => this.editEventForm)
         );

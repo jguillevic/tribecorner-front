@@ -4,10 +4,14 @@ import { EventService } from './event.service';
 import { EditEventViewModel } from '../view-model/edit-event.view-model';
 import { EditEventViewModelConverter } from '../converter/edit-event-view-model.converter';
 import { Event } from "../model/event.model";
+import { EventBusinessCheckerService } from './event-business-checker.service';
 
 @Injectable()
 export class EditEventService {
-  public constructor(private eventService: EventService) { }
+  public constructor(
+    private eventService: EventService,
+    private eventBusinessChecker: EventBusinessCheckerService
+  ) { }
 
   public loadOneById(eventId: number): Observable<EditEventViewModel> {
     return this.eventService.loadOneById(eventId)
@@ -41,5 +45,12 @@ export class EditEventService {
         EditEventViewModelConverter.fromModelToViewModel(event)
       )
     );
+  }
+
+  public isStartingDateTimeGreaterThanEndingDateTime(editEventViewModel: EditEventViewModel): boolean {
+    const event: Event 
+    = EditEventViewModelConverter.fromViewModelToModel(editEventViewModel);
+
+    return this.eventBusinessChecker.isStartingDateTimeGreaterThanEndingDateTime(event);
   }
 }

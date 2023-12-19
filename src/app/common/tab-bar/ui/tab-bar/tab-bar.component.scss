@@ -1,4 +1,7 @@
-@import '../../../../../styles.scss';
+@import '../../../../../styles/helpers/colors';
+@import '../../../../../styles/helpers/variables';
+@import '../../../../../styles/helpers/mixins';
+
 
 .tab-bar {
     position: fixed;

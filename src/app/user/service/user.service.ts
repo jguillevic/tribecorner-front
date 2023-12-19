@@ -16,13 +16,13 @@ import { UserConverter } from '../converter/user.converter';
   providedIn: 'root',
 })
 export class UserService implements OnDestroy {
-  private static apiPath: string = 'users';
-  private static userInfoSessionStorageKey: string = 'userInfo';
+  private static readonly apiPath: string = 'users';
+  private static readonly userInfoSessionStorageKey: string = 'userInfo';
   private firebaseAuth: Auth;
   private onAuthStateChangedUnsubscribe: Unsubscribe;
-  private signInLocallySubscription: Subscription|undefined;
+  private signInLocallySubscription: Subscription | undefined;
 
-  private _isSignedIn: boolean | undefined = undefined;
+  private _isSignedIn: boolean | undefined;
   public get isSignedIn(): boolean|undefined {
     return this._isSignedIn;
   }
@@ -33,11 +33,11 @@ export class UserService implements OnDestroy {
     }
   }
 
-  public isSignedInDefinedEvent = new EventEmitter();
+  public readonly isSignedInDefinedEvent = new EventEmitter();
 
   public constructor(
-    private http: HttpClient,
-    private sessionStorageService: SessionStorageService
+    private readonly http: HttpClient,
+    private readonly sessionStorageService: SessionStorageService
     ) { 
       const app: FirebaseApp = initializeApp(environment.firebaseConfig);
       this.firebaseAuth = getAuth(app);
@@ -150,6 +150,7 @@ export class UserService implements OnDestroy {
 
   private onFirebaseAuthStateChange(user: User|null): void {
     if (user) {
+      user.photoURL
       this.signInLocallySubscription = this.signInLocally(user.uid).subscribe();
     } else {
       this.isSignedIn = false;

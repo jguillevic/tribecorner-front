@@ -7,12 +7,7 @@
                 <mat-form-field class="form-input">
                     <mat-label>Nom</mat-label>
                     <input matInput type="text" [formControlName]="this.nameCode">
-                    <mat-error *ngIf="editEventForm.controls[this.nameCode].hasError(this.maxLengthErrorCode)">
-                        Nom trop long (max. {{ this.eventNameMaxLength }} caractères)
-                    </mat-error>
-                    <mat-error *ngIf="editEventForm.controls[this.nameCode].hasError(this.requiredErrorCode)">
-                        Nom requis
-                    </mat-error>
+                    <mat-error>{{ this.getNameErrorMessage() }}</mat-error>
                 </mat-form-field>
                 <!--Date de début.-->
                 <mat-form-field class="form-input">
@@ -49,7 +44,7 @@
                     <mat-error *ngIf="editEventForm.controls[this.endingDateCode].hasError(this.requiredErrorCode)">
                         Date de fin requise
                     </mat-error>
-                    <mat-error *ngIf="editEventForm.controls[this.endingDateCode].hasError(this.smallerThanStartingDateTimeErrorCode)">
+                    <mat-error *ngIf="editEventForm.controls[this.endingDateCode].hasError(this.lesserThanStartingDateTimeErrorCode)">
                         La date de fin doit être isupérieure à la date de début
                     </mat-error>
                 </mat-form-field>
@@ -62,7 +57,7 @@
                     <mat-error *ngIf="editEventForm.controls[this.endingTimeCode].hasError(this.requiredErrorCode)">
                         Heure de fin requise
                     </mat-error>
-                    <mat-error *ngIf="editEventForm.controls[this.endingTimeCode].hasError(this.smallerThanStartingDateTimeErrorCode)">
+                    <mat-error *ngIf="editEventForm.controls[this.endingTimeCode].hasError(this.lesserThanStartingDateTimeErrorCode)">
                         L'heure de fin doit être supérieure à l'heure de début
                     </mat-error>
                 </mat-form-field>

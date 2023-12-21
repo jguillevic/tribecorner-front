@@ -47,6 +47,13 @@ export class EditEventService {
     );
   }
 
+  public isStartingDateTimeStriclyGreaterThanEndingDateTime(editEventViewModel: EditEventViewModel): boolean {
+    const event: Event 
+    = EditEventViewModelConverter.fromViewModelToModel(editEventViewModel);
+
+    return this.eventBusinessChecker.isStartingDateTimeStriclyGreaterThanEndingDateTime(event);
+  }
+
   public isStartingDateTimeGreaterThanEndingDateTime(editEventViewModel: EditEventViewModel): boolean {
     const event: Event 
     = EditEventViewModelConverter.fromViewModelToModel(editEventViewModel);

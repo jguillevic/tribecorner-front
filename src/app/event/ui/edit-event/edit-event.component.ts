@@ -100,17 +100,24 @@ export class EditEventComponent implements OnInit, OnDestroy {
         const startingDateControl: AbstractControl<any, any> = this.editEventForm.controls[this.startingDateCode];
         const startingTimeControl: AbstractControl<any, any> = this.editEventForm.controls[this.startingTimeCode];
         const allDay: boolean = this.editEventForm.controls[this.allDayCode].value;
-        if (this.editEventService.isStartingDateTimeGreaterThanEndingDateTime(this.getEditEventViewModel())) {
-            startingDateControl.setErrors({[this.greaterThanEndingDateTimeErrorCode]: true}, {emitEvent: false});
-            startingDateControl.markAsTouched();
-            if (!allDay) {
-                startingTimeControl.setErrors({[this.greaterThanEndingDateTimeErrorCode]: true}, {emitEvent: false});
-                startingTimeControl.markAsTouched();
+
+        if (allDay) {
+            if (this.editEventService.isStartingDateTimeStriclyGreaterThanEndingDateTime(this.getEditEventViewModel())) {
+                startingDateControl.setErrors({[this.greaterThanEndingDateTimeErrorCode]: true}, {emitEvent: false});
+                startingDateControl.markAsTouched();
+            } else {
+                startingDateControl.setErrors({[this.greaterThanEndingDateTimeErrorCode]: null}, {emitEvent: false});
+                startingDateControl.updateValueAndValidity({emitEvent: false});
             }
         } else {
-            startingDateControl.setErrors({[this.greaterThanEndingDateTimeErrorCode]: null}, {emitEvent: false});
-            startingDateControl.updateValueAndValidity({emitEvent: false});
-            if (!allDay) {
+            if (this.editEventService.isStartingDateTimeGreaterThanEndingDateTime(this.getEditEventViewModel())) {
+                startingDateControl.setErrors({[this.greaterThanEndingDateTimeErrorCode]: true}, {emitEvent: false});
+                startingDateControl.markAsTouched();
+                startingTimeControl.setErrors({[this.greaterThanEndingDateTimeErrorCode]: true}, {emitEvent: false});
+                startingTimeControl.markAsTouched();
+            } else {
+                startingDateControl.setErrors({[this.greaterThanEndingDateTimeErrorCode]: null}, {emitEvent: false});
+                startingDateControl.updateValueAndValidity({emitEvent: false});
                 startingTimeControl.setErrors({[this.greaterThanEndingDateTimeErrorCode]: true}, {emitEvent: false});
                 startingTimeControl.updateValueAndValidity({emitEvent: false});
             }
@@ -148,17 +155,24 @@ export class EditEventComponent implements OnInit, OnDestroy {
         const endingDateControl: AbstractControl<any, any> = this.editEventForm.controls[this.endingDateCode];
         const endingTimeControl: AbstractControl<any, any> = this.editEventForm.controls[this.endingTimeCode];
         const allDay: boolean = this.editEventForm.controls[this.allDayCode].value;
-        if (this.editEventService.isStartingDateTimeGreaterThanEndingDateTime(this.getEditEventViewModel())) {
-            endingDateControl.setErrors({[this.lesserThanStartingDateTimeErrorCode]: true}, {emitEvent: false});
-            endingDateControl.markAsTouched();
-            if (!allDay) {
-                endingTimeControl.setErrors({[this.lesserThanStartingDateTimeErrorCode]: true}, {emitEvent: false});
-                endingTimeControl.markAsTouched();
+
+        if (allDay) {
+            if (this.editEventService.isStartingDateTimeStriclyGreaterThanEndingDateTime(this.getEditEventViewModel())) {
+                endingDateControl.setErrors({[this.lesserThanStartingDateTimeErrorCode]: true}, {emitEvent: false});
+                endingDateControl.markAsTouched();
+            } else {
+                endingDateControl.setErrors({[this.lesserThanStartingDateTimeErrorCode]: null}, {emitEvent: false});
+                endingDateControl.updateValueAndValidity({emitEvent: false});
             }
         } else {
-            endingDateControl.setErrors({[this.lesserThanStartingDateTimeErrorCode]: null}, {emitEvent: false});
-            endingDateControl.updateValueAndValidity({emitEvent: false});
-            if (!allDay) {
+            if (this.editEventService.isStartingDateTimeGreaterThanEndingDateTime(this.getEditEventViewModel())) {
+                endingDateControl.setErrors({[this.lesserThanStartingDateTimeErrorCode]: true}, {emitEvent: false});
+                endingDateControl.markAsTouched();
+                endingTimeControl.setErrors({[this.lesserThanStartingDateTimeErrorCode]: true}, {emitEvent: false});
+                endingTimeControl.markAsTouched();
+            } else {
+                endingDateControl.setErrors({[this.lesserThanStartingDateTimeErrorCode]: null}, {emitEvent: false});
+                endingDateControl.updateValueAndValidity({emitEvent: false});
                 endingTimeControl.setErrors({[this.lesserThanStartingDateTimeErrorCode]: true}, {emitEvent: false});
                 endingTimeControl.updateValueAndValidity({emitEvent: false});
             }

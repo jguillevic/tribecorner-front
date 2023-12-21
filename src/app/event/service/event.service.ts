@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { ApiHttpClient } from 'src/app/common/http/api-http-client';
+import { ApiHttpClient } from '../../common/http/api-http-client';
 import { Event } from 'src/app/event/model/event.model';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../environments/environment';
 import { LoadEventDto } from '../dto/load-event.dto';
 import { EventConverter } from '../converter/event.converter';
 import { EditEventDto } from '../dto/edit-event.dto';
-import { DateHelper } from '../../common/date/helper/date.helper';
 
 @Injectable()
 export class EventService {

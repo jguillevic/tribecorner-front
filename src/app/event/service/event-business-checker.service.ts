@@ -6,6 +6,6 @@ import { Event } from "../model/event.model";
 })
 export class EventBusinessCheckerService {
   public isStartingDateTimeGreaterThanEndingDateTime(event: Event): boolean {
-    return event.startingDateTime > event.endingDateTime;
+    return event.startingDateTime >= event.endingDateTime;
   } 
 }

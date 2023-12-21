@@ -15,12 +15,7 @@
                     <input matInput [matDatepicker]="startingDatePicker" [formControlName]="this.startingDateCode">
                     <mat-datepicker-toggle matIconSuffix [for]="startingDatePicker"></mat-datepicker-toggle>
                     <mat-datepicker #startingDatePicker></mat-datepicker>
-                    <mat-error *ngIf="editEventForm.controls[this.startingDateCode].hasError(this.requiredErrorCode)">
-                        Date de début requise
-                    </mat-error>
-                    <mat-error *ngIf="editEventForm.controls[this.startingDateCode].hasError(this.greaterThanEndingDateTimeErrorCode)">
-                        La date de début doit être inférieure à la date de fin
-                    </mat-error>
+                    <mat-error>{{ this.getStartingDateErrorMessage() }}</mat-error>
                 </mat-form-field>
                 <!--Heure de début.-->
                 <mat-form-field class="form-input">
@@ -28,12 +23,7 @@
                     <mat-select [formControlName]="this.startingTimeCode">
                         <mat-option *ngFor="let time of times" [value]="time">{{ time | timeToString }}</mat-option>
                     </mat-select>
-                    <mat-error *ngIf="editEventForm.controls[this.startingTimeCode].hasError(this.requiredErrorCode)">
-                        Heure de début requise
-                    </mat-error>
-                    <mat-error *ngIf="editEventForm.controls[this.startingTimeCode].hasError(this.greaterThanEndingDateTimeErrorCode)">
-                        L'heure de début doit être inférieure à l'heure de fin
-                    </mat-error>
+                    <mat-error>{{ this.getStartingTimeErrorMessage() }}</mat-error>
                 </mat-form-field>
                 <!--Date de fin.-->
                 <mat-form-field class="form-input">
@@ -41,12 +31,7 @@
                     <input matInput [matDatepicker]="endingDatePicker" [formControlName]="this.endingDateCode">
                     <mat-datepicker-toggle matIconSuffix [for]="endingDatePicker"></mat-datepicker-toggle>
                     <mat-datepicker #endingDatePicker></mat-datepicker>
-                    <mat-error *ngIf="editEventForm.controls[this.endingDateCode].hasError(this.requiredErrorCode)">
-                        Date de fin requise
-                    </mat-error>
-                    <mat-error *ngIf="editEventForm.controls[this.endingDateCode].hasError(this.lesserThanStartingDateTimeErrorCode)">
-                        La date de fin doit être isupérieure à la date de début
-                    </mat-error>
+                    <mat-error>{{ this.getEndingDateErrorMessage() }}</mat-error>
                 </mat-form-field>
                 <!--Heure de fin.-->
                 <mat-form-field class="form-input">
@@ -54,12 +39,7 @@
                     <mat-select [formControlName]="this.endingTimeCode">
                         <mat-option *ngFor="let time of times" [value]="time">{{ time | timeToString }}</mat-option>
                     </mat-select>
-                    <mat-error *ngIf="editEventForm.controls[this.endingTimeCode].hasError(this.requiredErrorCode)">
-                        Heure de fin requise
-                    </mat-error>
-                    <mat-error *ngIf="editEventForm.controls[this.endingTimeCode].hasError(this.lesserThanStartingDateTimeErrorCode)">
-                        L'heure de fin doit être supérieure à l'heure de début
-                    </mat-error>
+                    <mat-error>{{ this.getEndingTimeErrorMessage() }}</mat-error>
                 </mat-form-field>
                 <!--Toute la journée ?-->
                 <mat-slide-toggle color="primary" [formControlName]="this.allDayCode">

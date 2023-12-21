@@ -39,7 +39,6 @@ import { TimeToStringPipe } from "../../../common/date/pipe/time-to-string.pipe"
 })
 export class EditEventComponent implements OnInit, OnDestroy {
     private currentEventId: number = 0;
-    private previousAllDay: boolean|undefined;
     private readonly editEventForm: FormGroup = this.createEventForm();
     private readonly destroy$ = new Subject<void>();
 
@@ -79,26 +78,6 @@ export class EditEventComponent implements OnInit, OnDestroy {
 
     public ngOnInit(): void {
         this.editEventForm.valueChanges.pipe(
-            tap(form => {
-                const allDay: boolean = form[this.allDayCode];
-                if (this.previousAllDay !== undefined && this.previousAllDay !== allDay) {
-                    const startingTimeControl: AbstractControl = this.editEventForm.controls[this.startingTimeCode];
-                    const endingTimeControl: AbstractControl = this.editEventForm.controls[this.endingTimeCode];
-                    if (allDay) {
-                        startingTimeControl.setValue(0, {emitEvent: false});
-                        startingTimeControl.disable({emitEvent: false});
-                        endingTimeControl.setValue(0, {emitEvent: false});
-                        endingTimeControl.disable({emitEvent: false});
-                    } else {
-                        startingTimeControl.setValue(EditEventComponent.getDefaultStartingTime(), {emitEvent: false});
-                        startingTimeControl.enable({emitEvent: false});
-                        endingTimeControl.setValue(EditEventComponent.getDefaultEndingTime(), {emitEvent: false});
-                        endingTimeControl.enable({emitEvent: false});
-                    }
-                }
-
-                this.previousAllDay = allDay;
-            }),
             debounceTime(500),
             filter(() => !this.editEventForm.pristine && this.editEventForm.valid),
             switchMap(() => this.save()),
@@ -165,14 +144,6 @@ export class EditEventComponent implements OnInit, OnDestroy {
         ).subscribe();
     }
 
-    private checkDateTimesConsistencyOnAllDayChanged(): void {
-        this.editEventForm.controls[this.allDayCode].valueChanges.
-        pipe(
-            tap(() => this.manageGreaterThanEndingDateTimeError()),
-            takeUntil(this.destroy$)
-        ).subscribe();
-    }
-
     private manageLesserThanStartingDateTimeError(): void {
         const endingDateControl: AbstractControl<any, any> = this.editEventForm.controls[this.endingDateCode];
         const endingTimeControl: AbstractControl<any, any> = this.editEventForm.controls[this.endingTimeCode];
@@ -213,25 +184,106 @@ export class EditEventComponent implements OnInit, OnDestroy {
         ).subscribe();
     }
 
-    public getNameErrorMessage(): string|undefined {
-        const nameControl: AbstractControl<any, any> = this.editEventForm.controls[this.nameCode];
-
-        if (nameControl.hasError(this.maxLengthErrorCode)) {
-            const maxLength = nameControl.getError(this.maxLengthErrorCode)['requiredLength'];
-            return `Nom trop long (max. ${maxLength} caractères)`;
-        } else if (nameControl.hasError(this.requiredErrorCode)) {
-            return 'Nom requis';
-        }
-
-        return undefined;
-    }
-
     private checkDateTimesConsistencyOnEndingTimeChanged(): void {
         this.editEventForm.controls[this.endingTimeCode].valueChanges.
         pipe(
             tap(() => this.manageLesserThanStartingDateTimeError()),
             takeUntil(this.destroy$)
         ).subscribe();
+    }
+
+    private checkDateTimesConsistencyOnAllDayChanged(): void {
+        this.editEventForm.controls[this.allDayCode].valueChanges.
+        pipe(
+            tap((allDay: boolean) => {
+                const startingTimeControl: AbstractControl = this.editEventForm.controls[this.startingTimeCode];
+                const endingTimeControl: AbstractControl = this.editEventForm.controls[this.endingTimeCode];
+                if (allDay) {
+                    startingTimeControl.setValue(0, {emitEvent: false});
+                    startingTimeControl.disable({emitEvent: false});
+                    endingTimeControl.setValue(0, {emitEvent: false});
+                    endingTimeControl.disable({emitEvent: false});
+                } else {
+                    startingTimeControl.setValue(EditEventComponent.getDefaultStartingTime(), {emitEvent: false});
+                    startingTimeControl.enable({emitEvent: false});
+                    endingTimeControl.setValue(EditEventComponent.getDefaultEndingTime(), {emitEvent: false});
+                    endingTimeControl.enable({emitEvent: false});
+                }
+            }),
+            tap(() => this.manageGreaterThanEndingDateTimeError()),
+            takeUntil(this.destroy$)
+        ).subscribe();
+    }
+
+    public getNameErrorMessage(): string|undefined {
+        const nameControl: AbstractControl<any, any> = this.editEventForm.controls[this.nameCode];
+
+        if (nameControl.hasError(this.requiredErrorCode)) {
+            return 'Nom requis';
+        } else if (nameControl.hasError(this.maxLengthErrorCode)) {
+            const maxLength = nameControl.getError(this.maxLengthErrorCode)['requiredLength'];
+            return `Nom trop long (max. ${maxLength} caractères)`;
+        }
+
+        return undefined;
+    }
+
+    public getStartingDateErrorMessage(): string|undefined {
+        const startingDateControl: AbstractControl<any, any> = this.editEventForm.controls[this.startingDateCode];
+
+        if (startingDateControl.hasError(this.requiredErrorCode)) {
+            return 'Date de début requise';
+        } else if (startingDateControl.hasError(this.greaterThanEndingDateTimeErrorCode)) {
+            const allDay: boolean = this.editEventForm.controls[this.allDayCode].value;
+            if (!allDay) {
+                return 'La date et l\'heure de début doivent être < à la date et l\'heure de fin';
+            } else {
+                return 'La date de début doit être < à la date de fin';
+            }
+        }
+
+        return undefined;
+    }
+
+    public getStartingTimeErrorMessage(): string|undefined {
+        const startingTimeControl: AbstractControl<any, any> = this.editEventForm.controls[this.startingTimeCode];
+
+        if (startingTimeControl.hasError(this.requiredErrorCode)) {
+            return 'Heure de début requise';
+        } else if (startingTimeControl.hasError(this.greaterThanEndingDateTimeErrorCode)) {
+            return 'La date et l\'heure de début doivent être < à la date et l\'heure de fin';
+        }
+
+        return undefined;
+    }
+
+    public getEndingDateErrorMessage(): string|undefined {
+        const endingDateControl: AbstractControl<any, any> = this.editEventForm.controls[this.endingDateCode];
+
+        if (endingDateControl.hasError(this.requiredErrorCode)) {
+            return 'Date de fin requise';
+        } else if (endingDateControl.hasError(this.lesserThanStartingDateTimeErrorCode)) {
+            const allDay: boolean = this.editEventForm.controls[this.allDayCode].value;
+            if (!allDay) {
+                return 'La date et l\'heure de fin doivent être > à la date et l\'heure de début';
+            } else {
+                return 'La date de fin doit être > à la date de début';
+            }
+        }
+
+        return undefined;
+    }
+
+    public getEndingTimeErrorMessage(): string|undefined {
+        const endingTimeControl: AbstractControl<any, any> = this.editEventForm.controls[this.endingTimeCode];
+
+        if (endingTimeControl.hasError(this.requiredErrorCode)) {
+            return 'Heure de fin requise';
+        } else if (endingTimeControl.hasError(this.lesserThanStartingDateTimeErrorCode)) {
+            return 'La date et l\'heure de fin doivent être > à la date et l\'heure de début';
+        }
+
+        return undefined;
     }
 
     private static getTimes(): number[] {

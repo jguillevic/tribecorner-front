@@ -15,6 +15,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { EditEventService } from '../../service/edit-event.service';
 import { EditEventViewModel } from '../../view-model/edit-event.view-model';
 import { TimeToStringPipe } from "../../../common/date/pipe/time-to-string.pipe";
+import { EventTimeHelper } from '../../helper/event-time.helper';
 
 @Component({
     selector: 'app-edit-event',
@@ -56,7 +57,7 @@ export class EditEventComponent implements OnInit, OnDestroy {
 
     public readonly editEventForm$ = this.getEditEventForm$();
 
-    public readonly times: number[] = EditEventComponent.getTimes();
+    public readonly times: number[] = EventTimeHelper.getTimes();
 
     public constructor(
         private activatedRoute: ActivatedRoute,
@@ -218,9 +219,9 @@ export class EditEventComponent implements OnInit, OnDestroy {
                     endingTimeControl.setValue(0, {emitEvent: false});
                     endingTimeControl.disable({emitEvent: false});
                 } else {
-                    startingTimeControl.setValue(EditEventComponent.getDefaultStartingTime(), {emitEvent: false});
+                    startingTimeControl.setValue(EventTimeHelper.getDefaultStartingTime(), {emitEvent: false});
                     startingTimeControl.enable({emitEvent: false});
-                    endingTimeControl.setValue(EditEventComponent.getDefaultEndingTime(), {emitEvent: false});
+                    endingTimeControl.setValue(EventTimeHelper.getDefaultEndingTime(), {emitEvent: false});
                     endingTimeControl.enable({emitEvent: false});
                 }
             }),
@@ -300,38 +301,6 @@ export class EditEventComponent implements OnInit, OnDestroy {
         return undefined;
     }
 
-    private static getTimes(): number[] {
-        const times: number[] = [];
-
-        for (let i: number = 0; i < 24; i++) {
-            for (let j: number = 0; j < 4; j++) {
-                times.push(i * 60 + j * 15);
-            }
-        }
-
-        return times;
-    }
-
-    private static getDefaultTime(): number {
-        let time: number = 0;
-        const currentDate = new Date();
-
-        // Récupération des heures.
-        time += currentDate.getHours() * 60;
-        // Récupération des minutes.
-        time += Math.floor(currentDate.getMinutes() / 15) * 15;
-
-        return time;
-    }
-
-    private static getDefaultStartingTime(): number {
-        return EditEventComponent.getDefaultTime();
-    }
-
-    private static getDefaultEndingTime(): number {
-        return EditEventComponent.getDefaultStartingTime() + 60;
-    }
-
     private getEditEventViewModel(): EditEventViewModel {
         // getRawValue() utilisé car quand les champs sont 'disabled'
         // ils ne sont pas renvoyés par .value.
@@ -360,9 +329,9 @@ export class EditEventComponent implements OnInit, OnDestroy {
                     0,
                     '',
                     defaultDate,
-                    EditEventComponent.getDefaultStartingTime(),
+                    EventTimeHelper.getDefaultStartingTime(),
                     defaultDate,
-                    EditEventComponent.getDefaultEndingTime(),
+                    EventTimeHelper.getDefaultEndingTime(),
                     false
                 );
                 return of(editEventViewModel);

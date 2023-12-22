@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { MealsByMealKindService } from './meals-by-meal-kind.service';
 import { MealKindService } from './meal-kind.service';
 import { MealService } from './meal.service';
@@ -37,7 +37,7 @@ describe('MealsByMealKindService', () => {
         expect(service).toBeTruthy();
     });
 
-    it('should load all meals by date grouped by meal kind', async () => {
+    it('should load all meals by date grouped by meal kind', fakeAsync(() => {
         const date: Date = new Date();
         const mealKind1: MealKind 
         = new MealKind(1, 'Petit-déjeuner', 0);
@@ -54,15 +54,20 @@ describe('MealsByMealKindService', () => {
         = new Meal(3, 'Frites', new Date(), 1, 3);
         mealServiceMock.loadAllByDate = () => of([meal1, meal2, meal3]);
 
-        const result: MealsByMealKind[] = await lastValueFrom(service.loadAllByDate(date));
+        service.loadAllByDate(date)
+        .subscribe(
+            (result: MealsByMealKind[]) => {
+                expect(result.length).toBe(2);
+                expect(result[0].mealKind.id).toBe(3);
+                expect(result[0].meals.length).toBe(2);
+                expect(result[0].meals[0].name).toBe('Omelette');
+                expect(result[0].meals[1].name).toBe('Frites');
+                expect(result[1].mealKind.id).toBe(1);
+                expect(result[1].meals.length).toBe(1);
+                expect(result[1].meals[0].name).toBe('Pain perdu');
+            }
+        );
 
-        expect(result.length).toBe(2);
-        expect(result[0].mealKind.id).toBe(3);
-        expect(result[0].meals.length).toBe(2);
-        expect(result[0].meals[0].name).toBe('Omelette');
-        expect(result[0].meals[1].name).toBe('Frites');
-        expect(result[1].mealKind.id).toBe(1);
-        expect(result[1].meals.length).toBe(1);
-        expect(result[1].meals[0].name).toBe('Pain perdu');
-    });
+        flush();
+    }));
 });

@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EditEventComponent } from './edit-event-page.component';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { EditEventService } from '../../../service/edit-event.service';
 import { MockService } from 'ng-mocks';
 import { EventCurrentDateService } from '../../../service/event-current-date.service';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslocoTestingModule } from '@ngneat/transloco';
+import { getTranslocoModule } from '../../../../../transloco-testing.module';
+import { EditEventComponent } from './edit-event-page.component';
 
 describe('EditEventComponent', () => {
     let fixture: ComponentFixture<EditEventComponent>;
@@ -14,9 +14,9 @@ describe('EditEventComponent', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
-            EditEventComponent,
             RouterTestingModule,
-            TranslocoTestingModule
+            getTranslocoModule(),
+            EditEventComponent,
         ],
         providers: [
             { 

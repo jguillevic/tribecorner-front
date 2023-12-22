@@ -245,62 +245,62 @@ export class EditEventComponent implements OnInit, OnDestroy {
         return of(undefined);
     }
 
-    public getStartingDateErrorMessage(): string|undefined {
+    public getStartingDateErrorMessage(): Observable<string|undefined> {
         const startingDateControl: AbstractControl<any, any> = this.editEventForm.controls[this.startingDateCode];
 
         if (startingDateControl.hasError(this.requiredErrorCode)) {
-            return 'Date de début requise';
+            return this.translocoService.selectTranslate('editEventPageComponent.startingDateRequired');
         } else if (startingDateControl.hasError(this.greaterThanEndingDateTimeErrorCode)) {
             const allDay: boolean = this.editEventForm.controls[this.allDayCode].value;
             if (!allDay) {
-                return 'La date et l\'heure de début doivent être < à la date et l\'heure de fin';
+                return this.translocoService.selectTranslate('editEventPageComponent.greaterThanEndingDateTime');
             } else {
-                return 'La date de début doit être < à la date de fin';
+                return this.translocoService.selectTranslate('editEventPageComponent.greaterThanEndingDate');
             }
         }
 
-        return undefined;
+        return of(undefined);
     }
 
-    public getStartingTimeErrorMessage(): string|undefined {
+    public getStartingTimeErrorMessage(): Observable<string|undefined> {
         const startingTimeControl: AbstractControl<any, any> = this.editEventForm.controls[this.startingTimeCode];
 
         if (startingTimeControl.hasError(this.requiredErrorCode)) {
-            return 'Heure de début requise';
+            return this.translocoService.selectTranslate('editEventPageComponent.startingTimeRequired');
         } else if (startingTimeControl.hasError(this.greaterThanEndingDateTimeErrorCode)) {
-            return 'La date et l\'heure de début doivent être < à la date et l\'heure de fin';
+            return this.translocoService.selectTranslate('editEventPageComponent.greaterThanEndingDateTime');
         }
 
-        return undefined;
+        return of(undefined);
     }
 
-    public getEndingDateErrorMessage(): string|undefined {
+    public getEndingDateErrorMessage(): Observable<string|undefined> {
         const endingDateControl: AbstractControl<any, any> = this.editEventForm.controls[this.endingDateCode];
 
         if (endingDateControl.hasError(this.requiredErrorCode)) {
-            return 'Date de fin requise';
+            return this.translocoService.selectTranslate('editEventPageComponent.endingDateRequired');
         } else if (endingDateControl.hasError(this.lesserThanStartingDateTimeErrorCode)) {
             const allDay: boolean = this.editEventForm.controls[this.allDayCode].value;
             if (!allDay) {
-                return 'La date et l\'heure de fin doivent être > à la date et l\'heure de début';
+                return this.translocoService.selectTranslate('editEventPageComponent.lesserThanStartingDateTime');
             } else {
-                return 'La date de fin doit être > à la date de début';
+                return this.translocoService.selectTranslate('editEventPageComponent.lesserThanStartingDate');
             }
         }
 
-        return undefined;
+        return of(undefined);
     }
 
-    public getEndingTimeErrorMessage(): string|undefined {
+    public getEndingTimeErrorMessage(): Observable<string|undefined> {
         const endingTimeControl: AbstractControl<any, any> = this.editEventForm.controls[this.endingTimeCode];
 
         if (endingTimeControl.hasError(this.requiredErrorCode)) {
-            return 'Heure de fin requise';
+            return this.translocoService.selectTranslate('editEventPageComponent.endingTimeRequired');
         } else if (endingTimeControl.hasError(this.lesserThanStartingDateTimeErrorCode)) {
-            return 'La date et l\'heure de fin doivent être > à la date et l\'heure de début';
+            return this.translocoService.selectTranslate('editEventPageComponent.lesserThanStartingDateTime');
         }
 
-        return undefined;
+        return of(undefined);
     }
 
     public getEditEventViewModel(): EditEventViewModel {

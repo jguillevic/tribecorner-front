@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { EventService } from './event.service';
-import { EditEventViewModel } from '../view-model/edit-event.view-model';
+import { EditEventViewModel } from '../ui/view-model/edit-event.view-model';
 import { EditEventViewModelConverter } from '../converter/edit-event-view-model.converter';
 import { Event } from "../model/event.model";
 import { EventBusinessCheckerService } from './event-business-checker.service';

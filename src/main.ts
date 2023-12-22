@@ -1,4 +1,4 @@
-import { importProvidersFrom } from '@angular/core';
+import { importProvidersFrom, isDevMode } from '@angular/core';
 import { AppComponent } from './app/app.component';
 import { provideRouter, Routes } from '@angular/router';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
@@ -23,6 +23,8 @@ import { EventRoutes } from './app/event/route/event.routes';
 import { EventCurrentDateService } from './app/event/service/event-current-date.service';
 import { MealCurrentDateService } from './app/meal/service/meal-current-date.service';
 import { EditEventService } from './app/event/service/edit-event.service';
+import { TranslocoHttpLoader } from './transloco-loader';
+import { provideTransloco } from '@ngneat/transloco';
 
 const routes: Routes = [
     { 
@@ -102,7 +104,16 @@ bootstrapApplication(AppComponent, {
     provideRouter(routes),
     provideHttpClient(),
     provideAnimations(),
-    provideAnimations()
+    provideTransloco({
+        config: { 
+          availableLangs: ['fr'],
+          defaultLang: 'fr',
+          // Remove this option if your application doesn't support changing language in runtime.
+          reRenderOnLangChange: true,
+          prodMode: !isDevMode(),
+        },
+        loader: TranslocoHttpLoader
+    })
 ]
 })
   .catch(err => console.error(err));

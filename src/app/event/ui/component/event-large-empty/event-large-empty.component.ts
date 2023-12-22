@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LargeEmptyComponent } from "../../../common/empty/ui/large-empty/large-empty.component";
+import { LargeEmptyComponent } from "../../../../common/empty/ui/large-empty/large-empty.component";
 
 @Component({
     selector: 'app-event-large-empty',

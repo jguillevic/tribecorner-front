@@ -1,17 +1,17 @@
 <div class="page">
     <app-go-back-top-bar></app-go-back-top-bar>
     <div class="padding">
-        <div class="form m-t-30">
+        <div class="form m-t-30" *transloco="let t;read:'editEventPageComponent';">
             <form *ngIf="editEventForm$ | async as editEventForm; else loadingForm" [formGroup]="editEventForm">
                 <!--Nom.-->
                 <mat-form-field class="form-input">
-                    <mat-label>Nom</mat-label>
+                    <mat-label>{{t('name')}}</mat-label>
                     <input matInput type="text" [formControlName]="this.nameCode">
-                    <mat-error>{{ this.getNameErrorMessage() }}</mat-error>
+                    <mat-error>{{ this.getNameErrorMessage() | async }}</mat-error>
                 </mat-form-field>
                 <!--Date de début.-->
                 <mat-form-field class="form-input">
-                    <mat-label>Date de début</mat-label>
+                    <mat-label>{{t('startingDate')}}</mat-label>
                     <input matInput [matDatepicker]="startingDatePicker" [formControlName]="this.startingDateCode">
                     <mat-datepicker-toggle matIconSuffix [for]="startingDatePicker"></mat-datepicker-toggle>
                     <mat-datepicker #startingDatePicker></mat-datepicker>
@@ -19,7 +19,7 @@
                 </mat-form-field>
                 <!--Heure de début.-->
                 <mat-form-field class="form-input">
-                    <mat-label>Heure de début</mat-label>
+                    <mat-label>{{t('startingTime')}}</mat-label>
                     <mat-select [formControlName]="this.startingTimeCode">
                         <mat-option *ngFor="let time of times" [value]="time">{{ time | timeToString }}</mat-option>
                     </mat-select>
@@ -27,7 +27,7 @@
                 </mat-form-field>
                 <!--Date de fin.-->
                 <mat-form-field class="form-input">
-                    <mat-label>Date de fin</mat-label>
+                    <mat-label>{{t('endingDate')}}</mat-label>
                     <input matInput [matDatepicker]="endingDatePicker" [formControlName]="this.endingDateCode">
                     <mat-datepicker-toggle matIconSuffix [for]="endingDatePicker"></mat-datepicker-toggle>
                     <mat-datepicker #endingDatePicker></mat-datepicker>
@@ -35,7 +35,7 @@
                 </mat-form-field>
                 <!--Heure de fin.-->
                 <mat-form-field class="form-input">
-                    <mat-label>Heure de fin</mat-label>
+                    <mat-label>{{t('endingTime')}}</mat-label>
                     <mat-select [formControlName]="this.endingTimeCode">
                         <mat-option *ngFor="let time of times" [value]="time">{{ time | timeToString }}</mat-option>
                     </mat-select>
@@ -43,7 +43,7 @@
                 </mat-form-field>
                 <!--Toute la journée ?-->
                 <mat-slide-toggle color="primary" [formControlName]="this.allDayCode">
-                    Toute la journée ?
+                    {{t('allDay')}}
                 </mat-slide-toggle>
             </form>
             <ng-template #loadingForm>

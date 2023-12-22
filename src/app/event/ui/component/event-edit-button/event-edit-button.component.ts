@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { Observable, from } from 'rxjs';
 import { Router } from '@angular/router';
-import { EventRoutes } from '../../route/event.routes';
+import { EventRoutes } from '../../../route/event.routes';
 
 @Component({
   selector: 'app-event-edit-button',

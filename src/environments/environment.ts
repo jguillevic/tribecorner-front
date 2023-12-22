@@ -1,4 +1,5 @@
 export const environment = {
+  baseUrl: 'https://tribecorner.fr',
     production: true,
     apiUrl: 'https://api.tribecorner.fr/',
     firebaseConfig : {

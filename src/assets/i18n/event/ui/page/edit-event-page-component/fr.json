@@ -1,0 +1,18 @@
+{
+    "name": "Nom",
+    "nameRequired": "Nom requis",
+    "nameTooLong": "Nom trop long (max. {{maxLength}} caractères)",
+    "startingDate": "Date de début",
+    "startingDateRequired": "Date de début requise",
+    "startingTime": "Heure de début",
+    "startingTimeRequired": "Heure de début requise",
+    "greaterThanEndingDateTime": "La date et l'heure de début doivent être < à la date et l'heure de fin",
+    "greaterThanEndingDate": "La date de début doit être < à la date de fin",
+    "endingDate": "Date de fin",
+    "endingDateRequired": "Date de fin requise",
+    "endingTime": "Heure de fin",
+    "endingTimeRequired": "Heure de fin requise",
+    "lesserThanStartingDateTime": "La date et l'heure de fin doivent être > à la date et l'heure de début",
+    "lesserThanStartingDate": "La date de fin doit être > à la date de début",
+    "allDay": "Toute la journée ?"
+}

@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Event } from '../../model/event.model';
+import { Event } from '../../../model/event.model';
 import { Subject, takeUntil, tap } from 'rxjs';
-import { EventService } from '../../service/event.service';
+import { EventService } from '../../../service/event.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MtxButtonModule } from '@ng-matero/extensions/button';

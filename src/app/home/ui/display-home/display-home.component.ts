@@ -23,7 +23,7 @@ import { Action } from 'src/app/common/action';
 import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
 import { SimpleEmptyComponent } from "../../../common/empty/ui/simple-empty/simple-empty.component";
 import { EventRoutes } from 'src/app/event/route/event.routes';
-import { EventCardComponent } from "../../../event/ui/event-card/event-card.component";
+import { EventCardComponent } from "../../../event/ui/component/event-card/event-card.component";
 import { DateHelper } from '../../../common/date/helper/date.helper';
 
 @Component({

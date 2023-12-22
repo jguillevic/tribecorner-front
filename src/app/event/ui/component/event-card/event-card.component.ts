@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Event } from '../../../event/model/event.model';
-import { DateHelper } from '../../../common/date/helper/date.helper';
+import { Event } from '../../../../event/model/event.model';
+import { DateHelper } from '../../../../common/date/helper/date.helper';
 
 @Component({
   selector: 'app-event-card',

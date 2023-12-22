@@ -1,4 +1,4 @@
-import { EditEventViewModel } from "../view-model/edit-event.view-model";
+import { EditEventViewModel } from "../ui/view-model/edit-event.view-model";
 import { Event } from "../model/event.model";
 import { DateHelper } from "../../common/date/helper/date.helper";
 

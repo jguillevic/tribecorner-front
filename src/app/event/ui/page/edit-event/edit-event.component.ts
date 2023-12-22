@@ -1,27 +1,27 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GoBackTopBarComponent } from "../../../common/top-bar/go-back/ui/go-back-top-bar.component";
+import { GoBackTopBarComponent } from "../../../../common/top-bar/go-back/ui/go-back-top-bar.component";
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Observable, Subject, combineLatest, debounceTime, filter, map, mergeMap, of, switchMap, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
-import { EventCurrentDateService } from '../../service/event-current-date.service';
+import { SimpleLoadingComponent } from "../../../../common/loading/ui/simple-loading/simple-loading.component";
+import { EventCurrentDateService } from '../../../service/event-current-date.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import { EditEventService } from '../../service/edit-event.service';
+import { EditEventService } from '../../../service/edit-event.service';
 import { EditEventViewModel } from '../../view-model/edit-event.view-model';
-import { TimeToStringPipe } from "../../../common/date/pipe/time-to-string.pipe";
-import { EventTimeHelper } from '../../helper/event-time.helper';
+import { TimeToStringPipe } from "../../../../common/date/pipe/time-to-string.pipe";
+import { EventTimeHelper } from '../../../helper/event-time.helper';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
     selector: 'app-edit-event',
     standalone: true,
     templateUrl: './edit-event.component.html',
-    providers: [],
     imports: [
         CommonModule,
         GoBackTopBarComponent,
@@ -34,14 +34,15 @@ import { EventTimeHelper } from '../../helper/event-time.helper';
         MatDatepickerModule,
         MatNativeDateModule,
         MatSelectModule,
-        TimeToStringPipe
+        TimeToStringPipe,
+        TranslocoModule
     ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditEventComponent implements OnInit, OnDestroy {
     private currentEventId: number = 0;
-    private readonly editEventForm: FormGroup = this.createEventForm();
     private readonly destroy$ = new Subject<void>();
+    private readonly editEventForm: FormGroup = this.createEventForm();
 
     public readonly nameCode: string = 'name';
     public readonly startingDateCode: string = 'startingDate';
@@ -60,22 +61,12 @@ export class EditEventComponent implements OnInit, OnDestroy {
     public readonly times: number[] = EventTimeHelper.getTimes();
 
     public constructor(
-        private activatedRoute: ActivatedRoute,
-        private formBuilder: FormBuilder,
-        private editEventService: EditEventService,
-        private eventCurrentDateService: EventCurrentDateService
+        private readonly activatedRoute: ActivatedRoute,
+        private readonly formBuilder: FormBuilder,
+        private readonly editEventService: EditEventService,
+        private readonly eventCurrentDateService: EventCurrentDateService,
+        private readonly translocoService: TranslocoService
     ) { }
-
-    public createEventForm(): FormGroup {
-        return this.formBuilder.group({
-            name: ['', [Validators.required, Validators.maxLength(255)]],
-            startingDate: [new Date(), Validators.required],
-            startingTime: [0, Validators.required],
-            endingDate: [new Date(), Validators.required],
-            endingTime: [0, Validators.required],
-            allDay: [false],
-        });
-    }
 
     public ngOnInit(): void {
         this.editEventForm.valueChanges.pipe(
@@ -95,6 +86,17 @@ export class EditEventComponent implements OnInit, OnDestroy {
 
     public ngOnDestroy(): void {
         this.destroy$.complete();
+    }
+
+    public createEventForm(): FormGroup {
+        return this.formBuilder.group({
+            name: ['', [Validators.required, Validators.maxLength(255)]],
+            startingDate: [new Date(), Validators.required],
+            startingTime: [0, Validators.required],
+            endingDate: [new Date(), Validators.required],
+            endingTime: [0, Validators.required],
+            allDay: [false],
+        });
     }
     
     private manageGreaterThanEndingDateTimeError(): void {
@@ -230,17 +232,17 @@ export class EditEventComponent implements OnInit, OnDestroy {
         ).subscribe();
     }
 
-    public getNameErrorMessage(): string|undefined {
+    public getNameErrorMessage(): Observable<string|undefined> {
         const nameControl: AbstractControl<any, any> = this.editEventForm.controls[this.nameCode];
 
         if (nameControl.hasError(this.requiredErrorCode)) {
-            return 'Nom requis';
+            return this.translocoService.selectTranslate('editEventPageComponent.nameRequired');
         } else if (nameControl.hasError(this.maxLengthErrorCode)) {
             const maxLength = nameControl.getError(this.maxLengthErrorCode)['requiredLength'];
-            return `Nom trop long (max. ${maxLength} caractères)`;
+            return this.translocoService.selectTranslate('editEventPageComponent.nameTooLong', {maxLength: maxLength})
         }
 
-        return undefined;
+        return of(undefined);
     }
 
     public getStartingDateErrorMessage(): string|undefined {
@@ -301,7 +303,7 @@ export class EditEventComponent implements OnInit, OnDestroy {
         return undefined;
     }
 
-    private getEditEventViewModel(): EditEventViewModel {
+    public getEditEventViewModel(): EditEventViewModel {
         // getRawValue() utilisé car quand les champs sont 'disabled'
         // ils ne sont pas renvoyés par .value.
         const editEventViewModel: EditEventViewModel = this.editEventForm.getRawValue() as EditEventViewModel;
@@ -348,7 +350,7 @@ export class EditEventComponent implements OnInit, OnDestroy {
         );
     }
 
-    private save(): Observable<EditEventViewModel> {
+    public save(): Observable<EditEventViewModel> {
         const editEventViewModel: EditEventViewModel = this.getEditEventViewModel();
     
         if (this.currentEventId) {

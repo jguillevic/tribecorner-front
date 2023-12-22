@@ -21,7 +21,7 @@ import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 @Component({
     selector: 'app-edit-event',
     standalone: true,
-    templateUrl: './edit-event.component.html',
+    templateUrl: './edit-event-page.component.html',
     imports: [
         CommonModule,
         GoBackTopBarComponent,

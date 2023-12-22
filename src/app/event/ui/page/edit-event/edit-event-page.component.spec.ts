@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EditEventComponent } from './edit-event.component';
+import { EditEventComponent } from './edit-event-page.component';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { EditEventService } from '../../../service/edit-event.service';
 import { MockService } from 'ng-mocks';

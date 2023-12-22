@@ -8,12 +8,12 @@ export class EventRoutes {
         { 
             path: EventRoutes.displayEventsRoute,
             title: 'Agenda',
-            loadComponent: () => import('../ui/page/display-events/display-events.component').then(module => module.DisplayEventsComponent)
+            loadComponent: () => import('../ui/page/display-events/display-events-page.component').then(module => module.DisplayEventsComponent)
         },
         { 
             path: EventRoutes.editEventRoute,
             title: 'Événement',
-            loadComponent: () => import('../ui/page/edit-event/edit-event.component').then(module => module.EditEventComponent),
+            loadComponent: () => import('../ui/page/edit-event/edit-event-page.component').then(module => module.EditEventComponent),
             providers: [
                 provideTranslocoScope({scope: 'event/ui/page/edit-event-page-component', alias: 'editEventPageComponent'})
             ]

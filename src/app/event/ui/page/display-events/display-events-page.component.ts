@@ -18,8 +18,8 @@ import { EventEditButtonComponent } from "../../component/event-edit-button/even
 @Component({
     selector: 'app-display-events',
     standalone: true,
-    templateUrl: './display-events.component.html',
-    styleUrls: ['display-events.component.scss'],
+    templateUrl: './display-events-page.component.html',
+    styleUrls: ['display-events-page.component.scss'],
     imports: [
         CommonModule,
         ProfileTopBarComponent,

@@ -19,7 +19,7 @@ import { EventTimeHelper } from '../../../helper/event-time.helper';
 import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
-    selector: 'app-edit-event',
+    selector: 'app-edit-event-page',
     standalone: true,
     templateUrl: './edit-event-page.component.html',
     imports: [
@@ -236,10 +236,10 @@ export class EditEventComponent implements OnInit, OnDestroy {
         const nameControl: AbstractControl<any, any> = this.editEventForm.controls[this.nameCode];
 
         if (nameControl.hasError(this.requiredErrorCode)) {
-            return this.translocoService.selectTranslate('editEventPageComponent.nameRequired');
+            return this.translocoService.selectTranslate('editEventPage.nameRequired');
         } else if (nameControl.hasError(this.maxLengthErrorCode)) {
             const maxLength = nameControl.getError(this.maxLengthErrorCode)['requiredLength'];
-            return this.translocoService.selectTranslate('editEventPageComponent.nameTooLong', {maxLength: maxLength})
+            return this.translocoService.selectTranslate('editEventPage.nameTooLong', {maxLength: maxLength})
         }
 
         return of(undefined);
@@ -249,13 +249,13 @@ export class EditEventComponent implements OnInit, OnDestroy {
         const startingDateControl: AbstractControl<any, any> = this.editEventForm.controls[this.startingDateCode];
 
         if (startingDateControl.hasError(this.requiredErrorCode)) {
-            return this.translocoService.selectTranslate('editEventPageComponent.startingDateRequired');
+            return this.translocoService.selectTranslate('editEventPage.startingDateRequired');
         } else if (startingDateControl.hasError(this.greaterThanEndingDateTimeErrorCode)) {
             const allDay: boolean = this.editEventForm.controls[this.allDayCode].value;
             if (!allDay) {
-                return this.translocoService.selectTranslate('editEventPageComponent.greaterThanEndingDateTime');
+                return this.translocoService.selectTranslate('editEventPage.greaterThanEndingDateTime');
             } else {
-                return this.translocoService.selectTranslate('editEventPageComponent.greaterThanEndingDate');
+                return this.translocoService.selectTranslate('editEventPage.greaterThanEndingDate');
             }
         }
 
@@ -266,9 +266,9 @@ export class EditEventComponent implements OnInit, OnDestroy {
         const startingTimeControl: AbstractControl<any, any> = this.editEventForm.controls[this.startingTimeCode];
 
         if (startingTimeControl.hasError(this.requiredErrorCode)) {
-            return this.translocoService.selectTranslate('editEventPageComponent.startingTimeRequired');
+            return this.translocoService.selectTranslate('editEventPage.startingTimeRequired');
         } else if (startingTimeControl.hasError(this.greaterThanEndingDateTimeErrorCode)) {
-            return this.translocoService.selectTranslate('editEventPageComponent.greaterThanEndingDateTime');
+            return this.translocoService.selectTranslate('editEventPage.greaterThanEndingDateTime');
         }
 
         return of(undefined);
@@ -278,13 +278,13 @@ export class EditEventComponent implements OnInit, OnDestroy {
         const endingDateControl: AbstractControl<any, any> = this.editEventForm.controls[this.endingDateCode];
 
         if (endingDateControl.hasError(this.requiredErrorCode)) {
-            return this.translocoService.selectTranslate('editEventPageComponent.endingDateRequired');
+            return this.translocoService.selectTranslate('editEventPage.endingDateRequired');
         } else if (endingDateControl.hasError(this.lesserThanStartingDateTimeErrorCode)) {
             const allDay: boolean = this.editEventForm.controls[this.allDayCode].value;
             if (!allDay) {
-                return this.translocoService.selectTranslate('editEventPageComponent.lesserThanStartingDateTime');
+                return this.translocoService.selectTranslate('editEventPage.lesserThanStartingDateTime');
             } else {
-                return this.translocoService.selectTranslate('editEventPageComponent.lesserThanStartingDate');
+                return this.translocoService.selectTranslate('editEventPage.lesserThanStartingDate');
             }
         }
 
@@ -295,9 +295,9 @@ export class EditEventComponent implements OnInit, OnDestroy {
         const endingTimeControl: AbstractControl<any, any> = this.editEventForm.controls[this.endingTimeCode];
 
         if (endingTimeControl.hasError(this.requiredErrorCode)) {
-            return this.translocoService.selectTranslate('editEventPageComponent.endingTimeRequired');
+            return this.translocoService.selectTranslate('editEventPage.endingTimeRequired');
         } else if (endingTimeControl.hasError(this.lesserThanStartingDateTimeErrorCode)) {
-            return this.translocoService.selectTranslate('editEventPageComponent.lesserThanStartingDateTime');
+            return this.translocoService.selectTranslate('editEventPage.lesserThanStartingDateTime');
         }
 
         return of(undefined);

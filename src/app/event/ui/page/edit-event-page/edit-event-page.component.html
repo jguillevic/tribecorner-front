@@ -1,7 +1,7 @@
 <div class="page">
     <app-go-back-top-bar></app-go-back-top-bar>
     <div class="padding">
-        <div class="form m-t-30" *transloco="let t;read:'editEventPageComponent';">
+        <div class="form m-t-30" *transloco="let t;read:'editEventPage';">
             <form *ngIf="editEventForm$ | async as editEventForm; else loadingForm" [formGroup]="editEventForm">
                 <!--Nom.-->
                 <mat-form-field class="form-input">

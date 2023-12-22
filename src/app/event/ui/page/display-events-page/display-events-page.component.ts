@@ -16,7 +16,7 @@ import { EventDeleteButtonComponent } from "../../component/event-delete-button/
 import { EventEditButtonComponent } from "../../component/event-edit-button/event-edit-button.component";
 
 @Component({
-    selector: 'app-display-events',
+    selector: 'app-display-events-page',
     standalone: true,
     templateUrl: './display-events-page.component.html',
     styleUrls: ['display-events-page.component.scss'],

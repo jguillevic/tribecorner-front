@@ -11,19 +11,19 @@ export class UserRoutes {
             path: UserRoutes.signUpUserRoute,
             title: 'Créez votre compte',
             canActivate: [notSignedInGuard],
-            loadComponent: () => import('../ui/sign-up-user/sign-up-user.component').then(module => module.SignUpUserComponent) 
+            loadComponent: () => import('../ui/page/sign-up-user-page/sign-up-user-page.component').then(module => module.SignUpUserComponent) 
         },
         { 
             path: UserRoutes.signInUserRoute,
             title: 'Connectez-vous à votre compte',
             canActivate: [notSignedInGuard],
-            loadComponent: () => import('../ui/sign-in-user/sign-in-user.component').then(module => module.SignInUserComponent) 
+            loadComponent: () => import('../ui/page/sign-in-user-page/sign-in-user-page.component').then(module => module.SignInUserComponent) 
         },
         { 
             path: UserRoutes.displayUserRoute,
             title: 'Mon profil',
             canActivate: [signedInGuard],
-            loadComponent: () => import('../ui/display-user/display-user.component').then(module => module.DisplayUserComponent) 
+            loadComponent: () => import('../ui/page/display-user-page/display-user-page.component').then(module => module.DisplayUserComponent) 
         }
     ];
 }

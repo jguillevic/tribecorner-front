@@ -3,7 +3,7 @@ import { MealsByMealKindService } from './meals-by-meal-kind.service';
 import { MealKindService } from './meal-kind.service';
 import { MealService } from './meal.service';
 import { MealsByMealKind } from '../model/meals-by-meal-kind.model';
-import { of, lastValueFrom } from 'rxjs';
+import { of } from 'rxjs';
 import { MealKind } from '../model/meal-kind.model';
 import { Meal } from '../model/meal.model';
 import { MockService } from 'ng-mocks';

@@ -45,6 +45,7 @@ import { ShoppingListCompletedDialogComponent } from '../shopping-list-completed
 })
 export class EditShoppingListComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
+  private isSaving: boolean = false;
   private currentShoppingListId: number|undefined;
   private isArchived: boolean = false;
 
@@ -119,11 +120,13 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
       }
     )
     .pipe(
-      takeUntil(this.destroy$),
       skip(1),
       debounceTime(500),
-      filter(() => this.editShoppingListForm.valid),
-      switchMap(() => this.save())
+      filter(() => this.editShoppingListForm.valid && !this.isSaving),
+      tap(() => this.isSaving = true),
+      switchMap(() => this.save()),
+      tap(() => this.isSaving = false),
+      takeUntil(this.destroy$),
     )
     .subscribe();
 

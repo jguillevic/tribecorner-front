@@ -38,6 +38,7 @@ import { DateHelper } from '../../../common/date/helper/date.helper';
 })
 export class EditMealComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject<void>();
+  private isSaving: boolean = false;
   private currentMealId: number = 0;
 
   private readonly mealKinds$: Observable<MealKind[]> 
@@ -80,10 +81,16 @@ export class EditMealComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.editMealForm.valueChanges
     .pipe(
-      takeUntil(this.destroy$),
       debounceTime(500),
-      filter(() => !this.editMealForm.pristine && this.editMealForm.valid),
-      switchMap(() => this.save())
+      filter(() => 
+        !this.editMealForm.pristine &&
+        this.editMealForm.valid &&
+        !this.isSaving
+      ),
+      tap(() => this.isSaving = true), 
+      switchMap(() => this.save()),
+      tap(() => this.isSaving = false),
+      takeUntil(this.destroy$)
     )
     .subscribe();
   }
@@ -134,7 +141,7 @@ export class EditMealComponent implements OnInit, OnDestroy {
   private save(): Observable<Meal> {
     const meal: Meal = this.getMeal();
 
-    if (this.currentMealId !== undefined) {
+    if (this.currentMealId) {
       return this.mealService.update(meal);
     }
 

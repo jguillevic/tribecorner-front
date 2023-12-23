@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MealService } from '../../service/meal.service';
-import { Observable, Subject, combineLatest, debounceTime, filter, map, mergeMap, of, switchMap, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, combineLatest, debounceTime, exhaustMap, filter, map, mergeMap, of, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
 import { MealKindService } from '../../service/meal-kind.service';
@@ -38,7 +38,6 @@ import { DateHelper } from '../../../common/date/helper/date.helper';
 })
 export class EditMealComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject<void>();
-  private isSaving: boolean = false;
   private currentMealId: number = 0;
 
   private readonly mealKinds$: Observable<MealKind[]> 
@@ -84,12 +83,9 @@ export class EditMealComponent implements OnInit, OnDestroy {
       debounceTime(500),
       filter(() => 
         !this.editMealForm.pristine &&
-        this.editMealForm.valid &&
-        !this.isSaving
-      ),
-      tap(() => this.isSaving = true), 
-      switchMap(() => this.save()),
-      tap(() => this.isSaving = false),
+        this.editMealForm.valid
+      ), 
+      exhaustMap(() => this.save()),
       takeUntil(this.destroy$)
     )
     .subscribe();

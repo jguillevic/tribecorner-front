@@ -9,7 +9,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
-import { Observable, Subject, combineLatest, debounceTime, filter, map, mergeMap, of, switchMap, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, combineLatest, debounceTime, exhaustMap, filter, map, mergeMap, of, takeUntil, tap } from 'rxjs';
 import { GoBackTopBarComponent } from "../../../../common/top-bar/go-back/ui/go-back-top-bar.component";
 import { SimpleLoadingComponent } from "../../../../common/loading/ui/simple-loading/simple-loading.component";
 import { EventCurrentDateService } from '../../../service/event-current-date.service';
@@ -41,7 +41,6 @@ import { EventTimeHelper } from '../../../helper/event-time.helper';
 })
 export class EditEventComponent implements OnInit, OnDestroy {
     private readonly destroy$ = new Subject<void>();
-    private isSaving: boolean = false;
 
     public currentEventId: number = 0;
 
@@ -75,12 +74,9 @@ export class EditEventComponent implements OnInit, OnDestroy {
             debounceTime(500),
             filter(() => 
                 !this.editEventForm.pristine &&
-                this.editEventForm.valid &&
-                !this.isSaving
-            ),
-            tap(() => this.isSaving = true),           
-            switchMap(() => this.save()),
-            tap(() => this.isSaving = false),
+                this.editEventForm.valid
+            ),          
+            exhaustMap(() => this.save()),
             takeUntil(this.destroy$)
         )
         .subscribe();
@@ -366,7 +362,7 @@ export class EditEventComponent implements OnInit, OnDestroy {
         if (this.currentEventId) {
           return this.editEventService.update(editEventViewModel);
         }
-    
+
         return this.editEventService.create(editEventViewModel)
         .pipe(
             tap(event => this.currentEventId = event.id)

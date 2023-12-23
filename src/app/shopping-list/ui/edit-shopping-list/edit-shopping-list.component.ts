@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ItemShoppingList } from '../../model/item-shopping-list.model';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { BehaviorSubject, Observable, Subject, combineLatest, debounceTime, filter, map, mergeMap, of, skip, switchMap, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, combineLatest, debounceTime, exhaustMap, filter, map, mergeMap, of, skip, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Action } from 'src/app/common/action';
 import { ShoppingListRoutes } from '../../route/shopping-list.routes';
@@ -45,7 +45,6 @@ import { ShoppingListCompletedDialogComponent } from '../shopping-list-completed
 })
 export class EditShoppingListComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
-  private isSaving: boolean = false;
   private currentShoppingListId: number|undefined;
   private isArchived: boolean = false;
 
@@ -122,10 +121,8 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
     .pipe(
       skip(1),
       debounceTime(500),
-      filter(() => this.editShoppingListForm.valid && !this.isSaving),
-      tap(() => this.isSaving = true),
-      switchMap(() => this.save()),
-      tap(() => this.isSaving = false),
+      filter(() => this.editShoppingListForm.valid),
+      exhaustMap(() => this.save()),
       takeUntil(this.destroy$),
     )
     .subscribe();

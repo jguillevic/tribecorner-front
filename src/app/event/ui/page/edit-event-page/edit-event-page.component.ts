@@ -1,22 +1,22 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GoBackTopBarComponent } from "../../../../common/top-bar/go-back/ui/go-back-top-bar.component";
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { Observable, Subject, combineLatest, debounceTime, filter, map, mergeMap, of, switchMap, takeUntil, tap } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
-import { SimpleLoadingComponent } from "../../../../common/loading/ui/simple-loading/simple-loading.component";
-import { EventCurrentDateService } from '../../../service/event-current-date.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
+import { Observable, Subject, combineLatest, debounceTime, filter, map, mergeMap, of, switchMap, takeUntil, tap } from 'rxjs';
+import { GoBackTopBarComponent } from "../../../../common/top-bar/go-back/ui/go-back-top-bar.component";
+import { SimpleLoadingComponent } from "../../../../common/loading/ui/simple-loading/simple-loading.component";
+import { EventCurrentDateService } from '../../../service/event-current-date.service';
 import { EditEventService } from '../../../service/edit-event.service';
 import { EditEventViewModel } from '../../view-model/edit-event.view-model';
 import { TimeToStringPipe } from "../../../../common/date/pipe/time-to-string.pipe";
 import { EventTimeHelper } from '../../../helper/event-time.helper';
-import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
     selector: 'app-edit-event-page',
@@ -40,9 +40,13 @@ import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditEventComponent implements OnInit, OnDestroy {
-    private currentEventId: number = 0;
     private readonly destroy$ = new Subject<void>();
-    private readonly editEventForm: FormGroup = this.createEventForm();
+    private isSaving: boolean = false;
+
+    public currentEventId: number = 0;
+
+    public readonly editEventForm: FormGroup = this.createEventForm();
+    public readonly editEventForm$: Observable<FormGroup> = this.getEditEventForm$();
 
     public readonly nameCode: string = 'name';
     public readonly startingDateCode: string = 'startingDate';
@@ -55,8 +59,6 @@ export class EditEventComponent implements OnInit, OnDestroy {
     public readonly requiredErrorCode: string = 'required';
     public readonly greaterThanEndingDateTimeErrorCode: string = 'greater-than-ending-date-time';
     public readonly lesserThanStartingDateTimeErrorCode: string = 'lesser-than-starting-date-time';
-
-    public readonly editEventForm$ = this.getEditEventForm$();
 
     public readonly times: number[] = EventTimeHelper.getTimes();
 
@@ -71,8 +73,14 @@ export class EditEventComponent implements OnInit, OnDestroy {
     public ngOnInit(): void {
         this.editEventForm.valueChanges.pipe(
             debounceTime(500),
-            filter(() => !this.editEventForm.pristine && this.editEventForm.valid),
+            filter(() => 
+                !this.editEventForm.pristine &&
+                this.editEventForm.valid &&
+                !this.isSaving
+            ),
+            tap(() => this.isSaving = true),           
             switchMap(() => this.save()),
+            tap(() => this.isSaving = false),
             takeUntil(this.destroy$)
         )
         .subscribe();
@@ -209,24 +217,26 @@ export class EditEventComponent implements OnInit, OnDestroy {
         ).subscribe();
     }
 
+    public setTimeDependOnAllDayValue(allDay: boolean): void {
+        const startingTimeControl: AbstractControl = this.editEventForm.controls[this.startingTimeCode];
+        const endingTimeControl: AbstractControl = this.editEventForm.controls[this.endingTimeCode];
+        if (allDay) {
+            startingTimeControl.setValue(0, {emitEvent: false});
+            startingTimeControl.disable({emitEvent: false});
+            endingTimeControl.setValue(0, {emitEvent: false});
+            endingTimeControl.disable({emitEvent: false});
+        } else {
+            startingTimeControl.setValue(EventTimeHelper.getDefaultStartingTime(), {emitEvent: false});
+            startingTimeControl.enable({emitEvent: false});
+            endingTimeControl.setValue(EventTimeHelper.getDefaultEndingTime(), {emitEvent: false});
+            endingTimeControl.enable({emitEvent: false});
+        }
+    }
+
     private checkDateTimesConsistencyOnAllDayChanged(): void {
         this.editEventForm.controls[this.allDayCode].valueChanges.
         pipe(
-            tap((allDay: boolean) => {
-                const startingTimeControl: AbstractControl = this.editEventForm.controls[this.startingTimeCode];
-                const endingTimeControl: AbstractControl = this.editEventForm.controls[this.endingTimeCode];
-                if (allDay) {
-                    startingTimeControl.setValue(0, {emitEvent: false});
-                    startingTimeControl.disable({emitEvent: false});
-                    endingTimeControl.setValue(0, {emitEvent: false});
-                    endingTimeControl.disable({emitEvent: false});
-                } else {
-                    startingTimeControl.setValue(EventTimeHelper.getDefaultStartingTime(), {emitEvent: false});
-                    startingTimeControl.enable({emitEvent: false});
-                    endingTimeControl.setValue(EventTimeHelper.getDefaultEndingTime(), {emitEvent: false});
-                    endingTimeControl.enable({emitEvent: false});
-                }
-            }),
+            tap((allDay: boolean) => this.setTimeDependOnAllDayValue(allDay)),
             tap(() => this.manageGreaterThanEndingDateTimeError()),
             takeUntil(this.destroy$)
         ).subscribe();
@@ -337,8 +347,8 @@ export class EditEventComponent implements OnInit, OnDestroy {
                     false
                 );
                 return of(editEventViewModel);
-                }),
-                tap(event => {
+            }),
+            tap(event => {
                 this.editEventForm.controls[this.nameCode].setValue(event.name);
                 this.editEventForm.controls[this.startingDateCode].setValue(event.startingDate);
                 this.editEventForm.controls[this.startingTimeCode].setValue(event.startingTime);

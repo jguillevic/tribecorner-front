@@ -6,7 +6,7 @@ export function getTranslocoModule() {
   return TranslocoTestingModule.forRoot({
     langs: { 
       fr,
-      'event/page/edit-event-page/fr': editEventPageFr
+      'editEventPage/fr': editEventPageFr
      },
     translocoConfig: {
       availableLangs: ['fr'],

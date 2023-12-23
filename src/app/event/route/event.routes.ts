@@ -16,7 +16,7 @@ export class EventRoutes {
             loadComponent: () => import('../ui/page/edit-event-page/edit-event-page.component').then(module => module.EditEventComponent),
             providers: [
                 provideTranslocoScope({scope: 'event/ui/page/edit-event-page', alias: 'editEventPage'})
-            ]
+            ]   
         }
     ];
 }

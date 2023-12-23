@@ -44,7 +44,7 @@ export class EditEventComponent implements OnInit, OnDestroy {
 
     public currentEventId: number = 0;
 
-    public readonly editEventForm: FormGroup = this.createEventForm();
+    private readonly editEventForm: FormGroup = this.createEventForm();
     public readonly editEventForm$: Observable<FormGroup> = this.getEditEventForm$();
 
     public readonly nameCode: string = 'name';
@@ -317,6 +317,17 @@ export class EditEventComponent implements OnInit, OnDestroy {
         return editEventViewModel;
     }
 
+    public updateEditEventForm(event: EditEventViewModel): FormGroup {
+        this.editEventForm.controls[this.nameCode].setValue(event.name);
+        this.editEventForm.controls[this.startingDateCode].setValue(event.startingDate);
+        this.editEventForm.controls[this.startingTimeCode].setValue(event.startingTime);
+        this.editEventForm.controls[this.endingDateCode].setValue(event.endingDate);
+        this.editEventForm.controls[this.endingTimeCode].setValue(event.endingTime);
+        this.editEventForm.controls[this.allDayCode].setValue(event.allDay);
+
+        return this.editEventForm;
+    }
+
     private getEditEventForm$(): Observable<FormGroup> {
         return combineLatest(
             {
@@ -329,7 +340,7 @@ export class EditEventComponent implements OnInit, OnDestroy {
                 if (result.params['id']) {
                     this.currentEventId = result.params['id'];
                     if (this.currentEventId) {
-                    return this.editEventService.loadOneById(this.currentEventId);
+                        return this.editEventService.loadOneById(this.currentEventId);
                     }
                 }
                 const defaultDate = result.currentDate;
@@ -344,15 +355,7 @@ export class EditEventComponent implements OnInit, OnDestroy {
                 );
                 return of(editEventViewModel);
             }),
-            tap(event => {
-                this.editEventForm.controls[this.nameCode].setValue(event.name);
-                this.editEventForm.controls[this.startingDateCode].setValue(event.startingDate);
-                this.editEventForm.controls[this.startingTimeCode].setValue(event.startingTime);
-                this.editEventForm.controls[this.endingDateCode].setValue(event.endingDate);
-                this.editEventForm.controls[this.endingTimeCode].setValue(event.endingTime);
-                this.editEventForm.controls[this.allDayCode].setValue(event.allDay);
-            }),
-            map(() => this.editEventForm)
+            map(event => this.updateEditEventForm(event))
         );
     }
 

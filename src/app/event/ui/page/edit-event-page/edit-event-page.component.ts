@@ -44,7 +44,7 @@ export class EditEventComponent implements OnInit, OnDestroy {
 
     public currentEventId: number = 0;
 
-    private readonly editEventForm: FormGroup = this.createEventForm();
+    public readonly editEventForm: FormGroup = this.createEventForm();
     public readonly editEventForm$: Observable<FormGroup> = this.getEditEventForm$();
 
     public readonly nameCode: string = 'name';
@@ -54,10 +54,10 @@ export class EditEventComponent implements OnInit, OnDestroy {
     public readonly endingTimeCode: string = 'endingTime';
     public readonly allDayCode: string = 'allDay';
 
-    public readonly maxLengthErrorCode: string = 'maxlength';
-    public readonly requiredErrorCode: string = 'required';
-    public readonly greaterThanEndingDateTimeErrorCode: string = 'greater-than-ending-date-time';
-    public readonly lesserThanStartingDateTimeErrorCode: string = 'lesser-than-starting-date-time';
+    private readonly maxLengthErrorCode: string = 'maxlength';
+    private readonly requiredErrorCode: string = 'required';
+    private readonly greaterThanEndingDateTimeErrorCode: string = 'greater-than-ending-date-time';
+    private readonly lesserThanStartingDateTimeErrorCode: string = 'lesser-than-starting-date-time';
 
     public readonly times: number[] = EventTimeHelper.getTimes();
 
@@ -102,11 +102,74 @@ export class EditEventComponent implements OnInit, OnDestroy {
             allDay: [false],
         });
     }
+
+    public getNameControl(): AbstractControl<any, any> {
+        return this.editEventForm.controls[this.nameCode];
+    }
+
+    public getStartingDateControl(): AbstractControl<any, any> {
+        return this.editEventForm.controls[this.startingDateCode];
+    }
+
+    public getStartingTimeControl(): AbstractControl<any, any> {
+        return this.editEventForm.controls[this.startingTimeCode];
+    }
+
+    public getEndingDateControl(): AbstractControl<any, any> {
+        return this.editEventForm.controls[this.endingDateCode];
+    }
+
+    public getEndingTimeControl(): AbstractControl<any, any> {
+        return this.editEventForm.controls[this.endingTimeCode];
+    }
+
+    public getAllDayControl(): AbstractControl<any, any> {
+        return this.editEventForm.controls[this.allDayCode];
+    }
+
+    public updateNameControl(name: string): void {
+        this.getNameControl().setValue(name);
+    }
+
+    public updateStartingDateControl(startingDate: Date|undefined) {
+        this.getStartingDateControl().setValue(startingDate);
+    }
+
+    public updateStartingTimeControl(startingTime: number) {
+        this.getStartingTimeControl().setValue(startingTime);
+    }
+
+    public updateEndingDateControl(endingDate: Date|undefined) {
+        this.getEndingDateControl().setValue(endingDate);
+    }
+
+    public updateEndingTimeControl(endingTime: number) {
+        this.getEndingTimeControl().setValue(endingTime);
+    }
+
+    public updateAllDayControl(allDay: boolean) {
+        this.getAllDayControl().setValue(allDay);
+    }
+
+    public updateEditEventForm(event: EditEventViewModel): FormGroup {
+        this.updateNameControl(event.name);
+        this.updateStartingDateControl(event.startingDate);
+        this.updateStartingTimeControl(event.startingTime);
+        this.updateEndingDateControl(event.endingDate);
+        this.updateEndingTimeControl(event.endingTime);
+        this.updateAllDayControl(event.allDay);
+
+        return this.editEventForm;
+    }
     
-    private manageGreaterThanEndingDateTimeError(): void {
-        const startingDateControl: AbstractControl<any, any> = this.editEventForm.controls[this.startingDateCode];
-        const startingTimeControl: AbstractControl<any, any> = this.editEventForm.controls[this.startingTimeCode];
-        const allDay: boolean = this.editEventForm.controls[this.allDayCode].value;
+    public manageGreaterThanEndingDateTimeError(): void {
+        const startingDateControl: AbstractControl<any, any> = this.getStartingDateControl();
+        if (!startingDateControl.value) {
+            return;
+        }
+
+        const startingTimeControl: AbstractControl<any, any> = this.getStartingTimeControl();
+        const allDay: boolean = this.getAllDayControl().value;
 
         if (allDay) {
             if (this.editEventService.isStartingDateTimeStriclyGreaterThanEndingDateTime(this.getEditEventViewModel())) {
@@ -130,12 +193,12 @@ export class EditEventComponent implements OnInit, OnDestroy {
             }
         }
 
-        const endingDateControl: AbstractControl<any, any> = this.editEventForm.controls[this.endingDateCode];
+        const endingDateControl: AbstractControl<any, any> = this.getEndingDateControl();
         if (!endingDateControl.valid) {
             endingDateControl.setErrors({[this.lesserThanStartingDateTimeErrorCode]: null}, {emitEvent: false});
             endingDateControl.updateValueAndValidity({emitEvent: false});
         }
-        const endingTimeControl: AbstractControl<any, any> = this.editEventForm.controls[this.endingTimeCode];
+        const endingTimeControl: AbstractControl<any, any> = this.getEndingTimeControl();
         if (!allDay && !endingTimeControl.valid) {
             endingTimeControl.setErrors({[this.lesserThanStartingDateTimeErrorCode]: true}, {emitEvent: false});
             endingTimeControl.updateValueAndValidity({emitEvent: false});
@@ -143,7 +206,7 @@ export class EditEventComponent implements OnInit, OnDestroy {
     }
 
     private checkDateTimesConsistencyOnStartingDateChanged(): void {
-        this.editEventForm.controls[this.startingDateCode].valueChanges.
+        this.getStartingDateControl().valueChanges.
         pipe(
             tap(() => this.manageGreaterThanEndingDateTimeError()),
             takeUntil(this.destroy$)
@@ -151,17 +214,17 @@ export class EditEventComponent implements OnInit, OnDestroy {
     }
 
     private checkDateTimesConsistencyOnStartingTimeChanged(): void {
-        this.editEventForm.controls[this.startingTimeCode].valueChanges.
+        this.getStartingTimeControl().valueChanges.
         pipe(
             tap(() => this.manageGreaterThanEndingDateTimeError()),
             takeUntil(this.destroy$)
         ).subscribe();
     }
 
-    private manageLesserThanStartingDateTimeError(): void {
-        const endingDateControl: AbstractControl<any, any> = this.editEventForm.controls[this.endingDateCode];
-        const endingTimeControl: AbstractControl<any, any> = this.editEventForm.controls[this.endingTimeCode];
-        const allDay: boolean = this.editEventForm.controls[this.allDayCode].value;
+    public manageLesserThanStartingDateTimeError(): void {
+        const endingDateControl: AbstractControl<any, any> = this.getEndingDateControl();
+        const endingTimeControl: AbstractControl<any, any> = this.getEndingTimeControl();
+        const allDay: boolean = this.getAllDayControl().value.value;
 
         if (allDay) {
             if (this.editEventService.isStartingDateTimeStriclyGreaterThanEndingDateTime(this.getEditEventViewModel())) {
@@ -185,12 +248,12 @@ export class EditEventComponent implements OnInit, OnDestroy {
             }
         }
 
-        const startingDateControl: AbstractControl<any, any> = this.editEventForm.controls[this.startingDateCode];
+        const startingDateControl: AbstractControl<any, any> = this.getStartingDateControl();
         if (!startingDateControl.valid) {
             startingDateControl.setErrors({[this.greaterThanEndingDateTimeErrorCode]: null}, {emitEvent: false});
             startingDateControl.updateValueAndValidity({emitEvent: false});
         }
-        const startingTimeControl: AbstractControl<any, any> = this.editEventForm.controls[this.startingTimeCode];
+        const startingTimeControl: AbstractControl<any, any> = this.getStartingTimeControl();
         if (!allDay && !startingTimeControl.valid) {
             startingTimeControl.setErrors({[this.greaterThanEndingDateTimeErrorCode]: true}, {emitEvent: false});
             startingTimeControl.updateValueAndValidity({emitEvent: false});
@@ -198,7 +261,7 @@ export class EditEventComponent implements OnInit, OnDestroy {
     }
 
     private checkDateTimesConsistencyOnEndingDateChanged(): void {
-        this.editEventForm.controls[this.endingDateCode].valueChanges.
+        this.getEndingDateControl().valueChanges.
         pipe(
             tap(() => this.manageLesserThanStartingDateTimeError()),
             takeUntil(this.destroy$)
@@ -206,7 +269,7 @@ export class EditEventComponent implements OnInit, OnDestroy {
     }
 
     private checkDateTimesConsistencyOnEndingTimeChanged(): void {
-        this.editEventForm.controls[this.endingTimeCode].valueChanges.
+        this.getEndingTimeControl().valueChanges.
         pipe(
             tap(() => this.manageLesserThanStartingDateTimeError()),
             takeUntil(this.destroy$)
@@ -214,8 +277,8 @@ export class EditEventComponent implements OnInit, OnDestroy {
     }
 
     public setTimeDependOnAllDayValue(allDay: boolean): void {
-        const startingTimeControl: AbstractControl = this.editEventForm.controls[this.startingTimeCode];
-        const endingTimeControl: AbstractControl = this.editEventForm.controls[this.endingTimeCode];
+        const startingTimeControl: AbstractControl = this.getStartingTimeControl();
+        const endingTimeControl: AbstractControl = this.getEndingTimeControl();
         if (allDay) {
             startingTimeControl.setValue(0, {emitEvent: false});
             startingTimeControl.disable({emitEvent: false});
@@ -230,7 +293,7 @@ export class EditEventComponent implements OnInit, OnDestroy {
     }
 
     private checkDateTimesConsistencyOnAllDayChanged(): void {
-        this.editEventForm.controls[this.allDayCode].valueChanges.
+        this.getAllDayControl().valueChanges.
         pipe(
             tap((allDay: boolean) => this.setTimeDependOnAllDayValue(allDay)),
             tap(() => this.manageGreaterThanEndingDateTimeError()),
@@ -239,7 +302,7 @@ export class EditEventComponent implements OnInit, OnDestroy {
     }
 
     public getNameErrorMessage(): Observable<string|undefined> {
-        const nameControl: AbstractControl<any, any> = this.editEventForm.controls[this.nameCode];
+        const nameControl: AbstractControl<any, any> = this.getNameControl();
 
         if (nameControl.hasError(this.requiredErrorCode)) {
             return this.translocoService.selectTranslate('editEventPage.nameRequired');
@@ -252,12 +315,12 @@ export class EditEventComponent implements OnInit, OnDestroy {
     }
 
     public getStartingDateErrorMessage(): Observable<string|undefined> {
-        const startingDateControl: AbstractControl<any, any> = this.editEventForm.controls[this.startingDateCode];
+        const startingDateControl: AbstractControl<any, any> = this.getStartingDateControl();
 
         if (startingDateControl.hasError(this.requiredErrorCode)) {
             return this.translocoService.selectTranslate('editEventPage.startingDateRequired');
         } else if (startingDateControl.hasError(this.greaterThanEndingDateTimeErrorCode)) {
-            const allDay: boolean = this.editEventForm.controls[this.allDayCode].value;
+            const allDay: boolean = this.getAllDayControl().value;
             if (!allDay) {
                 return this.translocoService.selectTranslate('editEventPage.greaterThanEndingDateTime');
             } else {
@@ -269,7 +332,7 @@ export class EditEventComponent implements OnInit, OnDestroy {
     }
 
     public getStartingTimeErrorMessage(): Observable<string|undefined> {
-        const startingTimeControl: AbstractControl<any, any> = this.editEventForm.controls[this.startingTimeCode];
+        const startingTimeControl: AbstractControl<any, any> = this.getStartingTimeControl();
 
         if (startingTimeControl.hasError(this.requiredErrorCode)) {
             return this.translocoService.selectTranslate('editEventPage.startingTimeRequired');
@@ -281,12 +344,12 @@ export class EditEventComponent implements OnInit, OnDestroy {
     }
 
     public getEndingDateErrorMessage(): Observable<string|undefined> {
-        const endingDateControl: AbstractControl<any, any> = this.editEventForm.controls[this.endingDateCode];
+        const endingDateControl: AbstractControl<any, any> = this.getEndingDateControl();
 
         if (endingDateControl.hasError(this.requiredErrorCode)) {
             return this.translocoService.selectTranslate('editEventPage.endingDateRequired');
         } else if (endingDateControl.hasError(this.lesserThanStartingDateTimeErrorCode)) {
-            const allDay: boolean = this.editEventForm.controls[this.allDayCode].value;
+            const allDay: boolean = this.getAllDayControl().value;
             if (!allDay) {
                 return this.translocoService.selectTranslate('editEventPage.lesserThanStartingDateTime');
             } else {
@@ -298,7 +361,7 @@ export class EditEventComponent implements OnInit, OnDestroy {
     }
 
     public getEndingTimeErrorMessage(): Observable<string|undefined> {
-        const endingTimeControl: AbstractControl<any, any> = this.editEventForm.controls[this.endingTimeCode];
+        const endingTimeControl: AbstractControl<any, any> = this.getEndingTimeControl();
 
         if (endingTimeControl.hasError(this.requiredErrorCode)) {
             return this.translocoService.selectTranslate('editEventPage.endingTimeRequired');
@@ -315,17 +378,6 @@ export class EditEventComponent implements OnInit, OnDestroy {
         const editEventViewModel: EditEventViewModel = this.editEventForm.getRawValue() as EditEventViewModel;
         editEventViewModel.id = this.currentEventId;
         return editEventViewModel;
-    }
-
-    public updateEditEventForm(event: EditEventViewModel): FormGroup {
-        this.editEventForm.controls[this.nameCode].setValue(event.name);
-        this.editEventForm.controls[this.startingDateCode].setValue(event.startingDate);
-        this.editEventForm.controls[this.startingTimeCode].setValue(event.startingTime);
-        this.editEventForm.controls[this.endingDateCode].setValue(event.endingDate);
-        this.editEventForm.controls[this.endingTimeCode].setValue(event.endingTime);
-        this.editEventForm.controls[this.allDayCode].setValue(event.allDay);
-
-        return this.editEventForm;
     }
 
     private getEditEventForm$(): Observable<FormGroup> {

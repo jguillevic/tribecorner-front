@@ -13,15 +13,15 @@
                             </button>
                             <app-shopping-list-copy-button 
                             [shoppingListToCopy]="unarchivedShoppingList"
-                            (onShoppingListCopied)="onShoppingListCopied($event)">
+                            (onShoppingListCopied)="shoppingListCopied($event)">
                             </app-shopping-list-copy-button>
                             <app-shopping-list-archive-toggle
                             [shoppingListToToggleArchive]="unarchivedShoppingList"
-                            (onShoppingListArchiveToggled)="onShoppingListArchiveToggled($event)">
+                            (onShoppingListArchiveToggled)="shoppingListArchiveToggled($event)">
                             </app-shopping-list-archive-toggle>
                             <app-shopping-list-delete-button
                             [shoppingListToDelete]="unarchivedShoppingList"
-                            (onShoppingListDeleted)="onShoppingListDeleted($event)">
+                            (onShoppingListDeleted)="shoppingListDeleted($event)">
                             </app-shopping-list-delete-button>
                         </app-shopping-list-card>
                         <app-large-empty 
@@ -50,15 +50,15 @@
                             </button>
                             <app-shopping-list-copy-button 
                             [shoppingListToCopy]="archivedShoppingList"
-                            (onShoppingListCopied)="onShoppingListCopied($event)">
+                            (onShoppingListCopied)="shoppingListCopied($event)">
                             </app-shopping-list-copy-button>
                             <app-shopping-list-archive-toggle
                             [shoppingListToToggleArchive]="archivedShoppingList"
-                            (onShoppingListArchiveToggled)="onShoppingListArchiveToggled($event)">
+                            (onShoppingListArchiveToggled)="shoppingListArchiveToggled($event)">
                             </app-shopping-list-archive-toggle>
                             <app-shopping-list-delete-button
                             [shoppingListToDelete]="archivedShoppingList"
-                            (onShoppingListDeleted)="onShoppingListDeleted($event)">
+                            (onShoppingListDeleted)="shoppingListDeleted($event)">
                             </app-shopping-list-delete-button>
                         </app-shopping-list-card>
                         <app-large-empty 

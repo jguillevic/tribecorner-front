@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TabBarComponent } from 'src/app/common/tab-bar/ui/tab-bar/tab-bar.component';
 import { Router } from '@angular/router';
 import { ShoppingList } from '../../model/shopping-list.model';
-import { BehaviorSubject, Observable, Subscription, combineLatest, map, shareReplay } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, combineLatest, from, map, shareReplay } from 'rxjs';
 import { ShoppingListRoutes } from '../../route/shopping-list.routes';
 import { ShoppingListService } from '../../service/shopping-list.service';
 import { MatButtonModule } from '@angular/material/button';
@@ -105,26 +105,21 @@ export class DisplayShoppingListsComponent implements OnDestroy {
     return this.router.navigate([ShoppingListRoutes.editShoppingListRoute], { queryParams: { action: 'create' } });
   }
 
-  public goToUpdate(shoppingListId: number|undefined): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
+  public goToUpdate(shoppingListId: number|undefined): Observable<boolean> {
+    return from(new Promise<boolean>((resolve, reject) => {
       if (shoppingListId) {
         resolve(this.router.navigate([ShoppingListRoutes.editShoppingListRoute], { queryParams: { action: 'update', id: shoppingListId } }));
       } else {
         reject(false);
       }
-    }); 
+    })); 
   }
 
-  public onShoppingListCopied(copiedShoppingList: ShoppingList) {
-    this.addedShoppingListsSubject.next(
-      [
-        ...this.addedShoppingListsSubject.value,
-        copiedShoppingList
-      ]
-    );
+  public shoppingListCopied(copiedShoppingList: ShoppingList): Observable<boolean> {
+    return this.goToUpdate(copiedShoppingList.id);
   }
 
-  public onShoppingListDeleted(deletedShoppingList: ShoppingList) {
+  public shoppingListDeleted(deletedShoppingList: ShoppingList): void {
     this.deletedShoppingListSubject.next(
       [
         ...this.deletedShoppingListSubject.value,
@@ -133,7 +128,7 @@ export class DisplayShoppingListsComponent implements OnDestroy {
     );
   }
 
-  public onShoppingListArchiveToggled(shoppingList: ShoppingList): void {
+  public shoppingListArchiveToggled(shoppingList: ShoppingList): void {
     this.shoppingListToggleArchiveSubject.next(shoppingList);
   }
 }

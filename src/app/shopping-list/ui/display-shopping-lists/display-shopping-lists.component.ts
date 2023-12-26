@@ -46,9 +46,6 @@ export class DisplayShoppingListsComponent implements OnDestroy {
     shareReplay(1)
   );
 
-  private addedShoppingListsSubject: BehaviorSubject<ShoppingList[]> = new BehaviorSubject<ShoppingList[]>([]);
-  public addedShoppingLists$ = this.addedShoppingListsSubject.asObservable();
-
   private deletedShoppingListSubject: BehaviorSubject<ShoppingList[]> = new BehaviorSubject<ShoppingList[]>([]);
   public deletedShoppingLists$ = this.deletedShoppingListSubject.asObservable();
 
@@ -56,13 +53,12 @@ export class DisplayShoppingListsComponent implements OnDestroy {
   = combineLatest(
     {
       loaded: this.loadedShoppingLists$,
-      added: this.addedShoppingLists$,
       deleted: this.deletedShoppingLists$
     }
   )
   .pipe(
     map(result =>
-      [...result.loaded, ...result.added]
+      [...result.loaded]
       .filter(shoppingList => !result.deleted.includes(shoppingList))
     )
   );

@@ -26,6 +26,7 @@ import { EditEventService } from './app/event/service/edit-event.service';
 import { TranslocoHttpLoader } from './transloco-loader';
 import { provideTransloco } from '@ngneat/transloco';
 import { ShoppingListGoToService } from './app/shopping-list/service/shopping-list-go-to.service';
+import { MealGoToService } from './app/meal/service/meal-go-to.service';
 
 const routes: Routes = [
     { 
@@ -51,6 +52,7 @@ const routes: Routes = [
         providers: [
             MealKindService,
             MealService,
+            MealGoToService,
             MealsByMealKindService,
             MealCurrentDateService
         ],

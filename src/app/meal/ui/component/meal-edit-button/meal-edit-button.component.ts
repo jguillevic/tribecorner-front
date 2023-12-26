@@ -6,6 +6,7 @@ import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { Observable, from } from 'rxjs';
 import { Router } from '@angular/router';
 import { MealRoutes } from '../../../route/meal.routes';
+import { MealGoToService } from '../../../service/meal-go-to.service';
 
 @Component({
   selector: 'app-meal-edit-button',
@@ -26,11 +27,11 @@ export class MealEditButtonComponent {
   public isGoingToEdit: boolean = false;
 
   public constructor(
-    private router: Router
+    private mealGoToService: MealGoToService
   ) { }
 
   public goToEdit(): Observable<boolean> {
     this.isGoingToEdit = true;
-    return from(this.router.navigate([MealRoutes.editMealRoute], { queryParams: { id: this.mealId } }));
+    return this.mealGoToService.goToUpdate(this.mealId);
   }
 }

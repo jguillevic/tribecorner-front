@@ -6,8 +6,6 @@ import { InlineCalendarComponent } from "../../../../common/calendar/ui/componen
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Observable, Subject, switchMap, take } from 'rxjs';
-import { Router } from '@angular/router';
-import { MealRoutes } from '../../../route/meal.routes';
 import { MealsByMealKind } from '../../../model/meals-by-meal-kind.model';
 import { MealsByMealKindService } from '../../../service/meals-by-meal-kind.service';
 import { SimpleLoadingComponent } from "../../../../common/loading/ui/simple-loading/simple-loading.component";
@@ -19,6 +17,7 @@ import { MealEditButtonComponent } from "../../component/meal-edit-button/meal-e
 import { MealDeleteButtonComponent } from "../../component/meal-delete-button/meal-delete-button.component";
 import { Meal } from '../../../model/meal.model';
 import { MealCopyButtonComponent } from "../../component/meal-copy-button/meal-copy-button.component";
+import { MealGoToService } from 'src/app/meal/service/meal-go-to.service';
 
 @Component({
     selector: 'app-display-meals-page',
@@ -56,7 +55,7 @@ export class DisplayMealsPageComponent implements OnDestroy {
   public constructor(
     private mealsByMealKindService: MealsByMealKindService,
     private mealCurrentDateService: MealCurrentDateService,
-    private router: Router
+    private mealGoToService: MealGoToService
   ) { }
 
   public ngOnDestroy(): void {
@@ -67,8 +66,12 @@ export class DisplayMealsPageComponent implements OnDestroy {
     this.mealCurrentDateService.selectDate(date);
   }
 
-  public goToCreate(): Promise<boolean> {
-    return this.router.navigate([MealRoutes.editMealRoute]);
+  public goToCreate(): Observable<boolean> {
+    return this.mealGoToService.goToCreate();
+  }
+
+  public goToUpdate(mealId: number|undefined): Observable<boolean> {
+    return this.mealGoToService.goToUpdate(mealId);
   }
 
   private getMealsByMealKinds$(): Observable<MealsByMealKind[]> {
@@ -79,22 +82,10 @@ export class DisplayMealsPageComponent implements OnDestroy {
   }
 
   public onMealDeleted(deletedMeal: Meal) {
-    // this.deletedEventsSubject.next(
-    //   [
-    //     ...this.deletedEventsSubject.value,
-    //     deletedEvent
-    //   ]
-    // );
     this.mealsByMealKinds$ = this.getMealsByMealKinds$();
   }
 
   public onMealCopied(copiedMeal: Meal) {
-    // this.addedShoppingListsSubject.next(
-    //   [
-    //     ...this.addedShoppingListsSubject.value,
-    //     copiedShoppingList
-    //   ]
-    // );
-    this.mealsByMealKinds$ = this.getMealsByMealKinds$();
+    this.mealGoToService.goToUpdate(copiedMeal.id);
   }
 }

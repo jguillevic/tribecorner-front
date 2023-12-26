@@ -19,12 +19,12 @@ import { EventService } from 'src/app/event/service/event.service';
 import { SimpleMealCardComponent } from "../../../meal/ui/component/simple-meal-card/simple-meal-card.component";
 import { MealsByMealKind } from 'src/app/meal/model/meals-by-meal-kind.model';
 import { MealsByMealKindService } from 'src/app/meal/service/meals-by-meal-kind.service';
-import { Action } from 'src/app/common/action';
 import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
 import { SimpleEmptyComponent } from "../../../common/empty/ui/simple-empty/simple-empty.component";
 import { EventRoutes } from 'src/app/event/route/event.routes';
 import { EventCardComponent } from "../../../event/ui/component/event-card/event-card.component";
 import { DateHelper } from '../../../common/date/helper/date.helper';
+import { ShoppingListGoToService } from '../../../shopping-list/service/shopping-list-go-to.service';
 
 @Component({
     selector: 'app-display-home',
@@ -64,6 +64,7 @@ export class DisplayHomeComponent {
     private eventService: EventService,
     private mealsByMealKindService: MealsByMealKindService,
     private shoppingListService: ShoppingListService,
+    private shoppingListGoToService: ShoppingListGoToService,
     private router: Router
   ) { }
 
@@ -75,10 +76,8 @@ export class DisplayHomeComponent {
     return this.router.navigate([MealRoutes.displayMealsRoute]);
   }
 
-  public goToDisplayShoppingList(shoppingListId: number|undefined): Promise<boolean>|void {
-    if (shoppingListId) {
-      return this.router.navigate([ShoppingListRoutes.editShoppingListRoute], { queryParams: { action: Action.update, id: shoppingListId } });
-    }
+  public goToDisplayShoppingList(shoppingListId: number|undefined): Observable<boolean> {
+    return this.shoppingListGoToService.goToUpdate(shoppingListId);
   }
 
   public goToDisplayShoppingLists(): Promise<boolean> {

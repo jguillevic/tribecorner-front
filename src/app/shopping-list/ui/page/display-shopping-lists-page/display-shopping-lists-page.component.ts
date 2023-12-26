@@ -1,10 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TabBarComponent } from 'src/app/common/tab-bar/ui/tab-bar/tab-bar.component';
-import { Router } from '@angular/router';
 import { ShoppingList } from '../../../model/shopping-list.model';
-import { BehaviorSubject, Observable, Subscription, combineLatest, from, map, shareReplay } from 'rxjs';
-import { ShoppingListRoutes } from '../../../route/shopping-list.routes';
+import { BehaviorSubject, Observable, Subscription, combineLatest, map, shareReplay } from 'rxjs';
 import { ShoppingListService } from '../../../service/shopping-list.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,6 +14,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { ShoppingListCopyButtonComponent } from "../../component/shopping-list-copy-button/shopping-list-copy-button.component";
 import { ShoppingListDeleteButtonComponent } from "../../component/shopping-list-delete-button/shopping-list-delete-button.component";
 import { ShoppingListArchiveToggleComponent } from "../../component/shopping-list-archive-toggle/shopping-list-archive-toggle.component";
+import { ShoppingListGoToService } from 'src/app/shopping-list/service/shopping-list-go-to.service';
+import { ShoppingListEditButtonComponent } from "../../component/shopping-list-edit-button/shopping-list-edit-button.component";
 
 @Component({
     selector: 'app-display-shopping-lists-page',
@@ -34,7 +34,8 @@ import { ShoppingListArchiveToggleComponent } from "../../component/shopping-lis
         MatTabsModule,
         ShoppingListCopyButtonComponent,
         ShoppingListDeleteButtonComponent,
-        ShoppingListArchiveToggleComponent
+        ShoppingListArchiveToggleComponent,
+        ShoppingListEditButtonComponent
     ]
 })
 export class DisplayShoppingListsComponent implements OnDestroy {
@@ -89,30 +90,20 @@ export class DisplayShoppingListsComponent implements OnDestroy {
   );
 
   public constructor(
-    private router: Router,
-    private shoppingListService: ShoppingListService
+    private shoppingListService: ShoppingListService,
+    private shoppingListGoToService: ShoppingListGoToService
   ) { }
 
   public ngOnDestroy(): void {
     this.deleteSubscription?.unsubscribe();
   }
 
-  public goToCreate(): Promise<boolean> {
-    return this.router.navigate([ShoppingListRoutes.editShoppingListRoute], { queryParams: { action: 'create' } });
-  }
-
-  public goToUpdate(shoppingListId: number|undefined): Observable<boolean> {
-    return from(new Promise<boolean>((resolve, reject) => {
-      if (shoppingListId) {
-        resolve(this.router.navigate([ShoppingListRoutes.editShoppingListRoute], { queryParams: { action: 'update', id: shoppingListId } }));
-      } else {
-        reject(false);
-      }
-    })); 
+  public goToCreate(): Observable<boolean> {
+    return this.shoppingListGoToService.goToCreate();
   }
 
   public shoppingListCopied(copiedShoppingList: ShoppingList): Observable<boolean> {
-    return this.goToUpdate(copiedShoppingList.id);
+    return this.shoppingListGoToService.goToUpdate(copiedShoppingList.id);
   }
 
   public shoppingListDeleted(deletedShoppingList: ShoppingList): void {

@@ -25,6 +25,7 @@ import { MealCurrentDateService } from './app/meal/service/meal-current-date.ser
 import { EditEventService } from './app/event/service/edit-event.service';
 import { TranslocoHttpLoader } from './transloco-loader';
 import { provideTransloco } from '@ngneat/transloco';
+import { ShoppingListGoToService } from './app/shopping-list/service/shopping-list-go-to.service';
 
 const routes: Routes = [
     { 
@@ -39,7 +40,8 @@ const routes: Routes = [
     { 
         path: '',
         providers: [
-            ShoppingListService
+            ShoppingListService,
+            ShoppingListGoToService
         ],
         canActivate: [signedInGuard, hasFamilyGuard],
         children: ShoppingListRoutes.shoppingListRoutes
@@ -73,7 +75,8 @@ const routes: Routes = [
             MealKindService,
             MealService,
             MealsByMealKindService,
-            ShoppingListService
+            ShoppingListService,
+            ShoppingListGoToService
         ],
         canActivate: [signedInGuard, hasFamilyGuard],
         children: HomeRoutes.homeRoutes

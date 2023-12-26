@@ -8,9 +8,9 @@
                         <app-shopping-list-card 
                         *ngFor="let unarchivedShoppingList of unarchivedShoppingLists"
                         [shoppingList]="unarchivedShoppingList">
-                            <button mat-icon-button (click)="goToUpdate(unarchivedShoppingList.id)">
-                                <mat-icon class="material-symbols-outlined">edit</mat-icon>
-                            </button>
+                            <app-shopping-list-edit-button
+                            [shoppingListId]="unarchivedShoppingList.id">
+                            </app-shopping-list-edit-button>
                             <app-shopping-list-copy-button 
                             [shoppingListToCopy]="unarchivedShoppingList"
                             (onShoppingListCopied)="shoppingListCopied($event)">
@@ -45,9 +45,9 @@
                         <app-shopping-list-card 
                         *ngFor="let archivedShoppingList of archivedShoppingLists"
                         [shoppingList]="archivedShoppingList">
-                            <button mat-icon-button (click)="goToUpdate(archivedShoppingList.id)">
-                                <mat-icon class="material-symbols-outlined">edit</mat-icon>
-                            </button>
+                            <app-shopping-list-edit-button
+                            [shoppingListId]="archivedShoppingList.id">
+                            </app-shopping-list-edit-button>
                             <app-shopping-list-copy-button 
                             [shoppingListToCopy]="archivedShoppingList"
                             (onShoppingListCopied)="shoppingListCopied($event)">

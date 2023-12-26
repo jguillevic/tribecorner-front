@@ -1,30 +1,30 @@
 import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProfileTopBarComponent } from "../../../common/top-bar/profile/ui/profile-top-bar.component";
-import { TabBarComponent } from "../../../common/tab-bar/ui/tab-bar/tab-bar.component";
-import { InlineCalendarComponent } from "../../../common/calendar/ui/inline-calendar/inline-calendar.component";
+import { ProfileTopBarComponent } from "../../../../common/top-bar/profile/ui/profile-top-bar.component";
+import { TabBarComponent } from "../../../../common/tab-bar/ui/tab-bar/tab-bar.component";
+import { InlineCalendarComponent } from "../../../../common/calendar/ui/inline-calendar/inline-calendar.component";
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Observable, Subject, switchMap, take } from 'rxjs';
 import { Router } from '@angular/router';
-import { MealRoutes } from '../../route/meal.routes';
-import { MealsByMealKind } from '../../model/meals-by-meal-kind.model';
-import { MealsByMealKindService } from '../../service/meals-by-meal-kind.service';
-import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
-import { LargeEmptyComponent } from "../../../common/empty/ui/large-empty/large-empty.component";
+import { MealRoutes } from '../../../route/meal.routes';
+import { MealsByMealKind } from '../../../model/meals-by-meal-kind.model';
+import { MealsByMealKindService } from '../../../service/meals-by-meal-kind.service';
+import { SimpleLoadingComponent } from "../../../../common/loading/ui/simple-loading/simple-loading.component";
+import { LargeEmptyComponent } from "../../../../common/empty/ui/large-empty/large-empty.component";
 import { MtxButtonModule } from '@ng-matero/extensions/button';
-import { MealCurrentDateService } from '../../service/meal-current-date.service';
-import { LargeMealCardComponent } from "../large-meal-card/large-meal-card.component";
-import { MealEditButtonComponent } from "../meal-edit-button/meal-edit-button.component";
-import { MealDeleteButtonComponent } from "../meal-delete-button/meal-delete-button.component";
-import { Meal } from '../../model/meal.model';
-import { MealCopyButtonComponent } from "../meal-copy-button/meal-copy-button.component";
+import { MealCurrentDateService } from '../../../service/meal-current-date.service';
+import { LargeMealCardComponent } from "../../component/large-meal-card/large-meal-card.component";
+import { MealEditButtonComponent } from "../../component/meal-edit-button/meal-edit-button.component";
+import { MealDeleteButtonComponent } from "../../component/meal-delete-button/meal-delete-button.component";
+import { Meal } from '../../../model/meal.model';
+import { MealCopyButtonComponent } from "../../component/meal-copy-button/meal-copy-button.component";
 
 @Component({
-    selector: 'app-display-meals',
+    selector: 'app-display-meals-page',
     standalone: true,
-    templateUrl: './display-meals.component.html',
-    styleUrls: ['display-meals.component.scss'],
+    templateUrl: './display-meals-page.component.html',
+    styleUrls: ['display-meals-page.component.scss'],
     imports: [
         CommonModule,
         ProfileTopBarComponent,
@@ -41,7 +41,7 @@ import { MealCopyButtonComponent } from "../meal-copy-button/meal-copy-button.co
         MealCopyButtonComponent
     ]
 })
-export class DisplayMealsComponent implements OnDestroy {
+export class DisplayMealsPageComponent implements OnDestroy {
   private readonly destroy$: Subject<void> = new Subject<void>();
   private readonly selectedDate$: Observable<Date> = this.mealCurrentDateService.currentDate$;
   

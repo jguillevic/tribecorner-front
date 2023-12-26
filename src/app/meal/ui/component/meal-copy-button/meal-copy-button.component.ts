@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subject, Subscription, takeUntil, tap } from 'rxjs';
-import { Meal } from '../../model/meal.model';
-import { MealService } from '../../service/meal.service';
+import { Meal } from '../../../model/meal.model';
+import { MealService } from '../../../service/meal.service';
 import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MealHelper } from '../../helper/meal.helper';
+import { MealHelper } from '../../../helper/meal.helper';
 
 @Component({
   selector: 'app-meal-copy-button',

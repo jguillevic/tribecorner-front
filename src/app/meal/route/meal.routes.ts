@@ -7,12 +7,12 @@ export class MealRoutes {
         { 
             path: MealRoutes.editMealRoute,
             title: 'Éditer mon repas',
-            loadComponent: () => import('../ui/edit-meal/edit-meal.component').then(module => module.EditMealComponent) 
+            loadComponent: () => import('../ui/page/edit-meal-page/edit-meal-page.component').then(module => module.EditMealPageComponent) 
         },
         { 
             path: MealRoutes.displayMealsRoute,
             title: 'Mon repas',
-            loadComponent: () => import('../ui/display-meals/display-meals.component').then(module => module.DisplayMealsComponent) 
+            loadComponent: () => import('../ui/page/display-meals-page/display-meals-page.component').then(module => module.DisplayMealsPageComponent) 
         }
     ];
 }

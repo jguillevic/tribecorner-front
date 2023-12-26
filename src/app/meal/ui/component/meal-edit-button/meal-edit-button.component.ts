@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { Observable, from } from 'rxjs';
 import { Router } from '@angular/router';
-import { MealRoutes } from '../../route/meal.routes';
+import { MealRoutes } from '../../../route/meal.routes';
 
 @Component({
   selector: 'app-meal-edit-button',

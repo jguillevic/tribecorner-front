@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Meal } from '../../model/meal.model';
+import { Meal } from '../../../model/meal.model';
 
 @Component({
   selector: 'app-large-meal-card',

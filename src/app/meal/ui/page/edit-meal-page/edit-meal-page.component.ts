@@ -1,26 +1,26 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Meal } from '../../model/meal.model';
+import { Meal } from '../../../model/meal.model';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MealService } from '../../service/meal.service';
+import { MealService } from '../../../service/meal.service';
 import { Observable, Subject, combineLatest, debounceTime, exhaustMap, filter, map, mergeMap, of, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
-import { MealKindService } from '../../service/meal-kind.service';
-import { MealKind } from '../../model/meal-kind.model';
-import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
+import { MealKindService } from '../../../service/meal-kind.service';
+import { MealKind } from '../../../model/meal-kind.model';
+import { SimpleLoadingComponent } from "../../../../common/loading/ui/simple-loading/simple-loading.component";
 import { MtxButtonModule } from '@ng-matero/extensions/button';
-import { GoBackTopBarComponent } from "../../../common/top-bar/go-back/ui/go-back-top-bar.component";
-import { MealCurrentDateService } from '../../service/meal-current-date.service';
-import { DateHelper } from '../../../common/date/helper/date.helper';
+import { GoBackTopBarComponent } from "../../../../common/top-bar/go-back/ui/go-back-top-bar.component";
+import { MealCurrentDateService } from '../../../service/meal-current-date.service';
+import { DateHelper } from '../../../../common/date/helper/date.helper';
 
 @Component({
-    selector: 'app-edit-meal',
+    selector: 'app-edit-meal-page',
     standalone: true,
-    templateUrl: './edit-meal.component.html',
+    templateUrl: './edit-meal-page.component.html',
     styles: [],
     imports: [
         CommonModule,
@@ -36,7 +36,7 @@ import { DateHelper } from '../../../common/date/helper/date.helper';
     ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EditMealComponent implements OnInit, OnDestroy {
+export class EditMealPageComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject<void>();
   private currentMealId: number = 0;
 

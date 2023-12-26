@@ -7,12 +7,12 @@ export class ShoppingListRoutes {
         { 
             path: ShoppingListRoutes.displayShoppingListsRoute,
             title: 'Listes',
-            loadComponent: () => import('../ui/display-shopping-lists/display-shopping-lists.component').then(module => module.DisplayShoppingListsComponent) 
+            loadComponent: () => import('../ui/page/display-shopping-lists-page/display-shopping-lists-page.component').then(module => module.DisplayShoppingListsComponent) 
         },
         { 
             path: ShoppingListRoutes.editShoppingListRoute,
             title: 'Liste',
-            loadComponent: () => import('../ui/edit-shopping-list/edit-shopping-list.component').then(module => module.EditShoppingListComponent) 
+            loadComponent: () => import('../ui/page/edit-shopping-list-page/edit-shopping-list-page.component').then(module => module.EditShoppingListComponent) 
         }
     ];
 }

@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil, tap } from 'rxjs';
-import { ShoppingList } from '../../model/shopping-list.model';
-import { ShoppingListService } from '../../service/shopping-list.service';
+import { ShoppingList } from '../../../model/shopping-list.model';
+import { ShoppingListService } from '../../../service/shopping-list.service';
 import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { ShoppingListHelper } from '../../helper/shopping-list.helper';
+import { ShoppingListHelper } from '../../../helper/shopping-list.helper';
 
 @Component({
   selector: 'app-shopping-list-copy-button',

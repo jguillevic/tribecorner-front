@@ -1,31 +1,31 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ShoppingListService } from '../../service/shopping-list.service';
-import { ShoppingList } from '../../model/shopping-list.model';
+import { ShoppingListService } from '../../../service/shopping-list.service';
+import { ShoppingList } from '../../../model/shopping-list.model';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ItemShoppingList } from '../../model/item-shopping-list.model';
+import { ItemShoppingList } from '../../../model/item-shopping-list.model';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BehaviorSubject, Observable, Subject, combineLatest, debounceTime, exhaustMap, filter, map, mergeMap, of, skip, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Action } from 'src/app/common/action';
-import { ShoppingListRoutes } from '../../route/shopping-list.routes';
-import { SimpleLoadingComponent } from "../../../common/loading/ui/simple-loading/simple-loading.component";
+import { ShoppingListRoutes } from '../../../route/shopping-list.routes';
+import { SimpleLoadingComponent } from "../../../../common/loading/ui/simple-loading/simple-loading.component";
 import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { GoBackTopBarComponent } from "../../../common/top-bar/go-back/ui/go-back-top-bar.component";
+import { GoBackTopBarComponent } from "../../../../common/top-bar/go-back/ui/go-back-top-bar.component";
 import { MatDividerModule } from '@angular/material/divider';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { ShoppingListCompletedDialogComponent } from '../shopping-list-completed-dialog/shopping-list-completed-dialog.component';
+import { ShoppingListCompletedDialogComponent } from '../../component/shopping-list-completed-dialog/shopping-list-completed-dialog.component';
 
 @Component({
-    selector: 'app-display-shopping-list',
+    selector: 'app-display-shopping-list-page',
     standalone: true,
-    templateUrl: './edit-shopping-list.component.html',
-    styleUrls: ['edit-shopping-list.component.scss'],
+    templateUrl: './edit-shopping-list-page.component.html',
+    styleUrls: ['edit-shopping-list-page.component.scss'],
     imports: [
         CommonModule,
         FormsModule,

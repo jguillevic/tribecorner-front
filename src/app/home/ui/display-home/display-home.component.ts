@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { ShoppingListService } from 'src/app/shopping-list/service/shopping-list.service';
 import { ShoppingList } from 'src/app/shopping-list/model/shopping-list.model';
 import { ShoppingListRoutes } from 'src/app/shopping-list/route/shopping-list.routes';
-import { ShoppingListCardComponent } from "../../../shopping-list/ui/shopping-list-card/shopping-list-card.component";
+import { ShoppingListCardComponent } from "../../../shopping-list/ui/component/shopping-list-card/shopping-list-card.component";
 import { ProfileTopBarComponent } from 'src/app/common/top-bar/profile/ui/profile-top-bar.component';
 import { MealRoutes } from 'src/app/meal/route/meal.routes';
 import { HomeCategoryComponent } from "../home-category/home-category.component";

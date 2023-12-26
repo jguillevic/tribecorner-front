@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ShoppingList } from '../../model/shopping-list.model';
+import { ShoppingList } from '../../../model/shopping-list.model';
 import { Observable, map, of } from 'rxjs';
-import { ItemShoppingList } from '../../model/item-shopping-list.model';
+import { ItemShoppingList } from '../../../model/item-shopping-list.model';
 
 @Component({
   selector: 'app-shopping-list-card',

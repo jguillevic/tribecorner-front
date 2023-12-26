@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ShoppingList } from '../../model/shopping-list.model';
+import { ShoppingList } from '../../../model/shopping-list.model';
 import { Subscription, tap } from 'rxjs';
-import { ShoppingListService } from '../../service/shopping-list.service';
+import { ShoppingListService } from '../../../service/shopping-list.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MtxButtonModule } from '@ng-matero/extensions/button';

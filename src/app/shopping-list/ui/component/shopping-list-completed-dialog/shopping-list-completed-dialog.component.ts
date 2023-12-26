@@ -3,8 +3,8 @@ import { CommonModule, Location } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MtxButtonModule } from '@ng-matero/extensions/button';
-import { ShoppingList } from '../../model/shopping-list.model';
-import { ShoppingListService } from '../../service/shopping-list.service';
+import { ShoppingList } from '../../../model/shopping-list.model';
+import { ShoppingListService } from '../../../service/shopping-list.service';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({

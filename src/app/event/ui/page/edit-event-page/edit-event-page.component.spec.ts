@@ -9,6 +9,7 @@ import { EditEventComponent } from './edit-event-page.component';
 import { EditEventViewModel } from '../../view-model/edit-event.view-model';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EventService } from '../../../service/event.service';
+import { EventTimeHelper } from '../../../helper/event-time.helper';
 
 describe('EditEventComponent', () => {
     let fixture: ComponentFixture<EditEventComponent>;
@@ -122,7 +123,7 @@ describe('EditEventComponent', () => {
         // dans le reste du test.
         component.updateNameControl('Test');
 
-        // Date de début renseignée.
+        // Date de début renseignée par défaut.
         component.getStartingDateErrorMessage()
         .subscribe(
             (message: string|undefined) => {
@@ -131,8 +132,8 @@ describe('EditEventComponent', () => {
         );
         expect(component.editEventForm.valid).toBeTruthy();
 
-        // Date de début > Date de fin et pas un événement durant toute la journée.
-        const endingDate = component.getEndingDateControl().value;
+        // Date et heure de début > Date et heure de fin et pas un événement durant toute la journée.
+        const endingDate: Date = component.getEndingDateControl().value;
         const oldStartingDate: Date = component.getStartingDateControl().value;
         const newStartingDate: Date = new Date(endingDate);
         newStartingDate.setDate(newStartingDate.getDate() + 1);
@@ -143,6 +144,7 @@ describe('EditEventComponent', () => {
                 expect(message).toBe('La date et l\'heure de début doivent être < à la date et l\'heure de fin');
             }
         );
+        expect(component.editEventForm.valid).toBeFalsy();
 
         // Date de début de nouveau cohérente, le message d'erreur doit être supprimé.
         component.updateStartingDateControl(oldStartingDate);
@@ -163,8 +165,9 @@ describe('EditEventComponent', () => {
                 expect(message).toBe('La date de début doit être < à la date de fin');
             }
         );
+        expect(component.editEventForm.valid).toBeFalsy();
 
-        // Date de début de nouveau cohérente, le message d'erreur doit être supprimé.
+        // Date et heure de début de nouveau cohérente, le message d'erreur doit être supprimé.
         component.updateStartingDateControl(oldStartingDate);
         component.getStartingDateErrorMessage()
         .subscribe(
@@ -182,6 +185,263 @@ describe('EditEventComponent', () => {
                 expect(message).toBe('Date de début requise');
             }
         );
+        expect(component.editEventForm.valid).toBeFalsy();
+
+        flush();
+    }));
+
+    it ('test getStartingTimeErrorMessage()', fakeAsync(() => {
+        // Renseignement du nom pour ne pas avoir d'impact de cette erreur
+        // dans le reste du test.
+        component.updateNameControl('Test');
+
+        // Heure de début renseignée par défaut.
+        component.getStartingTimeErrorMessage()
+        .subscribe(
+            (message: string|undefined) => {
+                expect(message).toBe(undefined);
+            }
+        );
+        expect(component.editEventForm.valid).toBeTruthy();
+
+        // Date et heure de début > Date et heure de fin et pas un événement durant toute la journée.
+        const endingTime: number = component.getEndingTimeControl().value;
+        const oldStartingTime: number = component.getStartingTimeControl().value;
+        let newStartingTime: number = endingTime;
+        component.updateStartingTimeControl(newStartingTime);
+        component.getStartingTimeErrorMessage()
+        .subscribe(
+            (message: string|undefined) => {
+                expect(message).toBe('La date et l\'heure de début doivent être < à la date et l\'heure de fin');
+            }
+        );
+        expect(component.editEventForm.valid).toBeFalsy();
+
+        // Passage en toute la journée, le message doit être supprimée.
+        component.updateAllDayControl(true);
+        component.getStartingTimeErrorMessage()
+        .subscribe(
+            (message: string|undefined) => {
+                expect(message).toBe(undefined);
+            }
+        );
+        expect(component.editEventForm.valid).toBeTruthy();
+        component.updateAllDayControl(false);
+
+        newStartingTime += 15;
+        component.updateStartingTimeControl(newStartingTime);
+        component.getStartingTimeErrorMessage()
+        .subscribe(
+            (message: string|undefined) => {
+                expect(message).toBe('La date et l\'heure de début doivent être < à la date et l\'heure de fin');
+            }
+        );
+        expect(component.editEventForm.valid).toBeFalsy();
+
+        // Date et heure de début de nouveau cohérente, le message d'erreur doit être supprimé.
+        component.updateStartingTimeControl(oldStartingTime);
+        component.getStartingTimeErrorMessage()
+        .subscribe(
+            (message: string|undefined) => {
+                expect(message).toBe(undefined);
+            }
+        );
+        expect(component.editEventForm.valid).toBeTruthy();
+
+        // Heure de début vidée.
+        component.updateStartingTimeControl(undefined);
+        component.getStartingTimeErrorMessage()
+        .subscribe(
+            (message: string|undefined) => {
+                expect(message).toBe('Heure de début requise');
+            }
+        );
+        expect(component.editEventForm.valid).toBeFalsy();
+
+        flush();
+    }));
+
+    it('test getEndingDateErrorMessage()', fakeAsync(() => {
+        // Renseignement du nom pour ne pas avoir d'impact de cette erreur
+        // dans le reste du test.
+        component.updateNameControl('Test');
+
+        // Date de fin renseignée par défaut.
+        component.getEndingDateErrorMessage()
+        .subscribe(
+            (message: string|undefined) => {
+                expect(message).toBe(undefined);
+            }
+        );
+        expect(component.editEventForm.valid).toBeTruthy();
+
+        // Date et heure de fin < Date et heure de début et pas un événement durant toute la journée.
+        const startingDate: Date = component.getStartingDateControl().value;
+        const oldEndingDate: Date = component.getEndingDateControl().value;
+        const newEndingDate: Date = new Date(startingDate);
+        newEndingDate.setDate(newEndingDate.getDate() - 1);
+        component.updateEndingDateControl(newEndingDate);
+        component.getEndingDateErrorMessage()
+        .subscribe(
+            (message: string|undefined) => {
+                expect(message).toBe('La date et l\'heure de fin doivent être > à la date et l\'heure de début');
+            }
+        );
+        expect(component.editEventForm.valid).toBeFalsy();
+
+        // Date de fin de nouveau cohérente, le message d'erreur doit être supprimé.
+        component.updateEndingDateControl(oldEndingDate);
+        component.getEndingDateErrorMessage()
+        .subscribe(
+            (message: string|undefined) => {
+                expect(message).toBe(undefined);
+            }
+        );
+        expect(component.editEventForm.valid).toBeTruthy();
+
+        // Date de fin < Date de début et un événement durant toute la journée.
+        component.updateAllDayControl(true);
+        component.updateEndingDateControl(newEndingDate);
+        component.getEndingDateErrorMessage()
+        .subscribe(
+            (message: string|undefined) => {
+                expect(message).toBe('La date de fin doit être > à la date de début');
+            }
+        );
+        expect(component.editEventForm.valid).toBeFalsy();
+
+        // Date et heure de fin de nouveau cohérente, le message d'erreur doit être supprimé.
+        component.updateEndingDateControl(oldEndingDate);
+        component.getEndingDateErrorMessage()
+        .subscribe(
+            (message: string|undefined) => {
+                expect(message).toBe(undefined);
+            }
+        );
+        expect(component.editEventForm.valid).toBeTruthy();
+
+        //      
+        component.updateEndingDateControl(newEndingDate);
+        component.updateAllDayControl(true);
+        component.getEndingDateErrorMessage()
+        .subscribe(
+            (message: string|undefined) => {
+                expect(message).toBe(undefined);
+            }
+        );
+        component.getStartingDateErrorMessage()
+        .subscribe(
+            (message: string|undefined) => {
+                expect(message).toBe('La date de début doit être < à la date de fin');
+            }
+        );
+        expect(component.editEventForm.valid).toBeFalsy();
+
+        // Date de fin vidée.
+        component.updateEndingDateControl(undefined);
+        component.getEndingDateErrorMessage()
+        .subscribe(
+            (message: string|undefined) => {
+                expect(message).toBe('Date de fin requise');
+            }
+        );
+        expect(component.editEventForm.valid).toBeFalsy();
+
+        flush();
+    }));
+
+    it ('test getEndingTimeErrorMessage()', fakeAsync(() => {
+        // Renseignement du nom pour ne pas avoir d'impact de cette erreur
+        // dans le reste du test.
+        component.updateNameControl('Test');
+
+        // Heure de fin renseignée par défaut.
+        component.getEndingTimeErrorMessage()
+        .subscribe(
+            (message: string|undefined) => {
+                expect(message).toBe(undefined);
+            }
+        );
+        expect(component.editEventForm.valid).toBeTruthy();
+
+        // Date et heure de fin < Date et heure de début et pas un événement durant toute la journée.
+        const startingTime: number = component.getStartingTimeControl().value;
+        const oldEndingTime: number = component.getEndingTimeControl().value;
+        let newEndingTime: number = startingTime;
+        component.updateEndingTimeControl(newEndingTime);
+        component.getEndingTimeErrorMessage()
+        .subscribe(
+            (message: string|undefined) => {
+                expect(message).toBe('La date et l\'heure de fin doivent être > à la date et l\'heure de début');
+            }
+        );
+        expect(component.editEventForm.valid).toBeFalsy();
+
+        // Passage en toute la journée, le message doit être supprimée.
+        component.updateAllDayControl(true);
+        component.getEndingTimeErrorMessage()
+        .subscribe(
+            (message: string|undefined) => {
+                expect(message).toBe(undefined);
+            }
+        );
+        expect(component.editEventForm.valid).toBeTruthy();
+        component.updateAllDayControl(false);
+
+        newEndingTime -= 15;
+        component.updateEndingTimeControl(newEndingTime);
+        component.getEndingTimeErrorMessage()
+        .subscribe(
+            (message: string|undefined) => {
+                expect(message).toBe('La date et l\'heure de fin doivent être > à la date et l\'heure de début');
+            }
+        );
+        expect(component.editEventForm.valid).toBeFalsy();
+
+        // Date et heure de fin de nouveau cohérente, le message d'erreur doit être supprimé.
+        component.updateEndingTimeControl(oldEndingTime);
+        component.getEndingTimeErrorMessage()
+        .subscribe(
+            (message: string|undefined) => {
+                expect(message).toBe(undefined);
+            }
+        );
+        expect(component.editEventForm.valid).toBeTruthy();
+
+        // Heure de fin vidée.
+        component.updateEndingTimeControl(undefined);
+        component.getEndingTimeErrorMessage()
+        .subscribe(
+            (message: string|undefined) => {
+                expect(message).toBe('Heure de fin requise');
+            }
+        );
+        expect(component.editEventForm.valid).toBeFalsy();
+
+        flush();
+    }));
+
+    it ('test on time controls when allDay component changes value', fakeAsync(() => {
+        // Par défaut, les composants de saisie des temps sont activés.
+        expect(component.getStartingTimeControl().enabled).toBeTruthy();
+        expect(component.getStartingTimeControl().value).toBe(EventTimeHelper.getDefaultStartingTime());
+        expect(component.getEndingTimeControl().enabled).toBeTruthy();
+        expect(component.getEndingTimeControl().value).toBe(EventTimeHelper.getDefaultEndingTime());
+
+        // Quand événement toute la journée, les composants de saisie des temps sont désactivés.
+        component.updateAllDayControl(true);
+        expect(component.getStartingTimeControl().disabled).toBeTruthy();
+        expect(component.getStartingTimeControl().value).toBe(0);
+        expect(component.getEndingTimeControl().disabled).toBeTruthy();
+        expect(component.getEndingTimeControl().value).toBe(0);
+
+        // Suite au changement de la valeur du composant toute la journée,
+        // les composants dde saisie des temps sont à nouveau activés.
+        component.updateAllDayControl(false);
+        expect(component.getStartingTimeControl().enabled).toBeTruthy();
+        expect(component.getStartingTimeControl().value).toBe(EventTimeHelper.getDefaultStartingTime());
+        expect(component.getEndingTimeControl().enabled).toBeTruthy();
+        expect(component.getEndingTimeControl().value).toBe(EventTimeHelper.getDefaultEndingTime());
 
         flush();
     }));

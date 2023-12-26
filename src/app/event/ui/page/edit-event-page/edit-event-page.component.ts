@@ -135,7 +135,7 @@ export class EditEventComponent implements OnInit, OnDestroy {
         this.getStartingDateControl().setValue(startingDate);
     }
 
-    public updateStartingTimeControl(startingTime: number) {
+    public updateStartingTimeControl(startingTime: number|undefined) {
         this.getStartingTimeControl().setValue(startingTime);
     }
 
@@ -143,7 +143,7 @@ export class EditEventComponent implements OnInit, OnDestroy {
         this.getEndingDateControl().setValue(endingDate);
     }
 
-    public updateEndingTimeControl(endingTime: number) {
+    public updateEndingTimeControl(endingTime: number|undefined) {
         this.getEndingTimeControl().setValue(endingTime);
     }
 
@@ -223,8 +223,12 @@ export class EditEventComponent implements OnInit, OnDestroy {
 
     public manageLesserThanStartingDateTimeError(): void {
         const endingDateControl: AbstractControl<any, any> = this.getEndingDateControl();
+        if (!endingDateControl.value) {
+            return;
+        }
+
         const endingTimeControl: AbstractControl<any, any> = this.getEndingTimeControl();
-        const allDay: boolean = this.getAllDayControl().value.value;
+        const allDay: boolean = this.getAllDayControl().value;
 
         if (allDay) {
             if (this.editEventService.isStartingDateTimeStriclyGreaterThanEndingDateTime(this.getEditEventViewModel())) {

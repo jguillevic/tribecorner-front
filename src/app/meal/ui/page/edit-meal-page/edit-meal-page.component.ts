@@ -4,7 +4,7 @@ import { Meal } from '../../../model/meal.model';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MealService } from '../../../service/meal.service';
 import { Observable, Subject, combineLatest, debounceTime, exhaustMap, filter, map, mergeMap, of, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
@@ -16,6 +16,8 @@ import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { GoBackTopBarComponent } from "../../../../common/top-bar/go-back/ui/go-back-top-bar.component";
 import { MealCurrentDateService } from '../../../service/meal-current-date.service';
 import { DateHelper } from '../../../../common/date/helper/date.helper';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
     selector: 'app-edit-meal-page',
@@ -32,7 +34,9 @@ import { DateHelper } from '../../../../common/date/helper/date.helper';
         ReactiveFormsModule,
         SimpleLoadingComponent,
         MtxButtonModule,
-        GoBackTopBarComponent
+        GoBackTopBarComponent,
+        MatDatepickerModule,
+        MatNativeDateModule
     ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -47,17 +51,17 @@ export class EditMealPageComponent implements OnInit, OnDestroy {
   public readonly numbersOfPersons: number[] = [1, 2, 3, 4, 5, 6, 7, 8];
 
   // Formulaire.
-  public readonly mealNameMaxLength: number = 255; 
+  public readonly mealNameMaxLength: number = 255;
 
   private editMealForm: FormGroup 
   = new FormGroup(
     {
-      mealKindId: new FormControl(0, [Validators.required]),
       name: new FormControl('', [Validators.required, Validators.maxLength(this.mealNameMaxLength)]),
       date: new FormControl(
         DateHelper.getCurrentDate(),
         [Validators.required]
       ),
+      mealKindId: new FormControl(0, [Validators.required]),
       numberOfPersons: new FormControl(0, [Validators.required])
     }
   );
@@ -117,14 +121,8 @@ export class EditMealPageComponent implements OnInit, OnDestroy {
             1
           );
           return of(meal);
-          }),
-          tap(meal => {
-            this.editMealForm.controls['mealKindId'].setValue(meal.mealKindId);
-            this.editMealForm.controls['name'].setValue(meal.name);
-            this.editMealForm.controls['date'].setValue(meal.date);
-            this.editMealForm.controls['numberOfPersons'].setValue(meal.numberOfPersons);
         }),
-        map(() => this.editMealForm)
+        map((meal: Meal) => this.updateEditMealForm(meal))
     );
 }
 
@@ -132,6 +130,63 @@ export class EditMealPageComponent implements OnInit, OnDestroy {
     const meal: Meal = this.editMealForm.value as Meal;
     meal.id = this.currentMealId;
     return meal;
+  }
+
+  public getNameControl(): AbstractControl<any, any> {
+    return this.editMealForm.controls['name'];
+  }
+
+  public getDateControl(): AbstractControl<any, any> {
+    return this.editMealForm.controls['date'];
+  }
+
+  public getMealKindIdControl(): AbstractControl<any, any> {
+    return this.editMealForm.controls['mealKindId'];
+  }
+
+  public getNumberOfPersonsControl(): AbstractControl<any, any> {
+    return this.editMealForm.controls['numberOfPersons'];
+  }
+
+  public updateNameControl(name: string): void {
+    this.getNameControl().setValue(name);
+  }
+
+  public updateDateControl(date: Date|undefined): void {
+    this.getDateControl().setValue(date);
+  }
+
+  public updateMealKindIdControl(mealKindId: number|undefined): void {
+    this.getMealKindIdControl().setValue(mealKindId);
+  }
+
+  public updateNumberOfPersonsControl(numberOfPersons: number|undefined): void {
+    this.getNumberOfPersonsControl().setValue(numberOfPersons);
+  }
+
+  public updateEditMealForm(meal: Meal): FormGroup {
+    this.updateNameControl(meal.name);
+    this.updateDateControl(meal.date);
+    this.updateMealKindIdControl(meal.mealKindId);
+    this.updateNumberOfPersonsControl(meal.numberOfPersons);
+
+    return this.editMealForm;
+  }
+
+  public getNameErrorMessage(): Observable<string|undefined> {
+    return of(undefined);
+  }
+
+  public getDateErrorMessage(): Observable<string|undefined> {
+    return of(undefined);
+  }
+
+  public getMealKindIdErrorMessage(): Observable<string|undefined> {
+    return of(undefined);
+  }
+
+  public getNumberofPersonsErrorMessage(): Observable<string|undefined> {
+    return of(undefined);
   }
 
   private save(): Observable<Meal> {

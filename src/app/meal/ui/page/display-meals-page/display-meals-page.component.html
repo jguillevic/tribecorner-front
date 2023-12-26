@@ -18,11 +18,11 @@
                     </app-meal-edit-button>
                     <app-meal-copy-button 
                     [mealToCopy]="meal"
-                    (onMealCopied)="onMealCopied(meal)">
+                    (onMealCopied)="onMealCopied($event)">
                     </app-meal-copy-button>
                     <app-meal-delete-button 
                     [mealToDelete]="meal"
-                    (onMealDeleted)="onMealDeleted(meal)">
+                    (onMealDeleted)="onMealDeleted($event)">
                     </app-meal-delete-button>
                 </app-large-meal-card>
             </div>

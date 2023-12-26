@@ -20,7 +20,7 @@ import { MtxButtonModule } from '@ng-matero/extensions/button';
     ]
 })
 export class ShoppingListEditButtonComponent {
-    @Input() public shoppingListId: number = 0;
+    @Input() public shoppingListId: number|undefined = 0;
 
     public isGoingToEdit: boolean = false;
 

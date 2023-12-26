@@ -5,7 +5,7 @@ export abstract class ShoppingListHelper {
     public static copy(shoppingListToCopy: ShoppingList, copyIds: boolean = true): ShoppingList {
         const copiedShoppingList = new ShoppingList();
     
-        copiedShoppingList.id = copyIds ? shoppingListToCopy.id : 0;
+        copiedShoppingList.id = copyIds ? shoppingListToCopy.id : undefined;
         copiedShoppingList.name = shoppingListToCopy.name;
         copiedShoppingList.isArchived = shoppingListToCopy.isArchived;
         shoppingListToCopy.items.forEach(item => {

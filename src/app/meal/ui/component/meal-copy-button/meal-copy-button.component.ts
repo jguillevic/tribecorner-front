@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Subject, Subscription, takeUntil, tap } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { Meal } from '../../../model/meal.model';
 import { MealService } from '../../../service/meal.service';
 import { MtxButtonModule } from '@ng-matero/extensions/button';
@@ -44,14 +44,15 @@ export class MealCopyButtonComponent implements OnDestroy {
 
     this.isCopying = true;
     const copiedMeal = MealHelper.copy(this.mealToCopy, false);
+    copiedMeal.name += ' (copie)';
     this.mealService.create(copiedMeal)
     .pipe(
-      takeUntil(this.destroy$),
       tap(
-        copiedMeal => 
+        copiedMeal =>
           this.onMealCopied.emit(copiedMeal)
       ),
-      tap(() => this.isCopying = false)
+      tap(() => this.isCopying = false),
+      takeUntil(this.destroy$)
     )
     .subscribe({
       error: () => this.isCopying = false,

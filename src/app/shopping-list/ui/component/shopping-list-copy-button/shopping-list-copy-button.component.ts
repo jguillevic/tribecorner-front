@@ -24,7 +24,7 @@ export class ShoppingListCopyButtonComponent implements OnDestroy {
 
   public isCopying: boolean = false;
 
-  @Input() public shoppingListToCopy: ShoppingList = new ShoppingList();
+  @Input() public shoppingListToCopy: ShoppingList|undefined;
   @Output() public onShoppingListCopied: EventEmitter<ShoppingList> = new EventEmitter<ShoppingList>();
 
   public constructor(
@@ -36,17 +36,22 @@ export class ShoppingListCopyButtonComponent implements OnDestroy {
   }
 
   public copy(): void {
+    if (!this.shoppingListToCopy) {
+      return;
+    }
+
     this.isCopying = true;
     const copiedShoppingList = ShoppingListHelper.copy(this.shoppingListToCopy, false);
+    copiedShoppingList.name += ' (copie)';
     copiedShoppingList.isArchived = false;
     this.shoppingListService.create(copiedShoppingList)
     .pipe(
-      takeUntil(this.destroy$),
       tap(
-        copiedShoppingList => 
+        copiedShoppingList =>
           this.onShoppingListCopied.emit(copiedShoppingList)
       ),
-      tap(() => this.isCopying = false)
+      tap(() => this.isCopying = false),
+      takeUntil(this.destroy$)
     )
     .subscribe({
       error: () => this.isCopying = false,

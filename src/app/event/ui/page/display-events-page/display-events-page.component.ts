@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProfileTopBarComponent } from "../../../../common/top-bar/profile/ui/profile-top-bar.component";
-import { InlineCalendarComponent } from "../../../../common/calendar/ui/inline-calendar/inline-calendar.component";
+import { InlineCalendarComponent } from "../../../../common/calendar/ui/component/inline-calendar/inline-calendar.component";
 import { TabBarComponent } from "../../../../common/tab-bar/ui/tab-bar/tab-bar.component";
 import { EventRoutes } from '../../../route/event.routes';
 import { Router } from '@angular/router';

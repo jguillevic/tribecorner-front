@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, LOCALE_ID, OnDestroy, OnInit, Output } from '@angular/core';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import * as fr from '@angular/common/locales/fr';
-import { CalendarDate } from '../../model/calendar-date.model';
+import { CalendarDate } from '../../../model/calendar-date.model';
 import { Observable, Subscription, tap } from 'rxjs';
-import { DateHelper } from '../../../date/helper/date.helper';
+import { DateHelper } from '../../../../date/helper/date.helper';
 
 @Component({
   selector: 'app-inline-calendar',

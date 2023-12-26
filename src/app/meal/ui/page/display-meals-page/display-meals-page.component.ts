@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProfileTopBarComponent } from "../../../../common/top-bar/profile/ui/profile-top-bar.component";
 import { TabBarComponent } from "../../../../common/tab-bar/ui/tab-bar/tab-bar.component";
-import { InlineCalendarComponent } from "../../../../common/calendar/ui/inline-calendar/inline-calendar.component";
+import { InlineCalendarComponent } from "../../../../common/calendar/ui/component/inline-calendar/inline-calendar.component";
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Observable, Subject, switchMap, take } from 'rxjs';

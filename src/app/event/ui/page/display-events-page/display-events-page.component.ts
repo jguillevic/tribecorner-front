@@ -5,7 +5,7 @@ import { InlineCalendarComponent } from "../../../../common/calendar/ui/componen
 import { TabBarComponent } from "../../../../common/tab-bar/ui/tab-bar/tab-bar.component";
 import { EventRoutes } from '../../../route/event.routes';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, combineLatest, map, switchMap, take, tap } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, forkJoin, map, switchMap, take, tap } from 'rxjs';
 import { EventService } from '../../../service/event.service';
 import { SimpleLoadingComponent } from "../../../../common/loading/ui/simple-loading/simple-loading.component";
 import { EventLargeEmptyComponent } from "../../component/event-large-empty/event-large-empty.component";
@@ -42,21 +42,21 @@ export class DisplayEventsComponent {
   private readonly deletedEventsSubject: BehaviorSubject<Event[]> = new BehaviorSubject<Event[]>([]);
   private readonly deletedEvents$: Observable<Event[]> = this.deletedEventsSubject.asObservable();
 
+  public isLoading: boolean = false;
+
   public readonly events$ 
-  = combineLatest(
-    {
-      loadedEvents: this.selectedDate$.pipe(
-        switchMap(date => this.eventService.loadAllByDate(date))
-      ),
-      deletedEvents: this.deletedEvents$
-    }
-  )
+  = this.selectedDate$
   .pipe(
+    tap(() => this.isLoading = true),
+    switchMap((date: Date) => {
+      return combineLatest({loadedEvents: this.eventService.loadAllByDate(date), deletedEvents: this.deletedEvents$})
+    }),
     map(result => 
       result.loadedEvents.filter(
         loadedEvent => !result.deletedEvents.includes(loadedEvent)
       )
-    )
+    ),
+    tap(() => this.isLoading = false),
   );
 
   public constructor(

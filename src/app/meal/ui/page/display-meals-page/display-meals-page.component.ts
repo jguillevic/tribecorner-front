@@ -5,7 +5,7 @@ import { TabBarComponent } from "../../../../common/tab-bar/ui/tab-bar/tab-bar.c
 import { InlineCalendarComponent } from "../../../../common/calendar/ui/component/inline-calendar/inline-calendar.component";
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { Observable, Subject, switchMap, take } from 'rxjs';
+import { Observable, Subject, switchMap, take, tap } from 'rxjs';
 import { MealsByMealKind } from '../../../model/meals-by-meal-kind.model';
 import { MealsByMealKindService } from '../../../service/meals-by-meal-kind.service';
 import { SimpleLoadingComponent } from "../../../../common/loading/ui/simple-loading/simple-loading.component";
@@ -44,6 +44,8 @@ export class DisplayMealsPageComponent implements OnDestroy {
   private readonly destroy$: Subject<void> = new Subject<void>();
   private readonly selectedDate$: Observable<Date> = this.mealCurrentDateService.currentDate$;
   
+  public isLoading: boolean = false;
+
   public readonly defaultDate$: Observable<Date> = this.selectedDate$
   .pipe(
     take(1)
@@ -53,9 +55,9 @@ export class DisplayMealsPageComponent implements OnDestroy {
   = this.getMealsByMealKinds$();
 
   public constructor(
-    private mealsByMealKindService: MealsByMealKindService,
-    private mealCurrentDateService: MealCurrentDateService,
-    private mealGoToService: MealGoToService
+    private readonly mealsByMealKindService: MealsByMealKindService,
+    private readonly mealCurrentDateService: MealCurrentDateService,
+    private readonly mealGoToService: MealGoToService
   ) { }
 
   public ngOnDestroy(): void {
@@ -77,7 +79,9 @@ export class DisplayMealsPageComponent implements OnDestroy {
   private getMealsByMealKinds$(): Observable<MealsByMealKind[]> {
     return this.selectedDate$
     .pipe(
-      switchMap(date => this.mealsByMealKindService.loadAllByDate(date))
+      tap(() => this.isLoading = true),
+      switchMap(date => this.mealsByMealKindService.loadAllByDate(date)),
+      tap(() => this.isLoading = false)
     );
   }
 

@@ -53,7 +53,7 @@ export class EditMealPageComponent implements OnInit, OnDestroy {
   // Formulaire.
   public readonly mealNameMaxLength: number = 255;
 
-  private editMealForm: FormGroup 
+  private readonly editMealForm: FormGroup 
   = new FormGroup(
     {
       name: new FormControl('', [Validators.required, Validators.maxLength(this.mealNameMaxLength)]),
@@ -75,10 +75,10 @@ export class EditMealPageComponent implements OnInit, OnDestroy {
   });
 
   public constructor(
-    private activatedRoute: ActivatedRoute,
-    private mealKindService: MealKindService,
-    private mealService: MealService,
-    private mealCurrentDateService: MealCurrentDateService
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly mealKindService: MealKindService,
+    private readonly mealService: MealService,
+    private readonly mealCurrentDateService: MealCurrentDateService
   ) { }
 
   public ngOnInit(): void {

@@ -1,16 +1,21 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SimpleLoadingComponent } from "../../../../common/loading/ui/simple-loading/simple-loading.component";
+import { TranslocoModule, provideTranslocoScope } from '@ngneat/transloco';
 
 @Component({
-    selector: 'app-home-category',
-    standalone: true,
-    templateUrl: './home-category.component.html',
-    styleUrls: ['./home-category.component.scss'],
-    imports: [
-        CommonModule,
-        SimpleLoadingComponent
-    ]
+  selector: 'app-home-category',
+  standalone: true,
+  templateUrl: './home-category.component.html',
+  styleUrls: ['./home-category.component.scss'],
+  imports: [
+      CommonModule,
+      SimpleLoadingComponent,
+      TranslocoModule
+  ],
+  providers: [
+    provideTranslocoScope({scope: 'home/ui/component/home-category', alias: 'homeCategory'})
+  ]
 })
 export class HomeCategoryComponent {
   @Input() public categoryName: string | undefined;

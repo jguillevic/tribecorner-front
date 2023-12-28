@@ -25,6 +25,7 @@ import { EventRoutes } from '../../../../event/route/event.routes';
 import { EventCardComponent } from "../../../../event/ui/component/event-card/event-card.component";
 import { DateHelper } from '../../../../common/date/helper/date.helper';
 import { ShoppingListGoToService } from '../../../../shopping-list/service/shopping-list-go-to.service';
+import { TranslocoModule, provideTranslocoScope } from '@ngneat/transloco';
 
 @Component({
     selector: 'app-display-home-page',
@@ -44,7 +45,11 @@ import { ShoppingListGoToService } from '../../../../shopping-list/service/shopp
         SimpleMealCardComponent,
         SimpleLoadingComponent,
         SimpleEmptyComponent,
-        EventCardComponent
+        EventCardComponent,
+        TranslocoModule
+    ],
+    providers: [
+      provideTranslocoScope({scope: 'home/ui/page/display-home-page', alias: 'displayHomePage'})
     ]
 })
 export class DisplayHomeComponent {

@@ -1,8 +1,9 @@
-<div class="page">
+<div class="page"
+*transloco="let t;read:'displayHomePage';">
     <app-profile-top-bar></app-profile-top-bar>
     <div class="display-home">
         <app-home-category
-        categoryName="Mes événements" 
+        categoryName="{{t('myEvents')}}" 
         (onSeeAllClicked)="goToDisplayEvents()">
             <div *ngIf="this.events$ | async as events;else loadingEvents"
             class="events__container">
@@ -17,7 +18,7 @@
         </app-home-category>
         <mat-divider></mat-divider>
         <app-home-category
-        categoryName="Mes repas du jour" 
+        categoryName="{{t('myMealsOfTheDay')}}" 
         (onSeeAllClicked)="goToDisplayMeals()">
             <div *ngIf="this.mealsByMealKinds$ | async as mealsByMealKinds;else loadingMeals"
             class="meals-by-meal-kinds__container">
@@ -41,7 +42,7 @@
         </app-home-category>
         <mat-divider></mat-divider>
         <app-home-category
-        categoryName="Mes listes" 
+        categoryName="{{t('myShoppingLists')}}" 
         (onSeeAllClicked)="goToDisplayShoppingLists()">
             <div *ngIf="this.shoppingLists$ | async as shoppingLists;else loadingShoppingLists"
             class="shopping-lists__container">

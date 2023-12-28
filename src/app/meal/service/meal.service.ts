@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, mergeMap } from 'rxjs';
 import { Meal } from '../model/meal.model';
 import { environment } from '../../../environments/environment';
 import { MealConverter } from '../converter/meal.converter';
@@ -7,13 +7,26 @@ import { LoadMealDto } from '../dto/load-meal.dto';
 import { ApiHttpClient } from '../../common/http/api-http-client';
 import { DateHelper } from '../../common/date/helper/date.helper';
 import { EditMealDto } from '../dto/edit-meal.dto';
+import { FamilyService } from '../../family/service/family.service';
+import { Family } from '../../family/model/family.model';
 
 @Injectable()
 export class MealService {
   private static apiPath: string = "meals";
 
+  public defaultNumberOfPersons$: Observable<number> 
+  = this.familyService.family$
+  .pipe(
+    map((family: Family|undefined) => 
+      { 
+        return (family ? family.members.length : 2); 
+      }
+    )
+  );
+
   public constructor(
-    private apiHttp: ApiHttpClient
+    private apiHttp: ApiHttpClient,
+    private familyService: FamilyService
   ) { }
 
   public loadAllByDate(date: Date): Observable<Meal[]> {

@@ -72,7 +72,6 @@ const routes: Routes = [
     { 
         path: '',
         providers: [
-            FamilyService,
             EventService,
             MealKindService,
             MealService,
@@ -85,7 +84,6 @@ const routes: Routes = [
     },
     { 
         path: '',
-        providers: [FamilyService],
         children: FamilyRoutes.familyRoutes
     },
     { 

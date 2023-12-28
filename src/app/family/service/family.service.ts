@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Family } from '../model/family.model';
-import { Observable, map, of, switchMap } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { Observable, exhaustMap, map, of, shareReplay, switchMap } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { LoadFamilyDto } from '../dto/load-family.dto';
 import { LoadFamilyMemberDto } from '../dto/load-family-member.dto';
 import { FamilyMember } from '../model/family-member.model';
@@ -11,12 +11,32 @@ import { AssociationCodeNotFoundError } from '../error/association-code-not-foun
 import { ApiHttpClient } from 'src/app/common/http/api-http-client';
 import { FamilyConverter } from '../converter/family.converter';
 import { FamilyMemberConverter } from '../converter/family-member.converter';
+import { UserService } from '../../user/service/user.service';
+import { UserInfo } from '../../user/model/user-info.model';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class FamilyService {
   private static apiPath: string = 'families';
 
-  public constructor(private apiHttp: ApiHttpClient) { }
+  public constructor(
+    private apiHttp: ApiHttpClient,
+    private userService: UserService
+  ) { }
+
+  public family$: Observable<Family|undefined> 
+  = of(this.userService.getCurrentUserInfo())
+  .pipe(
+    exhaustMap((userInfo: UserInfo|undefined) => 
+      { 
+        if (userInfo && userInfo.familyId) {
+          return this.loadOneByFamilyId(userInfo.familyId); 
+        }
+        return of(undefined);
+      }
+    )
+  );
 
   public loadOneByFamilyId(familyId: number): Observable<Family> {
     return this.apiHttp.get<LoadFamilyDto>(
@@ -25,7 +45,8 @@ export class FamilyService {
       .pipe(
         map(loadFamilyDto => 
           FamilyConverter.fromDtoToModel(loadFamilyDto)
-        )
+        ),
+        shareReplay(1)
       );
   }
 
@@ -56,7 +77,7 @@ export class FamilyService {
     return createFamilyDto;
   }
 
-  public loadOneByAssociationCode(associationCode: string): Observable<Family|undefined> {
+  private loadOneByAssociationCode(associationCode: string): Observable<Family|undefined> {
     return this.apiHttp.get<LoadFamilyDto[]>(
       `${environment.apiUrl}${FamilyService.apiPath}?associationCode=${associationCode}`
       )

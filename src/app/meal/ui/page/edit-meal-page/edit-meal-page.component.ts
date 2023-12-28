@@ -103,7 +103,8 @@ export class EditMealPageComponent implements OnInit, OnDestroy {
     return combineLatest(
       {
           params: this.activatedRoute.queryParams,
-          currentDate: this.mealCurrentDateService.currentDate$
+          currentDate: this.mealCurrentDateService.currentDate$,
+          defaultNumberOfPersons: this.mealService.defaultNumberOfPersons$
       }
     )
     .pipe(
@@ -117,7 +118,7 @@ export class EditMealPageComponent implements OnInit, OnDestroy {
             0,
             '',
             defaultDate,
-            3,
+            result.defaultNumberOfPersons,
             1
           );
           return of(meal);

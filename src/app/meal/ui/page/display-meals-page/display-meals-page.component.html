@@ -6,9 +6,8 @@
         (onSelectedDateChanged)="onSelectedDateChanged($event)">
         </app-inline-calendar>
         <div 
-        *ngIf="this.mealsByMealKinds$ | async as mealsByMealKinds" 
-        class="meals__container">
-            <div *ngIf="!this.isLoading">
+        *ngIf="this.mealsByMealKinds$ | async as mealsByMealKinds" >
+            <div *ngIf="!this.isLoading" class="meals__container">
                 <div class="meal-kind" *ngFor="let mealsByMealKind of mealsByMealKinds">
                     <div class="meal-kind__name">
                         {{ mealsByMealKind.mealKind.name }}

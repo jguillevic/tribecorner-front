@@ -8,7 +8,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
+import { TranslocoModule, TranslocoService, provideTranslocoScope } from '@ngneat/transloco';
 import { Observable, Subject, combineLatest, debounceTime, exhaustMap, filter, map, mergeMap, of, takeUntil, tap } from 'rxjs';
 import { GoBackTopBarComponent } from "../../../../common/top-bar/go-back/ui/go-back-top-bar.component";
 import { SimpleLoadingComponent } from "../../../../common/loading/ui/simple-loading/simple-loading.component";
@@ -36,6 +36,9 @@ import { EventTimeHelper } from '../../../helper/event-time.helper';
         MatSelectModule,
         TimeToStringPipe,
         TranslocoModule
+    ],
+    providers: [
+        provideTranslocoScope({scope: 'event/ui/page/edit-event-page', alias: 'editEventPage'})
     ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })

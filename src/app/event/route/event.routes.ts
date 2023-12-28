@@ -1,5 +1,4 @@
 import { Routes } from "@angular/router";
-import { provideTranslocoScope } from "@ngneat/transloco";
 
 export class EventRoutes {
     public static readonly displayEventsRoute: string = 'events/display';
@@ -13,10 +12,7 @@ export class EventRoutes {
         { 
             path: EventRoutes.editEventRoute,
             title: 'Événement',
-            loadComponent: () => import('../ui/page/edit-event-page/edit-event-page.component').then(module => module.EditEventComponent),
-            providers: [
-                provideTranslocoScope({scope: 'event/ui/page/edit-event-page', alias: 'editEventPage'})
-            ]   
+            loadComponent: () => import('../ui/page/edit-event-page/edit-event-page.component').then(module => module.EditEventComponent) 
         }
     ];
 }

@@ -56,21 +56,11 @@
                 </mat-expansion-panel>
             </div>
         </div>
-        <form class="add-form padding" [formGroup]="addNewItemShoppingListForm" (ngSubmit)="addItemShoppingList()">
-            <mat-form-field class="add-form__field">
-                <mat-label>Nouvel article</mat-label>
-                <input matInput type="text" formControlName="newItemShoppingListName">
-                <mat-error *ngIf="addNewItemShoppingListForm.controls['newItemShoppingListName'].hasError('already-added')">
-                    Élément déjà dans la liste
-                </mat-error>
-                <mat-error *ngIf="addNewItemShoppingListForm.controls['newItemShoppingListName'].hasError('maxlength')">
-                    Libellé trop long (max. {{ this.itemShoppingListNameMaxLength }} caractères)
-                </mat-error>
-            </mat-form-field>
-            <button mat-raised-button color="primary" class="add-form__button">
-                Ajouter
-            </button>
-        </form>
+        <app-add-item-shopping-list-form 
+        class="add-form padding"
+        [currentItemShoppingLists]="this.itemShoppingLists$ | async"
+        (itemShoppingListAdded)="this.itemShoppingListAdded($event)">
+        </app-add-item-shopping-list-form>
         <ng-template #loadingForm>
             <app-simple-loading></app-simple-loading>
         </ng-template>

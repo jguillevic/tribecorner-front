@@ -9,9 +9,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ItemShoppingList } from '../../../model/item-shopping-list.model';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BehaviorSubject, Observable, Subject, combineLatest, debounceTime, exhaustMap, filter, map, mergeMap, of, skip, takeUntil, tap } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Action } from 'src/app/common/action';
-import { ShoppingListRoutes } from '../../../route/shopping-list.routes';
 import { SimpleLoadingComponent } from "../../../../common/loading/ui/simple-loading/simple-loading.component";
 import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -20,6 +19,8 @@ import { GoBackTopBarComponent } from "../../../../common/top-bar/go-back/ui/go-
 import { MatDividerModule } from '@angular/material/divider';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ShoppingListCompletedDialogComponent } from '../../component/shopping-list-completed-dialog/shopping-list-completed-dialog.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { AddItemShoppingListFormComponent } from "../../component/add-item-shopping-list-form/add-item-shopping-list-form.component";
 
 @Component({
     selector: 'app-display-shopping-list-page',
@@ -40,7 +41,9 @@ import { ShoppingListCompletedDialogComponent } from '../../component/shopping-l
         MatExpansionModule,
         GoBackTopBarComponent,
         MatDividerModule,
-        MatDialogModule
+        MatDialogModule,
+        MatAutocompleteModule,
+        AddItemShoppingListFormComponent
     ]
 })
 export class EditShoppingListComponent implements OnInit, OnDestroy {
@@ -48,8 +51,8 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
   private currentShoppingListId: number|undefined;
   private isArchived: boolean = false;
 
-  private itemShoppingListsSubject: BehaviorSubject<ItemShoppingList[]> = new BehaviorSubject<ItemShoppingList[]>([]);
-  public itemShoppingLists$: Observable<ItemShoppingList[]> = this.itemShoppingListsSubject.asObservable();
+  private readonly itemShoppingListsSubject: BehaviorSubject<ItemShoppingList[]> = new BehaviorSubject<ItemShoppingList[]>([]);
+  public readonly itemShoppingLists$: Observable<ItemShoppingList[]> = this.itemShoppingListsSubject.asObservable();
 
   public notCheckedItemShoppingLists$ = this.itemShoppingLists$
   .pipe(
@@ -96,19 +99,10 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
     map(() => this.editShoppingListForm)
   );
 
-  public readonly itemShoppingListNameMaxLength: number = 255;
-
-  public readonly addNewItemShoppingListForm: FormGroup = new FormGroup(
-    {
-      newItemShoppingListName: new FormControl('', [Validators.maxLength(this.itemShoppingListNameMaxLength)])
-    }
-  );
-
   public constructor(
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private shoppingListService: ShoppingListService,
-    private dialog: MatDialog
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly shoppingListService: ShoppingListService,
+    private readonly dialog: MatDialog
   ) { }
 
   public ngOnInit(): void {
@@ -172,30 +166,9 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
     );
   }
 
-  public goToDisplayShoppingLists(): Promise<boolean> {
-    return this.router.navigate(
-      [ShoppingListRoutes.displayShoppingListsRoute]
-    );
-  }
-
-  public addItemShoppingList(): void {
-    if (this.addNewItemShoppingListForm.valid)
-    {
-      const newItemShoppingListName: string = this.addNewItemShoppingListForm.controls['newItemShoppingListName'].value;
-
-      if (newItemShoppingListName.length) {
-        if (this.itemShoppingListsSubject.value.find(item => item.name === newItemShoppingListName)) {
-          this.addNewItemShoppingListForm.controls['newItemShoppingListName'].setErrors({'already-added': true});
-          return;
-        }
-
-        const itemShoppingList: ItemShoppingList  = new ItemShoppingList();
-        itemShoppingList.name = newItemShoppingListName;
-        this.itemShoppingListsSubject.next([...this.itemShoppingListsSubject.value, itemShoppingList]);
-        itemShoppingList.position = this.itemShoppingListsSubject.value.indexOf(itemShoppingList) + 1;
-        this.addNewItemShoppingListForm.controls['newItemShoppingListName'].setValue('');
-      }
-    }
+  public itemShoppingListAdded(itemShoppingList: ItemShoppingList): void {
+    this.itemShoppingListsSubject.next([...this.itemShoppingListsSubject.value, itemShoppingList]);
+    itemShoppingList.position = this.itemShoppingListsSubject.value.indexOf(itemShoppingList) ?? 0 + 1;
   }
 
   public deleteItemShoppingList(itemShoppingList: ItemShoppingList): void {

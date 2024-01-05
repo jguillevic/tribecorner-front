@@ -27,6 +27,8 @@ import { TranslocoHttpLoader } from './transloco-loader';
 import { provideTransloco } from '@ngneat/transloco';
 import { ShoppingListGoToService } from './app/shopping-list/service/shopping-list-go-to.service';
 import { MealGoToService } from './app/meal/service/meal-go-to.service';
+import { SuggestedItemShoppingListApiService } from './app/shopping-list/service/suggested-item-shopping-list-api.service';
+import { SuggestedItemShoppingListAutoCompleteService } from './app/shopping-list/service/suggested-item-shopping-list-auto-complete.service';
 
 const routes: Routes = [
     { 
@@ -42,7 +44,9 @@ const routes: Routes = [
         path: '',
         providers: [
             ShoppingListService,
-            ShoppingListGoToService
+            ShoppingListGoToService,
+            SuggestedItemShoppingListApiService,
+            SuggestedItemShoppingListAutoCompleteService
         ],
         canActivate: [signedInGuard, hasFamilyGuard],
         children: ShoppingListRoutes.shoppingListRoutes

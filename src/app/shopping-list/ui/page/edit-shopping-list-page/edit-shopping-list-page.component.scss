@@ -7,23 +7,6 @@
 .add-form {
     position: fixed;
     bottom: 0;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: center;
-    background-color: white;
-    padding-top: 10px;
-    
-    @include media-width;
-
-    &__field {
-        grid-column: 1;
-    }
-
-    &__button {
-        margin-left: 10px;
-        margin-bottom: 22px;
-        grid-column: 2;
-    }
 }
 
 .item-shopping-list {

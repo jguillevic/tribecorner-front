@@ -1,0 +1,6 @@
+{
+    "nameTooLong": "Libellé trop long (max. {{maxLength}} caractères)",
+    "alreadyAdded": "Élément déjà dans la liste",
+    "newItem": "Nouvel article",
+    "add": "Ajouter"
+}

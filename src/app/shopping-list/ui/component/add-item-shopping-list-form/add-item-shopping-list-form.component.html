@@ -1,15 +1,26 @@
-<form class="add-form" [formGroup]="addItemShoppingListForm" (ngSubmit)="submitItemShoppingList()">
+<form 
+class="add-form" 
+[formGroup]="addItemShoppingListForm" 
+(ngSubmit)="submitItemShoppingList()"
+*transloco="let t;read:'addItemShoppingListForm'">
     <mat-form-field class="add-form__field">
-        <mat-label>Nouvel article</mat-label>
-        <input matInput type="text" formControlName="itemShoppingListName">
-        <mat-error *ngIf="addItemShoppingListForm.controls['itemShoppingListName'].hasError('already-added')">
-            Élément déjà dans la liste
-        </mat-error>
-        <mat-error *ngIf="addItemShoppingListForm.controls['itemShoppingListName'].hasError('maxlength')">
-            Libellé trop long (max. 255 caractères)
-        </mat-error>
+        <mat-label>{{t('newItem')}}</mat-label>
+        <input 
+        matInput 
+        type="text" 
+        [formControlName]="this.itemShoppingListNameCode"
+        [matAutocomplete]="auto">
+        <mat-autocomplete
+        autoActiveFirstOption
+        #auto="matAutocomplete"
+        (optionSelected)="this.suggestedItemShoppingListSelected($event.option.value)">
+            <mat-option *ngFor="let suggestedItemShoppingList of suggestedItemShoppingLists$ | async; trackBy: this.trackBySuggestedItemShoppingListName" [value]="suggestedItemShoppingList">
+                {{ suggestedItemShoppingList.name }}
+            </mat-option>
+        </mat-autocomplete>
+        <mat-error>{{ this.getItemShoppingListNameErrorMessage() | async }}</mat-error>
     </mat-form-field>
     <button mat-raised-button color="primary" class="add-form__button">
-        Ajouter
+        {{t('add')}}
     </button>
 </form>

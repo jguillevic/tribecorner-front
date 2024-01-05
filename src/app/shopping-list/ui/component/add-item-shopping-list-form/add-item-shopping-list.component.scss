@@ -1,0 +1,22 @@
+@import '../../../../../styles/helpers/colors';
+@import '../../../../../styles/helpers/mixins';
+
+.add-form {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    background-color: $background-color;
+    padding-top: 10px;
+    
+    @include media-width;
+
+    &__field {
+        grid-column: 1;
+    }
+
+    &__button {
+        margin-left: 10px;
+        margin-bottom: 22px;
+        grid-column: 2;
+    }
+}

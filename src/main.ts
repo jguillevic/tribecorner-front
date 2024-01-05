@@ -10,7 +10,6 @@ import { signedInGuard } from './app/user/guard/signed-in.guard';
 import { LoadingRoutes } from './app/loading/route/loading.routes';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { HomeRoutes } from './app/home/route/home.routes';
-import { FamilyService } from './app/family/service/family.service';
 import { FamilyRoutes } from './app/family/route/family.routes';
 import { hasFamilyGuard } from './app/family/guard/has-family.guard';
 import { NotFoundRoutes } from './app/not-found/route/not-found.routes';

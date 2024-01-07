@@ -7,8 +7,6 @@
     align-items: center;
     background-color: $background-color;
     padding-top: 10px;
-    
-    @include media-width;
 
     &__field {
         grid-column: 1;

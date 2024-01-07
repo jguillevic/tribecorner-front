@@ -5,8 +5,10 @@
 }
 
 .add-form {
+    width: 100%;
     position: fixed;
     bottom: 0;
+    @include media-width;
 }
 
 .item-shopping-list {

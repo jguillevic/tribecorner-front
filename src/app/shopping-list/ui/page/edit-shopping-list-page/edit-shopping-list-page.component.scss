@@ -17,10 +17,18 @@
     margin: 0px;
     padding: 0px;
 
+    &__check-box {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
     &__name {
         margin: 0px;
         padding: 0px;
         font-size: 16px;
+        cursor: pointer;
     }
 
     &__buttons {

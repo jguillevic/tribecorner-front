@@ -90,8 +90,8 @@ export class DisplayShoppingListsComponent implements OnDestroy {
   );
 
   public constructor(
-    private shoppingListService: ShoppingListService,
-    private shoppingListGoToService: ShoppingListGoToService
+    private readonly shoppingListService: ShoppingListService,
+    private readonly shoppingListGoToService: ShoppingListGoToService
   ) { }
 
   public ngOnDestroy(): void {

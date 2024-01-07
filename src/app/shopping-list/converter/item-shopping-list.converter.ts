@@ -4,12 +4,13 @@ import { ItemShoppingList } from "../model/item-shopping-list.model";
 
 export abstract class ItemShoppingListConverter {
     public static fromDtoToModel(loadItemShoppingListDto: LoadItemShoppingListDto): ItemShoppingList {
-        const itemShoppingList: ItemShoppingList = new ItemShoppingList();
-
-        itemShoppingList.id = loadItemShoppingListDto.id;
-        itemShoppingList.name = loadItemShoppingListDto.name;
-        itemShoppingList.isChecked = loadItemShoppingListDto.isChecked;
-        itemShoppingList.position = loadItemShoppingListDto.position;
+        const itemShoppingList: ItemShoppingList 
+        = new ItemShoppingList(
+            loadItemShoppingListDto.id,
+            loadItemShoppingListDto.name,
+            loadItemShoppingListDto.isChecked,
+            loadItemShoppingListDto.position
+        );
     
         return itemShoppingList;
     }

@@ -9,11 +9,13 @@ export abstract class ShoppingListHelper {
         copiedShoppingList.name = shoppingListToCopy.name;
         copiedShoppingList.isArchived = shoppingListToCopy.isArchived;
         shoppingListToCopy.items.forEach(item => {
-            const copiedItemShoppingList = new ItemShoppingList();
-            copiedItemShoppingList.id = copyIds ? item.id : undefined;
-            copiedItemShoppingList.name = item.name;
-            copiedItemShoppingList.isChecked = item.isChecked;
-            copiedItemShoppingList.position = item.position;
+            const copiedItemShoppingList 
+            = new ItemShoppingList(
+                copyIds ? item.id : undefined,
+                item.name,
+                item.isChecked,
+                item.position
+            );
             copiedShoppingList.items.push(copiedItemShoppingList);
         });
     

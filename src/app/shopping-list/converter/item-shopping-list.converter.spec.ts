@@ -24,12 +24,12 @@ describe('ItemShoppingListConverter', () => {
 
   describe('fromModelToDto', () => {
     it('should convert ItemShoppingList to EditItemShoppingListDto', () => {
-      const item: ItemShoppingList = {
-        id: 1,
-        name: 'Item Name',
-        isChecked: true,
-        position: 2,
-      };
+      const item: ItemShoppingList = new ItemShoppingList(
+        1,
+        'Item Name',
+        true,
+        2
+      );
 
       const result: EditItemShoppingListDto = ItemShoppingListConverter.fromModelToDto(item);
 

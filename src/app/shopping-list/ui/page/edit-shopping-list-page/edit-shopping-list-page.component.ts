@@ -21,6 +21,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ShoppingListCompletedDialogComponent } from '../../component/shopping-list-completed-dialog/shopping-list-completed-dialog.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AddItemShoppingListFormComponent } from "../../component/add-item-shopping-list-form/add-item-shopping-list-form.component";
+import { ItemShoppingListGoToService } from 'src/app/shopping-list/service/item-shopping-list-go-to.service';
 
 @Component({
     selector: 'app-display-shopping-list-page',
@@ -102,6 +103,7 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
   public constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly shoppingListService: ShoppingListService,
+    private readonly itemShoppingListGoToService: ItemShoppingListGoToService,
     private readonly dialog: MatDialog
   ) { }
 
@@ -151,6 +153,10 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
     shoppingList.items = this.itemShoppingListsSubject.value;
 
     return shoppingList;
+  }
+
+  public goToItemShoppingListUpdate(itemShoppingListId: number|undefined): Observable<boolean> {
+    return this.itemShoppingListGoToService.goToUpdate(itemShoppingListId);
   }
 
   private save(): Observable<ShoppingList> {

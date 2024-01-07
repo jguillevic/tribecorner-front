@@ -16,12 +16,18 @@
                     </mat-form-field>
                     <ul *ngIf="this.notCheckedItemShoppingLists$ | async as notCheckedItemShoppingLists">
                         <li class="item-shopping-list" *ngFor="let notCheckedItemShoppingList of notCheckedItemShoppingLists">
-                            <mat-checkbox
-                            color="primary"
-                            [checked]="notCheckedItemShoppingList.isChecked"
-                            (change)="toggleItemShoppingList(notCheckedItemShoppingList)">
-                                <span class="item-shopping-list__name" [ngClass]="{ 'line': notCheckedItemShoppingList.isChecked }">{{ notCheckedItemShoppingList.name }}</span>
-                            </mat-checkbox>
+                            <div class="item-shopping-list__check-box">
+                                <mat-checkbox
+                                color="primary"
+                                [checked]="notCheckedItemShoppingList.isChecked"
+                                (change)="toggleItemShoppingList(notCheckedItemShoppingList)">
+                                </mat-checkbox>
+                                <span class="item-shopping-list__name" 
+                                [ngClass]="{ 'line': notCheckedItemShoppingList.isChecked }"
+                                (click)="this.goToItemShoppingListUpdate(notCheckedItemShoppingList.id)">
+                                    {{ notCheckedItemShoppingList.name }}
+                                </span>
+                            </div>
                             <div class="item-shopping-list__buttons">
                                 <button type="button" mat-icon-button (click)="deleteItemShoppingList(notCheckedItemShoppingList)" color="warn">
                                     <mat-icon class="material-symbols-outlined">close</mat-icon>
@@ -40,12 +46,19 @@
                     </mat-expansion-panel-header>
                     <ul>
                         <li class="item-shopping-list" *ngFor="let checkedItemShoppingList of checkedItemShoppingLists">
-                            <mat-checkbox
+                            <div class="item-shopping-list__check-box">
+                                <mat-checkbox
                                 color="primary"
                                 [checked]="checkedItemShoppingList.isChecked"
                                 (change)="toggleItemShoppingList(checkedItemShoppingList)">
-                                    <span class="item-shopping-list__name" [ngClass]="{ 'line': checkedItemShoppingList.isChecked }">{{ checkedItemShoppingList.name }}</span>
-                            </mat-checkbox>
+                                </mat-checkbox>
+                                <span 
+                                class="item-shopping-list__name" 
+                                [ngClass]="{ 'line': checkedItemShoppingList.isChecked }"
+                                (click)="this.goToItemShoppingListUpdate(checkedItemShoppingList.id)">
+                                    {{ checkedItemShoppingList.name }}
+                                </span>
+                            </div>
                             <div class="item-shopping-list__buttons">
                                 <button type="button" mat-icon-button (click)="deleteItemShoppingList(checkedItemShoppingList)" color="warn">
                                     <mat-icon class="material-symbols-outlined">close</mat-icon>

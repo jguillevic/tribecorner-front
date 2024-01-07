@@ -7,12 +7,12 @@ export class EventRoutes {
         { 
             path: EventRoutes.displayEventsRoute,
             title: 'Agenda',
-            loadComponent: () => import('../ui/page/display-events-page/display-events-page.component').then(module => module.DisplayEventsComponent)
+            loadComponent: () => import('../ui/page/display-events-page/display-events-page.component').then(module => module.DisplayEventsPageComponent)
         },
         { 
             path: EventRoutes.editEventRoute,
             title: 'Événement',
-            loadComponent: () => import('../ui/page/edit-event-page/edit-event-page.component').then(module => module.EditEventComponent) 
+            loadComponent: () => import('../ui/page/edit-event-page/edit-event-page.component').then(module => module.EditEventPageComponent) 
         }
     ];
 }

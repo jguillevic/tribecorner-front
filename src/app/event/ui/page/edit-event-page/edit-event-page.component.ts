@@ -42,7 +42,7 @@ import { EventTimeHelper } from '../../../helper/event-time.helper';
     ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EditEventComponent implements OnInit, OnDestroy {
+export class EditEventPageComponent implements OnInit, OnDestroy {
     private readonly destroy$ = new Subject<void>();
 
     public currentEventId: number = 0;
@@ -73,7 +73,8 @@ export class EditEventComponent implements OnInit, OnDestroy {
     ) { }
 
     public ngOnInit(): void {
-        this.editEventForm.valueChanges.pipe(
+        this.editEventForm.valueChanges
+        .pipe(
             debounceTime(500),
             filter(() => 
                 !this.editEventForm.pristine &&

@@ -32,7 +32,7 @@ import { EventEditButtonComponent } from "../../component/event-edit-button/even
         EventEditButtonComponent
     ]
 })
-export class DisplayEventsComponent {
+export class DisplayEventsPageComponent {
   private readonly selectedDate$: Observable<Date> = this.eventCurrentDateService.currentDate$;
   public readonly defaultDate$: Observable<Date> = this.selectedDate$
   .pipe(

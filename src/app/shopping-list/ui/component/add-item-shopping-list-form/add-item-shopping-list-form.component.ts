@@ -96,8 +96,12 @@ export class AddItemShoppingListFormComponent {
                     return;
                 }
         
-                const itemShoppingList: ItemShoppingList  = new ItemShoppingList();
-                itemShoppingList.name = itemShoppingListName;
+                const itemShoppingList: ItemShoppingList  = new ItemShoppingList(
+                    0,
+                    itemShoppingListName,
+                    false,
+                    0
+                );
                 this.getItemShoppingListNameControl().setValue('');
                 this.itemShoppingListAdded.emit(itemShoppingList);
             }

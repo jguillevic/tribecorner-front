@@ -28,6 +28,9 @@ import { ShoppingListGoToService } from './app/shopping-list/service/shopping-li
 import { MealGoToService } from './app/meal/service/meal-go-to.service';
 import { SuggestedItemShoppingListApiService } from './app/shopping-list/service/suggested-item-shopping-list-api.service';
 import { SuggestedItemShoppingListAutoCompleteService } from './app/shopping-list/service/suggested-item-shopping-list-auto-complete.service';
+import { ItemShoppingListApiService } from './app/shopping-list/service/item-shopping-list-api.service';
+import { ItemShoppingListRoutes } from './app/shopping-list/route/item-shopping-list.routes';
+import { ItemShoppingListGoToService } from './app/shopping-list/service/item-shopping-list-go-to.service';
 
 const routes: Routes = [
     { 
@@ -44,11 +47,21 @@ const routes: Routes = [
         providers: [
             ShoppingListService,
             ShoppingListGoToService,
+            ItemShoppingListGoToService,
+            ItemShoppingListApiService,
             SuggestedItemShoppingListApiService,
             SuggestedItemShoppingListAutoCompleteService
         ],
         canActivate: [signedInGuard, hasFamilyGuard],
         children: ShoppingListRoutes.shoppingListRoutes
+    },
+    { 
+        path: '',
+        providers: [
+            ItemShoppingListApiService
+        ],
+        canActivate: [signedInGuard, hasFamilyGuard],
+        children: ItemShoppingListRoutes.itemShoppingListRoutes
     },
     { 
         path: '',

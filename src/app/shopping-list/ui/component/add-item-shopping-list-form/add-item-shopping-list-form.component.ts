@@ -97,7 +97,7 @@ export class AddItemShoppingListFormComponent {
                 }
         
                 const itemShoppingList: ItemShoppingList  = new ItemShoppingList(
-                    0,
+                    undefined,
                     itemShoppingListName,
                     false,
                     0

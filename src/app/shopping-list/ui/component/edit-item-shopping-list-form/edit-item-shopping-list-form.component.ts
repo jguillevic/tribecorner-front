@@ -108,7 +108,8 @@ export class EditItemShoppingListFormComponent implements OnInit, OnDestroy {
                 }
             }),
             takeUntil(this.destroy$)
-        );
+        )
+        .subscribe();
     }
 
     public buildTradKey(labelKey: string): string {

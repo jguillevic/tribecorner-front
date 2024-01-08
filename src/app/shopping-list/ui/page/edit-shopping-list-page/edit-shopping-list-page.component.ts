@@ -51,6 +51,7 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
   private currentShoppingListId: number|undefined;
   private isArchived: boolean = false;
+  private needToSaveItems: boolean = true;
 
   private readonly itemShoppingListsSubject: BehaviorSubject<ItemShoppingList[]> = new BehaviorSubject<ItemShoppingList[]>([]);
   public readonly itemShoppingLists$: Observable<ItemShoppingList[]> = this.itemShoppingListsSubject.asObservable();
@@ -95,7 +96,7 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
       return of(shoppingList);
     }),
     tap(shoppingList => this.isArchived = shoppingList.isArchived),
-    tap(shoppingList => this.itemShoppingListsSubject.next(shoppingList.items)),
+    tap(shoppingList => this.nextItemShoppingList(shoppingList.items, false)),
     tap(shoppingList => this.editShoppingListForm.controls['shoppingListName'].setValue(shoppingList.name)),
     map(() => this.editShoppingListForm)
   );
@@ -115,16 +116,14 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
       }
     )
     .pipe(
-      skip(1),
       debounceTime(500),
-      filter(() => this.editShoppingListForm.valid),
+      filter(() => this.editShoppingListForm.valid && this.needToSaveItems),
       exhaustMap(() => this.save()),
       takeUntil(this.destroy$),
     )
     .subscribe();
 
     this.itemShoppingLists$.pipe(
-      takeUntil(this.destroy$),
       tap(itemShoppingLists => {
         if (this.editShoppingListForm.valid &&
           !this.isArchived &&
@@ -133,13 +132,19 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
         ) {
           this.openShoppingListCompletedDialog();
         }
-      })
+      }),
+      takeUntil(this.destroy$)
     )
     .subscribe();
   }
 
   public ngOnDestroy(): void {
     this.destroy$.complete();
+  }
+
+  private nextItemShoppingList(itemShoppingLists: ItemShoppingList[], needToSaveItems: boolean = true) {
+    this.needToSaveItems = needToSaveItems
+    this.itemShoppingListsSubject.next(itemShoppingLists);
   }
 
   private getShoppingList(): ShoppingList {
@@ -163,29 +168,35 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
     const shoppingList: ShoppingList = this.getShoppingList();
 
     if (this.currentShoppingListId !== undefined) {
-      return this.shoppingListService.update(shoppingList);
+      return this.shoppingListService.update(shoppingList).
+      pipe(
+        // Nécessaire pour avoir les bons identifiants pour les éléments de liste.
+        tap(savedShoppingList => this.nextItemShoppingList(savedShoppingList.items, false))
+      );
     }
 
     return this.shoppingListService.create(shoppingList)
     .pipe(
-      tap(shoppingList => this.currentShoppingListId = shoppingList.id)
+      tap(shoppingList => this.currentShoppingListId = shoppingList.id),
+      // Nécessaire pour avoir les bons identifiants pour les éléments de liste.
+      tap(savedShoppingList => this.nextItemShoppingList(savedShoppingList.items, false))
     );
   }
 
   public itemShoppingListAdded(itemShoppingList: ItemShoppingList): void {
-    this.itemShoppingListsSubject.next([...this.itemShoppingListsSubject.value, itemShoppingList]);
+    this.nextItemShoppingList([...this.itemShoppingListsSubject.value, itemShoppingList]);
     itemShoppingList.position = this.itemShoppingListsSubject.value.indexOf(itemShoppingList) ?? 0 + 1;
   }
 
   public deleteItemShoppingList(itemShoppingList: ItemShoppingList): void {
       const itemIndex: number = this.itemShoppingListsSubject.value.indexOf(itemShoppingList);
       this.itemShoppingListsSubject.value.splice(itemIndex, 1);
-      this.itemShoppingListsSubject.next([...this.itemShoppingListsSubject.value]);
+      this.nextItemShoppingList([...this.itemShoppingListsSubject.value]);
   }
 
   public toggleItemShoppingList(itemShoppingList: ItemShoppingList) {
     itemShoppingList.isChecked = !itemShoppingList.isChecked;
-    this.itemShoppingListsSubject.next([...this.itemShoppingListsSubject.value]);
+    this.nextItemShoppingList([...this.itemShoppingListsSubject.value]);
   }
 
   private openShoppingListCompletedDialog() {

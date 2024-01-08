@@ -24,6 +24,7 @@
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
+        width: 100%;
     }
 
     &__name {
@@ -31,6 +32,7 @@
         padding: 0px;
         font-size: 16px;
         cursor: pointer;
+        width: 100%;
     }
 
     &__buttons {

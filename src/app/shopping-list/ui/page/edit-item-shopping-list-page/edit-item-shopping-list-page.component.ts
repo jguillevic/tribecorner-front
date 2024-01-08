@@ -36,7 +36,7 @@ export class EditItemShoppingListPageComponent implements OnDestroy {
     }
 
     public loadItemShoppingList(): Observable<ItemShoppingList> {
-        return this.activatedRoute.params
+        return this.activatedRoute.queryParams
         .pipe(
             mergeMap(params => 
                 this.itemShoppingListApiService.loadOneById(params['id'])

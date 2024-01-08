@@ -7,10 +7,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ItemShoppingList } from '../../../model/item-shopping-list.model';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { BehaviorSubject, Observable, Subject, combineLatest, debounceTime, exhaustMap, filter, map, mergeMap, of, skip, takeUntil, tap } from 'rxjs';
+import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { BehaviorSubject, Observable, Subject, combineLatest, debounceTime, exhaustMap, filter, map, mergeMap, of, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { Action } from 'src/app/common/action';
 import { SimpleLoadingComponent } from "../../../../common/loading/ui/simple-loading/simple-loading.component";
 import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -83,13 +82,9 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
   public readonly editShoppingListForm$: Observable<FormGroup> = this.activatedRoute.queryParams
   .pipe(
     mergeMap(params => {
-      const currentAction = params['action'];
-
-      if (currentAction === Action.update) {
-        this.currentShoppingListId = params['id'];
-        if (this.currentShoppingListId) {
-          return this.shoppingListService.loadOneById(this.currentShoppingListId);
-        }
+      this.currentShoppingListId = params['id'];
+      if (this.currentShoppingListId) {
+        return this.shoppingListService.loadOneById(this.currentShoppingListId);
       }
 
       const shoppingList: ShoppingList = new ShoppingList();
@@ -97,7 +92,7 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
     }),
     tap(shoppingList => this.isArchived = shoppingList.isArchived),
     tap(shoppingList => this.nextItemShoppingList(shoppingList.items, false)),
-    tap(shoppingList => this.editShoppingListForm.controls['shoppingListName'].setValue(shoppingList.name)),
+    tap(shoppingList => this.updateEditShoppingListForm(shoppingList)),
     map(() => this.editShoppingListForm)
   );
 
@@ -109,42 +104,36 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
   ) { }
 
   public ngOnInit(): void {
-    combineLatest(
-      { 
-        valueChanged: this.editShoppingListForm.valueChanges,
-        itemShoppingLists: this.itemShoppingLists$ 
-      }
-    )
-    .pipe(
-      debounceTime(500),
-      filter(() => this.editShoppingListForm.valid && this.needToSaveItems),
-      exhaustMap(() => this.save()),
-      takeUntil(this.destroy$),
-    )
-    .subscribe();
-
-    this.itemShoppingLists$.pipe(
-      tap(itemShoppingLists => {
-        if (this.editShoppingListForm.valid &&
-          !this.isArchived &&
-          itemShoppingLists.length > 0 &&
-          !itemShoppingLists.filter(itemShoppingList => !itemShoppingList.isChecked).length
-        ) {
-          this.openShoppingListCompletedDialog();
-        }
-      }),
-      takeUntil(this.destroy$)
-    )
-    .subscribe();
+    this.saveOnFormUpdate();
   }
 
   public ngOnDestroy(): void {
     this.destroy$.complete();
   }
 
+  public trackByItemShoppingList(index: number, itemShoppingList: ItemShoppingList): string {
+    return `${itemShoppingList.id ?? 0}${itemShoppingList.name}`;
+  }
+
   private nextItemShoppingList(itemShoppingLists: ItemShoppingList[], needToSaveItems: boolean = true) {
     this.needToSaveItems = needToSaveItems
     this.itemShoppingListsSubject.next(itemShoppingLists);
+  }
+
+  private getNameControl(): AbstractControl<any, any> {
+    return this.editShoppingListForm.controls['shoppingListName'];
+  }
+
+  private getNameControlValue(): string {
+    return this.getNameControl().value;
+  }
+
+  private updateNameControl(name: string): void {
+    this.getNameControl().setValue(name);
+  }
+
+  private updateEditShoppingListForm(shoppingList: ShoppingList) {
+    this.updateNameControl(shoppingList.name);
   }
 
   private getShoppingList(): ShoppingList {
@@ -154,7 +143,7 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
       shoppingList.id = this.currentShoppingListId;
     }
     shoppingList.isArchived = this.isArchived;
-    shoppingList.name = this.editShoppingListForm.controls['shoppingListName'].value;
+    shoppingList.name = this.getNameControlValue();
     shoppingList.items = this.itemShoppingListsSubject.value;
 
     return shoppingList;
@@ -183,6 +172,22 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
     );
   }
 
+  private saveOnFormUpdate(): void {
+    combineLatest(
+      { 
+        valueChanged: this.editShoppingListForm.valueChanges,
+        itemShoppingLists: this.itemShoppingLists$ 
+      }
+    )
+    .pipe(
+      debounceTime(500),
+      filter(() => this.editShoppingListForm.valid && this.needToSaveItems),
+      exhaustMap(() => this.save()),
+      takeUntil(this.destroy$),
+    )
+    .subscribe();
+  }
+
   public itemShoppingListAdded(itemShoppingList: ItemShoppingList): void {
     this.nextItemShoppingList([...this.itemShoppingListsSubject.value, itemShoppingList]);
     itemShoppingList.position = this.itemShoppingListsSubject.value.indexOf(itemShoppingList) ?? 0 + 1;
@@ -197,6 +202,8 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
   public toggleItemShoppingList(itemShoppingList: ItemShoppingList) {
     itemShoppingList.isChecked = !itemShoppingList.isChecked;
     this.nextItemShoppingList([...this.itemShoppingListsSubject.value]);
+
+    this.askIfShoppingListNeedToBeArchived();
   }
 
   private openShoppingListCompletedDialog() {
@@ -207,5 +214,15 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     )
     .subscribe();
+  }
+
+  private askIfShoppingListNeedToBeArchived(): void {
+    if (this.editShoppingListForm.valid &&
+      !this.isArchived &&
+      this.itemShoppingListsSubject.value.length > 0 &&
+      !this.itemShoppingListsSubject.value.filter(itemShoppingList => !itemShoppingList.isChecked).length
+    ) {
+      this.openShoppingListCompletedDialog();
+    }
   }
 }

@@ -8,7 +8,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { UserRoutes } from './app/user/route/user.routes';
 import { signedInGuard } from './app/user/guard/signed-in.guard';
 import { LoadingRoutes } from './app/loading/route/loading.routes';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { HomeRoutes } from './app/home/route/home.routes';
 import { FamilyRoutes } from './app/family/route/family.routes';
 import { hasFamilyGuard } from './app/family/guard/has-family.guard';
@@ -119,20 +119,20 @@ const routes: Routes = [
 
 bootstrapApplication(AppComponent, {
     providers: [
-    importProvidersFrom(BrowserModule),
-    provideRouter(routes),
-    provideHttpClient(),
-    provideAnimations(),
-    provideTransloco({
-        config: { 
-          availableLangs: ['fr'],
-          defaultLang: 'fr',
-          // Remove this option if your application doesn't support changing language in runtime.
-          reRenderOnLangChange: true,
-          prodMode: !isDevMode(),
-        },
-        loader: TranslocoHttpLoader
-    })
-]
+        importProvidersFrom(BrowserModule, BrowserAnimationsModule),
+        provideRouter(routes),
+        provideHttpClient(),
+        provideAnimations(),
+        provideTransloco({
+            config: { 
+            availableLangs: ['fr'],
+            defaultLang: 'fr',
+            // Remove this option if your application doesn't support changing language in runtime.
+            reRenderOnLangChange: true,
+            prodMode: !isDevMode(),
+            },
+            loader: TranslocoHttpLoader
+        })
+    ]
 })
   .catch(err => console.error(err));

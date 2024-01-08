@@ -15,7 +15,7 @@
                         </mat-error>
                     </mat-form-field>
                     <ul *ngIf="this.notCheckedItemShoppingLists$ | async as notCheckedItemShoppingLists">
-                        <li class="item-shopping-list" *ngFor="let notCheckedItemShoppingList of notCheckedItemShoppingLists">
+                        <li class="item-shopping-list" *ngFor="let notCheckedItemShoppingList of notCheckedItemShoppingLists; trackBy: trackByItemShoppingList">
                             <div class="item-shopping-list__check-box">
                                 <mat-checkbox
                                 color="primary"
@@ -45,7 +45,7 @@
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <ul>
-                        <li class="item-shopping-list" *ngFor="let checkedItemShoppingList of checkedItemShoppingLists">
+                        <li class="item-shopping-list" *ngFor="let checkedItemShoppingList of checkedItemShoppingLists; trackBy: trackByItemShoppingList">
                             <div class="item-shopping-list__check-box">
                                 <mat-checkbox
                                 color="primary"

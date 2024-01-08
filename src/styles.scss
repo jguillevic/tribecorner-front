@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
-/* Reset */
-@use '../node_modules/scss-reset/src/scss/_reset.scss';
+/* reset */
+@use 'scss-reset/reset';/* animations. */
 
 /* helpers */
 @import 'styles/helpers/colors';

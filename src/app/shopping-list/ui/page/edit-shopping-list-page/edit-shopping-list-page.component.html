@@ -71,8 +71,9 @@
         </div>
         <app-add-item-shopping-list-form 
         class="add-form padding"
+        [currentShoppingListId]="this.currentShoppingListId"
         [currentItemShoppingLists]="this.itemShoppingLists$ | async"
-        (itemShoppingListAdded)="this.itemShoppingListAdded($event)">
+        (itemShoppingListAdded)="this.addItemShoppingList($event)">
         </app-add-item-shopping-list-form>
         <ng-template #loadingForm>
             <app-simple-loading></app-simple-loading>

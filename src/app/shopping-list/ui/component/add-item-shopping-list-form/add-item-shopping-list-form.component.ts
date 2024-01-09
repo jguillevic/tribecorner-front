@@ -33,6 +33,7 @@ styleUrls: [
 ]
 })
 export class AddItemShoppingListFormComponent {
+    @Input() public currentShoppingListId: number|undefined;
     @Input() public currentItemShoppingLists: ItemShoppingList[] | null = [];
     @Output() public itemShoppingListAdded: EventEmitter<ItemShoppingList> = new EventEmitter<ItemShoppingList>();
 
@@ -86,7 +87,8 @@ export class AddItemShoppingListFormComponent {
     }
 
     public submitItemShoppingList(): void {
-        if (this.addItemShoppingListForm.valid)
+        if (this.addItemShoppingListForm.valid &&
+            this.currentShoppingListId)
         {
             const itemShoppingListName: string = this.getItemShoppingListNameControl().value;
         
@@ -99,6 +101,7 @@ export class AddItemShoppingListFormComponent {
                 const itemShoppingList: ItemShoppingList  = new ItemShoppingList(
                     undefined,
                     itemShoppingListName,
+                    this.currentShoppingListId,
                     false,
                     0
                 );

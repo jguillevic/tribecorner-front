@@ -21,6 +21,7 @@ import { ShoppingListCompletedDialogComponent } from '../../component/shopping-l
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AddItemShoppingListFormComponent } from "../../component/add-item-shopping-list-form/add-item-shopping-list-form.component";
 import { ItemShoppingListGoToService } from 'src/app/shopping-list/service/item-shopping-list-go-to.service';
+import { ItemShoppingListApiService } from 'src/app/shopping-list/service/item-shopping-list-api.service';
 
 @Component({
     selector: 'app-display-shopping-list-page',
@@ -48,9 +49,8 @@ import { ItemShoppingListGoToService } from 'src/app/shopping-list/service/item-
 })
 export class EditShoppingListComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
-  private currentShoppingListId: number|undefined;
+  public currentShoppingListId: number|undefined;
   private isArchived: boolean = false;
-  private needToSaveItems: boolean = true;
 
   private readonly itemShoppingListsSubject: BehaviorSubject<ItemShoppingList[]> = new BehaviorSubject<ItemShoppingList[]>([]);
   public readonly itemShoppingLists$: Observable<ItemShoppingList[]> = this.itemShoppingListsSubject.asObservable();
@@ -82,8 +82,8 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
   public readonly editShoppingListForm$: Observable<FormGroup> = this.activatedRoute.queryParams
   .pipe(
     mergeMap(params => {
-      this.currentShoppingListId = params['id'];
-      if (this.currentShoppingListId) {
+      if (params['id']) {
+        this.currentShoppingListId = parseInt(params['id']);
         return this.shoppingListService.loadOneById(this.currentShoppingListId);
       }
 
@@ -91,7 +91,7 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
       return of(shoppingList);
     }),
     tap(shoppingList => this.isArchived = shoppingList.isArchived),
-    tap(shoppingList => this.nextItemShoppingList(shoppingList.items, false)),
+    tap(shoppingList => this.nextItemShoppingList(shoppingList.items)),
     tap(shoppingList => this.updateEditShoppingListForm(shoppingList)),
     map(() => this.editShoppingListForm)
   );
@@ -99,6 +99,7 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
   public constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly shoppingListService: ShoppingListService,
+    private readonly itemShoppingListApiService: ItemShoppingListApiService,
     private readonly itemShoppingListGoToService: ItemShoppingListGoToService,
     private readonly dialog: MatDialog
   ) { }
@@ -112,11 +113,10 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
   }
 
   public trackByItemShoppingList(index: number, itemShoppingList: ItemShoppingList): string {
-    return `${itemShoppingList.id ?? 0}${itemShoppingList.name}`;
+    return itemShoppingList.name;
   }
 
-  private nextItemShoppingList(itemShoppingLists: ItemShoppingList[], needToSaveItems: boolean = true) {
-    this.needToSaveItems = needToSaveItems
+  private nextItemShoppingList(itemShoppingLists: ItemShoppingList[]) {
     this.itemShoppingListsSubject.next(itemShoppingLists);
   }
 
@@ -157,53 +157,62 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
     const shoppingList: ShoppingList = this.getShoppingList();
 
     if (this.currentShoppingListId !== undefined) {
-      return this.shoppingListService.update(shoppingList).
-      pipe(
-        // Nécessaire pour avoir les bons identifiants pour les éléments de liste.
-        tap(savedShoppingList => this.nextItemShoppingList(savedShoppingList.items, false))
-      );
+      return this.shoppingListService.update(shoppingList);
     }
 
     return this.shoppingListService.create(shoppingList)
     .pipe(
-      tap(shoppingList => this.currentShoppingListId = shoppingList.id),
-      // Nécessaire pour avoir les bons identifiants pour les éléments de liste.
-      tap(savedShoppingList => this.nextItemShoppingList(savedShoppingList.items, false))
+      tap(shoppingList => this.currentShoppingListId = shoppingList.id)
     );
   }
 
   private saveOnFormUpdate(): void {
-    combineLatest(
-      { 
-        valueChanged: this.editShoppingListForm.valueChanges,
-        itemShoppingLists: this.itemShoppingLists$ 
-      }
-    )
+    this.editShoppingListForm.valueChanges
     .pipe(
       debounceTime(500),
-      filter(() => this.editShoppingListForm.valid && this.needToSaveItems),
+      filter(() => this.editShoppingListForm.valid),
       exhaustMap(() => this.save()),
       takeUntil(this.destroy$),
     )
     .subscribe();
   }
 
-  public itemShoppingListAdded(itemShoppingList: ItemShoppingList): void {
+  public addItemShoppingList(itemShoppingList: ItemShoppingList): void {
     this.nextItemShoppingList([...this.itemShoppingListsSubject.value, itemShoppingList]);
     itemShoppingList.position = this.itemShoppingListsSubject.value.indexOf(itemShoppingList) ?? 0 + 1;
+
+    this.itemShoppingListApiService.create(itemShoppingList)
+    .pipe(
+      tap(loadedItemShoppingList => itemShoppingList.id = loadedItemShoppingList.id),
+      takeUntil(this.destroy$)
+    )
+    .subscribe();
   }
 
   public deleteItemShoppingList(itemShoppingList: ItemShoppingList): void {
       const itemIndex: number = this.itemShoppingListsSubject.value.indexOf(itemShoppingList);
       this.itemShoppingListsSubject.value.splice(itemIndex, 1);
       this.nextItemShoppingList([...this.itemShoppingListsSubject.value]);
+
+      if (itemShoppingList.id) {
+        this.itemShoppingListApiService.delete(itemShoppingList.id)
+        .pipe(
+          takeUntil(this.destroy$)
+        )
+        .subscribe();
+      }
   }
 
   public toggleItemShoppingList(itemShoppingList: ItemShoppingList) {
     itemShoppingList.isChecked = !itemShoppingList.isChecked;
     this.nextItemShoppingList([...this.itemShoppingListsSubject.value]);
 
-    this.askIfShoppingListNeedToBeArchived();
+    this.itemShoppingListApiService.upate(itemShoppingList)
+    .pipe(
+      tap(() => this.askIfShoppingListNeedToBeArchived()),
+      takeUntil(this.destroy$)
+    )
+    .subscribe();
   }
 
   private openShoppingListCompletedDialog() {

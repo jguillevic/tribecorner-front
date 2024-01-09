@@ -8,6 +8,7 @@ export abstract class ItemShoppingListConverter {
         = new ItemShoppingList(
             loadItemShoppingListDto.id,
             loadItemShoppingListDto.name,
+            loadItemShoppingListDto.shoppingListId,
             loadItemShoppingListDto.isChecked,
             loadItemShoppingListDto.position
         );
@@ -16,13 +17,15 @@ export abstract class ItemShoppingListConverter {
     }
 
     public static fromModelToDto(itemShoppingList: ItemShoppingList): EditItemShoppingListDto {
-        const editItemShoppingListDto = new EditItemShoppingListDto();
+        const editItemShoppingListDto 
+        = new EditItemShoppingListDto(
+            itemShoppingList.id,
+            itemShoppingList.name,
+            itemShoppingList.shoppingListId,
+            itemShoppingList.isChecked,
+            itemShoppingList.position
+        );
 
-        editItemShoppingListDto.id = itemShoppingList.id;
-        editItemShoppingListDto.name = itemShoppingList.name;
-        editItemShoppingListDto.isChecked = itemShoppingList.isChecked;
-        editItemShoppingListDto.position = itemShoppingList.position;
-    
         return editItemShoppingListDto;
     }
 }

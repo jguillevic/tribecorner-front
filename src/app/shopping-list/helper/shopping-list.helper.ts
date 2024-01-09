@@ -13,6 +13,7 @@ export abstract class ShoppingListHelper {
             = new ItemShoppingList(
                 copyIds ? item.id : undefined,
                 item.name,
+                item.shoppingListId,
                 item.isChecked,
                 item.position
             );

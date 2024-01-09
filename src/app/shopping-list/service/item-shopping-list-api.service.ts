@@ -26,6 +26,21 @@ export class ItemShoppingListApiService {
         );
     }
 
+    public create(itemShoppingList: ItemShoppingList): Observable<ItemShoppingList> {
+        const editItemShoppingListDto: EditItemShoppingListDto = ItemShoppingListConverter.fromModelToDto(itemShoppingList);
+        const body: string = JSON.stringify(editItemShoppingListDto);
+    
+        return this.apiHttp.post<LoadItemShoppingListDto>(
+          `${environment.apiUrl}${ItemShoppingListApiService.apiPath}`,
+          body
+          )
+          .pipe(
+            map(loadItemShoppingListDto => 
+              ItemShoppingListConverter.fromDtoToModel(loadItemShoppingListDto)
+            )
+          );
+      }
+
     public upate(itemShoppingList: ItemShoppingList): Observable<ItemShoppingList> {
         const editItemShoppingListDto: EditItemShoppingListDto 
         = ItemShoppingListConverter.fromModelToDto(itemShoppingList);
@@ -41,4 +56,10 @@ export class ItemShoppingListApiService {
             )
         );
     }
+
+    public delete(itemShoppingListId: number): Observable<void> {
+        return this.apiHttp.delete<void>(
+          `${environment.apiUrl}${ItemShoppingListApiService.apiPath}/${itemShoppingListId}`
+          );
+      }
 }

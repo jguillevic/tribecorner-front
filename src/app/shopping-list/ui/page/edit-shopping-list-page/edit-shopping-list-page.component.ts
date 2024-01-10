@@ -1,12 +1,9 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ShoppingListService} from '../../../service/shopping-list.service';
 import {ShoppingList} from '../../../model/shopping-list.model';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
 import {ItemShoppingList} from '../../../model/item-shopping-list.model';
-import {AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {BehaviorSubject, Observable, Subject, debounceTime, exhaustMap, filter, map, mergeMap, of, takeUntil, tap} from 'rxjs';
+import {BehaviorSubject, Observable, Subject, map, mergeMap, of, takeUntil, tap} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
 import {SimpleLoadingComponent} from "../../../../common/loading/ui/simple-loading/simple-loading.component";
 import {MatExpansionModule} from '@angular/material/expansion';
@@ -16,6 +13,8 @@ import {ShoppingListCompletedDialogComponent} from '../../component/shopping-lis
 import {AddItemShoppingListFormComponent} from "../../component/add-item-shopping-list-form/add-item-shopping-list-form.component";
 import {ItemShoppingListApiService} from 'src/app/shopping-list/service/item-shopping-list-api.service';
 import {CheckableItemShoppingListsComponent} from "../../component/checkable-item-shopping-lists/checkable-item-shopping-lists.component";
+import {EditShoppingListFormComponent} from "../../component/edit-shopping-list-form/edit-shopping-list-form.component";
+import {TranslocoModule, provideTranslocoScope} from '@ngneat/transloco';
 
 @Component({
     selector: 'app-display-shopping-list-page',
@@ -24,22 +23,25 @@ import {CheckableItemShoppingListsComponent} from "../../component/checkable-ite
     styleUrls: ['edit-shopping-list-page.component.scss'],
     imports: [
         CommonModule,
-        FormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        ReactiveFormsModule,
         SimpleLoadingComponent,
         MatExpansionModule,
         GoBackTopBarComponent,
         MatDialogModule,
         AddItemShoppingListFormComponent,
-        CheckableItemShoppingListsComponent
-    ]
+        CheckableItemShoppingListsComponent,
+        EditShoppingListFormComponent,
+        TranslocoModule
+    ],providers: [
+      provideTranslocoScope({
+          scope: 'shopping-list/ui/page/edit-shopping-list-page',
+          alias: 'editShoppingListPage'
+      })
+  ],
 })
-export class EditShoppingListComponent implements OnInit, OnDestroy {
+export class EditShoppingListComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
+  private shoppingListValidity: boolean = false;
   public currentShoppingListId: number|undefined;
-  private isArchived: boolean = false;
 
   private readonly itemShoppingListsSubject: BehaviorSubject<ItemShoppingList[]> = new BehaviorSubject<ItemShoppingList[]>([]);
   public readonly itemShoppingLists$: Observable<ItemShoppingList[]> = this.itemShoppingListsSubject.asObservable();
@@ -60,15 +62,8 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
     )
   );
 
-  // Formulaire.
-  public readonly shoppingListNameMaxLength: number = 255;
-
-  private editShoppingListForm: FormGroup = new FormGroup(
-    {
-      shoppingListName: new FormControl('', [Validators.required, Validators.maxLength(this.shoppingListNameMaxLength)])
-    }
-  );
-  public readonly editShoppingListForm$: Observable<FormGroup> = this.activatedRoute.queryParams
+  private shoppingList: ShoppingList|undefined;
+  public readonly shoppingList$: Observable<ShoppingList> = this.activatedRoute.queryParams
   .pipe(
     mergeMap(params => {
       if (params['id']) {
@@ -79,10 +74,12 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
       const shoppingList: ShoppingList = new ShoppingList();
       return of(shoppingList);
     }),
-    tap(shoppingList => this.isArchived = shoppingList.isArchived),
-    tap(shoppingList => this.nextItemShoppingList(shoppingList.items)),
-    tap(shoppingList => this.updateEditShoppingListForm(shoppingList)),
-    map(() => this.editShoppingListForm)
+    tap(shoppingList => 
+      {
+        this.shoppingList = shoppingList;
+        this.nextItemShoppingList(shoppingList.items);
+      }
+    ),
   );
 
   public constructor(
@@ -92,10 +89,6 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
     private readonly dialog: MatDialog
   ) { }
 
-  public ngOnInit(): void {
-    this.saveOnFormUpdate();
-  }
-
   public ngOnDestroy(): void {
     this.destroy$.complete();
   }
@@ -104,39 +97,8 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
     this.itemShoppingListsSubject.next(itemShoppingLists);
   }
 
-  private getNameControl(): AbstractControl<any, any> {
-    return this.editShoppingListForm.controls['shoppingListName'];
-  }
-
-  private getNameControlValue(): string {
-    return this.getNameControl().value;
-  }
-
-  private updateNameControl(name: string): void {
-    this.getNameControl().setValue(name);
-  }
-
-  private updateEditShoppingListForm(shoppingList: ShoppingList) {
-    this.updateNameControl(shoppingList.name);
-  }
-
-  private getShoppingList(): ShoppingList {
-    const shoppingList: ShoppingList = new ShoppingList();
-
-    if (this.currentShoppingListId) {
-      shoppingList.id = this.currentShoppingListId;
-    }
-    shoppingList.isArchived = this.isArchived;
-    shoppingList.name = this.getNameControlValue();
-    shoppingList.items = this.itemShoppingListsSubject.value;
-
-    return shoppingList;
-  }
-
-  private save(): Observable<ShoppingList> {
-    const shoppingList: ShoppingList = this.getShoppingList();
-
-    if (this.currentShoppingListId !== undefined) {
+  private save(shoppingList: ShoppingList): Observable<ShoppingList> {
+     if (this.currentShoppingListId !== undefined) {
       return this.shoppingListService.update(shoppingList);
     }
 
@@ -146,15 +108,18 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
     );
   }
 
-  private saveOnFormUpdate(): void {
-    this.editShoppingListForm.valueChanges
+  public editShoppingList(shoppingList: ShoppingList): void {
+    shoppingList.items = this.itemShoppingListsSubject.value;
+    this.save(shoppingList)
     .pipe(
-      debounceTime(500),
-      filter(() => this.editShoppingListForm.valid),
-      exhaustMap(() => this.save()),
-      takeUntil(this.destroy$),
+      tap((shoppingList: ShoppingList) => this.shoppingList = shoppingList),
+      takeUntil(this.destroy$)
     )
     .subscribe();
+  }
+
+  public changeShoppingListValidity(isValid: boolean): void {
+    this.shoppingListValidity = isValid;
   }
 
   public addItemShoppingList(itemShoppingList: ItemShoppingList): void {
@@ -195,7 +160,7 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
   }
 
   private openShoppingListCompletedDialog() {
-    const dialogRef = this.dialog.open(ShoppingListCompletedDialogComponent, { data: this.getShoppingList() });
+    const dialogRef = this.dialog.open(ShoppingListCompletedDialogComponent, { data: this.shoppingList });
 
     dialogRef.afterClosed()
     .pipe(
@@ -205,8 +170,9 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
   }
 
   private askIfShoppingListNeedToBeArchived(): void {
-    if (this.editShoppingListForm.valid &&
-      !this.isArchived &&
+    if (this.shoppingList &&
+      this.shoppingListValidity &&
+      !this.shoppingList.isArchived &&
       this.itemShoppingListsSubject.value.length > 0 &&
       !this.itemShoppingListsSubject.value.filter(itemShoppingList => !itemShoppingList.isChecked).length
     ) {

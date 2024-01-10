@@ -1,3 +1,5 @@
 {
-    "name": "Nom" 
+    "name": "Nom",
+    "nameRequired": "Nom requis",
+    "nameTooLong": "Nom trop long (max. {{maxLength}} caractères)"
 }

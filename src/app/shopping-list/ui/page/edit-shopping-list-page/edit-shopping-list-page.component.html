@@ -1,21 +1,13 @@
-<div class="page">
+<div class="page" *transloco="let t;read:'editShoppingListPage';">
     <app-go-back-top-bar></app-go-back-top-bar>
     <div>
-        <div class="padding shopping-list">
-            <form class="form m-t-30" *ngIf="editShoppingListForm$ | async as editShoppingListForm; else loadingForm" [formGroup]="editShoppingListForm">
-                <div>
-                    <mat-form-field class="form-input">
-                        <mat-label>Nom</mat-label>
-                        <input matInput type="text" formControlName="shoppingListName">
-                        <mat-error *ngIf="editShoppingListForm.controls['shoppingListName'].hasError('maxlength')">
-                            Nom trop long (max. {{this.shoppingListNameMaxLength}} caractères)
-                        </mat-error>
-                        <mat-error *ngIf="editShoppingListForm.controls['shoppingListName'].hasError('required')">
-                            Nom requis
-                        </mat-error>
-                    </mat-form-field>
-                </div>
-            </form>
+        <div class="padding shopping-list m-t-30">
+            <app-edit-shopping-list-form
+            *ngIf="shoppingList$ | async as shoppingList; else loadingForm"
+            [shoppingList]="shoppingList"
+            (shoppingListEdited)="editShoppingList($event)"
+            (validityChanged)="changeShoppingListValidity($event)">
+            </app-edit-shopping-list-form>
             <app-checkable-item-shopping-lists *ngIf="this.notCheckedItemShoppingLists$ | async as notCheckedItemShoppingLists"
             [itemShoppingLists]="notCheckedItemShoppingLists"
             (itemShoppingListDeleted)="deleteItemShoppingList($event)"
@@ -25,7 +17,7 @@
                 <mat-expansion-panel *ngIf="checkedItemShoppingLists.length">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            {{checkedItemShoppingLists.length}} article(s) coché(s)
+                            {{t('checkedItemShoppingListsNumber', {'checkedItemShoppingListsNumber': checkedItemShoppingLists.length})}}
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <app-checkable-item-shopping-lists

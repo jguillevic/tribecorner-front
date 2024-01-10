@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnIn
 import {CommonModule} from '@angular/common';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {FormBuilder, AbstractControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, AbstractControl, FormGroup, FormsModule, ReactiveFormsModule, Validators, FormControlStatus} from '@angular/forms';
 import {Observable, Subject, debounceTime, filter, of, takeUntil, tap} from 'rxjs';
 import {ShoppingList} from '../../../model/shopping-list.model';
 import {TranslocoModule, TranslocoService, provideTranslocoScope} from '@ngneat/transloco';
@@ -33,7 +33,9 @@ export class EditShoppingListFormComponent implements OnInit, OnDestroy {
     @Input() public shoppingList: ShoppingList|undefined;
     @Input() public debounceTime: number = 500;
     @Output() public shoppingListEdited: EventEmitter<ShoppingList> 
-    = new EventEmitter<ShoppingList>(); 
+    = new EventEmitter<ShoppingList>();
+    @Output() public validityChanged: EventEmitter<boolean>
+    = new EventEmitter<boolean>();
 
     private destroy$: Subject<void> = new Subject<void>();
 
@@ -52,7 +54,9 @@ export class EditShoppingListFormComponent implements OnInit, OnDestroy {
 
     public ngOnInit(): void {
         this.updateEditShoppingListFormFromInput();
-        this.emitShoppingChanges();
+        this.emitShoppingListEdited();
+        this.validityChanged.emit(this.editShoppingListForm.valid);
+        this.emitValidityChanged();
     }
 
     public ngOnDestroy(): void {
@@ -66,7 +70,7 @@ export class EditShoppingListFormComponent implements OnInit, OnDestroy {
     }
 
     private getNameControl(): AbstractControl<any, any> {
-        return this.editShoppingListForm.controls['shoppingListName'];
+        return this.editShoppingListForm.controls[this.nameCode];
       }
     
     private getNameControlValue(): string {
@@ -81,8 +85,21 @@ export class EditShoppingListFormComponent implements OnInit, OnDestroy {
         this.updateNameControl(shoppingList.name);
     }
 
-    public getNameErrorMessage(): Observable<string> {
-        return of('');
+    public buildTradKey(labelKey: string): string {
+        return `editShoppingListForm.${labelKey}`;
+    }
+
+    public getNameErrorMessage(): Observable<string|undefined> {
+        const nameControl: AbstractControl<any, any> = this.getNameControl();
+
+        if (nameControl.hasError(this.requiredErrorCode)) {
+            return this.translocoService.selectTranslate(this.buildTradKey('nameRequired'));
+        } else if (nameControl.hasError(this.maxLengthErrorCode)) {
+            const maxLength = nameControl.getError(this.maxLengthErrorCode)['requiredLength'];
+            return this.translocoService.selectTranslate(this.buildTradKey('nameTooLong'), {maxLength: maxLength})
+        }
+
+        return of(undefined);
     }
 
     public updateEditShoppingListFormFromInput() {
@@ -103,7 +120,7 @@ export class EditShoppingListFormComponent implements OnInit, OnDestroy {
         return shoppingList;
     }
 
-    public emitShoppingChanges() {
+    public emitShoppingListEdited(): void {
         this.editShoppingListForm.valueChanges
         .pipe(
             debounceTime(this.debounceTime),
@@ -118,6 +135,15 @@ export class EditShoppingListFormComponent implements OnInit, OnDestroy {
                     )
                 }
             }),
+            takeUntil(this.destroy$)
+        )
+        .subscribe();
+    }
+
+    public emitValidityChanged(): void {
+        this.editShoppingListForm.statusChanges
+        .pipe(
+            tap((status: FormControlStatus) => this.validityChanged.emit(status === 'VALID')),
             takeUntil(this.destroy$)
         )
         .subscribe();

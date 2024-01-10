@@ -1,14 +1,9 @@
-<form class="form" [formGroup]="editShoppingListForm">
+<form class="form" [formGroup]="editShoppingListForm" *transloco="let t;read:'editShoppingListForm';">
     <div>
         <mat-form-field class="form-input">
-            <mat-label>Nom</mat-label>
+            <mat-label>{{t('name')}}</mat-label>
             <input matInput type="text" [formControlName]="this.nameCode">
-            <mat-error *ngIf="editShoppingListForm.controls['shoppingListName'].hasError('maxlength')">
-                Nom trop long (max. 255 caractères)
-            </mat-error>
-            <mat-error *ngIf="editShoppingListForm.controls['shoppingListName'].hasError('required')">
-                Nom requis
-            </mat-error>
+            <mat-error>{{this.getNameErrorMessage() | async}}</mat-error>
         </mat-form-field>
     </div>
 </form>

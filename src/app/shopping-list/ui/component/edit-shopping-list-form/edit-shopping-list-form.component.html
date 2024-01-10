@@ -1,0 +1,14 @@
+<form class="form" [formGroup]="editShoppingListForm">
+    <div>
+        <mat-form-field class="form-input">
+            <mat-label>Nom</mat-label>
+            <input matInput type="text" [formControlName]="this.nameCode">
+            <mat-error *ngIf="editShoppingListForm.controls['shoppingListName'].hasError('maxlength')">
+                Nom trop long (max. 255 caractères)
+            </mat-error>
+            <mat-error *ngIf="editShoppingListForm.controls['shoppingListName'].hasError('required')">
+                Nom requis
+            </mat-error>
+        </mat-form-field>
+    </div>
+</form>

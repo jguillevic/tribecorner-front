@@ -90,7 +90,7 @@ export class EditItemShoppingListFormComponent implements OnInit, OnDestroy {
     public emitItemShoppingChanges() {
         this.itemShoppingListForm.valueChanges
         .pipe(
-            debounceTime(500),
+            debounceTime(this.debounceTime),
             filter(() => 
                 !this.itemShoppingListForm.pristine &&
                 this.itemShoppingListForm.valid

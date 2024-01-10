@@ -13,7 +13,6 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {GoBackTopBarComponent} from "../../../../common/top-bar/go-back/ui/go-back-top-bar.component";
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import {ShoppingListCompletedDialogComponent} from '../../component/shopping-list-completed-dialog/shopping-list-completed-dialog.component';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {AddItemShoppingListFormComponent} from "../../component/add-item-shopping-list-form/add-item-shopping-list-form.component";
 import {ItemShoppingListApiService} from 'src/app/shopping-list/service/item-shopping-list-api.service';
 import {CheckableItemShoppingListsComponent} from "../../component/checkable-item-shopping-lists/checkable-item-shopping-lists.component";
@@ -33,7 +32,6 @@ import {CheckableItemShoppingListsComponent} from "../../component/checkable-ite
         MatExpansionModule,
         GoBackTopBarComponent,
         MatDialogModule,
-        MatAutocompleteModule,
         AddItemShoppingListFormComponent,
         CheckableItemShoppingListsComponent
     ]

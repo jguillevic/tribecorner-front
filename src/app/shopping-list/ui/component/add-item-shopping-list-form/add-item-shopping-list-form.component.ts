@@ -101,7 +101,7 @@ export class AddItemShoppingListFormComponent {
             const itemShoppingListName: string = this.getItemShoppingListNameControl().value;
         
             if (itemShoppingListName.length) {
-                if (this.currentItemShoppingLists?.find(item => item.name === itemShoppingListName)) {
+                if (this.currentItemShoppingLists?.find(item => item.name.toLowerCase() === itemShoppingListName.toLowerCase())) {
                     this.getItemShoppingListNameControl().setErrors({[this.alreadyAddedErrorCode]: true});
                     return;
                 }

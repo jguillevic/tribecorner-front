@@ -69,8 +69,16 @@ export class AddItemShoppingListFormComponent {
         this.getItemShoppingListNameControl().setValue(suggestedItemShoppingList.name);
     }
 
-    public getItemShoppingListNameControl(): AbstractControl<any, any> {
+    private getItemShoppingListNameControl(): AbstractControl<any, any> {
         return this.addItemShoppingListForm.controls[this.itemShoppingListNameCode];
+    }
+
+    private getItemShoppingListNameValue(): string {
+        return this.getItemShoppingListNameControl().value;
+    }
+
+    public isAddButtonEnabled(): boolean {
+        return this.getItemShoppingListNameValue().length > 0;
     }
 
     public getItemShoppingListNameErrorMessage(): Observable<string|undefined> {

@@ -8,66 +8,33 @@
                         <mat-label>Nom</mat-label>
                         <input matInput type="text" formControlName="shoppingListName">
                         <mat-error *ngIf="editShoppingListForm.controls['shoppingListName'].hasError('maxlength')">
-                            Nom trop long (max. {{ this.shoppingListNameMaxLength }} caractères)
+                            Nom trop long (max. {{this.shoppingListNameMaxLength}} caractères)
                         </mat-error>
                         <mat-error *ngIf="editShoppingListForm.controls['shoppingListName'].hasError('required')">
                             Nom requis
                         </mat-error>
                     </mat-form-field>
-                    <ul *ngIf="this.notCheckedItemShoppingLists$ | async as notCheckedItemShoppingLists">
-                        <li class="item-shopping-list" *ngFor="let notCheckedItemShoppingList of notCheckedItemShoppingLists; trackBy: trackByItemShoppingList">
-                            <div class="item-shopping-list__check-box">
-                                <mat-checkbox
-                                color="primary"
-                                [checked]="notCheckedItemShoppingList.isChecked"
-                                (change)="toggleItemShoppingList(notCheckedItemShoppingList)">
-                                </mat-checkbox>
-                                <span class="item-shopping-list__name" 
-                                [ngClass]="{ 'line': notCheckedItemShoppingList.isChecked }"
-                                (click)="this.goToItemShoppingListUpdate(notCheckedItemShoppingList.id)">
-                                    {{ notCheckedItemShoppingList.name }}
-                                </span>
-                            </div>
-                            <div class="item-shopping-list__buttons">
-                                <button type="button" mat-icon-button (click)="deleteItemShoppingList(notCheckedItemShoppingList)" color="warn">
-                                    <mat-icon class="material-symbols-outlined">close</mat-icon>
-                                </button>
-                            </div>
-                        </li>
-                    </ul>
+                    <app-checkable-item-shopping-lists *ngIf="this.notCheckedItemShoppingLists$ | async as notCheckedItemShoppingLists"
+                    [itemShoppingLists]="notCheckedItemShoppingLists"
+                    (itemShoppingListDeleted)="deleteItemShoppingList($event)"
+                    (itemShoppingListToggled)="toggleItemShoppingList($event)">
+                    </app-checkable-item-shopping-lists>
+                </div>
+                <div *ngIf="this.checkedItemShoppingLists$ | async as checkedItemShoppingLists">
+                    <mat-expansion-panel *ngIf="checkedItemShoppingLists.length">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                {{checkedItemShoppingLists.length}} article(s) coché(s)
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <app-checkable-item-shopping-lists
+                        [itemShoppingLists]="checkedItemShoppingLists"
+                        (itemShoppingListDeleted)="deleteItemShoppingList($event)"
+                        (itemShoppingListToggled)="toggleItemShoppingList($event)">
+                        </app-checkable-item-shopping-lists>
+                    </mat-expansion-panel>
                 </div>
             </form>
-            <div *ngIf="this.checkedItemShoppingLists$ | async as checkedItemShoppingLists">
-                <mat-expansion-panel *ngIf="checkedItemShoppingLists.length">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            {{checkedItemShoppingLists.length}} article(s) coché(s)
-                        </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <ul>
-                        <li class="item-shopping-list" *ngFor="let checkedItemShoppingList of checkedItemShoppingLists; trackBy: trackByItemShoppingList">
-                            <div class="item-shopping-list__check-box">
-                                <mat-checkbox
-                                color="primary"
-                                [checked]="checkedItemShoppingList.isChecked"
-                                (change)="toggleItemShoppingList(checkedItemShoppingList)">
-                                </mat-checkbox>
-                                <span 
-                                class="item-shopping-list__name" 
-                                [ngClass]="{ 'line': checkedItemShoppingList.isChecked }"
-                                (click)="this.goToItemShoppingListUpdate(checkedItemShoppingList.id)">
-                                    {{ checkedItemShoppingList.name }}
-                                </span>
-                            </div>
-                            <div class="item-shopping-list__buttons">
-                                <button type="button" mat-icon-button (click)="deleteItemShoppingList(checkedItemShoppingList)" color="warn">
-                                    <mat-icon class="material-symbols-outlined">close</mat-icon>
-                                </button>
-                            </div>
-                        </li>
-                    </ul>
-                </mat-expansion-panel>
-            </div>
         </div>
         <app-add-item-shopping-list-form 
         class="add-form padding"

@@ -1,0 +1,29 @@
+.item-shopping-list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+
+    &__check-box {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+    }
+
+    &__name {
+        margin: 0px;
+        padding: 0px;
+        font-size: 16px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    &__buttons {
+        display: flex;
+        justify-content: right;
+    }
+}

@@ -1,0 +1,21 @@
+<ul>
+    <li class="item-shopping-list" *ngFor="let itemShoppingList of itemShoppingLists; trackBy: trackByItemShoppingList">
+        <div class="item-shopping-list__check-box">
+            <mat-checkbox
+            color="primary"
+            [checked]="itemShoppingList.isChecked"
+            (change)="toggleItemShoppingList(itemShoppingList)">
+            </mat-checkbox>
+            <span class="item-shopping-list__name" 
+            [ngClass]="{ 'line': itemShoppingList.isChecked }"
+            (click)="this.goToItemShoppingListUpdate(itemShoppingList.id)">
+                {{itemShoppingList.name}}
+            </span>
+        </div>
+        <div class="item-shopping-list__buttons">
+            <button type="button" mat-icon-button (click)="deleteItemShoppingList(itemShoppingList)" color="warn">
+                <mat-icon class="material-symbols-outlined">close</mat-icon>
+            </button>
+        </div>
+    </li>
+</ul>

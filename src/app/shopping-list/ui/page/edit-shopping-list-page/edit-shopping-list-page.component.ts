@@ -22,6 +22,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AddItemShoppingListFormComponent } from "../../component/add-item-shopping-list-form/add-item-shopping-list-form.component";
 import { ItemShoppingListGoToService } from 'src/app/shopping-list/service/item-shopping-list-go-to.service';
 import { ItemShoppingListApiService } from 'src/app/shopping-list/service/item-shopping-list-api.service';
+import { CheckableItemShoppingListsComponent } from "../../component/checkable-item-shopping-lists/checkable-item-shopping-lists.component";
 
 @Component({
     selector: 'app-display-shopping-list-page',
@@ -44,7 +45,8 @@ import { ItemShoppingListApiService } from 'src/app/shopping-list/service/item-s
         MatDividerModule,
         MatDialogModule,
         MatAutocompleteModule,
-        AddItemShoppingListFormComponent
+        AddItemShoppingListFormComponent,
+        CheckableItemShoppingListsComponent
     ]
 })
 export class EditShoppingListComponent implements OnInit, OnDestroy {
@@ -113,7 +115,7 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
   }
 
   public trackByItemShoppingList(index: number, itemShoppingList: ItemShoppingList): string {
-    return itemShoppingList.name;
+    return `${itemShoppingList.name}${itemShoppingList.id??0}`;
   }
 
   private nextItemShoppingList(itemShoppingLists: ItemShoppingList[]) {
@@ -204,7 +206,6 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
   }
 
   public toggleItemShoppingList(itemShoppingList: ItemShoppingList) {
-    itemShoppingList.isChecked = !itemShoppingList.isChecked;
     this.nextItemShoppingList([...this.itemShoppingListsSubject.value]);
 
     this.itemShoppingListApiService.upate(itemShoppingList)

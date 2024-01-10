@@ -1,28 +1,22 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ShoppingListService } from '../../../service/shopping-list.service';
-import { ShoppingList } from '../../../model/shopping-list.model';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { ItemShoppingList } from '../../../model/item-shopping-list.model';
-import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { BehaviorSubject, Observable, Subject, debounceTime, exhaustMap, filter, map, mergeMap, of, takeUntil, tap } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
-import { SimpleLoadingComponent } from "../../../../common/loading/ui/simple-loading/simple-loading.component";
-import { MtxButtonModule } from '@ng-matero/extensions/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { GoBackTopBarComponent } from "../../../../common/top-bar/go-back/ui/go-back-top-bar.component";
-import { MatDividerModule } from '@angular/material/divider';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { ShoppingListCompletedDialogComponent } from '../../component/shopping-list-completed-dialog/shopping-list-completed-dialog.component';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { AddItemShoppingListFormComponent } from "../../component/add-item-shopping-list-form/add-item-shopping-list-form.component";
-import { ItemShoppingListGoToService } from 'src/app/shopping-list/service/item-shopping-list-go-to.service';
-import { ItemShoppingListApiService } from 'src/app/shopping-list/service/item-shopping-list-api.service';
-import { CheckableItemShoppingListsComponent } from "../../component/checkable-item-shopping-lists/checkable-item-shopping-lists.component";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ShoppingListService} from '../../../service/shopping-list.service';
+import {ShoppingList} from '../../../model/shopping-list.model';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {ItemShoppingList} from '../../../model/item-shopping-list.model';
+import {AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {BehaviorSubject, Observable, Subject, debounceTime, exhaustMap, filter, map, mergeMap, of, takeUntil, tap} from 'rxjs';
+import {ActivatedRoute} from '@angular/router';
+import {SimpleLoadingComponent} from "../../../../common/loading/ui/simple-loading/simple-loading.component";
+import {MatExpansionModule} from '@angular/material/expansion';
+import {GoBackTopBarComponent} from "../../../../common/top-bar/go-back/ui/go-back-top-bar.component";
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {ShoppingListCompletedDialogComponent} from '../../component/shopping-list-completed-dialog/shopping-list-completed-dialog.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {AddItemShoppingListFormComponent} from "../../component/add-item-shopping-list-form/add-item-shopping-list-form.component";
+import {ItemShoppingListApiService} from 'src/app/shopping-list/service/item-shopping-list-api.service';
+import {CheckableItemShoppingListsComponent} from "../../component/checkable-item-shopping-lists/checkable-item-shopping-lists.component";
 
 @Component({
     selector: 'app-display-shopping-list-page',
@@ -32,17 +26,12 @@ import { CheckableItemShoppingListsComponent } from "../../component/checkable-i
     imports: [
         CommonModule,
         FormsModule,
-        MatIconModule,
-        MatButtonModule,
         MatFormFieldModule,
         MatInputModule,
         ReactiveFormsModule,
         SimpleLoadingComponent,
-        MtxButtonModule,
-        MatCheckboxModule,
         MatExpansionModule,
         GoBackTopBarComponent,
-        MatDividerModule,
         MatDialogModule,
         MatAutocompleteModule,
         AddItemShoppingListFormComponent,
@@ -102,7 +91,6 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
     private readonly activatedRoute: ActivatedRoute,
     private readonly shoppingListService: ShoppingListService,
     private readonly itemShoppingListApiService: ItemShoppingListApiService,
-    private readonly itemShoppingListGoToService: ItemShoppingListGoToService,
     private readonly dialog: MatDialog
   ) { }
 
@@ -112,10 +100,6 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this.destroy$.complete();
-  }
-
-  public trackByItemShoppingList(index: number, itemShoppingList: ItemShoppingList): string {
-    return `${itemShoppingList.name}${itemShoppingList.id??0}`;
   }
 
   private nextItemShoppingList(itemShoppingLists: ItemShoppingList[]) {
@@ -149,10 +133,6 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
     shoppingList.items = this.itemShoppingListsSubject.value;
 
     return shoppingList;
-  }
-
-  public goToItemShoppingListUpdate(itemShoppingListId: number|undefined): Observable<boolean> {
-    return this.itemShoppingListGoToService.goToUpdate(itemShoppingListId);
   }
 
   private save(): Observable<ShoppingList> {

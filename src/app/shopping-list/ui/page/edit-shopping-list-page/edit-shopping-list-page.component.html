@@ -3,7 +3,7 @@
     <div>
         <div class="padding shopping-list">
             <form class="form m-t-30" *ngIf="editShoppingListForm$ | async as editShoppingListForm; else loadingForm" [formGroup]="editShoppingListForm">
-                <div class="form-inputs">
+                <div>
                     <mat-form-field class="form-input">
                         <mat-label>Nom</mat-label>
                         <input matInput type="text" formControlName="shoppingListName">
@@ -14,27 +14,27 @@
                             Nom requis
                         </mat-error>
                     </mat-form-field>
-                    <app-checkable-item-shopping-lists *ngIf="this.notCheckedItemShoppingLists$ | async as notCheckedItemShoppingLists"
-                    [itemShoppingLists]="notCheckedItemShoppingLists"
+                </div>
+            </form>
+            <app-checkable-item-shopping-lists *ngIf="this.notCheckedItemShoppingLists$ | async as notCheckedItemShoppingLists"
+            [itemShoppingLists]="notCheckedItemShoppingLists"
+            (itemShoppingListDeleted)="deleteItemShoppingList($event)"
+            (itemShoppingListToggled)="toggleItemShoppingList($event)">
+            </app-checkable-item-shopping-lists>
+            <div *ngIf="this.checkedItemShoppingLists$ | async as checkedItemShoppingLists">
+                <mat-expansion-panel *ngIf="checkedItemShoppingLists.length">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{checkedItemShoppingLists.length}} article(s) coché(s)
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <app-checkable-item-shopping-lists
+                    [itemShoppingLists]="checkedItemShoppingLists"
                     (itemShoppingListDeleted)="deleteItemShoppingList($event)"
                     (itemShoppingListToggled)="toggleItemShoppingList($event)">
                     </app-checkable-item-shopping-lists>
-                </div>
-                <div *ngIf="this.checkedItemShoppingLists$ | async as checkedItemShoppingLists">
-                    <mat-expansion-panel *ngIf="checkedItemShoppingLists.length">
-                        <mat-expansion-panel-header>
-                            <mat-panel-title>
-                                {{checkedItemShoppingLists.length}} article(s) coché(s)
-                            </mat-panel-title>
-                        </mat-expansion-panel-header>
-                        <app-checkable-item-shopping-lists
-                        [itemShoppingLists]="checkedItemShoppingLists"
-                        (itemShoppingListDeleted)="deleteItemShoppingList($event)"
-                        (itemShoppingListToggled)="toggleItemShoppingList($event)">
-                        </app-checkable-item-shopping-lists>
-                    </mat-expansion-panel>
-                </div>
-            </form>
+                </mat-expansion-panel>
+            </div>
         </div>
         <app-add-item-shopping-list-form 
         class="add-form padding"

@@ -1,25 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, shareReplay } from 'rxjs';
 import { SuggestedItemShoppingList } from '../model/suggested-item-shopping-list';
+import { ApiHttpClient } from '../../common/http/api-http-client';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class SuggestedItemShoppingListApiService {
+    private static apiPath: string = "suggested_item_shopping_lists";
+
     public allSuggestedItemShoppingLists$: Observable<SuggestedItemShoppingList[]> 
-    = this.getAll()
-    .pipe(
-        shareReplay(1)
-    );
+    = this.loadAll();
 
-    public constructor() { }
+    public constructor(
+        private apiHttp: ApiHttpClient
+    ) { }
 
-    public getAll(): Observable<SuggestedItemShoppingList[]> {
-        return of([
-            new SuggestedItemShoppingList('Litière'),
-            new SuggestedItemShoppingList('Beurre'),
-            new SuggestedItemShoppingList('Pommes'),
-            new SuggestedItemShoppingList('Poires'),
-            new SuggestedItemShoppingList('Fraises'),
-            new SuggestedItemShoppingList('Escalope de dinde')
-        ]);
+    public loadAll(): Observable<SuggestedItemShoppingList[]> {
+        return this.apiHttp.get<SuggestedItemShoppingList[]>(
+            `${environment.apiUrl}${SuggestedItemShoppingListApiService.apiPath}`
+        );
     }
 }

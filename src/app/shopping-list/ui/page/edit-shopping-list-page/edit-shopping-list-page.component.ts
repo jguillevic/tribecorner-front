@@ -1,6 +1,6 @@
 import {Component, OnDestroy} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ShoppingListService} from '../../../service/shopping-list.service';
+import {ShoppingListApiService} from '../../../service/shopping-list-api.service';
 import {ShoppingList} from '../../../model/shopping-list.model';
 import {ItemShoppingList} from '../../../model/item-shopping-list.model';
 import {BehaviorSubject, Observable, Subject, map, mergeMap, of, takeUntil, tap} from 'rxjs';
@@ -68,7 +68,7 @@ export class EditShoppingListComponent implements OnDestroy {
     mergeMap(params => {
       if (params['id']) {
         this.currentShoppingListId = parseInt(params['id']);
-        return this.shoppingListService.loadOneById(this.currentShoppingListId);
+        return this.shoppingListApiService.loadOneById(this.currentShoppingListId);
       }
 
       const shoppingList: ShoppingList = new ShoppingList();
@@ -84,7 +84,7 @@ export class EditShoppingListComponent implements OnDestroy {
 
   public constructor(
     private readonly activatedRoute: ActivatedRoute,
-    private readonly shoppingListService: ShoppingListService,
+    private readonly shoppingListApiService: ShoppingListApiService,
     private readonly itemShoppingListApiService: ItemShoppingListApiService,
     private readonly dialog: MatDialog
   ) { }
@@ -99,10 +99,10 @@ export class EditShoppingListComponent implements OnDestroy {
 
   private save(shoppingList: ShoppingList): Observable<ShoppingList> {
      if (this.currentShoppingListId !== undefined) {
-      return this.shoppingListService.update(shoppingList);
+      return this.shoppingListApiService.update(shoppingList);
     }
 
-    return this.shoppingListService.create(shoppingList)
+    return this.shoppingListApiService.create(shoppingList)
     .pipe(
       tap(shoppingList => this.currentShoppingListId = shoppingList.id)
     );

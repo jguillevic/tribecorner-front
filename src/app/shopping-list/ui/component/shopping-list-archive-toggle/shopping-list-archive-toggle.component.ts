@@ -4,7 +4,7 @@ import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ShoppingList } from '../../../model/shopping-list.model';
-import { ShoppingListService } from '../../../service/shopping-list.service';
+import { ShoppingListApiService } from '../../../service/shopping-list-api.service';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
@@ -29,7 +29,7 @@ export class ShoppingListArchiveToggleComponent implements OnDestroy {
   public isTogglingArchive: boolean = false;
 
   public constructor(
-    private shoppingListService: ShoppingListService
+    private shoppingListApiService: ShoppingListApiService
   ) { }
 
   public ngOnDestroy(): void {
@@ -39,7 +39,7 @@ export class ShoppingListArchiveToggleComponent implements OnDestroy {
   public toggleArchive(): void {
     this.isTogglingArchive = true;
     if (this.shoppingListToToggleArchive) {
-      this.shoppingListService.toggleArchive(this.shoppingListToToggleArchive)
+      this.shoppingListApiService.toggleArchive(this.shoppingListToToggleArchive)
       .pipe(
         takeUntil(this.destroy$),
         tap(updatedShoppingList => this.onShoppingListArchiveToggled.emit(updatedShoppingList)),

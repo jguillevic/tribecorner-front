@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { ShoppingListService } from 'src/app/shopping-list/service/shopping-list.service';
+import { ShoppingListApiService } from '../../../../shopping-list/service/shopping-list-api.service';
 import { ShoppingList } from 'src/app/shopping-list/model/shopping-list.model';
 import { ShoppingListRoutes } from 'src/app/shopping-list/route/shopping-list.routes';
 import { ShoppingListCardComponent } from "../../../../shopping-list/ui/component/shopping-list-card/shopping-list-card.component";
@@ -62,13 +62,13 @@ export class DisplayHomeComponent {
   .loadAllByDate(DateHelper.getCurrentDate());
 
   public readonly shoppingLists$: Observable<ShoppingList[]> 
-  = this.shoppingListService
+  = this.shoppingListApiService
   .loadAll(false);
 
   public constructor(
     private eventService: EventService,
     private mealsByMealKindService: MealsByMealKindService,
-    private shoppingListService: ShoppingListService,
+    private shoppingListApiService: ShoppingListApiService,
     private shoppingListGoToService: ShoppingListGoToService,
     private router: Router
   ) { }

@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { ShoppingList } from '../../../model/shopping-list.model';
-import { ShoppingListService } from '../../../service/shopping-list.service';
+import { ShoppingListApiService } from '../../../service/shopping-list-api.service';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
@@ -26,7 +26,7 @@ export class ShoppingListCompletedDialogComponent implements OnDestroy {
   public isTogglingArchive: boolean = false;
 
   public constructor(
-    private shoppingListService: ShoppingListService,
+    private shoppingListApiService: ShoppingListApiService,
     private location: Location,
     @Inject(MAT_DIALOG_DATA) private shoppingList: ShoppingList
   ) { }
@@ -37,7 +37,7 @@ export class ShoppingListCompletedDialogComponent implements OnDestroy {
 
   public onArchiveClicked(): void {
     this.isTogglingArchive = true;
-    this.shoppingListService.toggleArchive(this.shoppingList)
+    this.shoppingListApiService.toggleArchive(this.shoppingList)
     .pipe(
       takeUntil(this.destroy$),
       tap(() => this.location.back())

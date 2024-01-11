@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TabBarComponent } from 'src/app/common/tab-bar/ui/tab-bar/tab-bar.component';
 import { ShoppingList } from '../../../model/shopping-list.model';
 import { BehaviorSubject, Observable, Subscription, combineLatest, map, shareReplay } from 'rxjs';
-import { ShoppingListService } from '../../../service/shopping-list.service';
+import { ShoppingListApiService } from '../../../service/shopping-list-api.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ShoppingListCardComponent } from "../../component/shopping-list-card/shopping-list-card.component";
@@ -42,7 +42,7 @@ export class DisplayShoppingListsComponent implements OnDestroy {
   private deleteSubscription: Subscription|undefined;
 
   private loadedShoppingLists$ 
-  = this.shoppingListService.loadAll()
+  = this.shoppingListApiService.loadAll()
   .pipe(
     shareReplay(1)
   );
@@ -90,7 +90,7 @@ export class DisplayShoppingListsComponent implements OnDestroy {
   );
 
   public constructor(
-    private readonly shoppingListService: ShoppingListService,
+    private readonly shoppingListApiService: ShoppingListApiService,
     private readonly shoppingListGoToService: ShoppingListGoToService
   ) { }
 

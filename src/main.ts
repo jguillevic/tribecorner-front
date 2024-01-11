@@ -3,7 +3,7 @@ import { AppComponent } from './app/app.component';
 import { provideRouter, Routes } from '@angular/router';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { ShoppingListRoutes } from './app/shopping-list/route/shopping-list.routes';
-import { ShoppingListService } from './app/shopping-list/service/shopping-list.service';
+import { ShoppingListApiService } from './app/shopping-list/service/shopping-list-api.service';
 import { provideHttpClient } from '@angular/common/http';
 import { UserRoutes } from './app/user/route/user.routes';
 import { signedInGuard } from './app/user/guard/signed-in.guard';
@@ -45,7 +45,7 @@ const routes: Routes = [
     { 
         path: '',
         providers: [
-            ShoppingListService,
+            ShoppingListApiService,
             ShoppingListGoToService,
             ItemShoppingListGoToService,
             ItemShoppingListApiService,
@@ -92,7 +92,7 @@ const routes: Routes = [
             MealKindService,
             MealService,
             MealsByMealKindService,
-            ShoppingListService,
+            ShoppingListApiService,
             ShoppingListGoToService
         ],
         canActivate: [signedInGuard, hasFamilyGuard],

@@ -8,7 +8,7 @@ import { ApiHttpClient } from 'src/app/common/http/api-http-client';
 import { ShoppingListConverter } from '../converter/shopping-list.converter';
 
 @Injectable()
-export class ShoppingListService {
+export class ShoppingListApiService {
   private static apiPath: string = "shopping_lists";
 
   public constructor(private apiHttp: ApiHttpClient) { }
@@ -18,14 +18,14 @@ export class ShoppingListService {
     if (isArchived !== undefined) {
       isArchivedParameter = `?isArchived=${isArchived}`;
     }
-    const request: string = `${environment.apiUrl}${ShoppingListService.apiPath}${isArchivedParameter}`;
+    const request: string = `${environment.apiUrl}${ShoppingListApiService.apiPath}${isArchivedParameter}`;
 
     return request;
   }
 
   public loadAll(isArchived: boolean|undefined = undefined): Observable<ShoppingList[]> {
     return this.apiHttp.get<LoadShoppingListDto[]>(
-      ShoppingListService.getLoadAllRequest(isArchived)
+      ShoppingListApiService.getLoadAllRequest(isArchived)
       )
       .pipe(
         map(loadShoppingListDtos => 
@@ -38,7 +38,7 @@ export class ShoppingListService {
 
   public loadOneById(shoppingListId: number): Observable<ShoppingList> {
     return this.apiHttp.get<LoadShoppingListDto>(
-      `${environment.apiUrl}${ShoppingListService.apiPath}/${shoppingListId}`
+      `${environment.apiUrl}${ShoppingListApiService.apiPath}/${shoppingListId}`
       )
       .pipe(
         map(
@@ -53,7 +53,7 @@ export class ShoppingListService {
     const body: string = JSON.stringify(editShoppingListDto);
 
     return this.apiHttp.post<LoadShoppingListDto>(
-      `${environment.apiUrl}${ShoppingListService.apiPath}`,
+      `${environment.apiUrl}${ShoppingListApiService.apiPath}`,
       body
       )
       .pipe(
@@ -68,7 +68,7 @@ export class ShoppingListService {
     const body: string = JSON.stringify(editShoppingListDto);
 
     return this.apiHttp.put<LoadShoppingListDto>(
-      `${environment.apiUrl}${ShoppingListService.apiPath}/${shoppingList.id}`,
+      `${environment.apiUrl}${ShoppingListApiService.apiPath}/${shoppingList.id}`,
       body
       )
       .pipe(
@@ -80,7 +80,7 @@ export class ShoppingListService {
 
   public delete(shoppingListId: number): Observable<void> {
     return this.apiHttp.delete<void>(
-      `${environment.apiUrl}${ShoppingListService.apiPath}/${shoppingListId}`
+      `${environment.apiUrl}${ShoppingListApiService.apiPath}/${shoppingListId}`
       );
   }
 

@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core
 import { CommonModule } from '@angular/common';
 import { ShoppingList } from '../../../model/shopping-list.model';
 import { Subscription, tap } from 'rxjs';
-import { ShoppingListService } from '../../../service/shopping-list.service';
+import { ShoppingListApiService } from '../../../service/shopping-list-api.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MtxButtonModule } from '@ng-matero/extensions/button';
@@ -27,7 +27,7 @@ export class ShoppingListDeleteButtonComponent implements OnDestroy {
   public isDeleting: boolean = false;
 
   public constructor(
-    private shoppingListService: ShoppingListService
+    private shoppingListApiService: ShoppingListApiService
   ) { }
 
   public ngOnDestroy(): void {
@@ -37,7 +37,7 @@ export class ShoppingListDeleteButtonComponent implements OnDestroy {
   public delete() {
     if (this.shoppingListToDelete && this.shoppingListToDelete.id) {
       this.isDeleting = true;
-      this.deleteSubscription = this.shoppingListService.delete(this.shoppingListToDelete.id)
+      this.deleteSubscription = this.shoppingListApiService.delete(this.shoppingListToDelete.id)
       .pipe(
         tap(() => 
           this.onShoppingListDeleted.emit(this.shoppingListToDelete)

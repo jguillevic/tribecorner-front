@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { ShoppingList } from '../../../model/shopping-list.model';
-import { ShoppingListService } from '../../../service/shopping-list.service';
+import { ShoppingListApiService } from '../../../service/shopping-list-api.service';
 import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -28,7 +28,7 @@ export class ShoppingListCopyButtonComponent implements OnDestroy {
   @Output() public onShoppingListCopied: EventEmitter<ShoppingList> = new EventEmitter<ShoppingList>();
 
   public constructor(
-    private shoppingListService: ShoppingListService
+    private shoppingListApiService: ShoppingListApiService
   ) { }
 
   public ngOnDestroy(): void {
@@ -44,7 +44,7 @@ export class ShoppingListCopyButtonComponent implements OnDestroy {
     const copiedShoppingList = ShoppingListHelper.copy(this.shoppingListToCopy, false);
     copiedShoppingList.name += ' (copie)';
     copiedShoppingList.isArchived = false;
-    this.shoppingListService.create(copiedShoppingList)
+    this.shoppingListApiService.create(copiedShoppingList)
     .pipe(
       tap(
         copiedShoppingList =>

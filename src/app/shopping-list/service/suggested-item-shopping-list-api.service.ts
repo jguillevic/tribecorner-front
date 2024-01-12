@@ -9,7 +9,10 @@ export class SuggestedItemShoppingListApiService {
     private static apiPath: string = "suggested_item_shopping_lists";
 
     public allSuggestedItemShoppingLists$: Observable<SuggestedItemShoppingList[]> 
-    = this.loadAll();
+    = this.loadAll()
+    .pipe(
+        shareReplay(1)
+    );
 
     public constructor(
         private apiHttp: ApiHttpClient

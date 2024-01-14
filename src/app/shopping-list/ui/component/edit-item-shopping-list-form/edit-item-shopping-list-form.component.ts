@@ -101,6 +101,7 @@ export class EditItemShoppingListFormComponent implements OnInit, OnDestroy {
                         new ItemShoppingList(
                             this.itemShoppingList.id,
                             this.getNameControlValue(),
+                            this.itemShoppingList.category,
                             this.itemShoppingList.shoppingListId,
                             this.itemShoppingList.isChecked,
                             this.itemShoppingList.position

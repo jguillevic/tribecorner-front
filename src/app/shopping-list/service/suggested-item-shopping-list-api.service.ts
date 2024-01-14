@@ -17,7 +17,7 @@ export class SuggestedItemShoppingListApiService {
     );
 
     public constructor(
-        private apiHttp: ApiHttpClient
+        private readonly apiHttp: ApiHttpClient
     ) { }
 
     public loadAll(): Observable<SuggestedItemShoppingList[]> {

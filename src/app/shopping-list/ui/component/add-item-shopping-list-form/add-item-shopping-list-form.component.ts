@@ -10,6 +10,7 @@ import { SuggestedItemShoppingList } from '../../../model/suggested-item-shoppin
 import { Observable, of, switchMap } from 'rxjs';
 import { TranslocoModule, TranslocoService, provideTranslocoScope } from '@ngneat/transloco';
 import { SuggestedItemShoppingListAutoCompleteService } from '../../../service/suggested-item-shopping-list-auto-complete.service';
+import { ItemShoppingListCategory } from 'src/app/shopping-list/model/item-shopping-list-category.model';
 
 @Component({
 selector: 'app-add-item-shopping-list-form',
@@ -109,6 +110,7 @@ export class AddItemShoppingListFormComponent {
                 const itemShoppingList: ItemShoppingList  = new ItemShoppingList(
                     undefined,
                     itemShoppingListName,
+                    new ItemShoppingListCategory(-1, 'code', 'nom'),
                     this.currentShoppingListId,
                     false,
                     0

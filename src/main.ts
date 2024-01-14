@@ -31,6 +31,7 @@ import { SuggestedItemShoppingListAutoCompleteService } from './app/shopping-lis
 import { ItemShoppingListApiService } from './app/shopping-list/service/item-shopping-list-api.service';
 import { ItemShoppingListRoutes } from './app/shopping-list/route/item-shopping-list.routes';
 import { ItemShoppingListGoToService } from './app/shopping-list/service/item-shopping-list-go-to.service';
+import { ItemShoppingListCategoryApiService } from './app/shopping-list/service/item-shopping-list-category-api.service';
 
 const routes: Routes = [
     { 
@@ -49,6 +50,7 @@ const routes: Routes = [
             ShoppingListGoToService,
             ItemShoppingListGoToService,
             ItemShoppingListApiService,
+            ItemShoppingListCategoryApiService,
             SuggestedItemShoppingListApiService,
             SuggestedItemShoppingListAutoCompleteService
         ],
@@ -58,7 +60,8 @@ const routes: Routes = [
     { 
         path: '',
         providers: [
-            ItemShoppingListApiService
+            ItemShoppingListApiService,
+            ItemShoppingListCategoryApiService
         ],
         canActivate: [signedInGuard, hasFamilyGuard],
         children: ItemShoppingListRoutes.itemShoppingListRoutes

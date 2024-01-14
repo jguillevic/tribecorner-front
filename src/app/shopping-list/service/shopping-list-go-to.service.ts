@@ -6,7 +6,7 @@ import { Observable, from, of } from 'rxjs';
 @Injectable()
 export class ShoppingListGoToService {
     public constructor(
-        private router: Router
+        private readonly router: Router
     ) { }
 
     public goToCreate(): Observable<boolean> {

@@ -6,7 +6,7 @@ import { ItemShoppingListRoutes } from '../route/item-shopping-list.routes';
 @Injectable()
 export class ItemShoppingListGoToService {
     public constructor(
-        private router: Router
+        private readonly router: Router
     ) { }
 
     public goToUpdate(shoppingListId: number|undefined): Observable<boolean> {

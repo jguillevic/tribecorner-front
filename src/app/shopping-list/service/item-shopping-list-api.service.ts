@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ItemShoppingList } from '../model/item-shopping-list.model';
-import { Observable, map, of } from 'rxjs';
+import { Observable, map, of, tap } from 'rxjs';
 import { ApiHttpClient } from '../../common/http/api-http-client';
 import { environment } from '../../../environments/environment';
 import { ItemShoppingListConverter } from '../converter/item-shopping-list.converter';
@@ -12,7 +12,7 @@ export class ItemShoppingListApiService {
     private static apiPath: string = "item_shopping_lists";
 
     public constructor(
-        private apiHttp: ApiHttpClient
+        private readonly apiHttp: ApiHttpClient
     ) { }
 
     public loadOneById(itemShoppingListId: number): Observable<ItemShoppingList> {
@@ -22,7 +22,8 @@ export class ItemShoppingListApiService {
         .pipe(
             map(loadItemShoppingListDto => 
                 ItemShoppingListConverter.fromDtoToModel(loadItemShoppingListDto)
-            )
+            ),
+            tap(itemShoppingList => console.table(itemShoppingList))
         );
     }
 

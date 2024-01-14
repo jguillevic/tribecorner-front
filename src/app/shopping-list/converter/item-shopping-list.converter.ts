@@ -1,19 +1,18 @@
 import { EditItemShoppingListDto } from "../dto/edit-item-shopping-list.dto";
 import { LoadItemShoppingListDto } from "../dto/load-item-shopping-list.dto";
 import { ItemShoppingList } from "../model/item-shopping-list.model";
+import { ItemShoppingListCategoryConverter } from "./item-shopping-list-category.converter";
 
 export abstract class ItemShoppingListConverter {
     public static fromDtoToModel(loadItemShoppingListDto: LoadItemShoppingListDto): ItemShoppingList {
-        const itemShoppingList: ItemShoppingList 
-        = new ItemShoppingList(
+        return new ItemShoppingList(
             loadItemShoppingListDto.id,
             loadItemShoppingListDto.name,
+            ItemShoppingListCategoryConverter.fromDtoToModel(loadItemShoppingListDto.category),
             loadItemShoppingListDto.shoppingListId,
             loadItemShoppingListDto.isChecked,
             loadItemShoppingListDto.position
         );
-    
-        return itemShoppingList;
     }
 
     public static fromModelToDto(itemShoppingList: ItemShoppingList): EditItemShoppingListDto {
@@ -21,6 +20,7 @@ export abstract class ItemShoppingListConverter {
         = new EditItemShoppingListDto(
             itemShoppingList.id,
             itemShoppingList.name,
+            ItemShoppingListCategoryConverter.fromModelToDto(itemShoppingList.category),
             itemShoppingList.shoppingListId,
             itemShoppingList.isChecked,
             itemShoppingList.position

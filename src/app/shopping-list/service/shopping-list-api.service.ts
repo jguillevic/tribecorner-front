@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ShoppingList } from '../model/shopping-list.model';
-import { Observable, map } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { EditShoppingListDto } from '../dto/edit-shopping-list.dto';
 import { LoadShoppingListDto } from '../dto/load-shopping-list.dto';
@@ -11,7 +11,9 @@ import { ShoppingListConverter } from '../converter/shopping-list.converter';
 export class ShoppingListApiService {
   private static apiPath: string = "shopping_lists";
 
-  public constructor(private apiHttp: ApiHttpClient) { }
+  public constructor(
+    private readonly apiHttp: ApiHttpClient
+  ) { }
 
   public static getLoadAllRequest(isArchived: boolean|undefined = undefined): string {
     let isArchivedParameter: string = '';
@@ -32,7 +34,8 @@ export class ShoppingListApiService {
           loadShoppingListDtos.map(loadShoppingListDto =>
             ShoppingListConverter.fromDtoToModel(loadShoppingListDto)
           )
-        )
+        ),
+        tap(shoppingList => console.table(shoppingList))
       );
   }
 

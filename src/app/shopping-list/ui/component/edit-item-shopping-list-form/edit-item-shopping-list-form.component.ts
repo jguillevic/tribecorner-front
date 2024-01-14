@@ -1,11 +1,14 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { TranslocoModule, TranslocoService, provideTranslocoScope } from '@ngneat/transloco';
-import { ItemShoppingList } from '../../../model/item-shopping-list.model';
-import { Observable, Subject, debounceTime, filter, of, takeUntil, tap } from 'rxjs';
-import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {TranslocoModule, TranslocoService, provideTranslocoScope} from '@ngneat/transloco';
+import {ItemShoppingList} from '../../../model/item-shopping-list.model';
+import {Observable, Subject, debounceTime, filter, of, takeUntil, tap} from 'rxjs';
+import {AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import {ItemShoppingListCategoryApiService} from '../../../service/item-shopping-list-category-api.service';
+import { ItemShoppingListCategory } from 'src/app/shopping-list/model/item-shopping-list-category.model';
 
 @Component({
     selector: 'app-edit-item-shopping-list-form',
@@ -16,7 +19,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
         FormsModule,
         ReactiveFormsModule,
         MatInputModule,
-        MatFormFieldModule
+        MatFormFieldModule,
+        MatSelectModule
     ],
     templateUrl: './edit-item-shopping-list-form.component.html',
     styles: [
@@ -38,16 +42,21 @@ export class EditItemShoppingListFormComponent implements OnInit, OnDestroy {
     private readonly destroy$ = new Subject<void>();
 
     public readonly nameCode: string = 'name';
+    public readonly categoryCode: string = 'category';
 
     private readonly maxLengthErrorCode: string = 'maxlength';
     private readonly requiredErrorCode: string = 'required';
+
+    public readonly allItemShoppingListCategories$ 
+    = this.itemShoppingListCategoryApiService.allItemShoppingListCategories$;
 
     public itemShoppingListForm: FormGroup 
     = this.createItemShoppingListForm();
 
     public constructor(
         private readonly formBuilder: FormBuilder,
-        private readonly translocoService: TranslocoService
+        private readonly translocoService: TranslocoService,
+        private readonly itemShoppingListCategoryApiService: ItemShoppingListCategoryApiService
     ) { }
 
     public ngOnInit(): void {
@@ -61,24 +70,48 @@ export class EditItemShoppingListFormComponent implements OnInit, OnDestroy {
 
     public createItemShoppingListForm(): FormGroup {
         return this.formBuilder.group({
-            name: ['', [Validators.required, Validators.maxLength(255)]]
+            name: ['', [Validators.required, Validators.maxLength(255)]],
+            category: [0, [Validators.required]]
         });
     }
 
-    public getNameControl(): AbstractControl<any, any> {
+    private getNameControl(): AbstractControl<any, any> {
         return this.itemShoppingListForm.controls[this.nameCode];
     }
 
-    public getNameControlValue(): string {
+    private getNameControlValue(): string {
         return this.getNameControl().value;
     }
 
-    public updateNameControl(name: string) {
+    private updateNameControl(name: string) {
         this.getNameControl().setValue(name);
+    }
+
+    private getCategoryControl(): AbstractControl<any, any> {
+        return this.itemShoppingListForm.controls[this.categoryCode];
+    }
+
+    private getCategoryControlValue(): ItemShoppingListCategory {
+        // Renseignement d'une catégorie en partie factice.
+        // Seule l'identifiant est intéressant car c'est seulement
+        // ce dernier qui sera utilisé par le back.
+        const selectedCategory: ItemShoppingListCategory 
+        = new ItemShoppingListCategory(
+            this.getCategoryControl().value,
+            'unused_code',
+            'unused_name'
+        );
+
+        return selectedCategory;
+    }
+
+    public updateCategoryControl(categoryId: number) {
+        this.getCategoryControl().setValue(categoryId);
     }
 
     public updateEditItemShoppingListForm(itemShoppingList: ItemShoppingList) {
         this.updateNameControl(itemShoppingList.name);
+        this.updateCategoryControl(itemShoppingList.category.id);
     }
 
     public updateEditItemShoppingListFormFromInput() {
@@ -97,16 +130,16 @@ export class EditItemShoppingListFormComponent implements OnInit, OnDestroy {
             ),
             tap(() => {
                 if (this.itemShoppingList) {
-                    this.itemShoppingListEdited.emit(
+                     this.itemShoppingListEdited.emit(
                         new ItemShoppingList(
                             this.itemShoppingList.id,
                             this.getNameControlValue(),
-                            this.itemShoppingList.category,
+                            this.getCategoryControlValue(),
                             this.itemShoppingList.shoppingListId,
                             this.itemShoppingList.isChecked,
                             this.itemShoppingList.position
                         )
-                    )
+                    );
                 }
             }),
             takeUntil(this.destroy$)
@@ -114,7 +147,7 @@ export class EditItemShoppingListFormComponent implements OnInit, OnDestroy {
         .subscribe();
     }
 
-    public buildTradKey(labelKey: string): string {
+    private buildTradKey(labelKey: string): string {
         return `editItemShoppingListForm.${labelKey}`;
     }
 
@@ -126,6 +159,16 @@ export class EditItemShoppingListFormComponent implements OnInit, OnDestroy {
         } else if (nameControl.hasError(this.maxLengthErrorCode)) {
             const maxLength = nameControl.getError(this.maxLengthErrorCode)['requiredLength'];
             return this.translocoService.selectTranslate(this.buildTradKey('nameTooLong'), {maxLength: maxLength})
+        }
+
+        return of(undefined);
+    }
+
+    public getCategoryErrorMessage(): Observable<string|undefined> {
+        const categoryControl: AbstractControl<any, any> = this.getCategoryControl();
+
+        if (categoryControl.hasError(this.requiredErrorCode)) {
+            return this.translocoService.selectTranslate(this.buildTradKey('categoryRequired'));
         }
 
         return of(undefined);

@@ -1,5 +1,7 @@
 {
     "name": "Nom",
     "nameRequired": "Nom requis",
-    "nameTooLong": "Nom trop long (max. {{maxLength}} caractères)"
+    "nameTooLong": "Nom trop long (max. {{maxLength}} caractères)",
+    "category": "Catégorie",
+    "categoryRequired": "Catégorie requise"
 }

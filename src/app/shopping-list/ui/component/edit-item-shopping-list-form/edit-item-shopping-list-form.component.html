@@ -1,8 +1,18 @@
 <form class="form" [formGroup]="this.itemShoppingListForm" *transloco="let t;read:'editItemShoppingListForm';">
     <!--Nom.-->
     <mat-form-field class="form-input">
-        <mat-label>{{ t('name') }}</mat-label>
+        <mat-label>{{t('name')}}</mat-label>
         <input matInput type="text" [formControlName]="this.nameCode">
-        <mat-error>{{ this.getNameErrorMessage() | async }}</mat-error>
+        <mat-error>{{this.getNameErrorMessage()|async}}</mat-error>
+    </mat-form-field>
+    <!--Catégorie.-->
+    <mat-form-field class="form-input">
+        <mat-label>{{t('category')}}</mat-label>
+        <mat-select [formControlName]="this.categoryCode">
+            <mat-option *ngFor="let category of allItemShoppingListCategories$|async" [value]="category.id">
+                {{category.name}}
+            </mat-option>
+        </mat-select>
+        <mat-error>{{this.getCategoryErrorMessage()|async}}</mat-error>
     </mat-form-field>
 </form>

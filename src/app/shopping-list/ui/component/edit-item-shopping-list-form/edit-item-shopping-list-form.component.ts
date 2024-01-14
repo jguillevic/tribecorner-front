@@ -8,7 +8,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {ItemShoppingListCategoryApiService} from '../../../service/item-shopping-list-category-api.service';
-import {ItemShoppingListCategory} from 'src/app/shopping-list/model/item-shopping-list-category.model';
+import {ItemShoppingListCategory} from '../../../model/item-shopping-list-category.model';
 
 @Component({
     selector: 'app-edit-item-shopping-list-form',

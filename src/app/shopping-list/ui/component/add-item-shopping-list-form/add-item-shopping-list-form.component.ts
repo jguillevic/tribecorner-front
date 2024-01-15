@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, TrackByFunction } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output, TrackByFunction } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ItemShoppingList } from '../../../model/item-shopping-list.model';
@@ -7,10 +7,10 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { SuggestedItemShoppingList } from '../../../model/suggested-item-shopping-list';
-import { Observable, of, switchMap } from 'rxjs';
+import { Observable, Subject, of, switchMap, takeUntil, tap } from 'rxjs';
 import { TranslocoModule, TranslocoService, provideTranslocoScope } from '@ngneat/transloco';
 import { SuggestedItemShoppingListAutoCompleteService } from '../../../service/suggested-item-shopping-list-auto-complete.service';
-import { ItemShoppingListCategory } from 'src/app/shopping-list/model/item-shopping-list-category.model';
+import { ItemShoppingListCategoryApiService } from '../../../service/item-shopping-list-category-api.service';
 
 @Component({
 selector: 'app-add-item-shopping-list-form',
@@ -33,10 +33,12 @@ styleUrls: [
     './add-item-shopping-list-form.component.scss'
 ]
 })
-export class AddItemShoppingListFormComponent {
+export class AddItemShoppingListFormComponent implements OnDestroy {
     @Input() public currentShoppingListId: number|undefined;
     @Input() public currentItemShoppingLists: ItemShoppingList[] | null = [];
     @Output() public itemShoppingListAdded: EventEmitter<ItemShoppingList> = new EventEmitter<ItemShoppingList>();
+
+    private readonly destroy$: Subject<void> = new Subject<void>();
 
     public readonly itemShoppingListNameCode: string = 'itemShoppingListName';
     private readonly maxLengthErrorCode: string = 'maxlength';
@@ -60,14 +62,30 @@ export class AddItemShoppingListFormComponent {
 
     public constructor(
         private readonly suggestedItemShoppingListAutoCompleteService: SuggestedItemShoppingListAutoCompleteService,
+        private readonly itemShoppingListCategoryApiService: ItemShoppingListCategoryApiService,
         private readonly translocoService: TranslocoService
     ) { }
+
+    public ngOnDestroy(): void {
+        this.destroy$.complete();
+    }
     
     public trackBySuggestedItemShoppingListName: TrackByFunction<SuggestedItemShoppingList> 
     = (index, suggestedItemShoppingList) => suggestedItemShoppingList.name;
     
     public suggestedItemShoppingListSelected(suggestedItemShoppingList: SuggestedItemShoppingList) {
-        this.getItemShoppingListNameControl().setValue(suggestedItemShoppingList.name);
+        if (this.currentShoppingListId) {
+            const itemShoppingList: ItemShoppingList  = new ItemShoppingList(
+                undefined,
+                suggestedItemShoppingList.name,
+                suggestedItemShoppingList.category,
+                this.currentShoppingListId,
+                false,
+                undefined
+            );
+
+            this.emitItemShoppingList(itemShoppingList);
+        }
     }
 
     private getItemShoppingListNameControl(): AbstractControl<any, any> {
@@ -76,6 +94,10 @@ export class AddItemShoppingListFormComponent {
 
     private getItemShoppingListNameValue(): string {
         return this.getItemShoppingListNameControl().value;
+    }
+
+    private updateItemShoppingListNameControl(itemShoppingListName: string): void {
+        this.getItemShoppingListNameControl().setValue(itemShoppingListName);
     }
 
     public isAddButtonEnabled(): boolean {
@@ -96,28 +118,45 @@ export class AddItemShoppingListFormComponent {
     }
 
     public submitItemShoppingList(): void {
-        if (this.addItemShoppingListForm.valid &&
-            this.currentShoppingListId)
+        if (this.addItemShoppingListForm.valid)
         {
             const itemShoppingListName: string = this.getItemShoppingListNameControl().value;
         
             if (itemShoppingListName.length) {
-                if (this.currentItemShoppingLists?.find(item => item.name.toLowerCase() === itemShoppingListName.toLowerCase())) {
-                    this.getItemShoppingListNameControl().setErrors({[this.alreadyAddedErrorCode]: true});
-                    return;
-                }
-        
-                const itemShoppingList: ItemShoppingList  = new ItemShoppingList(
-                    undefined,
-                    itemShoppingListName,
-                    new ItemShoppingListCategory(-1, 'code', 'nom'),
-                    this.currentShoppingListId,
-                    false,
-                    0
-                );
-                this.getItemShoppingListNameControl().setValue('');
-                this.itemShoppingListAdded.emit(itemShoppingList);
+                this.itemShoppingListCategoryApiService.defaultCategory$
+                .pipe(
+                    tap(defaultCategory => {
+                        if (this.currentShoppingListId &&
+                            defaultCategory) {
+                            const itemShoppingList: ItemShoppingList  
+                            = new ItemShoppingList(
+                                undefined,
+                                itemShoppingListName,
+                                defaultCategory,
+                                this.currentShoppingListId,
+                                false,
+                                undefined
+                            );
+                            
+                            this.emitItemShoppingList(itemShoppingList);
+                        }
+                    }),
+                    takeUntil(this.destroy$)
+                )
+                .subscribe();
             }
         }
+    }
+
+    private emitItemShoppingList(itemShoppingList: ItemShoppingList): void {
+        const itemShoppingListName: string = itemShoppingList.name;
+
+        if (this.currentItemShoppingLists?.find(item => item.name.toLowerCase() === itemShoppingListName.toLowerCase())) {
+            this.getItemShoppingListNameControl().setErrors({[this.alreadyAddedErrorCode]: true});
+            return;
+        }
+
+        this.updateItemShoppingListNameControl('');
+        this.itemShoppingListAdded.emit(itemShoppingList);
     }
 }

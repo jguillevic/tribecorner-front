@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, map, shareReplay } from 'rxjs';
+import { Observable, find, map, shareReplay } from 'rxjs';
 import { ItemShoppingListCategory } from '../model/item-shopping-list-category.model';
 import { ApiHttpClient } from '../../common/http/api-http-client';
 import { environment } from '../../../environments/environment';
@@ -10,10 +10,16 @@ import { ItemShoppingListCategoryConverter } from '../converter/item-shopping-li
 export class ItemShoppingListCategoryApiService {
     private static apiPath: string = "item_shopping_list_categories";
 
-    public allItemShoppingListCategories$: Observable<ItemShoppingListCategory[]> 
+    public readonly allItemShoppingListCategories$: Observable<ItemShoppingListCategory[]> 
     = this.loadAll()
     .pipe(
         shareReplay(1)
+    );
+
+    public readonly defaultCategory$: Observable<ItemShoppingListCategory|undefined>
+    = this.allItemShoppingListCategories$
+    .pipe(
+        map(categories => categories.find(category => category.code === 'UNKNOWN'))
     );
 
     public constructor(

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ShoppingList } from '../model/shopping-list.model';
-import { Observable, map, tap } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { EditShoppingListDto } from '../dto/edit-shopping-list.dto';
 import { LoadShoppingListDto } from '../dto/load-shopping-list.dto';
@@ -34,8 +34,7 @@ export class ShoppingListApiService {
           loadShoppingListDtos.map(loadShoppingListDto =>
             ShoppingListConverter.fromDtoToModel(loadShoppingListDto)
           )
-        ),
-        tap(shoppingList => console.table(shoppingList))
+        )
       );
   }
 

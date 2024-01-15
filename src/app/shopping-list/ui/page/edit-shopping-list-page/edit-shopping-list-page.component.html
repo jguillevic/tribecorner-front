@@ -8,34 +8,19 @@
             (shoppingListEdited)="editShoppingList($event)"
             (validityChanged)="changeShoppingListValidity($event)">
             </app-edit-shopping-list-form>
-            <app-checkable-item-shopping-lists *ngIf="this.notCheckedItemShoppingLists$ | async as notCheckedItemShoppingLists"
-            [itemShoppingLists]="notCheckedItemShoppingLists"
+            <app-checkable-item-shopping-lists *ngIf="this.itemShoppingLists$ | async as itemShoppingLists"
+            [itemShoppingLists]="itemShoppingLists"
             (itemShoppingListDeleted)="deleteItemShoppingList($event)"
             (itemShoppingListToggled)="toggleItemShoppingList($event)">
             </app-checkable-item-shopping-lists>
-            <div *ngIf="this.checkedItemShoppingLists$ | async as checkedItemShoppingLists">
-                <mat-expansion-panel *ngIf="checkedItemShoppingLists.length">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            {{t('checkedItemShoppingListsNumber', {'checkedItemShoppingListsNumber': checkedItemShoppingLists.length})}}
-                        </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <app-checkable-item-shopping-lists
-                    [itemShoppingLists]="checkedItemShoppingLists"
-                    (itemShoppingListDeleted)="deleteItemShoppingList($event)"
-                    (itemShoppingListToggled)="toggleItemShoppingList($event)">
-                    </app-checkable-item-shopping-lists>
-                </mat-expansion-panel>
-            </div>
-        </div>
-        <app-add-item-shopping-list-form 
-        class="add-form padding"
-        [currentShoppingListId]="this.currentShoppingListId"
-        [currentItemShoppingLists]="this.itemShoppingLists$ | async"
-        (itemShoppingListAdded)="this.addItemShoppingList($event)">
-        </app-add-item-shopping-list-form>
         <ng-template #loadingForm>
             <app-simple-loading></app-simple-loading>
         </ng-template>
     </div>
 </div>
+<app-add-item-shopping-list-form 
+class="add-form padding"
+[currentShoppingListId]="this.currentShoppingListId"
+[currentItemShoppingLists]="this.itemShoppingLists$ | async"
+(itemShoppingListAdded)="this.addItemShoppingList($event)">
+</app-add-item-shopping-list-form>

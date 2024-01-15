@@ -46,22 +46,6 @@ export class EditShoppingListComponent implements OnDestroy {
   private readonly itemShoppingListsSubject: BehaviorSubject<ItemShoppingList[]> = new BehaviorSubject<ItemShoppingList[]>([]);
   public readonly itemShoppingLists$: Observable<ItemShoppingList[]> = this.itemShoppingListsSubject.asObservable();
 
-  public notCheckedItemShoppingLists$ = this.itemShoppingLists$
-  .pipe(
-    map(
-      itemShoppingLists => 
-        itemShoppingLists.filter(itemShoppingList => !itemShoppingList.isChecked)
-    )
-  );
-
-  public checkedItemShoppingLists$ = this.itemShoppingLists$
-  .pipe(
-    map(
-      itemShoppingLists => 
-        itemShoppingLists.filter(itemShoppingList => itemShoppingList.isChecked)
-    )
-  );
-
   private shoppingList: ShoppingList|undefined;
   public readonly shoppingList$: Observable<ShoppingList> = this.activatedRoute.queryParams
   .pipe(

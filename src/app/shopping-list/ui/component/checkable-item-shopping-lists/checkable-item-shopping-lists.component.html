@@ -1,4 +1,4 @@
-<ul>
+<!-- <ul>
     <li class="item-shopping-list" *ngFor="let itemShoppingList of itemShoppingLists; trackBy: trackByItemShoppingList">
         <div class="item-shopping-list__check-box">
             <mat-checkbox
@@ -18,4 +18,32 @@
             </button>
         </div>
     </li>
-</ul>
+</ul> -->
+<mat-accordion multi="true">
+    <mat-expansion-panel *ngFor="let itemShoppingListsByCategory of itemShoppingListsByCategories; trackBy: trackByItemShoppingListsByCategory" expanded="true">
+        <mat-expansion-panel-header>
+            <mat-panel-title><h3>{{itemShoppingListsByCategory.category.name}}</h3></mat-panel-title>
+          </mat-expansion-panel-header>
+        <ul>
+            <li class="item-shopping-list" *ngFor="let itemShoppingList of itemShoppingListsByCategory.itemShoppingLists; trackBy: trackByItemShoppingList">
+                <div class="item-shopping-list__check-box">
+                    <mat-checkbox
+                    color="primary"
+                    [checked]="itemShoppingList.isChecked"
+                    (change)="toggleItemShoppingList(itemShoppingList)">
+                    </mat-checkbox>
+                    <span class="item-shopping-list__name" 
+                    [ngClass]="{ 'line': itemShoppingList.isChecked }"
+                    (click)="this.goToItemShoppingListUpdate(itemShoppingList.id)">
+                        {{itemShoppingList.name}}
+                    </span>
+                </div>
+                <div class="item-shopping-list__buttons">
+                    <button type="button" mat-icon-button (click)="deleteItemShoppingList(itemShoppingList)" color="warn">
+                        <mat-icon class="material-symbols-outlined">close</mat-icon>
+                    </button>
+                </div>
+            </li>
+        </ul>
+    </mat-expansion-panel>
+</mat-accordion>

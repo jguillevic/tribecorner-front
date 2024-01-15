@@ -15,7 +15,7 @@ class="add-form"
         #auto="matAutocomplete"
         (optionSelected)="this.suggestedItemShoppingListSelected($event.option.value)">
             <mat-option *ngFor="let suggestedItemShoppingList of suggestedItemShoppingLists$ | async; trackBy: this.trackBySuggestedItemShoppingListName" [value]="suggestedItemShoppingList">
-                {{ suggestedItemShoppingList.name }}
+                {{suggestedItemShoppingList.name}} ({{suggestedItemShoppingList.category.name}})
             </mat-option>
         </mat-autocomplete>
         <mat-error>{{this.getItemShoppingListNameErrorMessage() | async}}</mat-error>

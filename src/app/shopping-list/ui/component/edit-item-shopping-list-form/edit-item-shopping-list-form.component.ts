@@ -47,8 +47,8 @@ export class EditItemShoppingListFormComponent implements OnInit, OnDestroy {
     private readonly maxLengthErrorCode: string = 'maxlength';
     private readonly requiredErrorCode: string = 'required';
 
-    public readonly allItemShoppingListCategories$ 
-    = this.itemShoppingListCategoryApiService.allItemShoppingListCategories$;
+    public readonly categories$ 
+    = this.itemShoppingListCategoryApiService.categories$;
 
     public itemShoppingListForm: FormGroup 
     = this.createItemShoppingListForm();

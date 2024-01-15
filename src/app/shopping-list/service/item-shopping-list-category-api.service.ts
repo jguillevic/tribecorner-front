@@ -10,14 +10,14 @@ import { ItemShoppingListCategoryConverter } from '../converter/item-shopping-li
 export class ItemShoppingListCategoryApiService {
     private static apiPath: string = "item_shopping_list_categories";
 
-    public readonly allItemShoppingListCategories$: Observable<ItemShoppingListCategory[]> 
+    public readonly categories$: Observable<ItemShoppingListCategory[]> 
     = this.loadAll()
     .pipe(
         shareReplay(1)
     );
 
     public readonly defaultCategory$: Observable<ItemShoppingListCategory|undefined>
-    = this.allItemShoppingListCategories$
+    = this.categories$
     .pipe(
         map(categories => categories.find(category => category.code === 'UNKNOWN'))
     );

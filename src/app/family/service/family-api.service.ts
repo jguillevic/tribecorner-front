@@ -1,23 +1,23 @@
-import { Injectable } from '@angular/core';
-import { Family } from '../model/family.model';
-import { Observable, exhaustMap, map, of, shareReplay, switchMap } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { LoadFamilyDto } from '../dto/load-family.dto';
-import { LoadFamilyMemberDto } from '../dto/load-family-member.dto';
-import { FamilyMember } from '../model/family-member.model';
-import { CreateFamilyDto } from '../dto/create-family.dto';
-import { CreateFamilyMemberDto } from '../dto/create-family-member.dto';
-import { AssociationCodeNotFoundError } from '../error/association-code-not-found.error';
-import { ApiHttpClient } from 'src/app/common/http/api-http-client';
-import { FamilyConverter } from '../converter/family.converter';
-import { FamilyMemberConverter } from '../converter/family-member.converter';
-import { UserService } from '../../user/service/user.service';
-import { UserInfo } from '../../user/model/user-info.model';
+import {Injectable} from '@angular/core';
+import {Family} from '../model/family.model';
+import {Observable, exhaustMap, map, of, shareReplay, switchMap} from 'rxjs';
+import {environment} from '../../../environments/environment';
+import {LoadFamilyDto} from '../dto/load-family.dto';
+import {LoadFamilyMemberDto} from '../dto/load-family-member.dto';
+import {FamilyMember} from '../model/family-member.model';
+import {CreateFamilyDto} from '../dto/create-family.dto';
+import {CreateFamilyMemberDto} from '../dto/create-family-member.dto';
+import {AssociationCodeNotFoundError} from '../error/association-code-not-found.error';
+import {ApiHttpClient} from 'src/app/common/http/api-http-client';
+import {FamilyConverter} from '../converter/family.converter';
+import {FamilyMemberConverter} from '../converter/family-member.converter';
+import {UserService} from '../../user/service/user.service';
+import {UserInfo} from '../../user/model/user-info.model';
 
 @Injectable({
   providedIn: 'root',
 })
-export class FamilyService {
+export class FamilyApiService {
   private static apiPath: string = 'families';
 
   public constructor(
@@ -40,7 +40,7 @@ export class FamilyService {
 
   public loadOneByFamilyId(familyId: number): Observable<Family> {
     return this.apiHttp.get<LoadFamilyDto>(
-      `${environment.apiUrl}${FamilyService.apiPath}/${familyId}`
+      `${environment.apiUrl}${FamilyApiService.apiPath}/${familyId}`
       )
       .pipe(
         map(loadFamilyDto => 
@@ -51,11 +51,11 @@ export class FamilyService {
   }
 
   public create(familyName: string, userId: number): Observable<Family> {
-    const createFamilyDto: CreateFamilyDto = FamilyService.createCreateFamilyDto(familyName, userId);
+    const createFamilyDto: CreateFamilyDto = FamilyApiService.createCreateFamilyDto(familyName, userId);
     const body: string = JSON.stringify(createFamilyDto);
 
     return this.apiHttp.post<LoadFamilyDto>(
-      `${environment.apiUrl}${FamilyService.apiPath}`,
+      `${environment.apiUrl}${FamilyApiService.apiPath}`,
       body
       )
       .pipe(
@@ -79,7 +79,7 @@ export class FamilyService {
 
   private loadOneByAssociationCode(associationCode: string): Observable<Family|undefined> {
     return this.apiHttp.get<LoadFamilyDto[]>(
-      `${environment.apiUrl}${FamilyService.apiPath}?associationCode=${associationCode}`
+      `${environment.apiUrl}${FamilyApiService.apiPath}?associationCode=${associationCode}`
       )
       .pipe(
         map(loadFamilyDtos => {
@@ -98,7 +98,7 @@ export class FamilyService {
     const body: string = JSON.stringify(createFamilyMemberDto);
 
     return this.apiHttp.post<LoadFamilyMemberDto>(
-      `${environment.apiUrl}${FamilyService.apiPath}/${familyId}/family_members`,
+      `${environment.apiUrl}${FamilyApiService.apiPath}/${familyId}/family_members`,
       body
       )
       .pipe(

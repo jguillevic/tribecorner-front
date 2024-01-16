@@ -6,7 +6,7 @@ import {MealConverter} from '../converter/meal.converter';
 import {MealDto} from '../dto/meal.dto';
 import {ApiHttpClient} from '../../common/http/api-http-client';
 import {DateHelper} from '../../common/date/helper/date.helper';
-import {FamilyService} from '../../family/service/family.service';
+import {FamilyApiService} from '../../family/service/family-api.service';
 import {Family} from '../../family/model/family.model';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class MealService {
   private static apiPath: string = "meals";
 
   public defaultNumberOfPersons$: Observable<number> 
-  = this.familyService.family$
+  = this.familyApiService.family$
   .pipe(
     map((family: Family|undefined) => 
       { 
@@ -25,7 +25,7 @@ export class MealService {
 
   public constructor(
     private apiHttp: ApiHttpClient,
-    private familyService: FamilyService
+    private familyApiService: FamilyApiService
   ) { }
 
   public loadAllByDate(date: Date): Observable<Meal[]> {

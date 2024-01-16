@@ -1,19 +1,19 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { FamilyService } from '../../service/family.service';
-import { Router } from '@angular/router';
-import { FamilyRoutes } from '../../route/family.routes';
-import { Subscription, switchMap } from 'rxjs';
-import { UserService } from 'src/app/user/service/user.service';
-import { UserInfo } from 'src/app/user/model/user-info.model';
-import { HomeRoutes } from 'src/app/home/route/home.routes';
-import { SignOutButtonComponent } from 'src/app/common/button/ui/sign-out/sign-out-button.component';
-import { AssociationCodeNotFoundError } from '../../error/association-code-not-found.error';
-import { MtxButtonModule } from '@ng-matero/extensions/button';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatButtonModule} from '@angular/material/button';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FamilyApiService} from '../../service/family-api.service';
+import {Router} from '@angular/router';
+import {FamilyRoutes} from '../../route/family.routes';
+import {Subscription, switchMap} from 'rxjs';
+import {UserService} from 'src/app/user/service/user.service';
+import {UserInfo} from 'src/app/user/model/user-info.model';
+import {HomeRoutes} from 'src/app/home/route/home.routes';
+import {SignOutButtonComponent} from 'src/app/common/button/ui/sign-out/sign-out-button.component';
+import {AssociationCodeNotFoundError} from '../../error/association-code-not-found.error';
+import {MtxButtonModule} from '@ng-matero/extensions/button';
 
 @Component({
     selector: 'app-join-family',
@@ -47,7 +47,7 @@ export class JoinFamilyComponent implements OnInit, OnDestroy {
   
   public constructor(
     private router: Router,
-    private familyService: FamilyService,
+    private familyApiService: FamilyApiService,
     private userService: UserService
     ) { }
 
@@ -80,7 +80,7 @@ export class JoinFamilyComponent implements OnInit, OnDestroy {
       const familyAssociationCode: string = this.joinFamilyForm.controls['familyAssociationCode'].value;
 
       if (this.currentUserInfo) {
-        this._joinSubscription = this.familyService.joinFamily(familyAssociationCode, this.currentUserInfo.id)
+        this._joinSubscription = this.familyApiService.joinFamily(familyAssociationCode, this.currentUserInfo.id)
         .pipe(
           switchMap(() => {
             return this.userService.refreshCurrentUser();

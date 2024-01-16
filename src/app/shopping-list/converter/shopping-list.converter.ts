@@ -1,36 +1,29 @@
-import { EditShoppingListDto } from "../dto/edit-shopping-list.dto";
-import { LoadShoppingListDto } from "../dto/load-shopping-list.dto";
-import { ShoppingList } from "../model/shopping-list.model";
-import { ItemShoppingListConverter } from "./item-shopping-list.converter";
+import {ShoppingListDto} from "../dto/shopping-list.dto";
+import {ShoppingList} from "../model/shopping-list.model";
+import {ItemShoppingListConverter} from "./item-shopping-list.converter";
 
 export abstract class ShoppingListConverter {
-    public static fromDtoToModel(loadShoppingListDto: LoadShoppingListDto): ShoppingList {
-        const shoppingList = new ShoppingList();
-
-        shoppingList.id = loadShoppingListDto.id;
-        shoppingList.name = loadShoppingListDto.name;
-        shoppingList.isArchived = loadShoppingListDto.isArchived;
-    
-        loadShoppingListDto.items.forEach(loadItemShoppingListDto => {
-          const itemShoppingList = ItemShoppingListConverter.fromDtoToModel(loadItemShoppingListDto);
-          shoppingList.items.push(itemShoppingList);
-        });
-    
-        return shoppingList;
+    public static fromDtoToModel(shoppingListDto: ShoppingListDto): ShoppingList {
+        return new ShoppingList(
+          shoppingListDto.id,
+          shoppingListDto.name,
+          shoppingListDto.isArchived,
+          shoppingListDto.items.map(itemShoppingListDto => 
+            ItemShoppingListConverter.fromDtoToModel(itemShoppingListDto)
+          )
+        );
     }
 
-    public static fromModelToDto(shoppingList: ShoppingList): EditShoppingListDto {
-        const editShoppingListDto = new EditShoppingListDto();
-
-        editShoppingListDto.id = shoppingList.id;
-        editShoppingListDto.name = shoppingList.name;
-        editShoppingListDto.isArchived = shoppingList.isArchived;
+    public static fromModelToDto(shoppingList: ShoppingList): ShoppingListDto {
+        const shoppingListDto = new ShoppingListDto(
+          shoppingList.id,
+          shoppingList.name,
+          shoppingList.isArchived,
+          shoppingList.items.map(itemShoppingList =>
+            ItemShoppingListConverter.fromModelToDto(itemShoppingList)
+          )
+        );
     
-        shoppingList.items.forEach(itemShoppingList => {
-          const editItemShoppingListDto = ItemShoppingListConverter.fromModelToDto(itemShoppingList);
-          editShoppingListDto.items.push(editItemShoppingListDto);
-        });
-    
-        return editShoppingListDto;
+        return shoppingListDto;
     }
 }

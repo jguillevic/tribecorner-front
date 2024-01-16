@@ -1,5 +1,5 @@
 import { ItemShoppingListConverter } from './item-shopping-list.converter';
-import { LoadItemShoppingListDto } from '../dto/load-item-shopping-list.dto';
+import { LoadItemShoppingListDto } from '../dto/item-shopping-list.dto';
 import { EditItemShoppingListDto } from '../dto/edit-item-shopping-list.dto';
 import { ItemShoppingList } from '../model/item-shopping-list.model';
 

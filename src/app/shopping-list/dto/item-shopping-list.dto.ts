@@ -1,12 +1,12 @@
-import { ItemShoppingListCategoryDto } from "./item-shopping-list-category.dto";
+import {ItemShoppingListCategoryDto} from "./item-shopping-list-category.dto";
 
-export class EditItemShoppingListDto {
+export class ItemShoppingListDto {
     public constructor(
         public id: number|undefined,
         public name: string,
         public category: ItemShoppingListCategoryDto,
         public shoppingListId: number,
         public isChecked: boolean,
-        public position: number,
+        public position: number
     ) { }
 }

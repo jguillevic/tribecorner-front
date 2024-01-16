@@ -1,4 +1,4 @@
-import { LoadShoppingListDto } from '../dto/load-shopping-list.dto';
+import { LoadShoppingListDto } from '../dto/shopping-list.dto';
 import { ShoppingListConverter } from './shopping-list.converter';
 import { ShoppingList } from '../model/shopping-list.model';
 

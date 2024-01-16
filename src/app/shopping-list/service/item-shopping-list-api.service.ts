@@ -1,11 +1,10 @@
-import { Injectable } from '@angular/core';
-import { ItemShoppingList } from '../model/item-shopping-list.model';
-import { Observable, map } from 'rxjs';
-import { ApiHttpClient } from '../../common/http/api-http-client';
-import { environment } from '../../../environments/environment';
-import { ItemShoppingListConverter } from '../converter/item-shopping-list.converter';
-import { LoadItemShoppingListDto } from '../dto/load-item-shopping-list.dto';
-import { EditItemShoppingListDto } from '../dto/edit-item-shopping-list.dto';
+import {Injectable} from '@angular/core';
+import {ItemShoppingList} from '../model/item-shopping-list.model';
+import {Observable, map} from 'rxjs';
+import {ApiHttpClient} from '../../common/http/api-http-client';
+import {environment} from '../../../environments/environment';
+import {ItemShoppingListConverter} from '../converter/item-shopping-list.converter';
+import {ItemShoppingListDto} from '../dto/item-shopping-list.dto';
 
 @Injectable()
 export class ItemShoppingListApiService {
@@ -16,43 +15,43 @@ export class ItemShoppingListApiService {
     ) { }
 
     public loadOneById(itemShoppingListId: number): Observable<ItemShoppingList> {
-        return this.apiHttp.get<LoadItemShoppingListDto>(
+        return this.apiHttp.get<ItemShoppingListDto>(
             `${environment.apiUrl}${ItemShoppingListApiService.apiPath}/${itemShoppingListId}`
         )
         .pipe(
-            map(loadItemShoppingListDto => 
-                ItemShoppingListConverter.fromDtoToModel(loadItemShoppingListDto)
+            map(itemShoppingListDto => 
+                ItemShoppingListConverter.fromDtoToModel(itemShoppingListDto)
             )
         );
     }
 
     public create(itemShoppingList: ItemShoppingList): Observable<ItemShoppingList> {
-        const editItemShoppingListDto: EditItemShoppingListDto = ItemShoppingListConverter.fromModelToDto(itemShoppingList);
+        const editItemShoppingListDto: ItemShoppingListDto = ItemShoppingListConverter.fromModelToDto(itemShoppingList);
         const body: string = JSON.stringify(editItemShoppingListDto);
     
-        return this.apiHttp.post<LoadItemShoppingListDto>(
+        return this.apiHttp.post<ItemShoppingListDto>(
           `${environment.apiUrl}${ItemShoppingListApiService.apiPath}`,
           body
           )
           .pipe(
-            map(loadItemShoppingListDto => 
-              ItemShoppingListConverter.fromDtoToModel(loadItemShoppingListDto)
+            map(itemShoppingListDto => 
+              ItemShoppingListConverter.fromDtoToModel(itemShoppingListDto)
             )
           );
       }
 
     public upate(itemShoppingList: ItemShoppingList): Observable<ItemShoppingList> {
-        const editItemShoppingListDto: EditItemShoppingListDto 
+        const itemShoppingListDto: ItemShoppingListDto 
         = ItemShoppingListConverter.fromModelToDto(itemShoppingList);
-        const body: string = JSON.stringify(editItemShoppingListDto);
+        const body: string = JSON.stringify(itemShoppingListDto);
 
-        return this.apiHttp.put<LoadItemShoppingListDto>(
+        return this.apiHttp.put<ItemShoppingListDto>(
             `${environment.apiUrl}${ItemShoppingListApiService.apiPath}/${itemShoppingList.id}`,
             body
         )
         .pipe(
-            map(loadItemShoppingListDto => 
-                ItemShoppingListConverter.fromDtoToModel(loadItemShoppingListDto)
+            map(itemShoppingListDto => 
+                ItemShoppingListConverter.fromDtoToModel(itemShoppingListDto)
             )
         );
     }

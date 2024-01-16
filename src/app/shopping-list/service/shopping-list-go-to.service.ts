@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { ShoppingListRoutes } from '../route/shopping-list.routes';
-import { Observable, from, of } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {ShoppingListRoutes} from '../route/shopping-list.routes';
+import {Observable, from, of} from 'rxjs';
 
 @Injectable()
 export class ShoppingListGoToService {
@@ -10,12 +10,12 @@ export class ShoppingListGoToService {
     ) { }
 
     public goToCreate(): Observable<boolean> {
-        return from(this.router.navigate([ShoppingListRoutes.editShoppingListRoute], { queryParams: { action: 'create' } }));
+        return from(this.router.navigate([ShoppingListRoutes.editShoppingListRoute]));
     }
     
     public goToUpdate(shoppingListId: number|undefined): Observable<boolean> {
         if (shoppingListId) {
-            return from(this.router.navigate([ShoppingListRoutes.editShoppingListRoute], { queryParams: { action: 'update', id: shoppingListId } }));
+            return from(this.router.navigate([ShoppingListRoutes.editShoppingListRoute], { queryParams: {id: shoppingListId} }));
         }
 
         return of(false);

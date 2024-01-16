@@ -1,5 +1,5 @@
 import { MealKindConverter } from './meal-kind.converter';
-import { LoadMealKindDto } from '../dto/load-meal-kind.dto';
+import { LoadMealKindDto } from '../dto/meal-kind.dto';
 import { MealKind } from '../model/meal-kind.model';
 
 describe('MealKindConverter', () => {

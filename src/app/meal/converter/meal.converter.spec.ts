@@ -1,5 +1,5 @@
 import { MealConverter } from './meal.converter';
-import { LoadMealDto } from '../dto/load-meal.dto';
+import { LoadMealDto } from '../dto/meal.dto';
 import { Meal } from '../model/meal.model';
 import { DateHelper } from '../../common/date/helper/date.helper';
 import { EditMealDto } from '../dto/edit-meal.dto';

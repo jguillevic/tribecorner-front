@@ -1,21 +1,21 @@
-import { DateHelper } from "../../common/date/helper/date.helper";
-import { EditMealDto } from "../dto/edit-meal.dto";
-import { LoadMealDto } from "../dto/load-meal.dto";
-import { Meal } from "../model/meal.model";
+import {DateHelper} from "../../common/date/helper/date.helper";
+import {MealDto} from "../dto/meal.dto";
+import {Meal} from "../model/meal.model";
 
 export abstract class MealConverter {
-    public static fromDtoToModel(loadMealDto: LoadMealDto): Meal {
+    public static fromDtoToModel(mealDto: MealDto): Meal {
         return new Meal(
-            loadMealDto.id,
-            loadMealDto.name,
-            new Date(loadMealDto.date),
-            loadMealDto.numberOfPersons,
-            loadMealDto.mealKindId
+            mealDto.id??0,
+            mealDto.name,
+            new Date(mealDto.date),
+            mealDto.numberOfPersons,
+            mealDto.mealKindId
         );
     }
 
-    public static fromModelToDto(meal: Meal): EditMealDto {
-        return new EditMealDto(
+    public static fromModelToDto(meal: Meal): MealDto {
+        return new MealDto(
+            undefined,
             meal.name,
             DateHelper.toISODate(meal.date),
             meal.numberOfPersons,

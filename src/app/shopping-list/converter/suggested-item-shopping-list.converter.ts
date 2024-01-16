@@ -1,13 +1,13 @@
-import {LoadSuggestedItemShoppingListDto} from "../dto/load-suggested-item-shopping-list.dto";
+import {SuggestedItemShoppingListDto} from "../dto/suggested-item-shopping-list.dto";
 import {SuggestedItemShoppingList} from "../model/suggested-item-shopping-list";
 import {ItemShoppingListCategoryConverter} from "./item-shopping-list-category.converter";
 
 export abstract class SuggestedItemShoppingListConverter {
-    public static fromDtoToModel(loadSuggestedItemShoppingListDto: LoadSuggestedItemShoppingListDto): SuggestedItemShoppingList {
+    public static fromDtoToModel(suggestedItemShoppingListDto: SuggestedItemShoppingListDto): SuggestedItemShoppingList {
         return new SuggestedItemShoppingList(
-            loadSuggestedItemShoppingListDto.name,
-            ItemShoppingListCategoryConverter.fromDtoToModel(loadSuggestedItemShoppingListDto.category),
-            loadSuggestedItemShoppingListDto.count
+            suggestedItemShoppingListDto.name,
+            ItemShoppingListCategoryConverter.fromDtoToModel(suggestedItemShoppingListDto.category),
+            suggestedItemShoppingListDto.count
         );
     }
 }

@@ -1,11 +1,10 @@
-import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
-import { ApiHttpClient } from '../../common/http/api-http-client';
-import { Event } from 'src/app/event/model/event.model';
-import { environment } from '../../../environments/environment';
-import { LoadEventDto } from '../dto/load-event.dto';
-import { EventConverter } from '../converter/event.converter';
-import { EditEventDto } from '../dto/edit-event.dto';
+import {Injectable} from '@angular/core';
+import {Observable, map} from 'rxjs';
+import {ApiHttpClient} from '../../common/http/api-http-client';
+import {Event} from 'src/app/event/model/event.model';
+import {environment} from '../../../environments/environment';
+import {EventDto} from '../dto/event.dto';
+import {EventConverter} from '../converter/event.converter';
 
 @Injectable()
 export class EventService {
@@ -15,56 +14,56 @@ export class EventService {
 
   public loadAllByDate(date: Date): Observable<Event[]> {
     const dateStr: string = date.toISOString();
-    return this.apiHttp.get<LoadEventDto[]>(
+    return this.apiHttp.get<EventDto[]>(
       `${environment.apiUrl}${EventService.apiPath}?date=${dateStr}`
     )
     .pipe(
-      map(loadEventDtos => 
-        loadEventDtos.map(loadEventDto =>
-          EventConverter.fromDtoToModel(loadEventDto)
+      map(eventDtos => 
+        eventDtos.map(eventDto =>
+          EventConverter.fromDtoToModel(eventDto)
         )
       )
     );
   }
 
   public loadOneById(eventId: number): Observable<Event> {
-    return this.apiHttp.get<LoadEventDto>(
+    return this.apiHttp.get<EventDto>(
       `${environment.apiUrl}${EventService.apiPath}/${eventId}`
     )
     .pipe(
       map(
-        loadEventDto => 
-        EventConverter.fromDtoToModel(loadEventDto)
+        eventDto => 
+        EventConverter.fromDtoToModel(eventDto)
       )
     );
   }
 
   public create(event: Event): Observable<Event> {
-    const editEventDto: EditEventDto = EventConverter.fromModelToDto(event);
-    const body: string = JSON.stringify(editEventDto);
+    const eventDto: EventDto = EventConverter.fromModelToDto(event);
+    const body: string = JSON.stringify(eventDto);
 
-    return this.apiHttp.post<LoadEventDto>(
+    return this.apiHttp.post<EventDto>(
       `${environment.apiUrl}${EventService.apiPath}`,
       body
     )
     .pipe(
-      map(loadEventDto => 
-          EventConverter.fromDtoToModel(loadEventDto)
+      map(eventDto => 
+          EventConverter.fromDtoToModel(eventDto)
       )
     );
   }
 
   public update(event: Event): Observable<Event> {
-    const editEventDto: EditEventDto = EventConverter.fromModelToDto(event);
-    const body: string = JSON.stringify(editEventDto);
+    const eventDto: EventDto = EventConverter.fromModelToDto(event);
+    const body: string = JSON.stringify(eventDto);
 
-    return this.apiHttp.put<LoadEventDto>(
+    return this.apiHttp.put<EventDto>(
       `${environment.apiUrl}${EventService.apiPath}/${event.id}`,
       body
     )
     .pipe(
-      map(loadEventDto => 
-        EventConverter.fromDtoToModel(loadEventDto)
+      map(eventDto => 
+        EventConverter.fromDtoToModel(eventDto)
       )
     );
   }

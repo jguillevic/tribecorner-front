@@ -1,20 +1,20 @@
-import { EditEventDto } from "../dto/edit-event.dto";
-import { LoadEventDto } from "../dto/load-event.dto";
-import { Event } from "../model/event.model";
+import {EventDto} from "../dto/event.dto";
+import {Event} from "../model/event.model";
 
 export abstract class EventConverter {
-    public static fromDtoToModel(loadEventDto: LoadEventDto): Event {
+    public static fromDtoToModel(eventDto: EventDto): Event {
         return new Event(
-            loadEventDto.id,
-            loadEventDto.name,
-            new Date(loadEventDto.startingDateTime),
-            new Date(loadEventDto.endingDateTime),
-            loadEventDto.allDay
+            eventDto.id ?? 0,
+            eventDto.name,
+            new Date(eventDto.startingDateTime),
+            new Date(eventDto.endingDateTime),
+            eventDto.allDay
         );
     }
 
-    public static fromModelToDto(event: Event): EditEventDto {
-        return new EditEventDto(
+    public static fromModelToDto(event: Event): EventDto {
+        return new EventDto(
+            undefined,
             event.name,
             event.startingDateTime.toISOString(),
             event.endingDateTime.toISOString(),

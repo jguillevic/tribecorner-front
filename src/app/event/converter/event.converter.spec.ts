@@ -1,5 +1,5 @@
 import { EventConverter } from './event.converter';
-import { LoadEventDto } from '../dto/load-event.dto';
+import { LoadEventDto } from '../dto/event.dto';
 import { EditEventDto } from '../dto/edit-event.dto';
 import { Event } from '../model/event.model';
 

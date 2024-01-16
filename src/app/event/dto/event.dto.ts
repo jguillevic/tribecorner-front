@@ -1,6 +1,6 @@
-export class LoadEventDto {
+export class EventDto {
     public constructor(
-        public readonly id: number,      
+        public readonly id: number|undefined,      
         public readonly name: string,
         public readonly startingDateTime: string,
         public readonly endingDateTime: string ,

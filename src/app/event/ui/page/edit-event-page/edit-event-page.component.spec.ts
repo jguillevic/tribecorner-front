@@ -8,7 +8,7 @@ import { getTranslocoModule } from '../../../../../transloco-testing.module';
 import { EditEventComponent } from './edit-event-page.component';
 import { EditEventViewModel } from '../../view-model/edit-event.view-model';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { EventService } from '../../../service/event.service';
+import { EventService } from '../../../service/event-api.service';
 import { EventTimeHelper } from '../../../helper/event-time.helper';
 
 describe('EditEventComponent', () => {

@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Event } from '../../../model/event.model';
-import { Subject, takeUntil, tap } from 'rxjs';
-import { EventService } from '../../../service/event.service';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MtxButtonModule } from '@ng-matero/extensions/button';
+import {Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {Event} from '../../../model/event.model';
+import {Subject, takeUntil, tap} from 'rxjs';
+import {EventApiService} from '../../../service/event-api.service';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MtxButtonModule} from '@ng-matero/extensions/button';
 
 @Component({
   selector: 'app-event-delete-button',
@@ -27,8 +27,8 @@ export class EventDeleteButtonComponent implements OnDestroy {
   public isDeleting: boolean = false;
 
   public constructor(
-    private eventService: EventService
-  ) { }
+    private eventApiService: EventApiService
+  ) {}
 
   public ngOnDestroy(): void {
     this.destroy$.complete();
@@ -37,7 +37,7 @@ export class EventDeleteButtonComponent implements OnDestroy {
   public delete() {
     if (this.eventToDelete && this.eventToDelete.id) {
       this.isDeleting = true;
-      this.eventService.delete(this.eventToDelete.id)
+      this.eventApiService.delete(this.eventToDelete.id)
       .pipe(
         takeUntil(this.destroy$),
         tap(() => 

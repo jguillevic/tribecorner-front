@@ -7,7 +7,7 @@ import {EventDto} from '../dto/event.dto';
 import {EventConverter} from '../converter/event.converter';
 
 @Injectable()
-export class EventService {
+export class EventApiService {
   private static apiPath: string = "events";
 
   public constructor(private apiHttp: ApiHttpClient) { }
@@ -15,7 +15,7 @@ export class EventService {
   public loadAllByDate(date: Date): Observable<Event[]> {
     const dateStr: string = date.toISOString();
     return this.apiHttp.get<EventDto[]>(
-      `${environment.apiUrl}${EventService.apiPath}?date=${dateStr}`
+      `${environment.apiUrl}${EventApiService.apiPath}?date=${dateStr}`
     )
     .pipe(
       map(eventDtos => 
@@ -28,7 +28,7 @@ export class EventService {
 
   public loadOneById(eventId: number): Observable<Event> {
     return this.apiHttp.get<EventDto>(
-      `${environment.apiUrl}${EventService.apiPath}/${eventId}`
+      `${environment.apiUrl}${EventApiService.apiPath}/${eventId}`
     )
     .pipe(
       map(
@@ -43,7 +43,7 @@ export class EventService {
     const body: string = JSON.stringify(eventDto);
 
     return this.apiHttp.post<EventDto>(
-      `${environment.apiUrl}${EventService.apiPath}`,
+      `${environment.apiUrl}${EventApiService.apiPath}`,
       body
     )
     .pipe(
@@ -58,7 +58,7 @@ export class EventService {
     const body: string = JSON.stringify(eventDto);
 
     return this.apiHttp.put<EventDto>(
-      `${environment.apiUrl}${EventService.apiPath}/${event.id}`,
+      `${environment.apiUrl}${EventApiService.apiPath}/${event.id}`,
       body
     )
     .pipe(
@@ -70,7 +70,7 @@ export class EventService {
 
   public delete(eventId: number): Observable<void> {
     return this.apiHttp.delete<void>(
-      `${environment.apiUrl}${EventService.apiPath}/${eventId}`
+      `${environment.apiUrl}${EventApiService.apiPath}/${eventId}`
     );
   }
 }

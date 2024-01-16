@@ -1,20 +1,20 @@
-import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
-import { EventService } from './event.service';
-import { EditEventViewModel } from '../ui/view-model/edit-event.view-model';
-import { EditEventViewModelConverter } from '../converter/edit-event-view-model.converter';
-import { Event } from "../model/event.model";
-import { EventBusinessCheckerService } from './event-business-checker.service';
+import {Injectable} from '@angular/core';
+import {Observable, map} from 'rxjs';
+import {EventApiService} from './event-api.service';
+import {EditEventViewModel} from '../ui/view-model/edit-event.view-model';
+import {EditEventViewModelConverter} from '../converter/edit-event-view-model.converter';
+import {Event} from "../model/event.model";
+import {EventBusinessCheckerService} from './event-business-checker.service';
 
 @Injectable()
 export class EditEventService {
   public constructor(
-    private eventService: EventService,
+    private eventApiService: EventApiService,
     private eventBusinessChecker: EventBusinessCheckerService
   ) { }
 
   public loadOneById(eventId: number): Observable<EditEventViewModel> {
-    return this.eventService.loadOneById(eventId)
+    return this.eventApiService.loadOneById(eventId)
     .pipe(
       map(
         event => 
@@ -27,7 +27,7 @@ export class EditEventService {
     const event: Event 
     = EditEventViewModelConverter.fromViewModelToModel(editEventViewModel);
 
-    return this.eventService.create(event)
+    return this.eventApiService.create(event)
     .pipe(
       map(event => 
         EditEventViewModelConverter.fromModelToViewModel(event)
@@ -39,7 +39,7 @@ export class EditEventService {
     const event: Event 
     = EditEventViewModelConverter.fromViewModelToModel(editEventViewModel);
 
-    return this.eventService.update(event)
+    return this.eventApiService.update(event)
     .pipe(
       map(event => 
         EditEventViewModelConverter.fromModelToViewModel(event)

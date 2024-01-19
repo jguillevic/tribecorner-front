@@ -1,15 +1,33 @@
-:host {
-    height: 100%;
-}
-
 .large-empty {
-    width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
 
+    &__header {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__content {
+        margin: 0;
+        padding: 0;
+        font-size: 16px;
+        text-align: center;
+    }
+
+    &__footer {
+
+    }
+}
+
+.header {
     &__illustration {
         width: 200px;
     }
@@ -19,17 +37,8 @@
         padding: 0;
         padding-top: 20px;
         padding-bottom: 10px;
-        width: 300px;
         font-size: 24px;
         font-weight: 700;
-        text-align: center;
-    }
-
-    &__info {
-        margin: 0;
-        padding: 0;
-        width: 300px;
-        font-size: 16px;
         text-align: center;
     }
 }

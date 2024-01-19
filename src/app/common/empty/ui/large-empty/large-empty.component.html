@@ -1,5 +1,12 @@
-<div class="large-empty">
-    <img class="large-empty__illustration" [src]="this.illustrationSource">
-    <h1 class="large-empty__title">{{title}}</h1>
-    <p class="large-empty__info">{{message}}</p>
-</div>
+<article class="large-empty">
+    <header class="large-empty__header">
+        <img class="header__illustration" [src]="this.illustrationSource">
+        <h1 class="header__title">{{title}}</h1>
+    </header>
+    <section class="large-empty__content">
+        <p>{{message}}</p>
+    </section>
+    <footer class="large-empty__footer">
+        <ng-content></ng-content>
+    </footer>
+</article>

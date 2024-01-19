@@ -5,7 +5,9 @@
         [defaultSelectedDate$]="defaultDate$" 
         (onSelectedDateChanged)="onSelectedDateChanged($event)">
         </app-inline-calendar>
-        <div *ngIf="this.mealsByMealKinds$ | async as mealsByMealKinds; else loading" class="meals__container">
+        <div *ngIf="this.mealsByMealKinds$ | async as mealsByMealKinds; else loading"
+        class="meals__container"
+        [ngClass]="{'meals__container--center': !mealsByMealKinds.length}">
             <ng-container *ngIf="!this.isLoading; else loading">
                 <div class="meal-kind" *ngFor="let mealsByMealKind of mealsByMealKinds">
                     <div class="meal-kind__name">
@@ -30,7 +32,8 @@
                 class="empty"
                 illustrationSource="/assets/img/undraw-eating-together-re-ux62.svg"
                 title="Pas encore de repas ?"
-                message="Ajoutez et plannifiez ici vos repas de la semaine.">
+                message="Ajoutez et plannifiez ici vos repas du jour.">
+                    <button mat-raised-button color="primary" (click)="goToCreate()">Ajouter un repas</button>
                 </app-large-empty>
             </ng-container>
         </div>

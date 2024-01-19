@@ -7,11 +7,11 @@
         </app-inline-calendar>
         <div *ngIf="this.mealsByMealKinds$ | async as mealsByMealKinds; else loading"
         class="meals__container"
-        [ngClass]="{'meals__container--center': !mealsByMealKinds.length}">
+        [ngClass]="{'meals__container--center': !this.isLoading && !mealsByMealKinds.length}">
             <ng-container *ngIf="!this.isLoading; else loading">
                 <div class="meal-kind" *ngFor="let mealsByMealKind of mealsByMealKinds">
                     <div class="meal-kind__name">
-                        {{ mealsByMealKind.mealKind.name }}
+                        {{mealsByMealKind.mealKind.name}}
                     </div>
                     <app-large-meal-card *ngFor="let meal of this.mealsByMealKind.meals" [meal]="meal">
                         <app-meal-edit-button 
@@ -27,18 +27,11 @@
                         </app-meal-delete-button>
                     </app-large-meal-card>
                 </div>
-                <app-large-empty
-                *ngIf="!mealsByMealKinds.length"
-                class="empty"
-                illustrationSource="/assets/img/undraw-eating-together-re-ux62.svg"
-                title="Pas encore de repas ?"
-                message="Ajoutez et plannifiez ici vos repas du jour.">
-                    <button mat-raised-button color="primary" (click)="goToCreate()">Ajouter un repas</button>
-                </app-large-empty>
+                <app-meal-large-empty *ngIf="!mealsByMealKinds.length">
+                </app-meal-large-empty>
             </ng-container>
         </div>
         <ng-template #loading>
-            <app-simple-loading></app-simple-loading>
         </ng-template>
     </div>
     <app-tab-bar [selectedIndex]=2 (onActionClicked)="goToCreate()"></app-tab-bar>

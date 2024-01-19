@@ -1,9 +1,10 @@
 @import '../../../../../styles/helpers/colors';
+@import '../../../../../styles/helpers/variables';
 
 .profile-top-bar {
     display: block;
     width: 100%;
-    height: 48px;
+    height: $top-bar-height;
     position: relative;
     background-color: $primary-color;
 

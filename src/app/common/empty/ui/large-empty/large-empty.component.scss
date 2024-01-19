@@ -1,27 +1,34 @@
+:host {
+    height: 100%;
+}
+
 .large-empty {
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 
-    &-illustration {
+    &__illustration {
         width: 200px;
     }
 
-    &-title {
+    &__title {
         margin: 0;
         padding: 0;
         padding-top: 20px;
         padding-bottom: 10px;
-        font-size: 28px;
+        width: 300px;
+        font-size: 24px;
         font-weight: 700;
+        text-align: center;
     }
 
-    &-message {
-        width: 200px;
+    &__info {
         margin: 0;
         padding: 0;
+        width: 300px;
         font-size: 16px;
         text-align: center;
     }

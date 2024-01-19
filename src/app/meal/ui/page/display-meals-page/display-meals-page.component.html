@@ -5,34 +5,32 @@
         [defaultSelectedDate$]="defaultDate$" 
         (onSelectedDateChanged)="onSelectedDateChanged($event)">
         </app-inline-calendar>
-        <div 
-        *ngIf="this.mealsByMealKinds$ | async as mealsByMealKinds" >
-            <div *ngIf="!this.isLoading" class="meals__container">
-                <div class="meal-kind" *ngFor="let mealsByMealKind of mealsByMealKinds">
-                    <div class="meal-kind__name">
-                        {{ mealsByMealKind.mealKind.name }}
-                    </div>
-                    <app-large-meal-card *ngFor="let meal of this.mealsByMealKind.meals" [meal]="meal">
-                        <app-meal-edit-button 
-                        [mealId]="meal.id">
-                        </app-meal-edit-button>
-                        <app-meal-copy-button 
-                        [mealToCopy]="meal"
-                        (onMealCopied)="onMealCopied($event)">
-                        </app-meal-copy-button>
-                        <app-meal-delete-button 
-                        [mealToDelete]="meal"
-                        (onMealDeleted)="onMealDeleted($event)">
-                        </app-meal-delete-button>
-                    </app-large-meal-card>
+        <div *ngIf="!this.isLoading && (this.mealsByMealKinds$ | async) as mealsByMealKinds" class="meals__container">
+            <div class="meal-kind" *ngFor="let mealsByMealKind of mealsByMealKinds">
+                <div class="meal-kind__name">
+                    {{ mealsByMealKind.mealKind.name }}
                 </div>
-                <app-large-empty 
-                *ngIf="!this.mealsByMealKinds.length"
-                illustrationSource="/assets/img/undraw-eating-together-re-ux62.svg"
-                title="Oups !"
-                message="Vous n'avez pas encore plannifié de repas.">
-                </app-large-empty>
+                <app-large-meal-card *ngFor="let meal of this.mealsByMealKind.meals" [meal]="meal">
+                    <app-meal-edit-button 
+                    [mealId]="meal.id">
+                    </app-meal-edit-button>
+                    <app-meal-copy-button 
+                    [mealToCopy]="meal"
+                    (onMealCopied)="onMealCopied($event)">
+                    </app-meal-copy-button>
+                    <app-meal-delete-button 
+                    [mealToDelete]="meal"
+                    (onMealDeleted)="onMealDeleted($event)">
+                    </app-meal-delete-button>
+                </app-large-meal-card>
             </div>
+            <app-large-empty
+            *ngIf="!this.mealsByMealKinds.length"
+            class="empty"
+            illustrationSource="/assets/img/undraw-eating-together-re-ux62.svg"
+            title="Pas encore de repas ?"
+            message="Ajoutez et plannifiez ici vos repas de la semaine.">
+            </app-large-empty>
         </div>
         <div *ngIf="this.isLoading">
             <app-simple-loading></app-simple-loading>

@@ -1,5 +1,9 @@
 @import '../../../../../../styles/helpers/colors';
 
+:host {
+    height: 120px;
+}
+
 .inline-calendar {
     display: block;
     width: 100%;

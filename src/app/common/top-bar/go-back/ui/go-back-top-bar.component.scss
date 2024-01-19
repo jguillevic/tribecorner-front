@@ -1,4 +1,7 @@
+@import '../../../../../styles/helpers/variables';
+
 .go-back-top-bar {
+    height: $top-bar-height;
     position: relative;
 
     &__back {

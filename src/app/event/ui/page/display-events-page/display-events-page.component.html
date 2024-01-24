@@ -1,27 +1,37 @@
 <div class="page">
-    <app-profile-top-bar></app-profile-top-bar>
-    <div class="events">
-        <app-inline-calendar [defaultSelectedDate$]="defaultDate$" (onSelectedDateChanged)="onSelectedDateChanged($event)">
-        </app-inline-calendar>
-        <div *ngIf="this.events$ | async as events">
-            <div *ngIf="!this.isLoading" class="events__container">
-                <app-event-card *ngFor="let event of events"
+  <app-profile-top-bar></app-profile-top-bar>
+  <div class="events">
+    <app-inline-calendar [defaultSelectedDate$]="defaultDate$" (onSelectedDateChanged)="onSelectedDateChanged($event)">
+    </app-inline-calendar>
+    @if (this.events$ | async; as events) {
+      <div>
+        @if (!this.isLoading) {
+          <div class="events__container">
+            @for (event of events; track event) {
+              <app-event-card
                 class="event"
                 [event]="event">
-                    <app-event-edit-button
-                    [eventId]="event.id">
-                    </app-event-edit-button>
-                    <app-event-delete-button 
-                    [eventToDelete]="event"
-                    (onEventDeleted)="onEventDeleted($event)">
-                    </app-event-delete-button>
-                </app-event-card>
-                <app-event-large-empty *ngIf="!events.length"></app-event-large-empty>
-            </div>
-        </div>
-        <div *ngIf="this.isLoading">
-            <app-simple-loading></app-simple-loading>
-        </div>
-    </div>
-    <app-tab-bar [selectedIndex]=3 (onActionClicked)="goToCreate()"></app-tab-bar>
+                <app-event-edit-button
+                  [eventId]="event.id">
+                </app-event-edit-button>
+                <app-event-delete-button
+                  [eventToDelete]="event"
+                  (onEventDeleted)="onEventDeleted($event)">
+                </app-event-delete-button>
+              </app-event-card>
+            }
+            @if (!events.length) {
+              <app-event-large-empty></app-event-large-empty>
+            }
+          </div>
+        }
+      </div>
+    }
+    @if (this.isLoading) {
+      <div>
+        <app-simple-loading></app-simple-loading>
+      </div>
+    }
+  </div>
+  <app-tab-bar [selectedIndex]=3 (onActionClicked)="goToCreate()"></app-tab-bar>
 </div>

@@ -1,5 +1,4 @@
 import { Component, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { UserService } from '../../../service/user.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -19,7 +18,6 @@ import { UserRoutes } from '../../../route/user.routes';
   selector: 'app-sign-in-user-page',
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
@@ -27,7 +25,7 @@ import { UserRoutes } from '../../../route/user.routes';
     MatButtonModule,
     MtxButtonModule,
     MatIconModule
-  ],
+],
   templateUrl: './sign-in-user-page.component.html',
   styles: [
   ]

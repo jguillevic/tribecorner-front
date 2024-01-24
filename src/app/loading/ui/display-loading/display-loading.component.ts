@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { UserService } from 'src/app/user/service/user.service';
 import { Router } from '@angular/router';
 import { UserRoutes } from 'src/app/user/route/user.routes';
@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-display-loading',
   standalone: true,
-  imports: [CommonModule, MatProgressSpinnerModule],
+  imports: [MatProgressSpinnerModule],
   templateUrl: './display-loading.component.html',
   styles: [
   ]

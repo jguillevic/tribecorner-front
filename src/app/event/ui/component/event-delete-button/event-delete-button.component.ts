@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
-import {CommonModule} from '@angular/common';
+
 import {Event} from '../../../model/event.model';
 import {Subject, takeUntil, tap} from 'rxjs';
 import {EventApiService} from '../../../service/event-api.service';
@@ -11,11 +11,10 @@ import {MtxButtonModule} from '@ng-matero/extensions/button';
   selector: 'app-event-delete-button',
   standalone: true,
   imports: [
-    CommonModule,
     MatButtonModule,
     MatIconModule,
     MtxButtonModule
-  ],
+],
   templateUrl: './event-delete-button.component.html'
 })
 export class EventDeleteButtonComponent implements OnDestroy {

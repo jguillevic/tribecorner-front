@@ -1,26 +1,28 @@
 <div class="page" *transloco="let t;read:'editShoppingListPage';">
-    <app-go-back-top-bar></app-go-back-top-bar>
-    <div>
-        <div class="padding shopping-list m-t-30">
-            <app-edit-shopping-list-form
-            *ngIf="shoppingList$ | async as shoppingList; else loadingForm"
-            [shoppingList]="shoppingList"
-            (shoppingListEdited)="editShoppingList($event)"
-            (validityChanged)="changeShoppingListValidity($event)">
-            </app-edit-shopping-list-form>
-            <app-checkable-item-shopping-lists *ngIf="this.itemShoppingLists$ | async as itemShoppingLists"
-            [itemShoppingLists]="itemShoppingLists"
-            (itemShoppingListDeleted)="deleteItemShoppingList($event)"
-            (itemShoppingListToggled)="toggleItemShoppingList($event)">
-            </app-checkable-item-shopping-lists>
-        <ng-template #loadingForm>
-            <app-simple-loading></app-simple-loading>
-        </ng-template>
+  <app-go-back-top-bar></app-go-back-top-bar>
+  <div>
+    <div class="padding shopping-list m-t-30">
+      @if (shoppingList$ | async; as shoppingList) {
+        <app-edit-shopping-list-form
+          [shoppingList]="shoppingList"
+          (shoppingListEdited)="editShoppingList($event)"
+          (validityChanged)="changeShoppingListValidity($event)">
+        </app-edit-shopping-list-form>
+      } @else {
+        <app-simple-loading></app-simple-loading>
+      }
+      @if (this.itemShoppingLists$ | async; as itemShoppingLists) {
+        <app-checkable-item-shopping-lists
+          [itemShoppingLists]="itemShoppingLists"
+          (itemShoppingListDeleted)="deleteItemShoppingList($event)"
+          (itemShoppingListToggled)="toggleItemShoppingList($event)">
+        </app-checkable-item-shopping-lists>
+      }
     </div>
-</div>
-<app-add-item-shopping-list-form 
-class="add-form padding"
-[currentShoppingListId]="this.currentShoppingListId"
-[currentItemShoppingLists]="this.itemShoppingLists$ | async"
-(itemShoppingListAdded)="this.addItemShoppingList($event)">
-</app-add-item-shopping-list-form>
+  </div>
+  <app-add-item-shopping-list-form
+    class="add-form padding"
+    [currentShoppingListId]="this.currentShoppingListId"
+    [currentItemShoppingLists]="this.itemShoppingLists$ | async"
+    (itemShoppingListAdded)="this.addItemShoppingList($event)">
+  </app-add-item-shopping-list-form>

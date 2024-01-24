@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {CommonModule} from '@angular/common';
+
 import {LargeEmptyComponent} from "../../../../common/empty/ui/large-empty/large-empty.component";
 import {MatButtonModule} from '@angular/material/button';
 import {Observable} from 'rxjs';
@@ -12,11 +12,10 @@ import {TranslocoModule, provideTranslocoScope} from '@ngneat/transloco';
     templateUrl: './meal-large-empty.component.html',
     styles: [],
     imports: [
-        CommonModule,
-        LargeEmptyComponent,
-        MatButtonModule,
-        TranslocoModule
-    ],
+    LargeEmptyComponent,
+    MatButtonModule,
+    TranslocoModule
+],
     providers: [
         provideTranslocoScope({scope: 'meal/ui/component/meal-large-empty', alias: 'mealLargeEmpty'})
     ]

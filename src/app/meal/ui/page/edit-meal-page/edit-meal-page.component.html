@@ -1,57 +1,70 @@
 <div class="page">
-    <app-go-back-top-bar></app-go-back-top-bar>
-    <div class="padding">
-        <div class="form m-t-30">
-            <form *ngIf="editMealFormData$ | async as editMealFormData; else loadingForm" [formGroup]="editMealFormData.editMealForm">
-                <div class="form-inputs">
-                    <!--Nom.-->
-                    <mat-form-field class="form-input">
-                        <mat-label>Nom</mat-label>
-                        <input matInput type="text" formControlName="name">
-                        <mat-error *ngIf="editMealFormData.editMealForm.controls['name'].hasError('maxlength')">
-                            Nom trop long (max. {{ this.mealNameMaxLength }} caractères)
-                        </mat-error>
-                        <mat-error *ngIf="editMealFormData.editMealForm.controls['name'].hasError('required')">
-                            Nom requis
-                        </mat-error>
-                    </mat-form-field>
-                    <!--Date de début.-->
-                    <mat-form-field class="form-input">
-                        <mat-label>Date</mat-label>
-                        <input matInput [matDatepicker]="datePicker" formControlName="date">
-                        <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
-                        <mat-datepicker #datePicker></mat-datepicker>
-                        <mat-error>{{ this.getDateErrorMessage() | async }}</mat-error>
-                    </mat-form-field>
-                    <!--Type.-->
-                    <mat-form-field class="form-input">
-                        <mat-label>Type de repas</mat-label>
-                        <mat-select formControlName="mealKindId">
-                            <mat-option *ngFor="let mealKind of editMealFormData.mealKinds" [value]="mealKind.id">
-                            {{ mealKind.name }}
-                            </mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="editMealFormData.editMealForm.controls['mealKindId'].hasError('required')">
-                            Type de repas requis
-                        </mat-error>
-                    </mat-form-field>
-                    <!--Nombre de personnes.-->
-                    <mat-form-field class="form-input">
-                        <mat-label>Repas pour ?</mat-label>
-                        <mat-select formControlName="numberOfPersons">
-                            <mat-option *ngFor="let numberOfPersons of numbersOfPersons" [value]="numberOfPersons">
-                                {{ numberOfPersons }}
-                            </mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="editMealFormData.editMealForm.controls['numberOfPersons'].hasError('required')">
-                            Nombre de personnes requis
-                        </mat-error>
-                    </mat-form-field>
-                </div>
-            </form>
-            <ng-template #loadingForm>
-                <app-simple-loading></app-simple-loading>
-            </ng-template>
-        </div>
+  <app-go-back-top-bar></app-go-back-top-bar>
+  <div class="padding">
+    <div class="form m-t-30">
+      @if (editMealFormData$ | async; as editMealFormData) {
+        <form [formGroup]="editMealFormData.editMealForm">
+          <div class="form-inputs">
+            <!--Nom.-->
+            <mat-form-field class="form-input">
+              <mat-label>Nom</mat-label>
+              <input matInput type="text" formControlName="name">
+              @if (editMealFormData.editMealForm.controls['name'].hasError('maxlength')) {
+                <mat-error>
+                  Nom trop long (max. {{ this.mealNameMaxLength }} caractères)
+                </mat-error>
+              }
+              @if (editMealFormData.editMealForm.controls['name'].hasError('required')) {
+                <mat-error>
+                  Nom requis
+                </mat-error>
+              }
+            </mat-form-field>
+            <!--Date de début.-->
+            <mat-form-field class="form-input">
+              <mat-label>Date</mat-label>
+              <input matInput [matDatepicker]="datePicker" formControlName="date">
+              <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
+              <mat-datepicker #datePicker></mat-datepicker>
+              <mat-error>{{ this.getDateErrorMessage() | async }}</mat-error>
+            </mat-form-field>
+            <!--Type.-->
+            <mat-form-field class="form-input">
+              <mat-label>Type de repas</mat-label>
+              <mat-select formControlName="mealKindId">
+                @for (mealKind of editMealFormData.mealKinds; track mealKind) {
+                  <mat-option [value]="mealKind.id">
+                    {{ mealKind.name }}
+                  </mat-option>
+                }
+              </mat-select>
+              @if (editMealFormData.editMealForm.controls['mealKindId'].hasError('required')) {
+                <mat-error>
+                  Type de repas requis
+                </mat-error>
+              }
+            </mat-form-field>
+            <!--Nombre de personnes.-->
+            <mat-form-field class="form-input">
+              <mat-label>Repas pour ?</mat-label>
+              <mat-select formControlName="numberOfPersons">
+                @for (numberOfPersons of numbersOfPersons; track numberOfPersons) {
+                  <mat-option [value]="numberOfPersons">
+                    {{ numberOfPersons }}
+                  </mat-option>
+                }
+              </mat-select>
+              @if (editMealFormData.editMealForm.controls['numberOfPersons'].hasError('required')) {
+                <mat-error>
+                  Nombre de personnes requis
+                </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </form>
+      } @else {
+        <app-simple-loading></app-simple-loading>
+      }
     </div>
+  </div>
 </div>

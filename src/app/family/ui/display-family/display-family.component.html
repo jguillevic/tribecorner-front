@@ -1,13 +1,17 @@
 <div class="page">
-    <app-go-back-top-bar></app-go-back-top-bar>
-    <div>
-        <p>En construction !</p>
-        <p>Nom famille : {{ family?.name }}</p>
-        <p>Code d'association : {{ family?.associationCode }}</p>
-        <ul *ngIf="family && family.members.length > 0">
-            <li *ngFor="let familyMember of family.members">
-                {{ familyMember.username }}
-            </li>
-        </ul>
-    </div>
+  <app-go-back-top-bar></app-go-back-top-bar>
+  <div>
+    <p>En construction !</p>
+    <p>Nom famille : {{ family?.name }}</p>
+    <p>Code d'association : {{ family?.associationCode }}</p>
+    @if (family && family.members.length > 0) {
+      <ul>
+        @for (familyMember of family.members; track familyMember) {
+          <li>
+            {{ familyMember.username }}
+          </li>
+        }
+      </ul>
+    }
+  </div>
 </div>

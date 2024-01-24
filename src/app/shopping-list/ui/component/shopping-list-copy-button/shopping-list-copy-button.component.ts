@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Subject, takeUntil, tap } from 'rxjs';
 import { ShoppingList } from '../../../model/shopping-list.model';
 import { ShoppingListApiService } from '../../../service/shopping-list-api.service';
@@ -12,11 +12,10 @@ import { ShoppingListHelper } from '../../../helper/shopping-list.helper';
   selector: 'app-shopping-list-copy-button',
   standalone: true,
   imports: [
-    CommonModule,
     MtxButtonModule,
     MatButtonModule,
     MatIconModule
-  ],
+],
   templateUrl: './shopping-list-copy-button.component.html'
 })
 export class ShoppingListCopyButtonComponent implements OnDestroy {

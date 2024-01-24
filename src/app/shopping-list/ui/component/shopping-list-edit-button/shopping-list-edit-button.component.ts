@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ShoppingListGoToService } from 'src/app/shopping-list/service/shopping-list-go-to.service';
 import { Observable } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,11 +10,10 @@ import { MtxButtonModule } from '@ng-matero/extensions/button';
     selector: 'app-shopping-list-edit-button',
     standalone: true,
     imports: [
-        CommonModule,
-        MatButtonModule,
-        MatIconModule,
-        MtxButtonModule
-    ],
+    MatButtonModule,
+    MatIconModule,
+    MtxButtonModule
+],
     templateUrl: './shopping-list-edit-button.component.html',
     styles: [
     ]

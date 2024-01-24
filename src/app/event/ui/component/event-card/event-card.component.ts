@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Event } from '../../../../event/model/event.model';
 import { DateHelper } from '../../../../common/date/helper/date.helper';
 
 @Component({
   selector: 'app-event-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './event-card.component.html',
   styleUrls: ['event-card.component.scss']
 })

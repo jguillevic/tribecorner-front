@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {CommonModule} from '@angular/common';
+
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
@@ -21,15 +21,14 @@ import {MtxButtonModule} from '@ng-matero/extensions/button';
     templateUrl: './join-family.component.html',
     styles: [],
     imports: [
-        CommonModule,
-        FormsModule,
-        MatInputModule,
-        MatFormFieldModule,
-        MatButtonModule,
-        SignOutButtonComponent,
-        ReactiveFormsModule,
-        MtxButtonModule
-    ]
+    FormsModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    SignOutButtonComponent,
+    ReactiveFormsModule,
+    MtxButtonModule
+]
 })
 export class JoinFamilyComponent implements OnInit, OnDestroy {
   private _joinSubscription: Subscription|undefined;

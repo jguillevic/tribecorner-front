@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MtxButtonModule } from '@ng-matero/extensions/button';
@@ -11,11 +11,10 @@ import { Subject, takeUntil, tap } from 'rxjs';
   selector: 'app-shopping-list-completed-dialog',
   standalone: true,
   imports: [
-    CommonModule,
-    MatButtonModule, 
+    MatButtonModule,
     MatDialogModule,
     MtxButtonModule
-  ],
+],
   templateUrl: './shopping-list-completed-dialog.component.html',
   styles: [
   ]

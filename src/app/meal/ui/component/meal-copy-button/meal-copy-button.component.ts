@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Subject, takeUntil, tap } from 'rxjs';
 import { Meal } from '../../../model/meal.model';
 import { MealService } from '../../../service/meal.service';
@@ -12,11 +12,10 @@ import { MealHelper } from '../../../helper/meal.helper';
   selector: 'app-meal-copy-button',
   standalone: true,
   imports: [
-    CommonModule,
     MtxButtonModule,
     MatButtonModule,
     MatIconModule
-  ],
+],
   templateUrl: './meal-copy-button.component.html',
   styles: [
   ]

@@ -1,80 +1,86 @@
 <div class="page">
-    <app-profile-top-bar></app-profile-top-bar>
-    <mat-tab-group>
-        <mat-tab label="En cours">
-            <ng-template matTabContent>
-                <div class="shopping-lists" *ngIf="this.unarchivedShoppingLists$ | async as unarchivedShoppingLists;else loadingUnarchived">
-                    <div class="shopping-lists__container">
-                        <app-shopping-list-card 
-                        *ngFor="let unarchivedShoppingList of unarchivedShoppingLists"
-                        [shoppingList]="unarchivedShoppingList">
-                            <app-shopping-list-edit-button
-                            [shoppingListId]="unarchivedShoppingList.id">
-                            </app-shopping-list-edit-button>
-                            <app-shopping-list-copy-button 
-                            [shoppingListToCopy]="unarchivedShoppingList"
-                            (onShoppingListCopied)="shoppingListCopied($event)">
-                            </app-shopping-list-copy-button>
-                            <app-shopping-list-archive-toggle
-                            [shoppingListToToggleArchive]="unarchivedShoppingList"
-                            (onShoppingListArchiveToggled)="shoppingListArchiveToggled($event)">
-                            </app-shopping-list-archive-toggle>
-                            <app-shopping-list-delete-button
-                            [shoppingListToDelete]="unarchivedShoppingList"
-                            (onShoppingListDeleted)="shoppingListDeleted($event)">
-                            </app-shopping-list-delete-button>
-                        </app-shopping-list-card>
-                        <app-large-empty 
-                        *ngIf="!unarchivedShoppingLists.length"
-                        illustrationSource="/assets/img/undraw_gone_shopping_re_2lau.svg"
-                        title="Oups !"
-                        message="Vous n'avez pas de listes en cours."
-                        >
-                        </app-large-empty>
-                    </div>
-                </div>
-                <ng-template #loadingUnarchived>
-                    <app-simple-loading></app-simple-loading>
-                </ng-template>
-            </ng-template>
-        </mat-tab>
-        <mat-tab label="Archives">
-            <ng-template matTabContent>
-                <div class="shopping-lists" *ngIf="this.archivedShoppingLists$ | async as archivedShoppingLists;else loadingArchived">
-                    <div class="shopping-lists__container">
-                        <app-shopping-list-card 
-                        *ngFor="let archivedShoppingList of archivedShoppingLists"
-                        [shoppingList]="archivedShoppingList">
-                            <app-shopping-list-edit-button
-                            [shoppingListId]="archivedShoppingList.id">
-                            </app-shopping-list-edit-button>
-                            <app-shopping-list-copy-button 
-                            [shoppingListToCopy]="archivedShoppingList"
-                            (onShoppingListCopied)="shoppingListCopied($event)">
-                            </app-shopping-list-copy-button>
-                            <app-shopping-list-archive-toggle
-                            [shoppingListToToggleArchive]="archivedShoppingList"
-                            (onShoppingListArchiveToggled)="shoppingListArchiveToggled($event)">
-                            </app-shopping-list-archive-toggle>
-                            <app-shopping-list-delete-button
-                            [shoppingListToDelete]="archivedShoppingList"
-                            (onShoppingListDeleted)="shoppingListDeleted($event)">
-                            </app-shopping-list-delete-button>
-                        </app-shopping-list-card>
-                        <app-large-empty 
-                        *ngIf="!archivedShoppingLists.length"
-                        illustrationSource="/assets/img/undraw_gone_shopping_re_2lau.svg"
-                        title="Oups !"
-                        message="Vous n'avez pas de listes archivées."
-                        >
-                        </app-large-empty>
-                    </div>
-                </div>
-                <ng-template #loadingArchived>
-                    <app-simple-loading></app-simple-loading>
-                </ng-template>
-            </ng-template>
-        </mat-tab>
-    </mat-tab-group>
-    <app-tab-bar [selectedIndex]=1 (onActionClicked)="goToCreate()"></app-tab-bar>
+  <app-profile-top-bar></app-profile-top-bar>
+  <mat-tab-group>
+    <mat-tab label="En cours">
+      <ng-template matTabContent>
+        @if (this.unarchivedShoppingLists$ | async; as unarchivedShoppingLists) {
+          <div class="shopping-lists">
+            <div class="shopping-lists__container">
+              @for (unarchivedShoppingList of unarchivedShoppingLists; track unarchivedShoppingList) {
+                <app-shopping-list-card
+                  [shoppingList]="unarchivedShoppingList">
+                  <app-shopping-list-edit-button
+                    [shoppingListId]="unarchivedShoppingList.id">
+                  </app-shopping-list-edit-button>
+                  <app-shopping-list-copy-button
+                    [shoppingListToCopy]="unarchivedShoppingList"
+                    (onShoppingListCopied)="shoppingListCopied($event)">
+                  </app-shopping-list-copy-button>
+                  <app-shopping-list-archive-toggle
+                    [shoppingListToToggleArchive]="unarchivedShoppingList"
+                    (onShoppingListArchiveToggled)="shoppingListArchiveToggled($event)">
+                  </app-shopping-list-archive-toggle>
+                  <app-shopping-list-delete-button
+                    [shoppingListToDelete]="unarchivedShoppingList"
+                    (onShoppingListDeleted)="shoppingListDeleted($event)">
+                  </app-shopping-list-delete-button>
+                </app-shopping-list-card>
+              }
+              @if (!unarchivedShoppingLists.length) {
+                <app-large-empty
+                  illustrationSource="/assets/img/undraw_gone_shopping_re_2lau.svg"
+                  title="Oups !"
+                  message="Vous n'avez pas de listes en cours."
+                  >
+                </app-large-empty>
+              }
+            </div>
+          </div>
+        } @else {
+          <app-simple-loading></app-simple-loading>
+        }
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Archives">
+      <ng-template matTabContent>
+        @if (this.archivedShoppingLists$ | async; as archivedShoppingLists) {
+          <div class="shopping-lists">
+            <div class="shopping-lists__container">
+              @for (archivedShoppingList of archivedShoppingLists; track archivedShoppingList) {
+                <app-shopping-list-card
+                  [shoppingList]="archivedShoppingList">
+                  <app-shopping-list-edit-button
+                    [shoppingListId]="archivedShoppingList.id">
+                  </app-shopping-list-edit-button>
+                  <app-shopping-list-copy-button
+                    [shoppingListToCopy]="archivedShoppingList"
+                    (onShoppingListCopied)="shoppingListCopied($event)">
+                  </app-shopping-list-copy-button>
+                  <app-shopping-list-archive-toggle
+                    [shoppingListToToggleArchive]="archivedShoppingList"
+                    (onShoppingListArchiveToggled)="shoppingListArchiveToggled($event)">
+                  </app-shopping-list-archive-toggle>
+                  <app-shopping-list-delete-button
+                    [shoppingListToDelete]="archivedShoppingList"
+                    (onShoppingListDeleted)="shoppingListDeleted($event)">
+                  </app-shopping-list-delete-button>
+                </app-shopping-list-card>
+              }
+              @if (!archivedShoppingLists.length) {
+                <app-large-empty
+                  illustrationSource="/assets/img/undraw_gone_shopping_re_2lau.svg"
+                  title="Oups !"
+                  message="Vous n'avez pas de listes archivées."
+                  >
+                </app-large-empty>
+              }
+            </div>
+          </div>
+        } @else {
+          <app-simple-loading></app-simple-loading>
+        }
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+  <app-tab-bar [selectedIndex]=1 (onActionClicked)="goToCreate()"></app-tab-bar>
 </div>

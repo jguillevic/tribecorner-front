@@ -1,38 +1,46 @@
 <div class="page">
-    <app-profile-top-bar></app-profile-top-bar>
-    <div class="meals">
-        <app-inline-calendar 
-        [defaultSelectedDate$]="defaultDate$" 
-        (onSelectedDateChanged)="onSelectedDateChanged($event)">
-        </app-inline-calendar>
-        <div *ngIf="this.mealsByMealKinds$ | async as mealsByMealKinds; else loading"
+  <app-profile-top-bar></app-profile-top-bar>
+  <div class="meals">
+    <app-inline-calendar
+      [defaultSelectedDate$]="defaultDate$"
+      (onSelectedDateChanged)="onSelectedDateChanged($event)">
+    </app-inline-calendar>
+    @if (this.mealsByMealKinds$ | async; as mealsByMealKinds) {
+      <div
         class="meals__container"
         [ngClass]="{'meals__container--center': !this.isLoading && !mealsByMealKinds.length}">
-            <ng-container *ngIf="!this.isLoading; else loading">
-                <div class="meal-kind" *ngFor="let mealsByMealKind of mealsByMealKinds">
-                    <div class="meal-kind__name">
-                        {{mealsByMealKind.mealKind.name}}
-                    </div>
-                    <app-large-meal-card *ngFor="let meal of this.mealsByMealKind.meals" [meal]="meal">
-                        <app-meal-edit-button 
-                        [mealId]="meal.id">
-                        </app-meal-edit-button>
-                        <app-meal-copy-button 
-                        [mealToCopy]="meal"
-                        (onMealCopied)="onMealCopied($event)">
-                        </app-meal-copy-button>
-                        <app-meal-delete-button 
-                        [mealToDelete]="meal"
-                        (onMealDeleted)="onMealDeleted($event)">
-                        </app-meal-delete-button>
-                    </app-large-meal-card>
-                </div>
-                <app-meal-large-empty *ngIf="!mealsByMealKinds.length">
-                </app-meal-large-empty>
-            </ng-container>
-        </div>
-        <ng-template #loading>
-        </ng-template>
-    </div>
-    <app-tab-bar [selectedIndex]=2 (onActionClicked)="goToCreate()"></app-tab-bar>
+        @if (!this.isLoading) {
+          @for (mealsByMealKind of mealsByMealKinds; track mealsByMealKind) {
+            <div class="meal-kind">
+              <div class="meal-kind__name">
+                {{mealsByMealKind.mealKind.name}}
+              </div>
+              @for (meal of this.mealsByMealKind.meals; track meal) {
+                <app-large-meal-card [meal]="meal">
+                  <app-meal-edit-button
+                    [mealId]="meal.id">
+                  </app-meal-edit-button>
+                  <app-meal-copy-button
+                    [mealToCopy]="meal"
+                    (onMealCopied)="onMealCopied($event)">
+                  </app-meal-copy-button>
+                  <app-meal-delete-button
+                    [mealToDelete]="meal"
+                    (onMealDeleted)="onMealDeleted($event)">
+                  </app-meal-delete-button>
+                </app-large-meal-card>
+              }
+            </div>
+          }
+          @if (!mealsByMealKinds.length) {
+            <app-meal-large-empty>
+            </app-meal-large-empty>
+          }
+        } @else {
+        }
+      </div>
+    } @else {
+    }
+  </div>
+  <app-tab-bar [selectedIndex]=2 (onActionClicked)="goToCreate()"></app-tab-bar>
 </div>

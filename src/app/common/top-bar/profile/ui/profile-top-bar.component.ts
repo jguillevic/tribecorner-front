@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,13 +18,12 @@ import { SignOutButtonComponent } from 'src/app/common/button/ui/sign-out/sign-o
     templateUrl: './profile-top-bar.component.html',
     styleUrls: ['./profile-top-bar.component.scss'],
     imports: [
-        CommonModule,
-        MatMenuModule,
-        MatIconModule,
-        MatButtonModule,
-        SignOutButtonComponent,
-        MatDividerModule
-    ]
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule,
+    SignOutButtonComponent,
+    MatDividerModule
+]
 })
 export class ProfileTopBarComponent implements OnInit, OnDestroy {
   private signOutSubscription: Subscription|undefined;

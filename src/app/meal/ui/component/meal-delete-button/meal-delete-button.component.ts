@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Meal } from '../../../model/meal.model';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { MealService } from '../../../service/meal.service';
@@ -11,11 +11,10 @@ import { MtxButtonModule } from '@ng-matero/extensions/button';
   selector: 'app-meal-delete-button',
   standalone: true,
   imports: [
-    CommonModule,
     MatButtonModule,
     MatIconModule,
     MtxButtonModule
-  ],
+],
   templateUrl: './meal-delete-button.component.html',
   styles: [
   ]

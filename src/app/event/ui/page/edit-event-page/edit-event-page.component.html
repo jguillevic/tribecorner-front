@@ -1,54 +1,59 @@
 <div class="page">
-    <app-go-back-top-bar></app-go-back-top-bar>
-    <div class="padding">
-        <div class="form m-t-30" *transloco="let t;read:'editEventPage';">
-            <form *ngIf="editEventForm$ | async as editEventForm; else loadingForm" [formGroup]="editEventForm">
-                <!--Nom.-->
-                <mat-form-field class="form-input">
-                    <mat-label>{{t('name')}}</mat-label>
-                    <input matInput type="text" [formControlName]="this.nameCode">
-                    <mat-error>{{ this.getNameErrorMessage() | async }}</mat-error>
-                </mat-form-field>
-                <!--Date de début.-->
-                <mat-form-field class="form-input">
-                    <mat-label>{{t('startingDate')}}</mat-label>
-                    <input matInput [matDatepicker]="startingDatePicker" [formControlName]="this.startingDateCode">
-                    <mat-datepicker-toggle matIconSuffix [for]="startingDatePicker"></mat-datepicker-toggle>
-                    <mat-datepicker #startingDatePicker></mat-datepicker>
-                    <mat-error>{{ this.getStartingDateErrorMessage() | async }}</mat-error>
-                </mat-form-field>
-                <!--Heure de début.-->
-                <mat-form-field class="form-input">
-                    <mat-label>{{t('startingTime')}}</mat-label>
-                    <mat-select [formControlName]="this.startingTimeCode">
-                        <mat-option *ngFor="let time of times" [value]="time">{{ time | timeToString }}</mat-option>
-                    </mat-select>
-                    <mat-error>{{ this.getStartingTimeErrorMessage() | async }}</mat-error>
-                </mat-form-field>
-                <!--Date de fin.-->
-                <mat-form-field class="form-input">
-                    <mat-label>{{t('endingDate')}}</mat-label>
-                    <input matInput [matDatepicker]="endingDatePicker" [formControlName]="this.endingDateCode">
-                    <mat-datepicker-toggle matIconSuffix [for]="endingDatePicker"></mat-datepicker-toggle>
-                    <mat-datepicker #endingDatePicker></mat-datepicker>
-                    <mat-error>{{ this.getEndingDateErrorMessage() | async }}</mat-error>
-                </mat-form-field>
-                <!--Heure de fin.-->
-                <mat-form-field class="form-input">
-                    <mat-label>{{t('endingTime')}}</mat-label>
-                    <mat-select [formControlName]="this.endingTimeCode">
-                        <mat-option *ngFor="let time of times" [value]="time">{{ time | timeToString }}</mat-option>
-                    </mat-select>
-                    <mat-error>{{ this.getEndingTimeErrorMessage() | async }}</mat-error>
-                </mat-form-field>
-                <!--Toute la journée ?-->
-                <mat-slide-toggle color="primary" [formControlName]="this.allDayCode">
-                    {{t('allDay')}}
-                </mat-slide-toggle>
-            </form>
-            <ng-template #loadingForm>
-                <app-simple-loading></app-simple-loading>
-            </ng-template>
-        </div>
+  <app-go-back-top-bar></app-go-back-top-bar>
+  <div class="padding">
+    <div class="form m-t-30" *transloco="let t;read:'editEventPage';">
+      @if (editEventForm$ | async; as editEventForm) {
+        <form [formGroup]="editEventForm">
+          <!--Nom.-->
+          <mat-form-field class="form-input">
+            <mat-label>{{t('name')}}</mat-label>
+            <input matInput type="text" [formControlName]="this.nameCode">
+            <mat-error>{{ this.getNameErrorMessage() | async }}</mat-error>
+          </mat-form-field>
+          <!--Date de début.-->
+          <mat-form-field class="form-input">
+            <mat-label>{{t('startingDate')}}</mat-label>
+            <input matInput [matDatepicker]="startingDatePicker" [formControlName]="this.startingDateCode">
+            <mat-datepicker-toggle matIconSuffix [for]="startingDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #startingDatePicker></mat-datepicker>
+            <mat-error>{{ this.getStartingDateErrorMessage() | async }}</mat-error>
+          </mat-form-field>
+          <!--Heure de début.-->
+          <mat-form-field class="form-input">
+            <mat-label>{{t('startingTime')}}</mat-label>
+            <mat-select [formControlName]="this.startingTimeCode">
+              @for (time of times; track time) {
+                <mat-option [value]="time">{{ time | timeToString }}</mat-option>
+              }
+            </mat-select>
+            <mat-error>{{ this.getStartingTimeErrorMessage() | async }}</mat-error>
+          </mat-form-field>
+          <!--Date de fin.-->
+          <mat-form-field class="form-input">
+            <mat-label>{{t('endingDate')}}</mat-label>
+            <input matInput [matDatepicker]="endingDatePicker" [formControlName]="this.endingDateCode">
+            <mat-datepicker-toggle matIconSuffix [for]="endingDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #endingDatePicker></mat-datepicker>
+            <mat-error>{{ this.getEndingDateErrorMessage() | async }}</mat-error>
+          </mat-form-field>
+          <!--Heure de fin.-->
+          <mat-form-field class="form-input">
+            <mat-label>{{t('endingTime')}}</mat-label>
+            <mat-select [formControlName]="this.endingTimeCode">
+              @for (time of times; track time) {
+                <mat-option [value]="time">{{ time | timeToString }}</mat-option>
+              }
+            </mat-select>
+            <mat-error>{{ this.getEndingTimeErrorMessage() | async }}</mat-error>
+          </mat-form-field>
+          <!--Toute la journée ?-->
+          <mat-slide-toggle color="primary" [formControlName]="this.allDayCode">
+            {{t('allDay')}}
+          </mat-slide-toggle>
+        </form>
+      } @else {
+        <app-simple-loading></app-simple-loading>
+      }
     </div>
+  </div>
 </div>

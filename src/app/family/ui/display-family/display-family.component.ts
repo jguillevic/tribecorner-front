@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {CommonModule} from '@angular/common';
+
 import {UserInfo} from 'src/app/user/model/user-info.model';
 import {UserService} from 'src/app/user/service/user.service';
 import {FamilyApiService} from '../../service/family-api.service';
@@ -14,7 +14,7 @@ import {GoBackTopBarComponent} from "../../../common/top-bar/go-back/ui/go-back-
     standalone: true,
     templateUrl: './display-family.component.html',
     styles: [],
-    imports: [CommonModule, TabBarComponent, ProfileTopBarComponent, GoBackTopBarComponent]
+    imports: [TabBarComponent, ProfileTopBarComponent, GoBackTopBarComponent]
 })
 export class DisplayFamilyComponent implements OnInit, OnDestroy {
   private loadFamilySubscription: Subscription|undefined;

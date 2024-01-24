@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { SimpleLoadingComponent } from "../../../../common/loading/ui/simple-loading/simple-loading.component";
 import { TranslocoModule, provideTranslocoScope } from '@ngneat/transloco';
 
@@ -9,10 +9,9 @@ import { TranslocoModule, provideTranslocoScope } from '@ngneat/transloco';
   templateUrl: './home-category.component.html',
   styleUrls: ['./home-category.component.scss'],
   imports: [
-      CommonModule,
-      SimpleLoadingComponent,
-      TranslocoModule
-  ],
+    SimpleLoadingComponent,
+    TranslocoModule
+],
   providers: [
     provideTranslocoScope({scope: 'home/ui/component/home-category', alias: 'homeCategory'})
   ]

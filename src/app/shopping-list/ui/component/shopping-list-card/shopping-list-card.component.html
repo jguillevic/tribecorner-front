@@ -1,19 +1,31 @@
 <div class="shopping-list-card">
-    <div class="shopping-list-card__container">
-        <div class="shopping-list-card__label">{{shoppingList?.name}}</div>
-        <div *ngIf="this.notCheckedItemShoppingLists$ |async as notCheckedItemShoppingLists">
-            <ul class="shopping-list-card__items" *ngIf="notCheckedItemShoppingLists.length">
-                <li class="shopping-list-card__item" *ngFor="let notCheckedItemShoppingList of this.notCheckedItemShoppingLists | slice:0:maxDisplayedItemsCount; let i = index">
-                    <div>{{notCheckedItemShoppingList.name}}</div>
-                </li>
-                <li *ngIf="notCheckedItemShoppingLists.length > maxDisplayedItemsCount">...</li>
-            </ul>
-        </div>
-        <div class="shopping-list-card__checked" *ngIf="this.checkedItemShoppingLists$ | async as checkedItemShoppingLists">
-            <span *ngIf="this.checkedItemShoppingLists.length">+ {{this.checkedItemShoppingLists.length}} article(s) coché(s)</span>
-        </div>
-    </div>
-    <div class="shopping-list-card__actions">
-        <ng-content></ng-content>
-    </div>
+  <div class="shopping-list-card__container">
+    <div class="shopping-list-card__label">{{shoppingList?.name}}</div>
+    @if (this.notCheckedItemShoppingLists$ |async; as notCheckedItemShoppingLists) {
+      <div>
+        @if (notCheckedItemShoppingLists.length) {
+          <ul class="shopping-list-card__items">
+            @for (notCheckedItemShoppingList of this.notCheckedItemShoppingLists | slice:0:maxDisplayedItemsCount; track notCheckedItemShoppingList; let i = $index) {
+              <li class="shopping-list-card__item">
+                <div>{{notCheckedItemShoppingList.name}}</div>
+              </li>
+            }
+            @if (notCheckedItemShoppingLists.length > maxDisplayedItemsCount) {
+              <li>...</li>
+            }
+          </ul>
+        }
+      </div>
+    }
+    @if (this.checkedItemShoppingLists$ | async; as checkedItemShoppingLists) {
+      <div class="shopping-list-card__checked">
+        @if (this.checkedItemShoppingLists.length) {
+          <span>+ {{this.checkedItemShoppingLists.length}} article(s) coché(s)</span>
+        }
+      </div>
+    }
+  </div>
+  <div class="shopping-list-card__actions">
+    <ng-content></ng-content>
+  </div>
 </div>

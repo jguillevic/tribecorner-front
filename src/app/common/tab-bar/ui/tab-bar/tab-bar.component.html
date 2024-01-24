@@ -1,48 +1,50 @@
 <div class="tab-bar">
-    <mat-divider></mat-divider>
-    <div class="tab-bar__container">
-        <button 
-        mat-icon-button 
-        [ngClass]="{ 'material-symbols-fill item--selected': selectedIndex === 0 }" 
-        class="item" 
-        (click)="goToHome()">
-            <div class="item__container">
-                <mat-icon class="material-symbols-outlined item__icon">home</mat-icon>
-                <div class="item__label">Accueil</div>
-            </div>
-        </button>
-        <button 
-        mat-icon-button 
-        [ngClass]="{ 'material-symbols-fill item--selected': selectedIndex === 1 }" 
-        class="item" 
-        (click)="goToShoppingLists()">
-            <div class="item__container">
-                <mat-icon class="material-symbols-outlined item__icon">shopping_cart</mat-icon>
-                <div class="item__label">Listes</div>
-            </div>
-        </button>
-        <button 
-        mat-icon-button 
-        [ngClass]="{ 'material-symbols-fill item--selected': selectedIndex === 2 }" 
-        class="item" 
-        (click)="goToMeals()">
-            <div class="item__container">
-                <mat-icon class="material-symbols-outlined item__icon">lunch_dining</mat-icon>
-                <div class="item__label">Repas</div>
-            </div>
-        </button>
-        <button 
-        mat-icon-button 
-        [ngClass]="{ 'material-symbols-fill item--selected': selectedIndex === 3 }" 
-        (click)="goToEvents()"
-        class="item">
-            <div class="item__container">
-                <mat-icon class="material-symbols-outlined item__icon">event</mat-icon>
-                <div class="item__label">Agenda</div>
-            </div>
-        </button>
-    </div>
-    <button *ngIf="onActionClicked.observers.length > 0" mat-fab color="primary" class="action-button" (click)="actionClicked()">
-        <mat-icon class="material-symbols-outlined">{{ actionButtonIcon }}</mat-icon>
+  <mat-divider></mat-divider>
+  <div class="tab-bar__container">
+    <button
+      mat-icon-button
+      [ngClass]="{ 'material-symbols-fill item--selected': selectedIndex === 0 }"
+      class="item"
+      (click)="goToHome()">
+      <div class="item__container">
+        <mat-icon class="material-symbols-outlined item__icon">home</mat-icon>
+        <div class="item__label">Accueil</div>
+      </div>
     </button>
+    <button
+      mat-icon-button
+      [ngClass]="{ 'material-symbols-fill item--selected': selectedIndex === 1 }"
+      class="item"
+      (click)="goToShoppingLists()">
+      <div class="item__container">
+        <mat-icon class="material-symbols-outlined item__icon">shopping_cart</mat-icon>
+        <div class="item__label">Listes</div>
+      </div>
+    </button>
+    <button
+      mat-icon-button
+      [ngClass]="{ 'material-symbols-fill item--selected': selectedIndex === 2 }"
+      class="item"
+      (click)="goToMeals()">
+      <div class="item__container">
+        <mat-icon class="material-symbols-outlined item__icon">lunch_dining</mat-icon>
+        <div class="item__label">Repas</div>
+      </div>
+    </button>
+    <button
+      mat-icon-button
+      [ngClass]="{ 'material-symbols-fill item--selected': selectedIndex === 3 }"
+      (click)="goToEvents()"
+      class="item">
+      <div class="item__container">
+        <mat-icon class="material-symbols-outlined item__icon">event</mat-icon>
+        <div class="item__label">Agenda</div>
+      </div>
+    </button>
+  </div>
+  @if (onActionClicked.observers.length > 0) {
+    <button mat-fab color="primary" class="action-button" (click)="actionClicked()">
+      <mat-icon class="material-symbols-outlined">{{ actionButtonIcon }}</mat-icon>
+    </button>
+  }
 </div>

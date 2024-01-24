@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {CommonModule} from '@angular/common';
+
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
@@ -20,15 +20,14 @@ import {MtxButtonModule} from '@ng-matero/extensions/button';
     templateUrl: './create-family.component.html',
     styles: [],
     imports: [
-        CommonModule,
-        FormsModule,
-        MatInputModule,
-        MatFormFieldModule,
-        MatButtonModule,
-        SignOutButtonComponent,
-        ReactiveFormsModule,
-        MtxButtonModule
-    ]
+    FormsModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    SignOutButtonComponent,
+    ReactiveFormsModule,
+    MtxButtonModule
+]
 })
 export class CreateFamilyComponent implements OnInit, OnDestroy {
   private createSubscription: Subscription|undefined;

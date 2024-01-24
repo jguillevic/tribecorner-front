@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,11 +11,10 @@ import { Subject, takeUntil, tap } from 'rxjs';
   selector: 'app-shopping-list-archive-toggle',
   standalone: true,
   imports: [
-    CommonModule,
     MtxButtonModule,
     MatButtonModule,
     MatIconModule
-  ],
+],
   templateUrl: './shopping-list-archive-toggle.component.html',
   styles: [
   ]

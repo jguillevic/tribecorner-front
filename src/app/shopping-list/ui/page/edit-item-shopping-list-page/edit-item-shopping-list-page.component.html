@@ -1,14 +1,15 @@
 <div class="page">
-    <app-go-back-top-bar></app-go-back-top-bar>
-    <div class="padding m-t-30">
-        <div *ngIf="this.loadedItemShoppingList$ | async as loadedItemShoppingList; else loading">
-            <app-edit-item-shopping-list-form 
-            [itemShoppingList]="loadedItemShoppingList"
-            (itemShoppingListEdited)="save($event)">
-            </app-edit-item-shopping-list-form>
-        </div>
-        <ng-template #loading>
-            <app-simple-loading></app-simple-loading>
-        </ng-template>
-    </div>
+  <app-go-back-top-bar></app-go-back-top-bar>
+  <div class="padding m-t-30">
+    @if (this.loadedItemShoppingList$ | async; as loadedItemShoppingList) {
+      <div>
+        <app-edit-item-shopping-list-form
+          [itemShoppingList]="loadedItemShoppingList"
+          (itemShoppingListEdited)="save($event)">
+        </app-edit-item-shopping-list-form>
+      </div>
+    } @else {
+      <app-simple-loading></app-simple-loading>
+    }
+  </div>
 </div>

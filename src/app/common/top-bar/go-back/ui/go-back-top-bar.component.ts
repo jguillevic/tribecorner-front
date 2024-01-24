@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -7,10 +7,9 @@ import { MatButtonModule } from '@angular/material/button';
   selector: 'app-go-back-top-bar',
   standalone: true,
   imports: [
-    CommonModule,
     MatIconModule,
     MatButtonModule
-  ],
+],
   templateUrl: './go-back-top-bar.component.html',
   styleUrls: ['go-back-top-bar.component.scss']
 })

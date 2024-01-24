@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ShoppingList } from '../../../model/shopping-list.model';
 import { Subscription, tap } from 'rxjs';
 import { ShoppingListApiService } from '../../../service/shopping-list-api.service';
@@ -11,11 +11,10 @@ import { MtxButtonModule } from '@ng-matero/extensions/button';
   selector: 'app-shopping-list-delete-button',
   standalone: true,
   imports: [
-    CommonModule,
     MatButtonModule,
     MatIconModule,
     MtxButtonModule
-  ],
+],
   templateUrl: './shopping-list-delete-button.component.html'
 })
 export class ShoppingListDeleteButtonComponent implements OnDestroy {

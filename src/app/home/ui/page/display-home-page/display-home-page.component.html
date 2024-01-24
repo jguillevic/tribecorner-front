@@ -1,61 +1,77 @@
 <div class="page"
-*transloco="let t;read:'displayHomePage';">
-    <app-profile-top-bar></app-profile-top-bar>
-    <div class="display-home">
-        <app-home-category
-        categoryName="{{t('myEvents')}}" 
-        (onSeeAllClicked)="goToDisplayEvents()">
-            <div *ngIf="this.events$ | async as events;else loadingEvents"
-            class="events__container">
-                <app-event-card *ngFor="let event of events"
-                [event]="event">
-                </app-event-card>
-                <app-simple-empty *ngIf="!events.length"></app-simple-empty>
+  *transloco="let t;read:'displayHomePage';">
+  <app-profile-top-bar></app-profile-top-bar>
+  <div class="display-home">
+    <app-home-category
+      categoryName="{{t('myEvents')}}"
+      (onSeeAllClicked)="goToDisplayEvents()">
+      @if (this.events$ | async; as events) {
+        <div
+          class="events__container">
+          @for (event of events; track event) {
+            <app-event-card
+              [event]="event">
+            </app-event-card>
+          }
+          @if (!events.length) {
+            <app-simple-empty></app-simple-empty>
+          }
+        </div>
+      } @else {
+        <app-simple-loading></app-simple-loading>
+      }
+    </app-home-category>
+    <mat-divider></mat-divider>
+    <app-home-category
+      categoryName="{{t('myMealsOfTheDay')}}"
+      (onSeeAllClicked)="goToDisplayMeals()">
+      @if (this.mealsByMealKinds$ | async; as mealsByMealKinds) {
+        <div
+          class="meals-by-meal-kinds__container">
+          @for (mealsByMealKind of mealsByMealKinds; track mealsByMealKind) {
+            <div class="meals-by-meal-kind__container"
+              >
+              <div class="meal-kind__name">
+                {{mealsByMealKind.mealKind.name}}
+              </div>
+              <div class="meals__container">
+                @for (meal of mealsByMealKind.meals; track meal) {
+                  <app-simple-meal-card class="meal"
+                    [name]="meal.name">
+                  </app-simple-meal-card>
+                }
+              </div>
             </div>
-            <ng-template #loadingEvents>
-                <app-simple-loading></app-simple-loading>
-            </ng-template>
-        </app-home-category>
-        <mat-divider></mat-divider>
-        <app-home-category
-        categoryName="{{t('myMealsOfTheDay')}}" 
-        (onSeeAllClicked)="goToDisplayMeals()">
-            <div *ngIf="this.mealsByMealKinds$ | async as mealsByMealKinds;else loadingMeals"
-            class="meals-by-meal-kinds__container">
-                <div class="meals-by-meal-kind__container"
-                *ngFor="let mealsByMealKind of mealsByMealKinds">
-                    <div class="meal-kind__name">
-                        {{mealsByMealKind.mealKind.name}}
-                    </div>
-                    <div class="meals__container">
-                        <app-simple-meal-card class="meal"
-                        *ngFor="let meal of mealsByMealKind.meals"
-                        [name]="meal.name">
-                        </app-simple-meal-card>
-                    </div>
-                </div>
-                <app-simple-empty *ngIf="!mealsByMealKinds.length"></app-simple-empty>
-            </div>
-            <ng-template #loadingMeals>
-                <app-simple-loading></app-simple-loading>
-            </ng-template>
-        </app-home-category>
-        <mat-divider></mat-divider>
-        <app-home-category
-        categoryName="{{t('myShoppingLists')}}" 
-        (onSeeAllClicked)="goToDisplayShoppingLists()">
-            <div *ngIf="this.shoppingLists$ | async as shoppingLists;else loadingShoppingLists"
-            class="shopping-lists__container">
-                <app-shopping-list-card *ngFor="let shoppingList of shoppingLists"
-                [shoppingList]="shoppingList"
-                (click)="goToDisplayShoppingList(shoppingList.id)">
-                </app-shopping-list-card>
-                <app-simple-empty *ngIf="!shoppingLists.length"></app-simple-empty>
-            </div>
-            <ng-template #loadingShoppingLists>
-                <app-simple-loading></app-simple-loading>
-            </ng-template>
-        </app-home-category>
-    </div>
-    <app-tab-bar [selectedIndex]=0></app-tab-bar>
+          }
+          @if (!mealsByMealKinds.length) {
+            <app-simple-empty></app-simple-empty>
+          }
+        </div>
+      } @else {
+        <app-simple-loading></app-simple-loading>
+      }
+    </app-home-category>
+    <mat-divider></mat-divider>
+    <app-home-category
+      categoryName="{{t('myShoppingLists')}}"
+      (onSeeAllClicked)="goToDisplayShoppingLists()">
+      @if (this.shoppingLists$ | async; as shoppingLists) {
+        <div
+          class="shopping-lists__container">
+          @for (shoppingList of shoppingLists; track shoppingList) {
+            <app-shopping-list-card
+              [shoppingList]="shoppingList"
+              (click)="goToDisplayShoppingList(shoppingList.id)">
+            </app-shopping-list-card>
+          }
+          @if (!shoppingLists.length) {
+            <app-simple-empty></app-simple-empty>
+          }
+        </div>
+      } @else {
+        <app-simple-loading></app-simple-loading>
+      }
+    </app-home-category>
+  </div>
+  <app-tab-bar [selectedIndex]=0></app-tab-bar>
 </div>

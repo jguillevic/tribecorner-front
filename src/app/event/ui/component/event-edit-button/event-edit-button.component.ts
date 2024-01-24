@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MtxButtonModule } from '@ng-matero/extensions/button';
@@ -11,11 +11,10 @@ import { EventRoutes } from '../../../route/event.routes';
   selector: 'app-event-edit-button',
   standalone: true,
   imports: [
-    CommonModule,
     MatButtonModule,
     MatIconModule,
     MtxButtonModule
-  ],
+],
   templateUrl: './event-edit-button.component.html',
   styles: [
   ]

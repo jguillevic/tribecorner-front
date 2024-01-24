@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { UserService } from '../../../service/user.service';
 import { Router } from '@angular/router';
 import { UserRoutes } from '../../../route/user.routes';
@@ -19,7 +19,6 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-sign-up-user-page',
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
@@ -27,7 +26,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatButtonModule,
     MtxButtonModule,
     MatIconModule
-  ],
+],
   templateUrl: './sign-up-user-page.component.html',
   styles: [
   ]

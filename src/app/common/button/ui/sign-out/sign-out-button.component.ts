@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
@@ -12,11 +12,10 @@ import { MtxButtonModule } from '@ng-matero/extensions/button';
   selector: 'app-sign-out-button',
   standalone: true,
   imports: [
-    CommonModule,
     MatButtonModule,
     MatIconModule,
     MtxButtonModule
-  ],
+],
   templateUrl: './sign-out-button.component.html',
   styles: [
   ]

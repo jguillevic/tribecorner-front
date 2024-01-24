@@ -20,7 +20,7 @@
                     <mat-label>Email</mat-label>
                     <input matInput type="email" formControlName="email">
                     <mat-error *ngIf="signUpForm.controls['email'].hasError('email')">
-                        Email invalide (exemple@format.fr)
+                        Email invalide (exemple&#64;format.fr)
                     </mat-error>
                     <mat-error *ngIf="signUpForm.controls['email'].hasError('maxlength')">
                         Email trop long (max. {{ emailMaxLength }} caractères)
@@ -39,7 +39,7 @@
                         <mat-icon>{{this.hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
                     <mat-error *ngIf="signUpForm.controls['password'].hasError('pattern')">
-                        Mot de passe invalide (min. 8 caractères, 1 majuscule, 1 minuscule, 1 chiffre, 1 caractère parmi @$!%*?&)
+                        Mot de passe invalide (min. 8 caractères, 1 majuscule, 1 minuscule, 1 chiffre, 1 caractère parmi &#64;$!%*?&)
                     </mat-error>
                     <mat-error *ngIf="signUpForm.controls['password'].hasError('maxlength')">
                         Mot de passe trop long (max. {{ passwordMaxLength }} caractères)

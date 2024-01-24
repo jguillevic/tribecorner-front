@@ -97,10 +97,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "ng-familyhub-app:build:production"
+              "buildTarget": "ng-familyhub-app:build:production"
             },
             "development": {
-              "browserTarget": "ng-familyhub-app:build:development"
+              "buildTarget": "ng-familyhub-app:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -108,7 +108,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ng-familyhub-app:build"
+            "buildTarget": "ng-familyhub-app:build"
           }
         }
       }

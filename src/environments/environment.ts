@@ -1,13 +1,14 @@
 export const environment = {
-  baseUrl: 'https://tribecorner.fr',
-  production: true,
-  apiUrl: 'https://api.tribecorner.fr/',
-  firebaseConfig : {
-      apiKey: "AIzaSyDuNMLuciC1INNmhzMEhlb5VWStT9J7Mu4",
-      authDomain: "familyhub-33bd5.firebaseapp.com",
-      projectId: "familyhub-33bd5",
-      storageBucket: "familyhub-33bd5.appspot.com",
-      messagingSenderId: "874615286570",
-      appId: "1:874615286570:web:bfff3469e09088487e4c53"
+    baseUrl: 'https://tribecorner.fr',
+    production: true,
+    apiUrl: 'https://api.tribecorner.fr/',
+    firebaseConfig : {
+        apiKey: "AIzaSyBlUxCth7GnVSJ1ugmulsBa58m3WQoYU3I",
+        authDomain: "tribe-corner-prod.firebaseapp.com",
+        projectId: "tribe-corner-prod",
+        storageBucket: "tribe-corner-prod.appspot.com",
+        messagingSenderId: "828444084020",
+        appId: "1:828444084020:web:4034ba44c0a40e9aa38761",
+        measurementId: "G-LWPMZLVQ68"
     },
 };

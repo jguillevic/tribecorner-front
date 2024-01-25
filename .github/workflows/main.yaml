@@ -1,5 +1,9 @@
-name: Deploy on main push
-on: [push]
+name: Déploiement suite à un push sur la branche main
+on:
+    push:
+        branches:
+          - main
+
 jobs:
 
     build:
@@ -8,3 +12,16 @@ jobs:
         
         steps:
             - uses: actions/checkout@v4
+            
+            - name: Utilisation de la dernière version LTS de node.js
+              uses: actions/setup-node@v4
+              with:
+                node-version: 'lts'
+
+            - name: Installation des dépendances
+              run: |
+                  npm ci
+
+            - name: Build
+              run: |
+                  npx ng build --configuration "production"

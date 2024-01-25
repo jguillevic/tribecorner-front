@@ -16,7 +16,7 @@ jobs:
             - name: Utilisation de la dernière version LTS de node.js
               uses: actions/setup-node@v4
               with:
-                node-version: 'lts/-n'
+                node-version: 'lts/*'
 
             - name: Installation des dépendances
               run: |

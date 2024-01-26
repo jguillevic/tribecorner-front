@@ -45,3 +45,4 @@ jobs:
                 port: 22
                 source: "src/.htaccess"
                 target: tribecorner/test
+                strip_components: 1

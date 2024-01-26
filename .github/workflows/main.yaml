@@ -34,7 +34,7 @@ jobs:
                 rm: true
                 source: "dist/ng-tribecorner-app/*"
                 target: tribecorner/front
-                strip_components: 2l
+                strip_components: 2
 
             - name: 📂 Copie du fichier .htaccess sur le serveur
               uses: appleboy/scp-action@v0.1.7

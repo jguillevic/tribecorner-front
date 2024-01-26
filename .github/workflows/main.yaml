@@ -24,16 +24,11 @@ jobs:
                   npm ci
                   npx ng build --configuration "production"
 
-            - name: 📂 Copie des fichiers sur le ftp du serveur
-              uses: SamKirkland/FTP-Deploy-Action@v4.1.0
+            - name: 📂 Copie des fichiers sur le serveur
+              uses: appleboy/ssh-action@v1.0.3
               with:
-                server: ${{ secrets.FTP_SSH_HOST }}
+                host: ${{ secrets.FTP_SSH_HOST }}
                 username: ${{ secrets.FTP_SSH_LOGIN }}
                 password: ${{ secrets.FTP_SSH_PASSWORD }}
                 port: 22
-                protocol: ftps
-                local-dir: ./dist/ng-tribecorner-app/
-                server-dir: tribecorer/front/
-                log-level: verbose
-                exclude: |
-                    .htaccess
+                script: whoami

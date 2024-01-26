@@ -14,7 +14,7 @@ jobs:
             - name: 🚚 Récupération de la dernière version des sources
               uses: actions/checkout@v4
             
-            - name: Utilisation de la dernière version LTS de node.js
+            - name: 📦 Utilisation de la dernière version LTS de node.js
               uses: actions/setup-node@v4
               with:
                 node-version: 'lts/*'
@@ -33,7 +33,7 @@ jobs:
                 port: ${{ secrets.FTP_SSH_PORT }}
                 protocol: ftps
                 local-dir: "./dist/ng-tribecorner-app/"
-                server-dir: "tribecorer/front"
+                server-dir: "tribecorer/front/"
                 exclude: |
                     .htaccess
                 dry-run: true

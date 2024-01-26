@@ -34,6 +34,7 @@ jobs:
                 protocol: ftps
                 local-dir: "./dist/ng-tribecorner-app/"
                 server-dir: "tribecorer/front/"
+                log-level: verbose
                 exclude: |
                     .htaccess
                 dry-run: true

@@ -32,8 +32,8 @@ jobs:
                 password: ${{ secrets.FTP_SSH_PASSWORD }}
                 port: 22
                 protocol: ftps
-                local-dir: "./dist/ng-tribecorner-app/"
-                server-dir: "tribecorer/front/"
+                local-dir: ./dist/ng-tribecorner-app/
+                server-dir: tribecorer/front/
                 log-level: verbose
                 exclude: |
                     .htaccess

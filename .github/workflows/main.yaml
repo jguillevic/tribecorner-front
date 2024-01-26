@@ -24,7 +24,7 @@ jobs:
                   npm ci
                   npx ng build --configuration "production"
 
-            - name: 📂 Copie des fichiers sur le serveur
+            - name: 📂 Suppression du contenu du répertoire de destination
               uses: appleboy/ssh-action@v1.0.3
               with:
                 host: ${{ secrets.FTP_SSH_HOST }}
@@ -33,7 +33,7 @@ jobs:
                 port: 22
                 script: whoami
 
-            - name: copy file via ssh password
+            - name: 📂 Copie des fichiers sur le serveur
               uses: appleboy/scp-action@v0.1.7
               with:
                 host: ${{ secrets.FTP_SSH_HOST }}
@@ -42,3 +42,4 @@ jobs:
                 port: 22
                 source: "dist/ng-tribecorner-app/*.*"
                 target: tribecorner/test
+                strip_components: 2

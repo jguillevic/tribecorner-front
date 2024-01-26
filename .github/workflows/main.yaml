@@ -30,6 +30,7 @@ jobs:
                 server: ${{ secrets.FTP_SSH_HOST }}
                 username: ${{ secrets.FTP_SSH_LOGIN }}
                 password: ${{ secrets.FTP_SSH_PASSWORD }}
+                port: 22
                 protocol: ftps
                 local-dir: "./dist/ng-tribecorner-app/"
                 server-dir: "tribecorer/front/"

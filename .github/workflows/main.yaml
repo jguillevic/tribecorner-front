@@ -1,4 +1,4 @@
-name: Déploiement suite à un push sur la branche main
+name: 🚀 Déploiement suite à un push sur la branche main
 on:
     push:
         branches:
@@ -7,21 +7,33 @@ on:
 jobs:
 
     build:
-        name: Build
+        name: 🎉 Déploiement
         runs-on: ubuntu-latest
         
         steps:
-            - uses: actions/checkout@v4
+            - name: 🚚 Récupération de la dernière version des sources
+              uses: actions/checkout@v4
             
             - name: Utilisation de la dernière version LTS de node.js
               uses: actions/setup-node@v4
               with:
                 node-version: 'lts/*'
 
-            - name: Installation des dépendances
+            - name: 🔨 Construction du projet
               run: |
                   npm ci
-
-            - name: Build
-              run: |
                   npx ng build --configuration "production"
+
+            - name: 📂 Copie des fichiers sur le ftp du serveur
+              uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+              with:
+                server: ${{ secrets.FTP_SSH_HOST }}
+                username: ${{ secrets.FTP_SSH_LOGIN }}
+                password: ${{ secrets.FTP_SSH_PASSWORD }}
+                port: ${{ secrets.FTP_SSH_PORT }}
+                protocol: ftps
+                local-dir: "./dist/ng-tribecorner-app/"
+                server-dir: "tribecorer/front"
+                exclude: |
+                    .htaccess
+                dry-run: true

@@ -42,7 +42,7 @@ export class CheckableItemShoppingListsComponent implements OnChanges, OnDestroy
     public ngOnChanges(changes: SimpleChanges): void {
         if (changes['itemShoppingLists']) {
             this.itemShoppingListsByCategories 
-            = CheckableItemShoppingListsComponent.getItemShoppingListByCategories(changes['itemShoppingLists'].currentValue);
+            = this.getItemShoppingListByCategories(changes['itemShoppingLists'].currentValue);
         }
     }
 
@@ -50,24 +50,45 @@ export class CheckableItemShoppingListsComponent implements OnChanges, OnDestroy
         this.destroy$.complete();
     }
     
-    private static getItemShoppingListByCategories(itemShoppingLists: ItemShoppingList[]): ItemShoppingListsByCategoryViewModel[] {
+    private getItemShoppingListByCategories(itemShoppingLists: ItemShoppingList[]): ItemShoppingListsByCategoryViewModel[] {
         const itemShoppingListByCategories: ItemShoppingListsByCategoryViewModel[] = [];
         itemShoppingLists.forEach((itemShoppingList: ItemShoppingList) => {
-            const itemShoppingListByCategory = itemShoppingListByCategories.find((itemShoppingListByCategory) => itemShoppingListByCategory.category.id === itemShoppingList.category.id);
+            const itemShoppingListByCategory: ItemShoppingListsByCategoryViewModel|undefined
+             = itemShoppingListByCategories
+             .find((itemShoppingListByCategory: ItemShoppingListsByCategoryViewModel) => 
+            itemShoppingListByCategory.category.id === itemShoppingList.category.id);
+
             if(itemShoppingListByCategory) {
                 itemShoppingListByCategory.itemShoppingLists.push(itemShoppingList);
             } else {
-                itemShoppingListByCategories.push(new ItemShoppingListsByCategoryViewModel(itemShoppingList.category, [itemShoppingList]));
+                // Recherche de la catégorie dans le tableau actuel.
+                const previousItemShoppingListsByCategory: ItemShoppingListsByCategoryViewModel|undefined
+                = this.itemShoppingListsByCategories
+                .find(
+                    (prevItemShoppingListByCategory: ItemShoppingListsByCategoryViewModel) => 
+                    prevItemShoppingListByCategory.category.id === itemShoppingList.category.id
+                );
+
+                itemShoppingListByCategories
+                .push(
+                    new ItemShoppingListsByCategoryViewModel(
+                        itemShoppingList.category,
+                        [itemShoppingList],
+                        // La valeur de isExpanded est prise sur l'ancien objet si trouvé.
+                        // Sinon, undefined ce qui va entraîner le calcul à la création de l'objet.
+                        previousItemShoppingListsByCategory?.isExpanded ?? undefined
+                    )
+                );
             }
         });
         
-        itemShoppingListByCategories.forEach((itemShoppingListByCategory) => {
+        itemShoppingListByCategories.forEach((itemShoppingListByCategory: ItemShoppingListsByCategoryViewModel) => {
             itemShoppingListByCategory.itemShoppingLists.sort((a, b) => {
               if (a.isChecked !== b.isChecked) {
-                // Tri par statut isChecked (non cochés d'abord)
+                // Tri par statut isChecked (les non cochés d'abord).
                 return a.isChecked ? 1 : -1;
               } else {
-                // Si les statuts isChecked sont égaux, tri par position
+                // Si les statuts isChecked sont égaux, tri par position.
                 return a.position - b.position;
               }
             });
@@ -92,8 +113,10 @@ export class CheckableItemShoppingListsComponent implements OnChanges, OnDestroy
         this.itemShoppingListDeleted.emit(itemShoppingList);
     }
 
-    public toggleItemShoppingList(itemShoppingList: ItemShoppingList): void {
+    public toggleItemShoppingList(itemShoppingList: ItemShoppingList, itemShoppingListsByCategory: ItemShoppingListsByCategoryViewModel): void {
         itemShoppingList.isChecked = !itemShoppingList.isChecked;
+        itemShoppingListsByCategory.calcIsExpanded();
+
         this.itemShoppingListToggled.emit(itemShoppingList);
     }
 }

@@ -21,9 +21,9 @@
 </ul> -->
 <mat-accordion multi="true">
   @for (itemShoppingListsByCategory of itemShoppingListsByCategories; track trackByItemShoppingListsByCategory($index, itemShoppingListsByCategory)) {
-    <mat-expansion-panel expanded="true">
+    <mat-expansion-panel [(expanded)]="itemShoppingListsByCategory.isExpanded">
       <mat-expansion-panel-header>
-        <mat-panel-title><h3>{{itemShoppingListsByCategory.category.name}}</h3></mat-panel-title>
+        <mat-panel-title><h3>{{itemShoppingListsByCategory.category.name}} ({{itemShoppingListsByCategory.checkedItemsLength}}/{{itemShoppingListsByCategory.itemsLength}})</h3></mat-panel-title>
       </mat-expansion-panel-header>
       <ul>
         @for (itemShoppingList of itemShoppingListsByCategory.itemShoppingLists; track trackByItemShoppingList($index, itemShoppingList)) {
@@ -32,7 +32,7 @@
               <mat-checkbox
                 color="primary"
                 [checked]="itemShoppingList.isChecked"
-                (change)="toggleItemShoppingList(itemShoppingList)">
+                (change)="toggleItemShoppingList(itemShoppingList, itemShoppingListsByCategory)">
               </mat-checkbox>
               <span class="item-shopping-list__name"
                 [ngClass]="{ 'line': itemShoppingList.isChecked }"

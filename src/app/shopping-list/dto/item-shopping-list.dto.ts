@@ -5,7 +5,7 @@ export class ItemShoppingListDto {
         public id: number|undefined,
         public name: string,
         public category: ItemShoppingListCategoryDto,
-        public shoppingListId: number,
+        public shoppingListId: number|undefined,
         public isChecked: boolean,
         public position: number
     ) { }

@@ -11,10 +11,10 @@ export abstract class ShoppingListHelper {
         shoppingListToCopy.items.forEach(item => {
             const copiedItemShoppingList 
             = new ItemShoppingList(
-                copyIds ? item.id : undefined,
+                copyIds ? item.id: undefined,
                 item.name,
                 item.category,
-                item.shoppingListId,
+                copiedShoppingList.id,
                 item.isChecked,
                 item.position
             );

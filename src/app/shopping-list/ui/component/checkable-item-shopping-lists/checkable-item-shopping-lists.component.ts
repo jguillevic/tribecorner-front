@@ -41,8 +41,7 @@ export class CheckableItemShoppingListsComponent implements OnChanges, OnDestroy
 
     public ngOnChanges(changes: SimpleChanges): void {
         if (changes['itemShoppingLists']) {
-            this.itemShoppingListsByCategories 
-            = this.getItemShoppingListByCategories(changes['itemShoppingLists'].currentValue);
+            this.setItemShoppingListByCategories(changes['itemShoppingLists'].currentValue);
         }
     }
 
@@ -50,11 +49,16 @@ export class CheckableItemShoppingListsComponent implements OnChanges, OnDestroy
         this.destroy$.complete();
     }
     
-    private getItemShoppingListByCategories(itemShoppingLists: ItemShoppingList[]): ItemShoppingListsByCategoryViewModel[] {
-        const itemShoppingListByCategories: ItemShoppingListsByCategoryViewModel[] = [];
+    private setItemShoppingListByCategories(itemShoppingLists: ItemShoppingList[]): void {
+        const itemShoppingListsByCategories: ItemShoppingListsByCategoryViewModel[] = [];
+
+        // Éléments de liste regroupés par catégorie sur lesquels un recalcul de isExpanded
+        // doit être lancé.
+        const itemShopListsByCatsWithIsExpandedCalcNeeded: ItemShoppingListsByCategoryViewModel[] = [];
+
         itemShoppingLists.forEach((itemShoppingList: ItemShoppingList) => {
             const itemShoppingListByCategory: ItemShoppingListsByCategoryViewModel|undefined
-             = itemShoppingListByCategories
+             = itemShoppingListsByCategories
              .find((itemShoppingListByCategory: ItemShoppingListsByCategoryViewModel) => 
             itemShoppingListByCategory.category.id === itemShoppingList.category.id);
 
@@ -69,21 +73,39 @@ export class CheckableItemShoppingListsComponent implements OnChanges, OnDestroy
                     prevItemShoppingListByCategory.category.id === itemShoppingList.category.id
                 );
 
-                itemShoppingListByCategories
-                .push(
-                    new ItemShoppingListsByCategoryViewModel(
-                        itemShoppingList.category,
-                        [itemShoppingList],
-                        // La valeur de isExpanded est prise sur l'ancien objet si trouvé.
-                        // Sinon, undefined ce qui va entraîner le calcul à la création de l'objet.
-                        previousItemShoppingListsByCategory?.isExpanded ?? undefined
-                    )
+                const viewModel: ItemShoppingListsByCategoryViewModel 
+                = new ItemShoppingListsByCategoryViewModel(
+                    itemShoppingList.category,
+                    [itemShoppingList],
+                    previousItemShoppingListsByCategory?.isExpanded ?? false
                 );
+
+                // Si pas de catégorie précédente trouvée, le recalcul doit être fait.
+                if (!previousItemShoppingListsByCategory) {
+                    itemShopListsByCatsWithIsExpandedCalcNeeded.push(viewModel);
+                }
+
+                itemShoppingListsByCategories.push(viewModel);
             }
         });
         
-        itemShoppingListByCategories.forEach((itemShoppingListByCategory: ItemShoppingListsByCategoryViewModel) => {
-            itemShoppingListByCategory.itemShoppingLists.sort((a, b) => {
+        this.itemShoppingListsByCategories = itemShoppingListsByCategories;
+
+        // Calcul de isExpanded pour ceux le nécessitant.
+        itemShopListsByCatsWithIsExpandedCalcNeeded
+        .forEach((itemShopListsByCat: ItemShoppingListsByCategoryViewModel) => itemShopListsByCat.calcIsExpanded());
+
+        // Tri des éléments de liste.
+        this.sortItemShoppingLists();
+        // Tri des catégories.
+        this.sortItemShoppingListsByCategories();
+    }
+
+    private sortItemShoppingLists(): void {
+        const itemShoppingListsByCategories: ItemShoppingListsByCategoryViewModel[] = this.itemShoppingListsByCategories;
+
+        itemShoppingListsByCategories.forEach((itemShoppingListsByCategory: ItemShoppingListsByCategoryViewModel) => {
+            itemShoppingListsByCategory.itemShoppingLists.sort((a, b) => {
               if (a.isChecked !== b.isChecked) {
                 // Tri par statut isChecked (les non cochés d'abord).
                 return a.isChecked ? 1 : -1;
@@ -93,8 +115,21 @@ export class CheckableItemShoppingListsComponent implements OnChanges, OnDestroy
               }
             });
         });
-        
-        return itemShoppingListByCategories;
+    }
+
+    private sortItemShoppingListsByCategories(): void {
+        const itemShoppingListsByCategories: ItemShoppingListsByCategoryViewModel[] = this.itemShoppingListsByCategories;
+
+        itemShoppingListsByCategories.sort((a, b) => {
+            if (a.isExpanded !== b.isExpanded) {
+                // Tri par statut isExpanded.
+                return !a.isExpanded ? 1 : -1;
+            } else {
+                // Si les statuts isExpanded sont égaux, tri par nom.
+                return a.category.name.localeCompare(b.category.name);
+            }
+          }
+        );
     }
 
     public trackByItemShoppingListsByCategory(index: number, itemShoppingListsByCategory: ItemShoppingListsByCategoryViewModel): number {
@@ -115,7 +150,12 @@ export class CheckableItemShoppingListsComponent implements OnChanges, OnDestroy
 
     public toggleItemShoppingList(itemShoppingList: ItemShoppingList, itemShoppingListsByCategory: ItemShoppingListsByCategoryViewModel): void {
         itemShoppingList.isChecked = !itemShoppingList.isChecked;
-        itemShoppingListsByCategory.calcIsExpanded();
+
+        // Si la valeur du champ isExpanded a été modifiée
+        if (itemShoppingListsByCategory.calcIsExpanded()) {
+            // Tri des catégories.
+            this.sortItemShoppingListsByCategories();
+        }
 
         this.itemShoppingListToggled.emit(itemShoppingList);
     }

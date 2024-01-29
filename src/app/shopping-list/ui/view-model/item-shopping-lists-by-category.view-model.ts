@@ -15,19 +15,24 @@ export class ItemShoppingListsByCategoryViewModel {
     public constructor(
         public readonly category: ItemShoppingListCategory,
         public readonly itemShoppingLists: ItemShoppingList[],
-        public isExpanded: boolean|undefined
-    ) {
-        if (!isExpanded) {
-            this.calcIsExpanded();
-        }
-    }
+        public isExpanded: boolean
+    ) { }
 
-    public calcIsExpanded() {
+    /**
+     * Calcule et affecte la valeur du champ IsExpanded.
+     * @returns true si isExpanded a changé suite au calcul.
+     * false sinon.
+     */
+    public calcIsExpanded(): boolean {
+        const previousIsExpandedValue: boolean = this.isExpanded;
+
         this.isExpanded 
         = this.itemShoppingLists
         .find(
             (itemShoppingList: ItemShoppingList) => 
             !itemShoppingList.isChecked
         ) !== undefined;
+
+        return previousIsExpandedValue !== this.isExpanded;
     }
 }

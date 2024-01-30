@@ -1,6 +1,5 @@
 {
     "nameTooLong": "Nom trop long (max. {{maxLength}} caractères)",
-    "alreadyAdded": "Article déjà dans la liste",
     "newItem": "Nouvel article",
     "add": "Ajouter"
 }

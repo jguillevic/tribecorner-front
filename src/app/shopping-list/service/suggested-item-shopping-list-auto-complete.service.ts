@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { SuggestedItemShoppingListApiService } from './suggested-item-shopping-list-api.service';
-import { SuggestedItemShoppingList } from '../model/suggested-item-shopping-list';
-import { Observable, map } from 'rxjs';
-import { ItemShoppingList } from '../model/item-shopping-list.model';
+import {Injectable} from '@angular/core';
+import {SuggestedItemShoppingListApiService} from './suggested-item-shopping-list-api.service';
+import {SuggestedItemShoppingList} from '../model/suggested-item-shopping-list';
+import {Observable, map} from 'rxjs';
+import {ItemShoppingList} from '../model/item-shopping-list.model';
 
 @Injectable()
 export class SuggestedItemShoppingListAutoCompleteService {

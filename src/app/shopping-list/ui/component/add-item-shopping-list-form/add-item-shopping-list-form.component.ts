@@ -42,7 +42,6 @@ export class AddItemShoppingListFormComponent implements OnDestroy {
 
     public readonly itemShoppingListNameCode: string = 'itemShoppingListName';
     private readonly maxLengthErrorCode: string = 'maxlength';
-    private readonly alreadyAddedErrorCode: string = 'already-added';
 
     public readonly addItemShoppingListForm: FormGroup = new FormGroup({
         itemShoppingListName: new FormControl('', [Validators.maxLength(255)])
@@ -110,8 +109,6 @@ export class AddItemShoppingListFormComponent implements OnDestroy {
         if (itemShoppingListNameControl.hasError(this.maxLengthErrorCode)) {
             const maxLength = itemShoppingListNameControl.getError(this.maxLengthErrorCode)['requiredLength'];
             return this.translocoService.selectTranslate('addItemShoppingListForm.nameTooLong', {maxLength: maxLength})
-        } else if (itemShoppingListNameControl.hasError(this.alreadyAddedErrorCode)) {
-            return this.translocoService.selectTranslate('addItemShoppingListForm.alreadyAdded')
         }
 
         return of(undefined);
@@ -150,11 +147,6 @@ export class AddItemShoppingListFormComponent implements OnDestroy {
 
     private emitItemShoppingList(itemShoppingList: ItemShoppingList): void {
         const itemShoppingListName: string = itemShoppingList.name;
-
-        if (this.currentItemShoppingLists?.find(item => item.name.toLowerCase() === itemShoppingListName.toLowerCase())) {
-            this.getItemShoppingListNameControl().setErrors({[this.alreadyAddedErrorCode]: true});
-            return;
-        }
 
         this.updateItemShoppingListNameControl('');
         this.itemShoppingListAdded.emit(itemShoppingList);

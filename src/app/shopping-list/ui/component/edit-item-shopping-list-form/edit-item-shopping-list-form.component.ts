@@ -1,14 +1,17 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output, TrackByFunction} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {TranslocoModule, TranslocoService, provideTranslocoScope} from '@ngneat/transloco';
 import {ItemShoppingList} from '../../../model/item-shopping-list.model';
-import {Observable, Subject, debounceTime, filter, of, takeUntil, tap} from 'rxjs';
+import {Observable, Subject, debounceTime, filter, of, switchMap, takeUntil, tap} from 'rxjs';
 import {AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {ItemShoppingListCategoryApiService} from '../../../service/item-shopping-list-category-api.service';
 import {ItemShoppingListCategory} from '../../../model/item-shopping-list-category.model';
+import {SuggestedItemShoppingListAutoCompleteService} from '../../../service/suggested-item-shopping-list-auto-complete.service';
+import {SuggestedItemShoppingList} from '../../../model/suggested-item-shopping-list';
 
 @Component({
     selector: 'app-edit-item-shopping-list-form',
@@ -20,7 +23,8 @@ import {ItemShoppingListCategory} from '../../../model/item-shopping-list-catego
         ReactiveFormsModule,
         MatInputModule,
         MatFormFieldModule,
-        MatSelectModule
+        MatSelectModule,
+        MatAutocompleteModule
     ],
     templateUrl: './edit-item-shopping-list-form.component.html',
     styles: [
@@ -53,9 +57,22 @@ export class EditItemShoppingListFormComponent implements OnInit, OnDestroy {
     public itemShoppingListForm: FormGroup 
     = this.createItemShoppingListForm();
 
+    public readonly suggestedItemShoppingLists$: Observable<SuggestedItemShoppingList[]>
+    = this.getNameControl()
+    .valueChanges
+    .pipe(
+        switchMap(itemShoppingListName => 
+            this.suggestedItemShoppingListAutoCompleteService
+            .getSuggestedItemShoppingListsForAutoComplete(
+                itemShoppingListName
+            )
+        )
+    );
+
     public constructor(
         private readonly formBuilder: FormBuilder,
         private readonly translocoService: TranslocoService,
+        private readonly suggestedItemShoppingListAutoCompleteService: SuggestedItemShoppingListAutoCompleteService,
         private readonly itemShoppingListCategoryApiService: ItemShoppingListCategoryApiService
     ) { }
 
@@ -118,6 +135,14 @@ export class EditItemShoppingListFormComponent implements OnInit, OnDestroy {
         if (this.itemShoppingList) {
             this.updateEditItemShoppingListForm(this.itemShoppingList);
         }
+    }
+
+    public trackBySuggestedItemShoppingListName: TrackByFunction<SuggestedItemShoppingList> 
+    = (index, suggestedItemShoppingList) => suggestedItemShoppingList.name;
+
+    public suggestedItemShoppingListSelected(suggestedItemShoppingList: SuggestedItemShoppingList) {
+        this.updateNameControl(suggestedItemShoppingList.name);
+        this.updateCategoryControl(suggestedItemShoppingList.category.id);
     }
 
     public emitItemShoppingChanges() {

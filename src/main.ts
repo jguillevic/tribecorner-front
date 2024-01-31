@@ -61,7 +61,9 @@ const routes: Routes = [
         path: '',
         providers: [
             ItemShoppingListApiService,
-            ItemShoppingListCategoryApiService
+            ItemShoppingListCategoryApiService,
+            SuggestedItemShoppingListApiService,
+            SuggestedItemShoppingListAutoCompleteService
         ],
         canActivate: [signedInGuard, hasFamilyGuard],
         children: ItemShoppingListRoutes.itemShoppingListRoutes

@@ -35,7 +35,6 @@ styleUrls: [
 })
 export class AddItemShoppingListFormComponent implements OnDestroy {
     @Input() public currentShoppingListId: number|undefined;
-    @Input() public currentItemShoppingLists: ItemShoppingList[] | null = [];
     @Output() public itemShoppingListAdded: EventEmitter<ItemShoppingList> = new EventEmitter<ItemShoppingList>();
 
     private readonly destroy$: Subject<void> = new Subject<void>();
@@ -48,13 +47,13 @@ export class AddItemShoppingListFormComponent implements OnDestroy {
     });
 
     public readonly suggestedItemShoppingLists$: Observable<SuggestedItemShoppingList[]>
-    = this.getItemShoppingListNameControl().valueChanges
+    = this.getItemShoppingListNameControl()
+    .valueChanges
     .pipe(
         switchMap(itemShoppingListName => 
             this.suggestedItemShoppingListAutoCompleteService
             .getSuggestedItemShoppingListsForAutoComplete(
-                itemShoppingListName,
-                this.currentItemShoppingLists ?? []
+                itemShoppingListName
             )
         )
     );
@@ -146,8 +145,6 @@ export class AddItemShoppingListFormComponent implements OnDestroy {
     }
 
     private emitItemShoppingList(itemShoppingList: ItemShoppingList): void {
-        const itemShoppingListName: string = itemShoppingList.name;
-
         this.updateItemShoppingListNameControl('');
         this.itemShoppingListAdded.emit(itemShoppingList);
     }

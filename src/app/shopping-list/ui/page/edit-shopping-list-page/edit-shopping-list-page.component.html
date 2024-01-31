@@ -2,7 +2,7 @@
   <app-go-back-top-bar></app-go-back-top-bar>
   <div>
     <div class="padding shopping-list m-t-30">
-      @if (shoppingList$ | async; as shoppingList) {
+      @if (shoppingList$|async; as shoppingList) {
         <app-edit-shopping-list-form
           [shoppingList]="shoppingList"
           (shoppingListEdited)="editShoppingList($event)"
@@ -23,6 +23,5 @@
   <app-add-item-shopping-list-form
     class="add-form padding"
     [currentShoppingListId]="this.currentShoppingListId"
-    [currentItemShoppingLists]="this.itemShoppingLists$ | async"
     (itemShoppingListAdded)="this.addItemShoppingList($event)">
   </app-add-item-shopping-list-form>

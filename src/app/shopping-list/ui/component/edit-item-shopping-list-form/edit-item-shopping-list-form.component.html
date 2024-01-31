@@ -2,7 +2,20 @@
   <!--Nom.-->
   <mat-form-field class="form-input">
     <mat-label>{{t('name')}}</mat-label>
-    <input matInput type="text" [formControlName]="this.nameCode">
+    <input 
+      matInput 
+      type="text" 
+      [formControlName]="this.nameCode"
+      [matAutocomplete]="auto">
+    <mat-autocomplete
+    #auto="matAutocomplete"
+    (optionSelected)="this.suggestedItemShoppingListSelected($event.option.value)">
+    @for (suggestedItemShoppingList of suggestedItemShoppingLists$| async; track this.trackBySuggestedItemShoppingListName($index, suggestedItemShoppingList)) {
+      <mat-option [value]="suggestedItemShoppingList">
+        {{suggestedItemShoppingList.name}} ({{suggestedItemShoppingList.category.name}})
+      </mat-option>
+    }
+    </mat-autocomplete>
     <mat-error>{{this.getNameErrorMessage()|async}}</mat-error>
   </mat-form-field>
   <!--Catégorie.-->

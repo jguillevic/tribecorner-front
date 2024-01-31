@@ -41,22 +41,24 @@ import {TranslocoModule, provideTranslocoScope} from '@ngneat/transloco';
 export class EditShoppingListComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
   private shoppingListValidity: boolean = false;
-  public currentShoppingListId: number|undefined;
+
+  public get currentShoppingListId(): number|undefined {
+    return this.shoppingList.id;
+  }
 
   private readonly itemShoppingListsSubject: BehaviorSubject<ItemShoppingList[]> = new BehaviorSubject<ItemShoppingList[]>([]);
   public readonly itemShoppingLists$: Observable<ItemShoppingList[]> = this.itemShoppingListsSubject.asObservable();
 
-  private shoppingList: ShoppingList|undefined;
+  private shoppingList: ShoppingList = new ShoppingList();
   public readonly shoppingList$: Observable<ShoppingList> = this.activatedRoute.queryParams
   .pipe(
     mergeMap(params => {
       if (params['id']) {
-        this.currentShoppingListId = parseInt(params['id']);
-        return this.shoppingListApiService.loadOneById(this.currentShoppingListId);
+        const currentShoppingListId: number = parseInt(params['id']);
+        return this.shoppingListApiService.loadOneById(currentShoppingListId);
       }
 
-      const shoppingList: ShoppingList = new ShoppingList();
-      return of(shoppingList);
+      return of(this.shoppingList);
     }),
     tap(shoppingList => 
       {
@@ -82,13 +84,13 @@ export class EditShoppingListComponent implements OnDestroy {
   }
 
   private save(shoppingList: ShoppingList): Observable<ShoppingList> {
-     if (this.currentShoppingListId !== undefined) {
+     if (this.shoppingList.id !== undefined) {
       return this.shoppingListApiService.update(shoppingList);
     }
 
     return this.shoppingListApiService.create(shoppingList)
     .pipe(
-      tap(shoppingList => this.currentShoppingListId = shoppingList.id)
+      tap(shoppingList => this.shoppingList.id = shoppingList.id)
     );
   }
 

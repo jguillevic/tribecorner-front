@@ -11,16 +11,15 @@
       [formControlName]="this.itemShoppingListNameCode"
       [matAutocomplete]="auto">
     <mat-autocomplete
-      autoActiveFirstOption
       #auto="matAutocomplete"
       (optionSelected)="this.suggestedItemShoppingListSelected($event.option.value)">
-      @for (suggestedItemShoppingList of suggestedItemShoppingLists$ | async; track this.trackBySuggestedItemShoppingListName($index, suggestedItemShoppingList)) {
+      @for (suggestedItemShoppingList of suggestedItemShoppingLists$|async; track this.trackBySuggestedItemShoppingListName($index, suggestedItemShoppingList)) {
         <mat-option [value]="suggestedItemShoppingList">
           {{suggestedItemShoppingList.name}} ({{suggestedItemShoppingList.category.name}})
         </mat-option>
       }
     </mat-autocomplete>
-    <mat-error>{{this.getItemShoppingListNameErrorMessage() | async}}</mat-error>
+    <mat-error>{{this.getItemShoppingListNameErrorMessage()|async}}</mat-error>
   </mat-form-field>
   <button mat-raised-button color="primary" class="add-form__button" [disabled]="!this.isAddButtonEnabled()">
     {{t('add')}}

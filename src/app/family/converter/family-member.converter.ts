@@ -1,13 +1,12 @@
-import { LoadFamilyMemberDto } from "../dto/load-family-member.dto";
+import { FamilyMemberDto } from "../dto/family-member.dto";
 import { FamilyMember } from "../model/family-member.model";
 
 export abstract class FamilyMemberConverter {
-    public static fromDtoToModel(loadFamilyMemberDto: LoadFamilyMemberDto): FamilyMember {
+    public static fromDtoToModel(familyMemberDto: FamilyMemberDto): FamilyMember {
         return new FamilyMember(
-            loadFamilyMemberDto.id,
-            loadFamilyMemberDto.name,
-            loadFamilyMemberDto.userId,
-            loadFamilyMemberDto.username
+            familyMemberDto.id ?? 0,
+            familyMemberDto.userId,
+            familyMemberDto.username ?? ''
           );
     }
 }

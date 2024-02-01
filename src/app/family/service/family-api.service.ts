@@ -3,16 +3,15 @@ import {Family} from '../model/family.model';
 import {Observable, exhaustMap, map, of, shareReplay, switchMap} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {LoadFamilyDto} from '../dto/load-family.dto';
-import {LoadFamilyMemberDto} from '../dto/load-family-member.dto';
+import {FamilyMemberDto} from '../dto/family-member.dto';
 import {FamilyMember} from '../model/family-member.model';
 import {CreateFamilyDto} from '../dto/create-family.dto';
-import {CreateFamilyMemberDto} from '../dto/create-family-member.dto';
 import {AssociationCodeNotFoundError} from '../error/association-code-not-found.error';
 import {ApiHttpClient} from 'src/app/common/http/api-http-client';
 import {FamilyConverter} from '../converter/family.converter';
-import {FamilyMemberConverter} from '../converter/family-member.converter';
 import {UserService} from '../../user/service/user.service';
 import {UserInfo} from '../../user/model/user-info.model';
+import { FamilyMemberApiService } from './family-member-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +21,8 @@ export class FamilyApiService {
 
   public constructor(
     private apiHttp: ApiHttpClient,
-    private userService: UserService
+    private userService: UserService,
+    private familyMemberApiService: FamilyMemberApiService
   ) { }
 
   public family$: Observable<Family|undefined> 
@@ -69,10 +69,10 @@ export class FamilyApiService {
     const createFamilyDto: CreateFamilyDto 
     = new CreateFamilyDto(familyName);
 
-    const createFamilyMemberDto: CreateFamilyMemberDto 
-    = new CreateFamilyMemberDto(userId);
+    const familyMemberDto: FamilyMemberDto 
+    = new FamilyMemberDto(undefined, undefined, userId, undefined);
     
-    createFamilyDto.members.push(createFamilyMemberDto);
+    createFamilyDto.members.push(familyMemberDto);
 
     return createFamilyDto;
   }
@@ -93,28 +93,13 @@ export class FamilyApiService {
       );
   }
 
-  public createFamilyMember(familyId: number, userId: number): Observable<FamilyMember> {
-    const createFamilyMemberDto = new CreateFamilyMemberDto(userId);
-    const body: string = JSON.stringify(createFamilyMemberDto);
-
-    return this.apiHttp.post<LoadFamilyMemberDto>(
-      `${environment.apiUrl}${FamilyApiService.apiPath}/${familyId}/family_members`,
-      body
-      )
-      .pipe(
-        map(loadFamilyMemberDto => 
-            FamilyMemberConverter.fromDtoToModel(loadFamilyMemberDto)
-        )
-      );
-  }
-
   public joinFamily(associationCode: string, userId: number): Observable<FamilyMember|undefined> {
     return this.loadOneByAssociationCode(associationCode)
     .pipe(
       switchMap(family => {
         if (family) {
           if (family.id) {
-            return this.createFamilyMember(family.id, userId);
+            return this.familyMemberApiService.create(family.id, userId);
           } else {
             return of (undefined);
           }

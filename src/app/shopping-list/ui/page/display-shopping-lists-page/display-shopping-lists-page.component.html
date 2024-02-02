@@ -5,8 +5,8 @@
       <ng-template matTabContent>
           <div class="shopping-lists">
             <div class="shopping-lists__container">
-              @if (this.unarchivedShoppingLists$ | async; as unarchivedShoppingLists) {
-                @for (unarchivedShoppingList of unarchivedShoppingLists; track unarchivedShoppingList) {
+              @defer (when unarchivedShoppingLists()) {
+                @for (unarchivedShoppingList of unarchivedShoppingLists(); track unarchivedShoppingList) {
                   <app-shopping-list-card
                     [shoppingList]="unarchivedShoppingList"
                     (onShoppingListCopied)="shoppingListCopied($event)"
@@ -14,7 +14,7 @@
                     (onShoppingListDeleted)="shoppingListDeleted($event)">
                   </app-shopping-list-card>
                 }
-                @if (!unarchivedShoppingLists.length) {
+                @if (!unarchivedShoppingLists()?.length) {
                   <app-large-empty
                     illustrationSource="/assets/img/undraw_gone_shopping_re_2lau.svg"
                     title="Oups !"
@@ -22,7 +22,7 @@
                     >
                   </app-large-empty>
                 }
-              } @else {
+              } @placeholder (minimum 1000ms) {
                 <app-shopping-list-loading-card>
                 </app-shopping-list-loading-card>
                 <app-shopping-list-loading-card>
@@ -36,8 +36,8 @@
       <ng-template matTabContent>
           <div class="shopping-lists">
             <div class="shopping-lists__container">
-              @if (this.archivedShoppingLists$ | async; as archivedShoppingLists) {
-                @for (archivedShoppingList of archivedShoppingLists; track archivedShoppingList) {
+              @defer (when archivedShoppingLists()) {
+                @for (archivedShoppingList of archivedShoppingLists(); track archivedShoppingList) {
                   <app-shopping-list-card
                     [shoppingList]="archivedShoppingList"
                     (onShoppingListCopied)="shoppingListCopied($event)"
@@ -45,7 +45,7 @@
                     (onShoppingListDeleted)="shoppingListDeleted($event)">
                   </app-shopping-list-card>
                 }
-                @if (!archivedShoppingLists.length) {
+                @if (!archivedShoppingLists()?.length) {
                   <app-large-empty
                     illustrationSource="/assets/img/undraw_gone_shopping_re_2lau.svg"
                     title="Oups !"
@@ -53,7 +53,7 @@
                     >
                   </app-large-empty>
                 }
-              } @else {
+              } @placeholder (minimum 1000ms) {
                 <app-shopping-list-loading-card>
                 </app-shopping-list-loading-card>
                 <app-shopping-list-loading-card>

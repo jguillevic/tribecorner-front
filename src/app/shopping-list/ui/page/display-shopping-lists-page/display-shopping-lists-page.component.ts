@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, Signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {TabBarComponent} from 'src/app/common/tab-bar/ui/tab-bar/tab-bar.component';
 import {ShoppingList} from '../../../model/shopping-list.model';
@@ -13,6 +13,7 @@ import {LargeEmptyComponent} from "../../../../common/empty/ui/large-empty/large
 import {MatTabsModule} from '@angular/material/tabs';
 import {ShoppingListGoToService} from 'src/app/shopping-list/service/shopping-list-go-to.service';
 import {ShoppingListLoadingCardComponent} from "../../../../shopping-list/ui/component/shopping-list-loading-card/shopping-list-loading-card.component";
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-display-shopping-lists-page',
@@ -61,7 +62,7 @@ export class DisplayShoppingListsComponent implements OnDestroy {
   private shoppingListToggleArchiveSubject: BehaviorSubject<ShoppingList> = new BehaviorSubject<ShoppingList>(new ShoppingList());
   private shoppingListToggleArchive$ = this.shoppingListToggleArchiveSubject.asObservable();
 
-  public archivedShoppingLists$: Observable<ShoppingList[]>
+  private readonly archivedShoppingLists$: Observable<ShoppingList[]>
   = combineLatest(
     {
       shoppingLists: this.shoppingLists$,
@@ -71,8 +72,10 @@ export class DisplayShoppingListsComponent implements OnDestroy {
   .pipe(
     map(result => result.shoppingLists.filter(shoppingList => shoppingList.isArchived))
   );
+  public readonly archivedShoppingLists: Signal<ShoppingList[]|undefined> 
+  = toSignal(this.archivedShoppingLists$);
 
-  public unarchivedShoppingLists$: Observable<ShoppingList[]>
+  private readonly unarchivedShoppingLists$: Observable<ShoppingList[]>
   = combineLatest(
     {
       shoppingLists: this.shoppingLists$,
@@ -82,6 +85,8 @@ export class DisplayShoppingListsComponent implements OnDestroy {
   .pipe(
     map(result => result.shoppingLists.filter(shoppingList => !shoppingList.isArchived))
   );
+  public readonly unarchivedShoppingLists: Signal<ShoppingList[]|undefined>
+  = toSignal(this.unarchivedShoppingLists$);
 
   public constructor(
     private readonly shoppingListApiService: ShoppingListApiService,

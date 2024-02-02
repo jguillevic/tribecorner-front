@@ -56,18 +56,18 @@
       categoryName="{{t('myShoppingLists')}}"
       (onSeeAllClicked)="goToDisplayShoppingLists()">
         <div class="shopping-lists__container">
-          @if (this.shoppingLists$ | async; as shoppingLists) {
-            @for (shoppingList of shoppingLists; track shoppingList) {
+          @defer (when shoppingLists()) {
+            @for (shoppingList of shoppingLists(); track shoppingList) {
               <app-shopping-list-card
                 [shoppingList]="shoppingList"
                 [showActions]="false"
                 (click)="goToDisplayShoppingList(shoppingList.id)">
               </app-shopping-list-card>
             }
-            @if (!shoppingLists.length) {
+            @if (!shoppingLists()?.length) {
               <app-simple-empty></app-simple-empty>
             }
-          } @else {
+          } @placeholder (minimum 1000ms) {
             <app-shopping-list-loading-card
             [showActions]="false">
             </app-shopping-list-loading-card>

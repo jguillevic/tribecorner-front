@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Router} from '@angular/router';
 import {TabBarComponent} from 'src/app/common/tab-bar/ui/tab-bar/tab-bar.component';
@@ -27,6 +27,7 @@ import {EventCardComponent} from "../../../../event/ui/component/event-card/even
 import {DateHelper} from '../../../../common/date/helper/date.helper';
 import {ShoppingListGoToService} from '../../../../shopping-list/service/shopping-list-go-to.service';
 import {TranslocoModule, provideTranslocoScope} from '@ngneat/transloco';
+import {toSignal} from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-display-home-page',
@@ -63,9 +64,11 @@ export class DisplayHomeComponent {
   = this.mealsByMealKindService
   .loadAllByDate(DateHelper.getCurrentDate());
 
-  public readonly shoppingLists$: Observable<ShoppingList[]> 
+  private readonly shoppingLists$: Observable<ShoppingList[]> 
   = this.shoppingListApiService
   .loadAll(false);
+  public readonly shoppingLists: Signal<ShoppingList[]|undefined>
+   = toSignal(this.shoppingLists$);
 
   public constructor(
     private eventApiService: EventApiService,

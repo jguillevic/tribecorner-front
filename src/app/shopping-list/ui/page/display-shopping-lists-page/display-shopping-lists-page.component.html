@@ -3,82 +3,64 @@
   <mat-tab-group>
     <mat-tab label="En cours">
       <ng-template matTabContent>
-        @if (this.unarchivedShoppingLists$ | async; as unarchivedShoppingLists) {
           <div class="shopping-lists">
             <div class="shopping-lists__container">
-              @for (unarchivedShoppingList of unarchivedShoppingLists; track unarchivedShoppingList) {
-                <app-shopping-list-card
-                  [shoppingList]="unarchivedShoppingList">
-                  <app-shopping-list-edit-button
-                    [shoppingListId]="unarchivedShoppingList.id">
-                  </app-shopping-list-edit-button>
-                  <app-shopping-list-copy-button
-                    [shoppingListToCopy]="unarchivedShoppingList"
-                    (onShoppingListCopied)="shoppingListCopied($event)">
-                  </app-shopping-list-copy-button>
-                  <app-shopping-list-archive-toggle
-                    [shoppingListToToggleArchive]="unarchivedShoppingList"
-                    (onShoppingListArchiveToggled)="shoppingListArchiveToggled($event)">
-                  </app-shopping-list-archive-toggle>
-                  <app-shopping-list-delete-button
-                    [shoppingListToDelete]="unarchivedShoppingList"
+              @if (this.unarchivedShoppingLists$ | async; as unarchivedShoppingLists) {
+                @for (unarchivedShoppingList of unarchivedShoppingLists; track unarchivedShoppingList) {
+                  <app-shopping-list-card
+                    [shoppingList]="unarchivedShoppingList"
+                    (onShoppingListCopied)="shoppingListCopied($event)"
+                    (onShoppingListArchiveToggled)="shoppingListArchiveToggled($event)"
                     (onShoppingListDeleted)="shoppingListDeleted($event)">
-                  </app-shopping-list-delete-button>
-                </app-shopping-list-card>
-              }
-              @if (!unarchivedShoppingLists.length) {
-                <app-large-empty
-                  illustrationSource="/assets/img/undraw_gone_shopping_re_2lau.svg"
-                  title="Oups !"
-                  message="Vous n'avez pas de listes en cours."
-                  >
-                </app-large-empty>
+                  </app-shopping-list-card>
+                }
+                @if (!unarchivedShoppingLists.length) {
+                  <app-large-empty
+                    illustrationSource="/assets/img/undraw_gone_shopping_re_2lau.svg"
+                    title="Oups !"
+                    message="Vous n'avez pas de listes en cours."
+                    >
+                  </app-large-empty>
+                }
+              } @else {
+                <app-shopping-list-loading-card>
+                </app-shopping-list-loading-card>
+                <app-shopping-list-loading-card>
+                </app-shopping-list-loading-card>
               }
             </div>
           </div>
-        } @else {
-          <app-simple-loading></app-simple-loading>
-        }
       </ng-template>
     </mat-tab>
     <mat-tab label="Archives">
       <ng-template matTabContent>
-        @if (this.archivedShoppingLists$ | async; as archivedShoppingLists) {
           <div class="shopping-lists">
             <div class="shopping-lists__container">
-              @for (archivedShoppingList of archivedShoppingLists; track archivedShoppingList) {
-                <app-shopping-list-card
-                  [shoppingList]="archivedShoppingList">
-                  <app-shopping-list-edit-button
-                    [shoppingListId]="archivedShoppingList.id">
-                  </app-shopping-list-edit-button>
-                  <app-shopping-list-copy-button
-                    [shoppingListToCopy]="archivedShoppingList"
-                    (onShoppingListCopied)="shoppingListCopied($event)">
-                  </app-shopping-list-copy-button>
-                  <app-shopping-list-archive-toggle
-                    [shoppingListToToggleArchive]="archivedShoppingList"
-                    (onShoppingListArchiveToggled)="shoppingListArchiveToggled($event)">
-                  </app-shopping-list-archive-toggle>
-                  <app-shopping-list-delete-button
-                    [shoppingListToDelete]="archivedShoppingList"
+              @if (this.archivedShoppingLists$ | async; as archivedShoppingLists) {
+                @for (archivedShoppingList of archivedShoppingLists; track archivedShoppingList) {
+                  <app-shopping-list-card
+                    [shoppingList]="archivedShoppingList"
+                    (onShoppingListCopied)="shoppingListCopied($event)"
+                    (onShoppingListArchiveToggled)="shoppingListArchiveToggled($event)"
                     (onShoppingListDeleted)="shoppingListDeleted($event)">
-                  </app-shopping-list-delete-button>
-                </app-shopping-list-card>
-              }
-              @if (!archivedShoppingLists.length) {
-                <app-large-empty
-                  illustrationSource="/assets/img/undraw_gone_shopping_re_2lau.svg"
-                  title="Oups !"
-                  message="Vous n'avez pas de listes archivées."
-                  >
-                </app-large-empty>
+                  </app-shopping-list-card>
+                }
+                @if (!archivedShoppingLists.length) {
+                  <app-large-empty
+                    illustrationSource="/assets/img/undraw_gone_shopping_re_2lau.svg"
+                    title="Oups !"
+                    message="Vous n'avez pas de listes archivées."
+                    >
+                  </app-large-empty>
+                }
+              } @else {
+                <app-shopping-list-loading-card>
+                </app-shopping-list-loading-card>
+                <app-shopping-list-loading-card>
+                </app-shopping-list-loading-card>
               }
             </div>
           </div>
-        } @else {
-          <app-simple-loading></app-simple-loading>
-        }
       </ng-template>
     </mat-tab>
   </mat-tab-group>

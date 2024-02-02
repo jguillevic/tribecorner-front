@@ -55,22 +55,27 @@
     <app-home-category
       categoryName="{{t('myShoppingLists')}}"
       (onSeeAllClicked)="goToDisplayShoppingLists()">
-      @if (this.shoppingLists$ | async; as shoppingLists) {
-        <div
-          class="shopping-lists__container">
-          @for (shoppingList of shoppingLists; track shoppingList) {
-            <app-shopping-list-card
-              [shoppingList]="shoppingList"
-              (click)="goToDisplayShoppingList(shoppingList.id)">
-            </app-shopping-list-card>
-          }
-          @if (!shoppingLists.length) {
-            <app-simple-empty></app-simple-empty>
+        <div class="shopping-lists__container">
+          @if (this.shoppingLists$ | async; as shoppingLists) {
+            @for (shoppingList of shoppingLists; track shoppingList) {
+              <app-shopping-list-card
+                [shoppingList]="shoppingList"
+                [showActions]="false"
+                (click)="goToDisplayShoppingList(shoppingList.id)">
+              </app-shopping-list-card>
+            }
+            @if (!shoppingLists.length) {
+              <app-simple-empty></app-simple-empty>
+            }
+          } @else {
+            <app-shopping-list-loading-card
+            [showActions]="false">
+            </app-shopping-list-loading-card>
+            <app-shopping-list-loading-card
+            [showActions]="false">
+            </app-shopping-list-loading-card>
           }
         </div>
-      } @else {
-        <app-simple-loading></app-simple-loading>
-      }
     </app-home-category>
   </div>
   <app-tab-bar [selectedIndex]=0></app-tab-bar>

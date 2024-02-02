@@ -30,6 +30,7 @@
     "crypto-js": "^4.2.0",
     "firebase": "^10.7.2",
     "moment": "^2.30.1",
+    "ngx-skeleton-loader": "^9.0.0",
     "rxjs": "~7.8.1",
     "scss-reset": "^1.4.2",
     "tslib": "^2.6.2",

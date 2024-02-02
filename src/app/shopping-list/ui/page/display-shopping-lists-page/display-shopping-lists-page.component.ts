@@ -1,21 +1,18 @@
-import { Component, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { TabBarComponent } from 'src/app/common/tab-bar/ui/tab-bar/tab-bar.component';
-import { ShoppingList } from '../../../model/shopping-list.model';
-import { BehaviorSubject, Observable, Subscription, combineLatest, map, shareReplay } from 'rxjs';
-import { ShoppingListApiService } from '../../../service/shopping-list-api.service';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { ShoppingListCardComponent } from "../../component/shopping-list-card/shopping-list-card.component";
-import { ProfileTopBarComponent } from 'src/app/common/top-bar/profile/ui/profile-top-bar.component';
-import { SimpleLoadingComponent } from "../../../../common/loading/ui/simple-loading/simple-loading.component";
-import { LargeEmptyComponent } from "../../../../common/empty/ui/large-empty/large-empty.component";
-import { MatTabsModule } from '@angular/material/tabs';
-import { ShoppingListCopyButtonComponent } from "../../component/shopping-list-copy-button/shopping-list-copy-button.component";
-import { ShoppingListDeleteButtonComponent } from "../../component/shopping-list-delete-button/shopping-list-delete-button.component";
-import { ShoppingListArchiveToggleComponent } from "../../component/shopping-list-archive-toggle/shopping-list-archive-toggle.component";
-import { ShoppingListGoToService } from 'src/app/shopping-list/service/shopping-list-go-to.service';
-import { ShoppingListEditButtonComponent } from "../../component/shopping-list-edit-button/shopping-list-edit-button.component";
+import {Component, OnDestroy} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {TabBarComponent} from 'src/app/common/tab-bar/ui/tab-bar/tab-bar.component';
+import {ShoppingList} from '../../../model/shopping-list.model';
+import {BehaviorSubject, Observable, Subscription, combineLatest, map, shareReplay} from 'rxjs';
+import {ShoppingListApiService} from '../../../service/shopping-list-api.service';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {ShoppingListCardComponent} from "../../component/shopping-list-card/shopping-list-card.component";
+import {ProfileTopBarComponent} from 'src/app/common/top-bar/profile/ui/profile-top-bar.component';
+import {SimpleLoadingComponent} from "../../../../common/loading/ui/simple-loading/simple-loading.component";
+import {LargeEmptyComponent} from "../../../../common/empty/ui/large-empty/large-empty.component";
+import {MatTabsModule} from '@angular/material/tabs';
+import {ShoppingListGoToService} from 'src/app/shopping-list/service/shopping-list-go-to.service';
+import {ShoppingListLoadingCardComponent} from "../../../../shopping-list/ui/component/shopping-list-loading-card/shopping-list-loading-card.component";
 
 @Component({
     selector: 'app-display-shopping-lists-page',
@@ -29,13 +26,10 @@ import { ShoppingListEditButtonComponent } from "../../component/shopping-list-e
         MatIconModule,
         ProfileTopBarComponent,
         ShoppingListCardComponent,
+        ShoppingListLoadingCardComponent,
         SimpleLoadingComponent,
         LargeEmptyComponent,
-        MatTabsModule,
-        ShoppingListCopyButtonComponent,
-        ShoppingListDeleteButtonComponent,
-        ShoppingListArchiveToggleComponent,
-        ShoppingListEditButtonComponent
+        MatTabsModule
     ]
 })
 export class DisplayShoppingListsComponent implements OnDestroy {

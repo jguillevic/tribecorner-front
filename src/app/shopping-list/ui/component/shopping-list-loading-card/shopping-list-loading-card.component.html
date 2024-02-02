@@ -1,0 +1,27 @@
+<mat-card class="shopping-list-card">
+    <mat-card-header>
+        <ngx-skeleton-loader count="1" appearance="line" animation="progress-dark" class="w-10/12" [theme]="{height: '45px', 'background-color': '#e16f7c'}"/>
+    </mat-card-header> 
+    <mat-card-content>
+        <ul>
+            <li class="w-2/3">
+                <ngx-skeleton-loader count="1" appearance="line" animation="progress-dark" [theme]="{'background-color': '#e16f7c'}"/>
+            </li>
+            <li class="w-1/2">
+                <ngx-skeleton-loader count="1" appearance="line" animation="progress-dark" [theme]="{'background-color': '#e16f7c'}"/>
+            </li>
+            <li class="w-1/3">
+                <ngx-skeleton-loader count="1" appearance="line" animation="progress-dark" class="w-2/6" [theme]="{'background-color': '#e16f7c'}"/>
+            </li>
+            <li class="w-3/5">
+                <ngx-skeleton-loader count="1" appearance="line" animation="progress-dark" [theme]="{'background-color': '#e16f7c'}"/>
+            </li>
+        </ul>
+    </mat-card-content>
+
+    @if (this.showActions) {
+    <mat-card-actions align="end">
+        <ngx-skeleton-loader count="4" appearance="circle" animation="progress-dark" [theme]="{'background-color': '#e16f7c'}"/>
+    </mat-card-actions>
+    }
+</mat-card>

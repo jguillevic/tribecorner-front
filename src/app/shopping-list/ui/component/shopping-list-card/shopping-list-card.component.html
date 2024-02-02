@@ -1,31 +1,48 @@
-<div class="shopping-list-card">
-  <div class="shopping-list-card__container">
-    <div class="shopping-list-card__label">{{shoppingList?.name}}</div>
-    @if (this.notCheckedItemShoppingLists$ |async; as notCheckedItemShoppingLists) {
-      <div>
-        @if (notCheckedItemShoppingLists.length) {
-          <ul class="shopping-list-card__items">
-            @for (notCheckedItemShoppingList of this.notCheckedItemShoppingLists | slice:0:maxDisplayedItemsCount; track notCheckedItemShoppingList; let i = $index) {
-              <li class="shopping-list-card__item">
-                <div>{{notCheckedItemShoppingList.name}}</div>
-              </li>
+<mat-card class="shopping-list-card">
+    <mat-card-header>
+        <mat-card-title>{{shoppingList?.name}}</mat-card-title>
+    </mat-card-header> 
+    <mat-card-content>
+        @if (this.notCheckedItemShoppingLists$ | async; as notCheckedItemShoppingLists) {
+            @if (notCheckedItemShoppingLists.length) {
+            <ul>
+                @for (notCheckedItemShoppingList of this.notCheckedItemShoppingLists | slice:0:maxDisplayedItemsCount; track notCheckedItemShoppingList; let i = $index) {
+                    <li>
+                        <div>{{notCheckedItemShoppingList.name}}</div>
+                    </li>
+                }
+                @if (notCheckedItemShoppingLists.length > maxDisplayedItemsCount) {
+                    <li>...</li>
+                }
+            </ul>
             }
-            @if (notCheckedItemShoppingLists.length > maxDisplayedItemsCount) {
-              <li>...</li>
+        }
+        @if (this.checkedItemShoppingLists$ | async; as checkedItemShoppingLists) {
+        <div class="shopping-list-card__checked">
+            @if (this.checkedItemShoppingLists.length) {
+            <span>+ {{this.checkedItemShoppingLists.length}} article(s) coché(s)</span>
             }
-          </ul>
+        </div>
         }
-      </div>
+    </mat-card-content>
+
+    @if (this.showActions) {
+    <mat-card-actions align="end">
+        <app-shopping-list-edit-button
+        [shoppingListId]="shoppingList?.id">
+        </app-shopping-list-edit-button>
+        <app-shopping-list-copy-button
+        [shoppingListToCopy]="shoppingList"
+        (onShoppingListCopied)="shoppingListCopied($event)">
+        </app-shopping-list-copy-button>
+        <app-shopping-list-archive-toggle
+        [shoppingListToToggleArchive]="shoppingList"
+        (onShoppingListArchiveToggled)="shoppingListArchiveToggled($event)">
+        </app-shopping-list-archive-toggle>
+        <app-shopping-list-delete-button
+        [shoppingListToDelete]="shoppingList"
+        (onShoppingListDeleted)="shoppingListDeleted($event)">
+        </app-shopping-list-delete-button>
+    </mat-card-actions>
     }
-    @if (this.checkedItemShoppingLists$ | async; as checkedItemShoppingLists) {
-      <div class="shopping-list-card__checked">
-        @if (this.checkedItemShoppingLists.length) {
-          <span>+ {{this.checkedItemShoppingLists.length}} article(s) coché(s)</span>
-        }
-      </div>
-    }
-  </div>
-  <div class="shopping-list-card__actions">
-    <ng-content></ng-content>
-  </div>
-</div>
+</mat-card>

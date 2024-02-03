@@ -24,6 +24,7 @@ export class MealKindService {
           .map(mealKindDto => 
             MealKindConverter.fromDtoToModel(mealKindDto)
           )
+          .sort((a, b) => a.position - b.position)
         ),
         shareReplay(1)
       );

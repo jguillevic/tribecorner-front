@@ -43,7 +43,6 @@ export class MealCopyButtonComponent implements OnDestroy {
 
     this.isCopying = true;
     const copiedMeal = MealHelper.copy(this.mealToCopy, false);
-    copiedMeal.name += ' (copie)';
     this.mealService.create(copiedMeal)
     .pipe(
       tap(

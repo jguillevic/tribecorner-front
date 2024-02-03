@@ -41,7 +41,6 @@ export class ShoppingListCopyButtonComponent implements OnDestroy {
 
     this.isCopying = true;
     const copiedShoppingList = ShoppingListHelper.copy(this.shoppingListToCopy, false);
-    copiedShoppingList.name += ' (copie)';
     copiedShoppingList.isArchived = false;
     this.shoppingListApiService.create(copiedShoppingList)
     .pipe(

@@ -8,6 +8,11 @@
 .shopping-list-card {
     background-color: $primary-color-100;
 
+    &__name {
+        font-size: 18px;
+        font-weight: 500;
+    }
+
     &__checked {
         margin-top: 5px;
         font-style: italic;

@@ -7,4 +7,9 @@
 
 .event-card {
     background-color: $primary-color-100;
+
+    &__name {
+        font-size: 18px;
+        font-weight: 500;
+    }
 }

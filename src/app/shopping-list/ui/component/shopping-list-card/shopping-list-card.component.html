@@ -1,6 +1,6 @@
 <mat-card class="shopping-list-card">
     <mat-card-header>
-        <mat-card-title>{{shoppingList?.name}}</mat-card-title>
+        <mat-card-title class="shopping-list-card__name">{{shoppingList?.name}}</mat-card-title>
     </mat-card-header> 
     <mat-card-content>
         @if (this.notCheckedItemShoppingLists$ | async; as notCheckedItemShoppingLists) {

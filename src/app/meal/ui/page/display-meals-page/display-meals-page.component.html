@@ -16,7 +16,7 @@
                 {{mealsByMealKind.mealKind.name}}
               </div>
               @for (meal of this.mealsByMealKind.meals; track meal) {
-                <app-large-meal-card [meal]="meal">
+                <app-meal-card class="meal" [meal]="meal">
                   <app-meal-edit-button
                     [mealId]="meal.id">
                   </app-meal-edit-button>
@@ -28,7 +28,7 @@
                     [mealToDelete]="meal"
                     (onMealDeleted)="onMealDeleted($event)">
                   </app-meal-delete-button>
-                </app-large-meal-card>
+                </app-meal-card>
               }
             </div>
           }

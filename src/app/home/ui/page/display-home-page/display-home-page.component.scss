@@ -6,40 +6,20 @@
     display: block;
 }
 
-.meals-by-meal-kinds__container {
-    width: 100%;
-    padding-left: 15px;
-    padding-right: 15px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-}
-
 .meals-by-meal-kind__container {
-    width: 33.3%;
-    grid-template-rows: auto auto;
-}
-
-.meal-kind__name {
-    width: 100%;
-    font-size: 16px;
-    font-weight: 500;
-    display: block;
-    grid-row: 1;
-    padding-bottom: 5px;
-}
-
-.meals__container {
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    grid-row: 2;
+    justify-content: center;
 }
 
-.meal {
+.meal-kind__name {
+    font-size: 16px;
+    font-weight: 500;
+    display: block;
+    margin-left: 15px;
+    margin-top: 10px;
     margin-bottom: 5px;
-    margin-right: 5px;
 }
 
 .shopping-lists__container {

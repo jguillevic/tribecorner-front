@@ -17,7 +17,7 @@ import {HomeCategoryComponent} from "../../component/home-category/home-category
 import {MatDividerModule} from '@angular/material/divider';
 import {Event} from '../../../../event/model/event.model';
 import {EventApiService} from '../../../../event/service/event-api.service';
-import {SimpleMealCardComponent} from "../../../../meal/ui/component/simple-meal-card/simple-meal-card.component";
+import {MealCardComponent} from "../../../../meal/ui/component/meal-card/meal-card.component";
 import {MealsByMealKind} from '../../../../meal/model/meals-by-meal-kind.model';
 import {MealsByMealKindService} from '../../../../meal/service/meals-by-meal-kind.service';
 import {SimpleLoadingComponent} from "../../../../common/loading/ui/simple-loading/simple-loading.component";
@@ -46,7 +46,7 @@ import {toSignal} from '@angular/core/rxjs-interop';
         ShoppingListCardPlaceholderComponent,
         HomeCategoryComponent,
         MatDividerModule,
-        SimpleMealCardComponent,
+        MealCardComponent,
         SimpleLoadingComponent,
         SimpleEmptyComponent,
         EventCardComponent,

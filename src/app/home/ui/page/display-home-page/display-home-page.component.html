@@ -29,27 +29,22 @@
       categoryName="{{t('myMealsOfTheDay')}}"
       (onSeeAllClicked)="goToDisplayMeals()">
       @if (this.mealsByMealKinds$ | async; as mealsByMealKinds) {
-        <div
-          class="meals-by-meal-kinds__container">
           @for (mealsByMealKind of mealsByMealKinds; track mealsByMealKind) {
-            <div class="meals-by-meal-kind__container"
-              >
+            <div class="meals-by-meal-kind__container">
               <div class="meal-kind__name">
                 {{mealsByMealKind.mealKind.name}}
               </div>
-              <div class="meals__container">
-                @for (meal of mealsByMealKind.meals; track meal) {
-                  <app-simple-meal-card class="meal"
-                    [name]="meal.name">
-                  </app-simple-meal-card>
-                }
-              </div>
+              @for (meal of mealsByMealKind.meals; track meal) {
+                <app-meal-card 
+                [meal]="meal"
+                [showActions]="false">
+                </app-meal-card>
+              }
             </div>
           }
           @if (!mealsByMealKinds.length) {
             <app-simple-empty></app-simple-empty>
           }
-        </div>
       } @else {
         <app-simple-loading></app-simple-loading>
       }

@@ -8,7 +8,7 @@ import {MealsByMealKind} from '../../../model/meals-by-meal-kind.model';
 import {MealsByMealKindService} from '../../../service/meals-by-meal-kind.service';
 import {LargeEmptyComponent} from "../../../../common/empty/ui/large-empty/large-empty.component";
 import {MealCurrentDateService} from '../../../service/meal-current-date.service';
-import {LargeMealCardComponent} from "../../component/large-meal-card/large-meal-card.component";
+import {MealCardComponent} from "../../component/meal-card/meal-card.component";
 import {MealEditButtonComponent} from "../../component/meal-edit-button/meal-edit-button.component";
 import {MealDeleteButtonComponent} from "../../component/meal-delete-button/meal-delete-button.component";
 import {Meal} from '../../../model/meal.model';
@@ -27,7 +27,7 @@ import { MealLargeEmptyComponent } from "../../component/meal-large-empty/meal-l
         TabBarComponent,
         InlineCalendarComponent,
         LargeEmptyComponent,
-        LargeMealCardComponent,
+        MealCardComponent,
         MealEditButtonComponent,
         MealDeleteButtonComponent,
         MealCopyButtonComponent,

@@ -24,6 +24,7 @@ import {SimpleLoadingComponent} from "../../../../common/loading/ui/simple-loadi
 import {SimpleEmptyComponent} from "../../../../common/empty/ui/simple-empty/simple-empty.component";
 import {EventRoutes} from '../../../../event/route/event.routes';
 import {EventCardComponent} from "../../../../event/ui/component/event-card/event-card.component";
+import {EventCardPlaceholderComponent} from "../../../../event/ui/component/event-card-placeholder/event-card-placeholder.component";
 import {DateHelper} from '../../../../common/date/helper/date.helper';
 import {ShoppingListGoToService} from '../../../../shopping-list/service/shopping-list-go-to.service';
 import {TranslocoModule, provideTranslocoScope} from '@ngneat/transloco';
@@ -49,6 +50,7 @@ import {toSignal} from '@angular/core/rxjs-interop';
         SimpleLoadingComponent,
         SimpleEmptyComponent,
         EventCardComponent,
+        EventCardPlaceholderComponent,
         TranslocoModule
     ],
     providers: [
@@ -56,9 +58,11 @@ import {toSignal} from '@angular/core/rxjs-interop';
     ]
 })
 export class DisplayHomeComponent {
-  public readonly events$: Observable<Event[]> 
+  private readonly events$: Observable<Event[]> 
   = this.eventApiService
   .loadAllByDate(DateHelper.getCurrentDate());
+  public readonly events: Signal<Event[]|undefined>
+  = toSignal(this.events$);
 
   public readonly mealsByMealKinds$: Observable<MealsByMealKind[]> 
   = this.mealsByMealKindService

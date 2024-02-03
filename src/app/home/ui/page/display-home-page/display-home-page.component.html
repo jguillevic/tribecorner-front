@@ -5,21 +5,24 @@
     <app-home-category
       categoryName="{{t('myEvents')}}"
       (onSeeAllClicked)="goToDisplayEvents()">
-      @if (this.events$ | async; as events) {
         <div
-          class="events__container">
-          @for (event of events; track event) {
+        class="events__container">
+        @defer (when events()) {
+          @for (event of events(); track event) {
             <app-event-card
-              [event]="event">
+              [event]="event"
+              [showActions]="false">
             </app-event-card>
           }
-          @if (!events.length) {
+          @if (!events()?.length) {
             <app-simple-empty></app-simple-empty>
           }
+        } @placeholder (minimum 1000ms) {
+          <app-event-card-placeholder
+            [showActions]="false">
+          </app-event-card-placeholder>
+        }
         </div>
-      } @else {
-        <app-simple-loading></app-simple-loading>
-      }
     </app-home-category>
     <mat-divider></mat-divider>
     <app-home-category
@@ -68,9 +71,6 @@
               <app-simple-empty></app-simple-empty>
             }
           } @placeholder (minimum 1000ms) {
-            <app-shopping-list-card-placeholder
-            [showActions]="false">
-            </app-shopping-list-card-placeholder>
             <app-shopping-list-card-placeholder
             [showActions]="false">
             </app-shopping-list-card-placeholder>

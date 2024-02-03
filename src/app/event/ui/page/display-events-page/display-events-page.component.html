@@ -1,37 +1,26 @@
 <div class="page">
   <app-profile-top-bar></app-profile-top-bar>
   <div class="events">
-    <app-inline-calendar [defaultSelectedDate$]="defaultDate$" (onSelectedDateChanged)="onSelectedDateChanged($event)">
+    <app-inline-calendar [defaultSelectedDate$]="defaultDate$" (onSelectedDateChanged)="selectedDateChanged($event)">
     </app-inline-calendar>
-    @if (this.events$ | async; as events) {
-      <div>
-        @if (!this.isLoading) {
-          <div class="events__container">
-            @for (event of events; track event) {
-              <app-event-card
-                class="event"
-                [event]="event">
-                <app-event-edit-button
-                  [eventId]="event.id">
-                </app-event-edit-button>
-                <app-event-delete-button
-                  [eventToDelete]="event"
-                  (onEventDeleted)="onEventDeleted($event)">
-                </app-event-delete-button>
-              </app-event-card>
-            }
-            @if (!events.length) {
-              <app-event-large-empty></app-event-large-empty>
-            }
-          </div>
+    <div class="events__container">
+      @defer (when events()) {
+        @for (event of events(); track event) {
+          <app-event-card
+            [event]="event"
+            class="event"
+            (onEventDeleted)="eventDeleted($event)">
+          </app-event-card>
         }
-      </div>
-    }
-    @if (this.isLoading) {
-      <div>
-        <app-simple-loading></app-simple-loading>
-      </div>
-    }
+        @if (!events()?.length) {
+          <app-event-large-empty></app-event-large-empty>
+        }
+      } @placeholder (minimum 1000ms) {
+        <app-event-card-placeholder 
+          class="event">
+        </app-event-card-placeholder>
+      }
+    </div>
   </div>
   <app-tab-bar [selectedIndex]=3 (onActionClicked)="goToCreate()"></app-tab-bar>
 </div>

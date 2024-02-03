@@ -12,8 +12,8 @@ import {SimpleLoadingComponent} from "../../../../common/loading/ui/simple-loadi
 import {LargeEmptyComponent} from "../../../../common/empty/ui/large-empty/large-empty.component";
 import {MatTabsModule} from '@angular/material/tabs';
 import {ShoppingListGoToService} from 'src/app/shopping-list/service/shopping-list-go-to.service';
-import {ShoppingListLoadingCardComponent} from "../../../../shopping-list/ui/component/shopping-list-loading-card/shopping-list-loading-card.component";
-import { toSignal } from '@angular/core/rxjs-interop';
+import {ShoppingListCardPlaceholderComponent} from "../../component/shopping-list-card-placeholder/shopping-list-card-placeholder.component";
+import {toSignal} from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-display-shopping-lists-page',
@@ -27,7 +27,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
         MatIconModule,
         ProfileTopBarComponent,
         ShoppingListCardComponent,
-        ShoppingListLoadingCardComponent,
+        ShoppingListCardPlaceholderComponent,
         SimpleLoadingComponent,
         LargeEmptyComponent,
         MatTabsModule

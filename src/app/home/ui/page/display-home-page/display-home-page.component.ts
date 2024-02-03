@@ -10,7 +10,7 @@ import {ShoppingListApiService} from '../../../../shopping-list/service/shopping
 import {ShoppingList} from 'src/app/shopping-list/model/shopping-list.model';
 import {ShoppingListRoutes} from 'src/app/shopping-list/route/shopping-list.routes';
 import {ShoppingListCardComponent} from "../../../../shopping-list/ui/component/shopping-list-card/shopping-list-card.component";
-import {ShoppingListLoadingCardComponent} from "../../../../shopping-list/ui/component/shopping-list-loading-card/shopping-list-loading-card.component";
+import {ShoppingListCardPlaceholderComponent} from "../../../../shopping-list/ui/component/shopping-list-card-placeholder/shopping-list-card-placeholder.component";
 import {ProfileTopBarComponent} from 'src/app/common/top-bar/profile/ui/profile-top-bar.component';
 import {MealRoutes} from '../../../../meal/route/meal.routes';
 import {HomeCategoryComponent} from "../../component/home-category/home-category.component";
@@ -42,7 +42,7 @@ import {toSignal} from '@angular/core/rxjs-interop';
         MatIconModule,
         ProfileTopBarComponent,
         ShoppingListCardComponent,
-        ShoppingListLoadingCardComponent,
+        ShoppingListCardPlaceholderComponent,
         HomeCategoryComponent,
         MatDividerModule,
         SimpleMealCardComponent,

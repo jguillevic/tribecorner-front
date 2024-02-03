@@ -3,15 +3,15 @@ import {MatCardModule} from '@angular/material/card';
 import {NgxSkeletonLoaderModule} from 'ngx-skeleton-loader';
 
 @Component({
-    selector: 'app-shopping-list-loading-card',
+    selector: 'app-shopping-list-card-placeholder',
     standalone: true,
     imports: [
         MatCardModule,
         NgxSkeletonLoaderModule
     ],
-    templateUrl: './shopping-list-loading-card.component.html',
-    styleUrl: `shopping-list-loading-card.component.scss`
+    templateUrl: './shopping-list-card-placeholder.component.html',
+    styleUrl: `shopping-list-card-placeholder.component.scss`
 })
-export class ShoppingListLoadingCardComponent {
+export class ShoppingListCardPlaceholderComponent {
     @Input() public showActions: boolean = true;
 }

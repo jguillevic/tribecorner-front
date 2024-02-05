@@ -1,15 +1,13 @@
 <mat-card class="event-card">
     <mat-card-header>
-        <ngx-skeleton-loader count="1" appearance="line" animation="progress" class="w-10/12" [theme]="{height: '25px', 'background-color': '#f0b7be'}"/>
+        <app-placeholder-item height="l" width="4/5"></app-placeholder-item>
     </mat-card-header>
     <mat-card-content>
-        <div class="w-3/5">
-            <ngx-skeleton-loader count="1" appearance="line" animation="progress" [theme]="{height: '15px', 'background-color': '#f0b7be'}"/>
-        </div>
+        <app-placeholder-item height="s" width="3/5"></app-placeholder-item>
     </mat-card-content>
     @if (showActions) {
     <mat-card-actions align="end">
-        <ngx-skeleton-loader count="2" appearance="circle" animation="progress" [theme]="{'background-color': '#f0b7be'}"/>
+        <app-placeholder-item [count]=2 appearance="circle"></app-placeholder-item>
     </mat-card-actions>
     }
 </mat-card>

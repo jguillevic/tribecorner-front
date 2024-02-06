@@ -1,27 +1,26 @@
 <mat-card class="shopping-list-card">
     <mat-card-header>
-            <ngx-skeleton-loader count="1" appearance="line" animation="progress" class="w-10/12" [theme]="{height: '25px', 'background-color': '#f0b7be'}"/>
+        <app-placeholder-item height="xl" width="l"></app-placeholder-item>
     </mat-card-header> 
     <mat-card-content>
         <ul>
-            <li class="w-2/3">
-                <ngx-skeleton-loader count="1" appearance="line" animation="progress" [theme]="{height: '15px', 'background-color': '#f0b7be'}"/>
+            <li>
+                <app-placeholder-item height="s" width="l"></app-placeholder-item>
             </li>
-            <li class="w-1/2">
-                <ngx-skeleton-loader count="1" appearance="line" animation="progress" [theme]="{height: '15px', 'background-color': '#f0b7be'}"/>
+            <li>
+                <app-placeholder-item height="s" width="m"></app-placeholder-item>
             </li>
-            <li class="w-1/3">
-                <ngx-skeleton-loader count="1" appearance="line" animation="progress" [theme]="{height: '15px', 'background-color': '#f0b7be'}"/>
+            <li>
+                <app-placeholder-item height="s" width="s"></app-placeholder-item>
             </li>
-            <li class="w-3/5">
-                <ngx-skeleton-loader count="1" appearance="line" animation="progress" [theme]="{height: '15px', 'background-color': '#f0b7be'}"/>
+            <li>
+                <app-placeholder-item height="s" width="m"></app-placeholder-item>
             </li>
         </ul>
     </mat-card-content>
-
     @if (this.showActions) {
     <mat-card-actions align="end">
-        <ngx-skeleton-loader count="4" appearance="circle" animation="progress" [theme]="{'background-color': '#f0b7be'}"/>
+        <app-placeholder-item [count]=4 appearance="circle"></app-placeholder-item>
     </mat-card-actions>
     }
 </mat-card>

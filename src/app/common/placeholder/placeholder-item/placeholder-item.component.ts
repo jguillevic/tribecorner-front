@@ -13,7 +13,7 @@ import {NgxSkeletonLoaderModule} from 'ngx-skeleton-loader';
 export class PlaceholderItemComponent implements OnInit {
     @Input() public appearance: 'line'|'circle' = 'line';
     @Input() public count: number = 1;
-    @Input() public color: 'primary'|'gray' = 'primary';
+    @Input() public color: 'primary'|'basic' = 'primary';
     @Input() public height: 'xs'|'s'|'m'|'l'|'xl' = 'm';
     @Input() public width: 'xs'|'s'|'m'|'l'|'xl' = 'xl';
 
@@ -32,7 +32,7 @@ export class PlaceholderItemComponent implements OnInit {
 
     private setThemeColor(): void {
         switch(this.color) {
-            case 'gray':
+            case 'basic':
                 this.theme['background-color'] = '#dddddd';
                 break;
             default:

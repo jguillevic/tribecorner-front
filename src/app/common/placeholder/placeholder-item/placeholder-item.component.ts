@@ -15,7 +15,7 @@ export class PlaceholderItemComponent implements OnInit {
     @Input() public count: number = 1;
     @Input() public color: 'primary'|'gray' = 'primary';
     @Input() public height: 'xs'|'s'|'m'|'l'|'xl' = 'm';
-    @Input() public width: '1/5'|'2/5'|'3/5'|'4/5'|'1' = '1';
+    @Input() public width: 'xs'|'s'|'m'|'l'|'xl' = 'xl';
 
     public readonly theme: {
         extendsFromRoot?: boolean;
@@ -62,16 +62,16 @@ export class PlaceholderItemComponent implements OnInit {
 
     private setWidthClass(): void {
         switch(this.width) {
-            case '1/5':
+            case 'xs':
                 this.widthClass = 'w-1/5';
                 break;
-            case '2/5':
+            case 's':
                 this.widthClass = 'w-2/5';
                 break;
-            case '3/5':
+            case 'm':
                 this.widthClass = 'w-3/5';
                 break;
-            case '4/5':
+            case 'l':
                 this.widthClass = 'w-4/5';
                 break;
             default:

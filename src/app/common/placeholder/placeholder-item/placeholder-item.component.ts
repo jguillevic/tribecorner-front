@@ -17,6 +17,8 @@ export class PlaceholderItemComponent implements OnInit {
     @Input() public height: 'xs'|'s'|'m'|'l'|'xl' = 'm';
     @Input() public width: 'xs'|'s'|'m'|'l'|'xl' = 'xl';
 
+    public animation: 'progress'|'progress-dark'|'pulse'|'false'|false = 'progress';
+
     public readonly theme: {
         extendsFromRoot?: boolean;
         [k: string]: any;

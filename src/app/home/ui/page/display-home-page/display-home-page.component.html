@@ -5,8 +5,7 @@
     <app-home-category
       categoryName="{{t('myEvents')}}"
       (onSeeAllClicked)="goToDisplayEvents()">
-        <div
-        class="events__container">
+        <div class="events__container">
         @defer (when events()) {
           @for (event of events(); track event) {
             <app-event-card
@@ -28,26 +27,21 @@
     <app-home-category
       categoryName="{{t('myMealsOfTheDay')}}"
       (onSeeAllClicked)="goToDisplayMeals()">
-      @if (this.mealsByMealKinds$ | async; as mealsByMealKinds) {
-          @for (mealsByMealKind of mealsByMealKinds; track mealsByMealKind) {
-            <div class="meals-by-meal-kind__container">
-              <div class="meal-kind__name">
-                {{mealsByMealKind.mealKind.name}}
-              </div>
-              @for (meal of mealsByMealKind.meals; track meal) {
-                <app-meal-card 
-                [meal]="meal"
-                [showActions]="false">
-                </app-meal-card>
-              }
-            </div>
+      <div class="meals-by-meal-kind__container">
+        @defer(when mealsByMealKinds()) {
+          @for (mealsByMealKind of mealsByMealKinds(); track mealsByMealKind) {
+              <app-meals-by-meal-kind [mealsByMealKind]="mealsByMealKind" 
+              [showActions]="false">
+              </app-meals-by-meal-kind>
           }
-          @if (!mealsByMealKinds.length) {
+          @if (!mealsByMealKinds()?.length) {
             <app-simple-empty></app-simple-empty>
           }
-      } @else {
-        <app-simple-loading></app-simple-loading>
-      }
+        }  @placeholder (minimum 1000ms) {
+          <app-meals-by-meal-kind-placeholder [showActions]="false">
+          </app-meals-by-meal-kind-placeholder>
+        }
+      </div>
     </app-home-category>
     <mat-divider></mat-divider>
     <app-home-category

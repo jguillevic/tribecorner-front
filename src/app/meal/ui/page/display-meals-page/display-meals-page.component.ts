@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, Signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ProfileTopBarComponent} from "../../../../common/top-bar/profile/ui/profile-top-bar.component";
 import {TabBarComponent} from "../../../../common/tab-bar/ui/tab-bar/tab-bar.component";
@@ -15,6 +15,9 @@ import {Meal} from '../../../model/meal.model';
 import {MealCopyButtonComponent} from "../../component/meal-copy-button/meal-copy-button.component";
 import {MealGoToService} from '../../../service/meal-go-to.service';
 import { MealLargeEmptyComponent } from "../../component/meal-large-empty/meal-large-empty.component";
+import {toSignal} from '@angular/core/rxjs-interop';
+import { MealsByMealKindComponent } from "../../component/meals-by-meal-kind/meals-by-meal-kind.component";
+import { MealsByMealKindPlaceholderComponent } from "../../component/meals-by-meal-kind-placeholder/meals-by-meal-kind-placeholder.component";
 
 @Component({
     selector: 'app-display-meals-page',
@@ -31,22 +34,24 @@ import { MealLargeEmptyComponent } from "../../component/meal-large-empty/meal-l
         MealEditButtonComponent,
         MealDeleteButtonComponent,
         MealCopyButtonComponent,
-        MealLargeEmptyComponent
+        MealLargeEmptyComponent,
+        MealsByMealKindComponent,
+        MealsByMealKindPlaceholderComponent
     ]
 })
 export class DisplayMealsPageComponent implements OnDestroy {
     private readonly destroy$: Subject<void> = new Subject<void>();
     private readonly selectedDate$: Observable<Date> = this.mealCurrentDateService.currentDate$;
-    
-    public isLoading: boolean = false;
 
     public readonly defaultDate$: Observable<Date> = this.selectedDate$
     .pipe(
         take(1)
     );
 
-    public mealsByMealKinds$: Observable<MealsByMealKind[]> 
+    private mealsByMealKinds$: Observable<MealsByMealKind[]> 
     = this.getMealsByMealKinds$();
+    public readonly mealsByMealKinds: Signal<MealsByMealKind[]|undefined>
+    = toSignal(this.mealsByMealKinds$);
 
     public constructor(
         private readonly mealsByMealKindService: MealsByMealKindService,
@@ -73,17 +78,15 @@ export class DisplayMealsPageComponent implements OnDestroy {
     private getMealsByMealKinds$(): Observable<MealsByMealKind[]> {
         return this.selectedDate$
         .pipe(
-        tap(() => this.isLoading = true),
-        switchMap(date => this.mealsByMealKindService.loadAllByDate(date)),
-        tap(() => this.isLoading = false)
+            switchMap(date => this.mealsByMealKindService.loadAllByDate(date))
         );
     }
 
-    public onMealDeleted(deletedMeal: Meal) {
+    public mealDeleted(deletedMeal: Meal) {
         this.mealsByMealKinds$ = this.getMealsByMealKinds$();
     }
 
-    public onMealCopied(copiedMeal: Meal) {
+    public mealCopied(copiedMeal: Meal) {
         this.mealGoToService.goToUpdate(copiedMeal.id);
     }
 }

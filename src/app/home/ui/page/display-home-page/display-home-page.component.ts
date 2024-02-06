@@ -29,12 +29,17 @@ import {DateHelper} from '../../../../common/date/helper/date.helper';
 import {ShoppingListGoToService} from '../../../../shopping-list/service/shopping-list-go-to.service';
 import {TranslocoModule, provideTranslocoScope} from '@ngneat/transloco';
 import {toSignal} from '@angular/core/rxjs-interop';
+import { MealsByMealKindComponent } from "../../../../meal/ui/component/meals-by-meal-kind/meals-by-meal-kind.component";
+import { MealsByMealKindPlaceholderComponent } from "../../../../meal/ui/component/meals-by-meal-kind-placeholder/meals-by-meal-kind-placeholder.component";
 
 @Component({
     selector: 'app-display-home-page',
     standalone: true,
     templateUrl: './display-home-page.component.html',
-    styleUrls: ['display-home-page.component.scss'],
+    styleUrl: 'display-home-page.component.scss',
+    providers: [
+        provideTranslocoScope({ scope: 'home/ui/page/display-home-page', alias: 'displayHomePage' })
+    ],
     imports: [
         CommonModule,
         FormsModule,
@@ -51,50 +56,51 @@ import {toSignal} from '@angular/core/rxjs-interop';
         SimpleEmptyComponent,
         EventCardComponent,
         EventCardPlaceholderComponent,
-        TranslocoModule
-    ],
-    providers: [
-      provideTranslocoScope({scope: 'home/ui/page/display-home-page', alias: 'displayHomePage'})
+        TranslocoModule,
+        MealsByMealKindComponent,
+        MealsByMealKindPlaceholderComponent
     ]
 })
 export class DisplayHomeComponent {
-  private readonly events$: Observable<Event[]> 
-  = this.eventApiService
-  .loadAllByDate(DateHelper.getCurrentDate());
-  public readonly events: Signal<Event[]|undefined>
-  = toSignal(this.events$);
+    private readonly events$: Observable<Event[]> 
+    = this.eventApiService
+    .loadAllByDate(DateHelper.getCurrentDate());
+    public readonly events: Signal<Event[]|undefined>
+    = toSignal(this.events$);
 
-  public readonly mealsByMealKinds$: Observable<MealsByMealKind[]> 
-  = this.mealsByMealKindService
-  .loadAllByDate(DateHelper.getCurrentDate());
+    private readonly mealsByMealKinds$: Observable<MealsByMealKind[]> 
+    = this.mealsByMealKindService
+    .loadAllByDate(DateHelper.getCurrentDate());
+    public readonly mealsByMealKinds: Signal<MealsByMealKind[]|undefined>
+    = toSignal(this.mealsByMealKinds$);
 
-  private readonly shoppingLists$: Observable<ShoppingList[]> 
-  = this.shoppingListApiService
-  .loadAll(false);
-  public readonly shoppingLists: Signal<ShoppingList[]|undefined>
-   = toSignal(this.shoppingLists$);
+    private readonly shoppingLists$: Observable<ShoppingList[]> 
+    = this.shoppingListApiService
+    .loadAll(false);
+    public readonly shoppingLists: Signal<ShoppingList[]|undefined>
+    = toSignal(this.shoppingLists$);
 
-  public constructor(
-    private eventApiService: EventApiService,
-    private mealsByMealKindService: MealsByMealKindService,
-    private shoppingListApiService: ShoppingListApiService,
-    private shoppingListGoToService: ShoppingListGoToService,
-    private router: Router
-  ) { }
+    public constructor(
+        private eventApiService: EventApiService,
+        private mealsByMealKindService: MealsByMealKindService,
+        private shoppingListApiService: ShoppingListApiService,
+        private shoppingListGoToService: ShoppingListGoToService,
+        private router: Router
+    ) { }
 
-  public goToDisplayEvents(): Promise<boolean> {
-    return this.router.navigate([EventRoutes.displayEventsRoute]);
-  }
+    public goToDisplayEvents(): Promise<boolean> {
+        return this.router.navigate([EventRoutes.displayEventsRoute]);
+    }
 
-  public goToDisplayMeals(): Promise<boolean> {
-    return this.router.navigate([MealRoutes.displayMealsRoute]);
-  }
+    public goToDisplayMeals(): Promise<boolean> {
+        return this.router.navigate([MealRoutes.displayMealsRoute]);
+    }
 
-  public goToDisplayShoppingList(shoppingListId: number|undefined): Observable<boolean> {
-    return this.shoppingListGoToService.goToUpdate(shoppingListId);
-  }
+    public goToDisplayShoppingList(shoppingListId: number|undefined): Observable<boolean> {
+        return this.shoppingListGoToService.goToUpdate(shoppingListId);
+    }
 
-  public goToDisplayShoppingLists(): Promise<boolean> {
-    return this.router.navigate([ShoppingListRoutes.displayShoppingListsRoute]);
-  }
+    public goToDisplayShoppingLists(): Promise<boolean> {
+        return this.router.navigate([ShoppingListRoutes.displayShoppingListsRoute]);
+    }
 }

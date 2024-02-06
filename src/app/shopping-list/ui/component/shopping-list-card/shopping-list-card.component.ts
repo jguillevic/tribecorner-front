@@ -14,7 +14,7 @@ import {NgxSkeletonLoaderModule} from 'ngx-skeleton-loader';
     selector: 'app-shopping-list-card',
     standalone: true,
     templateUrl: './shopping-list-card.component.html',
-    styleUrls: ['shopping-list-card.component.scss'],
+    styleUrl: '../common/shopping-list-card.component.scss',
     imports: [
         CommonModule,
         MatCardModule,

@@ -6,7 +6,17 @@
     <mat-card-content></mat-card-content>
     @if(showActions) {
     <mat-card-actions align="end">
-        <ng-content></ng-content>
+        <app-meal-edit-button
+        [mealId]="meal?.id">
+        </app-meal-edit-button>
+        <app-meal-copy-button
+            [mealToCopy]="meal"
+            (onMealCopied)="mealCopied($event)">
+        </app-meal-copy-button>
+        <app-meal-delete-button
+            [mealToDelete]="meal"
+            (onMealDeleted)="mealDeleted($event)">
+        </app-meal-delete-button>
     </mat-card-actions>
     }
 </mat-card>

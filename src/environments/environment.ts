@@ -1,7 +1,7 @@
 export const environment = {
-    baseUrl: 'https://tribecorner.fr',
+    baseUrl: 'http://tribecorner.fr',
     production: true,
-    apiUrl: 'https://api.tribecorner.fr/',
+    apiUrl: 'http://api.tribecorner.fr/',
     firebaseConfig : {
         apiKey: "AIzaSyBlUxCth7GnVSJ1ugmulsBa58m3WQoYU3I",
         authDomain: "tribe-corner-prod.firebaseapp.com",

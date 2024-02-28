@@ -1,8 +1,8 @@
 RewriteEngine On
 RewriteBase /
 # Redirection to HTTPS:
-RewriteCond %{SERVER_PORT} !=443
-RewriteRule ^(.*)$ https://tribecorner.fr/$1 [R=301,L]
+# RewriteCond %{SERVER_PORT} !=443
+# RewriteRule ^(.*)$ https://tribecorner.fr/$1 [R=301,L]
 
 # Redirection of requests to index.html
 RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -f [OR]

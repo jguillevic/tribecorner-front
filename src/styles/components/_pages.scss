@@ -1,14 +1,12 @@
+@import '../../styles/helpers/variables';
+@import '../../styles/helpers/mixins';
+
 .page {
     display: block;
-    width: 480px;
     margin-left: auto;
     margin-right: auto;
     height: 100%;
     position: relative;
-}
 
-@media screen and (max-width:480px) {
-    .page {
-        width: 100%;
-    }
+    @include media-width;
 }

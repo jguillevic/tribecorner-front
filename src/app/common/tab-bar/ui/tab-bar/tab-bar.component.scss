@@ -49,8 +49,8 @@
 .action-button {
     z-index: 2;
     position: fixed;
-    right: calc(50% - 30px);
-    bottom: 32px;
+    right: 15px;
+    bottom: calc($tab-bar-height + 15px);
     color: $dark-color;
     background-color: $primary-color;
 }

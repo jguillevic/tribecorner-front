@@ -1,7 +1,8 @@
+@import '../../../helpers/variables';
+
 $top-bar-height: 48px;
 
 .top-bar {
-    width: 480px;
     height: $top-bar-height;
     background-color: $primary-color;
 

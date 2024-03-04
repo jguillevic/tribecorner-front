@@ -1,7 +1,9 @@
-@mixin media-width {
-  width: 480px;
+@import '../helpers/variables';
 
-  @media screen and (max-width:480px) {
+@mixin media-width {
+  width: $screen-width-transition;
+
+  @media screen and (max-width:$screen-width-transition) {
     width: 100%;
   }
 }

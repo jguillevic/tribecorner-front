@@ -1,5 +1,4 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
@@ -13,6 +12,7 @@ import {UserInfo} from '../../../user/model/user-info.model';
 import {UserService} from '../../../user/service/user.service';
 import {SignOutButtonComponent} from '../../../common/button/ui/sign-out/sign-out-button.component';
 import {MtxButtonModule} from '@ng-matero/extensions/button';
+import {MatCardModule} from '@angular/material/card';
 
 @Component({
     selector: 'app-create-family',
@@ -26,7 +26,8 @@ import {MtxButtonModule} from '@ng-matero/extensions/button';
     MatButtonModule,
     SignOutButtonComponent,
     ReactiveFormsModule,
-    MtxButtonModule
+    MtxButtonModule,
+    MatCardModule
 ]
 })
 export class CreateFamilyComponent implements OnInit, OnDestroy {

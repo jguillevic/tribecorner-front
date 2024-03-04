@@ -1,19 +1,19 @@
-import { Component, OnDestroy } from '@angular/core';
-
-import { UserService } from '../../../service/user.service';
-import { Router } from '@angular/router';
-import { UserRoutes } from '../../../route/user.routes';
-import { SignUpUser } from '../../../model/sign-up-user.model';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
-import { Subscription } from 'rxjs';
-import { FamilyRoutes } from 'src/app/family/route/family.routes';
-import { UserInfo } from '../../../model/user-info.model';
-import { FirebaseError } from 'firebase/app';
-import { MtxButtonModule } from '@ng-matero/extensions/button';
-import { MatIconModule } from '@angular/material/icon';
+import {Component, OnDestroy} from '@angular/core';
+import {UserService} from '../../../service/user.service';
+import {Router} from '@angular/router';
+import {UserRoutes} from '../../../route/user.routes';
+import {SignUpUser} from '../../../model/sign-up-user.model';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatButtonModule} from '@angular/material/button';
+import {Subscription} from 'rxjs';
+import {FamilyRoutes} from 'src/app/family/route/family.routes';
+import {UserInfo} from '../../../model/user-info.model';
+import {FirebaseError} from 'firebase/app';
+import {MtxButtonModule} from '@ng-matero/extensions/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatCardModule} from '@angular/material/card';
 
 @Component({
   selector: 'app-sign-up-user-page',
@@ -25,7 +25,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatFormFieldModule,
     MatButtonModule,
     MtxButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatCardModule
 ],
   templateUrl: './sign-up-user-page.component.html',
   styles: [

@@ -1,11 +1,10 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-
-import { ShoppingList } from '../../../model/shopping-list.model';
-import { Subscription, tap } from 'rxjs';
-import { ShoppingListApiService } from '../../../service/shopping-list-api.service';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MtxButtonModule } from '@ng-matero/extensions/button';
+import {Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
+import {ShoppingList} from '../../../model/shopping-list.model';
+import {Subscription, tap} from 'rxjs';
+import {ShoppingListApiService} from '../../../service/shopping-list-api.service';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MtxButtonModule} from '@ng-matero/extensions/button';
 
 @Component({
   selector: 'app-shopping-list-delete-button',
@@ -38,8 +37,9 @@ export class ShoppingListDeleteButtonComponent implements OnDestroy {
       this.isDeleting = true;
       this.deleteSubscription = this.shoppingListApiService.delete(this.shoppingListToDelete.id)
       .pipe(
-        tap(() => 
-          this.onShoppingListDeleted.emit(this.shoppingListToDelete)
+        tap(() => {
+          this.onShoppingListDeleted.emit(this.shoppingListToDelete);
+          }
         ),
         tap(() => this.isDeleting = false)
       )

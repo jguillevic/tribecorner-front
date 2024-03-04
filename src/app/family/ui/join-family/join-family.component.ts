@@ -1,5 +1,4 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
@@ -14,6 +13,7 @@ import {HomeRoutes} from 'src/app/home/route/home.routes';
 import {SignOutButtonComponent} from 'src/app/common/button/ui/sign-out/sign-out-button.component';
 import {AssociationCodeNotFoundError} from '../../error/association-code-not-found.error';
 import {MtxButtonModule} from '@ng-matero/extensions/button';
+import {MatCardModule} from '@angular/material/card';
 
 @Component({
     selector: 'app-join-family',
@@ -27,7 +27,8 @@ import {MtxButtonModule} from '@ng-matero/extensions/button';
     MatButtonModule,
     SignOutButtonComponent,
     ReactiveFormsModule,
-    MtxButtonModule
+    MtxButtonModule,
+    MatCardModule
 ]
 })
 export class JoinFamilyComponent implements OnInit, OnDestroy {

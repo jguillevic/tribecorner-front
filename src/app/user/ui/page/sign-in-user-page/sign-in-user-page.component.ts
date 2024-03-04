@@ -1,18 +1,19 @@
-import { Component, OnDestroy } from '@angular/core';
-import { UserService } from '../../../service/user.service';
-import { Router } from '@angular/router';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
-import { Subscription } from 'rxjs';
-import { FamilyRoutes } from 'src/app/family/route/family.routes';
-import { UserInfo } from '../../../model/user-info.model';
-import { FirebaseError } from 'firebase/app';
-import { MtxButtonModule } from '@ng-matero/extensions/button';
-import { MatIconModule } from '@angular/material/icon';
-import { SignInUser } from '../../../model/sign-in-user.model';
-import { UserRoutes } from '../../../route/user.routes';
+import {Component, OnDestroy} from '@angular/core';
+import {UserService} from '../../../service/user.service';
+import {Router} from '@angular/router';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatButtonModule} from '@angular/material/button';
+import {Subscription} from 'rxjs';
+import {FamilyRoutes} from 'src/app/family/route/family.routes';
+import {UserInfo} from '../../../model/user-info.model';
+import {FirebaseError} from 'firebase/app';
+import {MtxButtonModule} from '@ng-matero/extensions/button';
+import {MatIconModule} from '@angular/material/icon';
+import {SignInUser} from '../../../model/sign-in-user.model';
+import {UserRoutes} from '../../../route/user.routes';
+import {MatCardModule} from '@angular/material/card';
 
 @Component({
   selector: 'app-sign-in-user-page',
@@ -24,11 +25,10 @@ import { UserRoutes } from '../../../route/user.routes';
     MatFormFieldModule,
     MatButtonModule,
     MtxButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatCardModule
 ],
-  templateUrl: './sign-in-user-page.component.html',
-  styles: [
-  ]
+  templateUrl: './sign-in-user-page.component.html'
 })
 export class SignInUserComponent implements OnDestroy {
   private signInSubscription: Subscription|undefined;

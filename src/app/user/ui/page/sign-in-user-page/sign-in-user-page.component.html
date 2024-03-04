@@ -1,66 +1,70 @@
-<div class="page padding">
-  <div class="form">
-    <div class="form-headers">
-      <h1 class="form-header">Content de vous revoir !</h1>
-    </div>
-    <form (ngSubmit)="signIn()" [formGroup]="signInForm">
-      <div class="form-inputs">
-        <mat-form-field class="form-input">
-          <mat-label>Email</mat-label>
-          <input matInput type="email" formControlName="email">
-          @if (signInForm.controls['email'].hasError('email')) {
-            <mat-error>
-              Email invalide (exemple&#64;format.fr)
-            </mat-error>
-          }
-          @if (signInForm.controls['email'].hasError('maxlength')) {
-            <mat-error>
-              Email trop long (max. {{ emailMaxLength }} caractères)
-            </mat-error>
-          }
-          @if (signInForm.controls['email'].hasError('not-found')) {
-            <mat-error>
-              Email non trouvé
-            </mat-error>
-          }
-          @if (signInForm.controls['email'].hasError('required')) {
-            <mat-error>
-              Email requis
-            </mat-error>
-          }
-        </mat-form-field>
-        <mat-form-field class="form-input">
-          <mat-label>Mot de passe</mat-label>
-          <input matInput [type]="this.hidePassword ? 'password' : 'text'" formControlName="password">
-          <button type="button" mat-icon-button matSuffix (click)="this.hidePassword = !this.hidePassword">
-            <mat-icon>{{this.hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-          </button>
-          @if (signInForm.controls['password'].hasError('maxlength')) {
-            <mat-error>
-              Mot de passe trop long (max. {{ passwordMaxLength }} caractères)
-            </mat-error>
-          }
-          @if (signInForm.controls['password'].hasError('wrong')) {
-            <mat-error>
-              Mot de passe incorrect
-            </mat-error>
-          }
-          @if (signInForm.controls['password'].hasError('required')) {
-            <mat-error>
-              Mot de passe requis
-            </mat-error>
-          }
-        </mat-form-field>
-      </div>
-      <div class="form-buttons">
-        <button loadingMatButton [loading]="isSigningIn" class="button form-button" mat-raised-button color="primary" type="submit">Se connecter</button>
-      </div>
-    </form>
-    <div class="form-sub-action">
-      <p class="form-sub-action-text">Pas encore de compte ?</p>
-      <div class="form-buttons">
-        <button loadingMatButton [loading]="isGoingToSignUp" class="button form-button" mat-stroked-button color="primary" (click)="goToSignUp()">Créer un compte</button>
-      </div>
-    </div>
-  </div>
-</div>
+<mat-card class="card card-center">
+  <mat-card-content>
+    <article>
+      <header class="form-headers">
+        <h1 class="form-header">Content de vous revoir !</h1>
+      </header>
+      <content>
+        <form (ngSubmit)="signIn()" [formGroup]="signInForm">
+          <section class="form-inputs">
+            <mat-form-field class="form-input">
+              <mat-label>Email</mat-label>
+              <input matInput type="email" formControlName="email">
+              @if (signInForm.controls['email'].hasError('email')) {
+                <mat-error>
+                  Email invalide (exemple&#64;format.fr)
+                </mat-error>
+              }
+              @if (signInForm.controls['email'].hasError('maxlength')) {
+                <mat-error>
+                  Email trop long (max. {{ emailMaxLength }} caractères)
+                </mat-error>
+              }
+              @if (signInForm.controls['email'].hasError('not-found')) {
+                <mat-error>
+                  Email non trouvé
+                </mat-error>
+              }
+              @if (signInForm.controls['email'].hasError('required')) {
+                <mat-error>
+                  Email requis
+                </mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field class="form-input">
+              <mat-label>Mot de passe</mat-label>
+              <input matInput [type]="this.hidePassword ? 'password' : 'text'" formControlName="password">
+              <button type="button" mat-icon-button matSuffix (click)="this.hidePassword = !this.hidePassword">
+                <mat-icon>{{this.hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              @if (signInForm.controls['password'].hasError('maxlength')) {
+                <mat-error>
+                  Mot de passe trop long (max. {{ passwordMaxLength }} caractères)
+                </mat-error>
+              }
+              @if (signInForm.controls['password'].hasError('wrong')) {
+                <mat-error>
+                  Mot de passe incorrect
+                </mat-error>
+              }
+              @if (signInForm.controls['password'].hasError('required')) {
+                <mat-error>
+                  Mot de passe requis
+                </mat-error>
+              }
+            </mat-form-field>
+          </section>
+          <section>
+            <button loadingMatButton [loading]="isSigningIn" class="form-button" mat-raised-button color="primary" type="submit">Se connecter</button>
+          </section>
+        </form>
+        <section class="form-sub-action">
+          <p class="form-sub-action-text">Pas encore de compte ?</p>
+          <section >
+            <button loadingMatButton [loading]="isGoingToSignUp" class="form-button" mat-stroked-button color="primary" (click)="goToSignUp()">Créer un compte</button>
+          </section>
+        </section>
+      </content>
+    </article>
+  </mat-card-content>
+</mat-card>

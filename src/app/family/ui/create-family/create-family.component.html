@@ -1,38 +1,40 @@
-<div class="page padding">
-  <div class="form">
-    <div class="form-headers">
-      <div class="form-header-buttons">
-        <app-sign-out-button></app-sign-out-button>
-      </div>
-      <h1 class="form-header">{{ currentUserInfo?.username }}, votre famille n'existe pas encore ?</h1>
-      <p class="form-header-sub">Créez en une dès maintenant.</p>
-    </div>
-    <form (ngSubmit)="createFamily()" [formGroup]="createFamilyForm">
-      <div class="form-inputs">
-        <mat-form-field class="form-input">
-          <mat-label>Nom de votre famille</mat-label>
-          <input matInput type="text" formControlName="familyName">
-          @if (createFamilyForm.controls['familyName'].hasError('maxlength')) {
-            <mat-error>
-              Nom de famille trop long (max. {{ familyNameMaxLength }} caractères)
-            </mat-error>
-          }
-          @if (createFamilyForm.controls['familyName'].hasError('required')) {
-            <mat-error>
-              Nom de famille requis
-            </mat-error>
-          }
-        </mat-form-field>
-      </div>
-      <div class="form-buttons">
-        <button [loading]="isCreatingFamily" class="button form-button" mat-raised-button color="primary" type="submit">Créer ma famille</button>
-      </div>
-    </form>
-    <div class="form-sub-action">
-      <p class="form-sub-action-text">Votre famille existe déjà ?</p>
-      <div class="form-buttons">
-        <button [loading]="isGoingToJoinFamily" class="button form-button" mat-stroked-button color="primary" (click)="goToJoinFamily()">Rejoindre ma famille</button>
-      </div>
-    </div>
-  </div>
-</div>
+<mat-card class="card card-center">
+  <mat-card-content>
+    <article>
+      <header class="form-headers">
+        <h1 class="form-header">{{ currentUserInfo?.username }}, votre famille n'existe pas encore ?</h1>
+        <p>Créez en une dès maintenant.</p>
+        <app-sign-out-button class="form-header-buttons"></app-sign-out-button>
+      </header>
+      <content>
+        <form (ngSubmit)="createFamily()" [formGroup]="createFamilyForm">
+          <section class="form-inputs">
+            <mat-form-field class="form-input">
+              <mat-label>Nom de votre famille</mat-label>
+              <input matInput type="text" formControlName="familyName">
+              @if (createFamilyForm.controls['familyName'].hasError('maxlength')) {
+                <mat-error>
+                  Nom de famille trop long (max. {{ familyNameMaxLength }} caractères)
+                </mat-error>
+              }
+              @if (createFamilyForm.controls['familyName'].hasError('required')) {
+                <mat-error>
+                  Nom de famille requis
+                </mat-error>
+              }
+            </mat-form-field>
+          </section>
+          <section>
+            <button [loading]="isCreatingFamily" class="form-button" mat-raised-button color="primary" type="submit">Créer ma famille</button>
+          </section>
+        </form>
+        <section class="form-sub-action">
+          <p class="form-sub-action-text">Votre famille existe déjà ?</p>
+          <section>
+            <button [loading]="isGoingToJoinFamily" class="form-button" mat-stroked-button color="primary" (click)="goToJoinFamily()">Rejoindre ma famille</button>
+          </section>
+        </section>
+      </content>
+    </article>
+  </mat-card-content>
+</mat-card>

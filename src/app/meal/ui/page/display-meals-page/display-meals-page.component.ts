@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {ProfileTopBarComponent} from "../../../../common/top-bar/profile/ui/profile-top-bar.component";
 import {TabBarComponent} from "../../../../common/tab-bar/ui/tab-bar/tab-bar.component";
 import {InlineCalendarComponent} from "../../../../common/calendar/ui/component/inline-calendar/inline-calendar.component";
-import {Observable, Subject, switchMap, take, tap} from 'rxjs';
+import {Observable, Subject, switchMap, take} from 'rxjs';
 import {MealsByMealKind} from '../../../model/meals-by-meal-kind.model';
 import {MealsByMealKindService} from '../../../service/meals-by-meal-kind.service';
 import {LargeEmptyComponent} from "../../../../common/empty/ui/large-empty/large-empty.component";
@@ -14,16 +14,16 @@ import {MealDeleteButtonComponent} from "../../component/meal-delete-button/meal
 import {Meal} from '../../../model/meal.model';
 import {MealCopyButtonComponent} from "../../component/meal-copy-button/meal-copy-button.component";
 import {MealGoToService} from '../../../service/meal-go-to.service';
-import { MealLargeEmptyComponent } from "../../component/meal-large-empty/meal-large-empty.component";
+import {MealLargeEmptyComponent} from "../../component/meal-large-empty/meal-large-empty.component";
 import {toSignal} from '@angular/core/rxjs-interop';
-import { MealsByMealKindComponent } from "../../component/meals-by-meal-kind/meals-by-meal-kind.component";
-import { MealsByMealKindPlaceholderComponent } from "../../component/meals-by-meal-kind-placeholder/meals-by-meal-kind-placeholder.component";
+import {MealsByMealKindComponent } from "../../component/meals-by-meal-kind/meals-by-meal-kind.component";
+import {MealsByMealKindPlaceholderComponent} from "../../component/meals-by-meal-kind-placeholder/meals-by-meal-kind-placeholder.component";
 
 @Component({
     selector: 'app-display-meals-page',
     standalone: true,
     templateUrl: './display-meals-page.component.html',
-    styleUrls: ['display-meals-page.component.scss'],
+    styleUrl: 'display-meals-page.component.scss',
     imports: [
         CommonModule,
         ProfileTopBarComponent,
@@ -50,7 +50,7 @@ export class DisplayMealsPageComponent implements OnDestroy {
 
     private mealsByMealKinds$: Observable<MealsByMealKind[]> 
     = this.getMealsByMealKinds$();
-    public readonly mealsByMealKinds: Signal<MealsByMealKind[]|undefined>
+    public mealsByMealKinds: Signal<MealsByMealKind[]|undefined>
     = toSignal(this.mealsByMealKinds$);
 
     public constructor(
@@ -83,7 +83,7 @@ export class DisplayMealsPageComponent implements OnDestroy {
     }
 
     public mealDeleted(deletedMeal: Meal) {
-        this.mealsByMealKinds$ = this.getMealsByMealKinds$();
+        //this.mealsByMealKinds.up = toSignal(this.getMealsByMealKinds$());
     }
 
     public mealCopied(copiedMeal: Meal) {

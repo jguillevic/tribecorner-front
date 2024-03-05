@@ -1,16 +1,16 @@
-import { EventEmitter, Injectable, OnDestroy } from '@angular/core';
-import { Auth, Unsubscribe, User, UserCredential, browserLocalPersistence, createUserWithEmailAndPassword, getAuth, setPersistence, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { SignUpUser } from '../model/sign-up-user.model';
-import { UserInfo } from '../model/user-info.model';
-import { Observable, Subscription, exhaustMap, from, map, of, tap } from 'rxjs';
-import { SignInUser } from '../model/sign-in-user.model';
-import { CreateUserDto } from '../dto/create-user.dto';
-import { LoadUserDto } from '../dto/load-user.dto';
-import { SessionStorageService } from '../../common/storage/service/session-storage.service';
-import { environment } from '../../../environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { FirebaseApp, initializeApp } from 'firebase/app';
-import { UserConverter } from '../converter/user.converter';
+import {EventEmitter, Injectable, OnDestroy} from '@angular/core';
+import {Auth, Unsubscribe, User, UserCredential, browserLocalPersistence, createUserWithEmailAndPassword, getAuth, setPersistence, signInWithEmailAndPassword, signOut} from "firebase/auth";
+import {SignUpUser} from '../model/sign-up-user.model';
+import {UserInfo} from '../model/user-info.model';
+import {Observable, Subscription, exhaustMap, from, map, of, tap} from 'rxjs';
+import {SignInUser} from '../model/sign-in-user.model';
+import {CreateUserDto} from '../dto/create-user.dto';
+import {LoadUserDto} from '../dto/load-user.dto';
+import {SessionStorageService} from '../../common/storage/service/session-storage.service';
+import {environment} from '../../../environments/environment';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {FirebaseApp, initializeApp} from 'firebase/app';
+import {UserConverter} from '../converter/user.converter';
 
 @Injectable({
   providedIn: 'root',

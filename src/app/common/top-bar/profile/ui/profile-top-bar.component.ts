@@ -1,16 +1,15 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { Subscription, map } from 'rxjs';
-import { UserInfo } from 'src/app/user/model/user-info.model';
-import { UserService } from 'src/app/user/service/user.service';
-import { Router } from '@angular/router';
-import { UserRoutes } from 'src/app/user/route/user.routes';
-import { MatDividerModule } from '@angular/material/divider';
-import { FamilyRoutes } from 'src/app/family/route/family.routes';
-import { SignOutButtonComponent } from 'src/app/common/button/ui/sign-out/sign-out-button.component';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import {Subscription, map} from 'rxjs';
+import {UserInfo} from 'src/app/user/model/user-info.model';
+import {UserService} from 'src/app/user/service/user.service';
+import {Router} from '@angular/router';
+import {UserRoutes} from 'src/app/user/route/user.routes';
+import {MatDividerModule} from '@angular/material/divider';
+import {FamilyRoutes} from 'src/app/family/route/family.routes';
+import {SignOutButtonComponent} from 'src/app/common/button/ui/sign-out/sign-out-button.component';
 
 @Component({
     selector: 'app-profile-top-bar',

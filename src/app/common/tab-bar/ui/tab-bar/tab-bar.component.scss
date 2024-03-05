@@ -2,7 +2,6 @@
 @import '../../../../../styles/helpers/variables';
 @import '../../../../../styles/helpers/mixins';
 
-
 .tab-bar {
     position: fixed;
     bottom: 0px;
@@ -22,8 +21,6 @@
 }
 
 .item {
-    color: $dark-color;
-
     &--selected {
         color: $primary-color;
     }
@@ -48,7 +45,7 @@
 
 .action-button {
     z-index: 2;
-    position: fixed;
+    position: absolute;
     right: 15px;
     bottom: calc($tab-bar-height + 15px);
     color: $dark-color;

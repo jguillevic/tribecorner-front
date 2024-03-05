@@ -1,18 +1,8 @@
 @import '../../../../../styles/helpers/variables';
 
 .go-back-top-bar {
-    height: $top-bar-height;
-    position: relative;
-
-    &__back {
-        position: absolute;
-        top: 0px;
-        left: 0px;
-    }
-
-    &__actions {
-        position: absolute;
-        top: 0px;
-        right: 0px;
-    }
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }

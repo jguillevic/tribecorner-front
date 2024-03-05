@@ -3,7 +3,9 @@
 .display-home {
     padding-bottom: calc($tab-bar-height);
     width: 100%;
+    height: 100%;
     display: block;
+    background-color: #fff;
 }
 
 .meals-by-meal-kind__container {

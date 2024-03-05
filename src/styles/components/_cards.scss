@@ -6,11 +6,14 @@ $card-margin: 15px;
     margin-left: $card-margin;
     margin-right: $card-margin;
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+
+    &-center {
+        top: 50%;
+        transform: translateY(-50%);
+    }
 
     @media screen and (min-width:$screen-width-transition) {
-        width: calc($screen-width-transition - 2 * $card-margin);
+        width: $screen-width-transition;
         margin: 0;
         
         &-center {

@@ -1,33 +1,25 @@
-<div class="profile-top-bar">
-    <div class="profile-top-bar-user">
-        <div class="profile-top-bar-user-img">
-            <span class="profile-top-bar-user-img-text">{{ getUsernameFirstLetterUpperCase() }}</span>
+<div class="top-bar profile-top-bar">
+    <div class="profile-top-bar__profile" (click)="goToDisplayUser()">
+        <div class="user__img">
+            <span>{{ getUsernameFirstLetterUpperCase() }}</span>
+        </div>
+    
+        <div class="profile__text">
+            <p class="text__welcome">Hey,</p>
+            <p class="text__username">{{ currentUserInfo?.username }} !</p>
         </div>
     </div>
 
-    <div class="profile-top-bar-text">
-        <p class="profile-top-bar-text-welcome">Hey,</p>
-        <p class="profile-top-bar-text-username">{{ currentUserInfo?.username }} !</p>
-    </div>
-
-    <div class="profile-top-bar-menu">
-        <button mat-icon-button [matMenuTriggerFor]="menu">
-            <mat-icon class="material-symbols-outlined">more_vert</mat-icon>
-        </button> 
-        <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="goToDisplayUser()">
-                <mat-icon class="material-symbols-outlined">person</mat-icon>
-                <span>Mon profil</span>
-            </button>
-            <button mat-menu-item (click)="goToDisplayFamily()">
-                <mat-icon class="material-symbols-outlined">diversity_1</mat-icon>
-                <span>Ma famille</span>
-            </button>
-            <mat-divider></mat-divider>
-            <button mat-menu-item (click)="signOut()">
-                <mat-icon class="material-symbols-outlined">logout</mat-icon>
-                <span>Se déconnecter</span>
-            </button>
-        </mat-menu>
+    <div>
+        <button mat-icon-button (click)="signOut()">
+            <mat-icon class="material-symbols-outlined">notifications</mat-icon>
+        </button>
+        <button mat-icon-button>
+            <mat-icon class="material-symbols-outlined">mode_comment</mat-icon>
+        </button>
+        <button mat-icon-button (click)="goToDisplayFamily()">
+            <mat-icon class="material-symbols-outlined">group</mat-icon>
+        </button>
     </div>
 </div>
+<mat-divider></mat-divider>

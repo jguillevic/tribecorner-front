@@ -41,6 +41,15 @@
         <div class="item__label">Agenda</div>
       </div>
     </button>
+    <button
+    mat-icon-button
+    [ngClass]="{ 'material-symbols-fill item--selected': selectedIndex === 4 }"
+    class="item">
+    <div class="item__container">
+      <mat-icon class="material-symbols-outlined item__icon">savings</mat-icon>
+      <div class="item__label">Budget</div>
+    </div>
+  </button>
   </div>
   @if (onActionClicked.observers.length > 0) {
     <button mat-fab color="primary" class="action-button" (click)="actionClicked()">

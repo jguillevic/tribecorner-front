@@ -46,6 +46,7 @@ export class CheckableItemShoppingListsComponent implements OnChanges, OnDestroy
     }
 
     public ngOnDestroy(): void {
+        this.destroy$.next();
         this.destroy$.complete();
     }
     

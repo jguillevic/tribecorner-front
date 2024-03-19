@@ -70,6 +70,7 @@ export class JoinFamilyComponent implements OnInit, OnDestroy {
       this.joinFamilyForm.controls['familyAssociationCode'].setErrors({'notFound': true});
     } else {
       window.alert("Problème technique. Veuillez réessayer dans quelques minutes.");
+      console.log(error);
     }
   }
 

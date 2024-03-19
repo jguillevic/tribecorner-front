@@ -32,6 +32,7 @@ export class ShoppingListArchiveToggleComponent implements OnDestroy {
   ) { }
 
   public ngOnDestroy(): void {
+    this.destroy$.next();
     this.destroy$.complete();
   }
 

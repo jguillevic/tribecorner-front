@@ -77,6 +77,7 @@ export class SignUpUserComponent implements OnDestroy {
       }
     } else {
       window.alert("Problème technique. Veuillez réessayer dans quelques minutes.");
+      console.log(error);
     }
   }
 

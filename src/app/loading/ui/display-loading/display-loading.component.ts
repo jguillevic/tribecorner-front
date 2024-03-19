@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {UserService} from 'src/app/user/service/user.service';
+import {UserService} from '../../../user/service/user.service';
 import {Router} from '@angular/router';
-import {UserRoutes} from 'src/app/user/route/user.routes';
-import {HomeRoutes} from 'src/app/home/route/home.routes';
-import {Subscription} from 'rxjs';
+import {UserRoutes} from '../../../user/route/user.routes';
+import {FamilyRoutes} from '../../../family/route/family.routes';
+import {Observable, Subject, from, mergeMap, of, takeUntil} from 'rxjs';
 import {MatCardModule} from '@angular/material/card';
 
 @Component({
@@ -16,29 +16,36 @@ import {MatCardModule} from '@angular/material/card';
   styleUrl: 'display-loading.component.scss'
 })
 export class DisplayLoadingComponent implements OnInit, OnDestroy {
-  private isSignedInDefinedEventSubscription: Subscription|undefined;
+  private destroy$: Subject<void> = new Subject<void>();
 
-  constructor(private userService: UserService, private router: Router) { }
+  public constructor(
+    private userService: UserService,
+    private router: Router
+  ) { }
 
   public ngOnInit(): void {
-    if (this.userService.isSignedIn === undefined)
-    {
-      this.isSignedInDefinedEventSubscription = this.userService.isSignedInDefinedEvent.subscribe(() => {
-        this.navigateTo(this.userService.isSignedIn === true);
-      });
-    } else {
-      this.navigateTo(this.userService.isSignedIn === false);
-    }
+    this.userService.isSignedIn$
+    .pipe(
+      takeUntil(this.destroy$),
+      mergeMap((isSignedIn: boolean | undefined) => {
+        if (isSignedIn !== undefined) {
+            this.navigateTo(isSignedIn);
+        }
+        return of(undefined);
+      })
+    )
+    .subscribe();
   }
 
-  ngOnDestroy(): void {
-    this.isSignedInDefinedEventSubscription?.unsubscribe();
+  public ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
-  private navigateTo(isSignedIn: boolean) : Promise<boolean> {
-    if (isSignedIn === true) {
-      return this.router.navigate([HomeRoutes.displayHomeRoute]);
+  private navigateTo(isSignedIn: boolean) : Observable<boolean> {
+    if (isSignedIn) {
+      return from(this.router.navigate([FamilyRoutes.createFamilyRoute]));
     }
-    return this.router.navigate([UserRoutes.signInUserRoute]);
+    return from(this.router.navigate([UserRoutes.signInUserRoute]));
   }
 }

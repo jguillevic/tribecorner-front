@@ -1,18 +1,23 @@
-import { CanActivateFn, Router } from '@angular/router';
-import { UserService } from '../service/user.service';
-import { inject } from '@angular/core';
-import { LoadingRoutes } from 'src/app/loading/route/loading.routes';
-import { FamilyRoutes } from 'src/app/family/route/family.routes';
+import {CanActivateFn, Router} from '@angular/router';
+import {UserService} from '../service/user.service';
+import {inject} from '@angular/core';
+import {LoadingRoutes} from '../../loading/route/loading.routes';
+import {FamilyRoutes} from '../../family/route/family.routes';
+import {from, mergeMap, of} from 'rxjs';
 
-export const notSignedInGuard: CanActivateFn = (route, state) => {
+export const notSignedInGuard: CanActivateFn = () => {
   const userService = inject(UserService);
   const router = inject(Router);
 
-  if (userService.isSignedIn === undefined) {
-    return router.navigate([LoadingRoutes.displayLoadingRoute]);
-  }
-  else if (userService.isSignedIn === true) {
-    return router.navigate([FamilyRoutes.createFamilyRoute]);
-  }
-  return true;
+  return userService.isSignedIn$
+  .pipe(
+    mergeMap((isSignedIn : boolean | undefined) => { 
+      if (isSignedIn === undefined) {
+        return from(router.navigate([LoadingRoutes.displayLoadingRoute]));
+      } else if (isSignedIn === true) {
+        return from(router.navigate([FamilyRoutes.createFamilyRoute]));
+      }
+      return of(true);
+    })
+  );
 };

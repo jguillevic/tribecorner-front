@@ -93,6 +93,7 @@ export class EditEventPageComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy(): void {
+        this.destroy$.next();
         this.destroy$.complete();
     }
 

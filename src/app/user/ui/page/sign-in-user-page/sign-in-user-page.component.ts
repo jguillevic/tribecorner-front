@@ -74,6 +74,7 @@ export class SignInUserComponent implements OnDestroy {
       }
     } else {
       window.alert("Problème technique. Veuillez réessayer dans quelques minutes.");
+      console.log(error);
     }
   }
 
@@ -84,7 +85,8 @@ export class SignInUserComponent implements OnDestroy {
       const signInUser: SignInUser 
       = this.signInForm.value as SignInUser;
 
-      this.signInSubscription = this.userService.signIn(signInUser)
+      this.signInSubscription 
+      = this.userService.signIn(signInUser)
       .subscribe({ 
         next: (userInfo) => this.goToCreateFamily(userInfo),
         error : (error) => this.handleError(error)

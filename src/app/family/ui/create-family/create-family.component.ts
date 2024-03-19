@@ -67,6 +67,7 @@ export class CreateFamilyComponent implements OnInit, OnDestroy {
   private handleError(error: any): void {
     this.isCreatingFamily = false;
     window.alert("Problème technique. Veuillez réessayer dans quelques minutes.");
+    console.log(error);
   }
 
   public createFamily(): void {

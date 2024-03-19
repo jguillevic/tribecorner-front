@@ -60,6 +60,7 @@ export class DisplayMealsPageComponent implements OnDestroy {
     ) { }
 
     public ngOnDestroy(): void {
+        this.destroy$.next();
         this.destroy$.complete();
     }
 

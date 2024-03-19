@@ -65,6 +65,7 @@ export class AddItemShoppingListFormComponent implements OnDestroy {
     ) { }
 
     public ngOnDestroy(): void {
+        this.destroy$.next();
         this.destroy$.complete();
     }
     

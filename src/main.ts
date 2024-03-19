@@ -32,6 +32,9 @@ import {ItemShoppingListApiService} from './app/shopping-list/service/item-shopp
 import {ItemShoppingListRoutes} from './app/shopping-list/route/item-shopping-list.routes';
 import {ItemShoppingListGoToService} from './app/shopping-list/service/item-shopping-list-go-to.service';
 import {ItemShoppingListCategoryApiService} from './app/shopping-list/service/item-shopping-list-category-api.service';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { environment } from './environments/environment';
 
 const routes: Routes = [
     { 
@@ -137,7 +140,7 @@ bootstrapApplication(AppComponent, {
             prodMode: !isDevMode(),
             },
             loader: TranslocoHttpLoader
-        }),
+        }), importProvidersFrom(provideFirebaseApp(() => initializeApp(environment.firebaseConfig))), importProvidersFrom(provideAuth(() => getAuth())),
         
     ]
 })

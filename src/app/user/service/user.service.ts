@@ -1,16 +1,16 @@
-import {EventEmitter, Injectable, OnDestroy} from '@angular/core';
-import {Auth, Unsubscribe, User, UserCredential, browserLocalPersistence, createUserWithEmailAndPassword, getAuth, setPersistence, signInWithEmailAndPassword, signOut} from "firebase/auth";
+import {Injectable, OnDestroy, inject} from '@angular/core';
 import {SignUpUser} from '../model/sign-up-user.model';
 import {UserInfo} from '../model/user-info.model';
-import {Observable, Subscription, exhaustMap, from, map, of, tap} from 'rxjs';
+import {BehaviorSubject, Observable, Subject, exhaustMap, from, map, mergeMap, of, takeUntil, tap} from 'rxjs';
 import {SignInUser} from '../model/sign-in-user.model';
 import {CreateUserDto} from '../dto/create-user.dto';
 import {LoadUserDto} from '../dto/load-user.dto';
 import {SessionStorageService} from '../../common/storage/service/session-storage.service';
 import {environment} from '../../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {FirebaseApp, initializeApp} from 'firebase/app';
 import {UserConverter} from '../converter/user.converter';
+import {Auth, User, UserCredential, authState, browserLocalPersistence, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} from '@angular/fire/auth';
+import {setPersistence} from '@firebase/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -18,38 +18,29 @@ import {UserConverter} from '../converter/user.converter';
 export class UserService implements OnDestroy {
   private static readonly apiPath: string = 'users';
   private static readonly userInfoSessionStorageKey: string = 'userInfo';
-  private firebaseAuth: Auth;
-  private onAuthStateChangedUnsubscribe: Unsubscribe;
-  private signInLocallySubscription: Subscription | undefined;
 
-  private _isSignedIn: boolean | undefined;
-  public get isSignedIn(): boolean|undefined {
-    return this._isSignedIn;
-  }
-  public set isSignedIn(isSignedIn: boolean|undefined) {
-    if (this._isSignedIn !== isSignedIn) {
-      this._isSignedIn = isSignedIn;
-      this.notifyIsSignedInDefined();
-    }
-  }
+  private readonly destroy$: Subject<boolean> = new Subject<boolean>();
+  private readonly firebaseAuth: Auth = inject(Auth);
+  private readonly firebaseAuthState$ = authState(this.firebaseAuth);
 
-  public readonly isSignedInDefinedEvent = new EventEmitter();
+  private readonly isSignedInSubject: BehaviorSubject<boolean | undefined> = new BehaviorSubject<boolean | undefined>(undefined);
+  public readonly isSignedIn$: Observable<boolean | undefined> = this.isSignedInSubject.asObservable();
 
   public constructor(
     private readonly http: HttpClient,
     private readonly sessionStorageService: SessionStorageService
-    ) { 
-      const app: FirebaseApp = initializeApp(environment.firebaseConfig);
-      this.firebaseAuth = getAuth(app);
-  
-      this.onAuthStateChangedUnsubscribe = this.firebaseAuth.onAuthStateChanged(
-        user => this.onFirebaseAuthStateChange(user)
-      );
+    ) {
+      this.firebaseAuthState$
+      .pipe(
+        takeUntil(this.destroy$),
+        mergeMap(user => this.firebaseAuthStateChange(user))
+      )
+      .subscribe();
   }
 
   public ngOnDestroy(): void {
-    this.signInLocallySubscription?.unsubscribe();
-    this.onAuthStateChangedUnsubscribe();
+    this.destroy$.next(true);
+    this.destroy$.complete();
   }
 
   private createUser(userCredential: UserCredential, signUpUser: SignUpUser): Observable<UserInfo> {
@@ -70,8 +61,8 @@ export class UserService implements OnDestroy {
             { 'headers': headers }
           )
       }),
-      map(LoadUserDto => 
-        UserConverter.fromDtoToModel(LoadUserDto)
+      map((loadUserDto: LoadUserDto) => 
+        UserConverter.fromDtoToModel(loadUserDto)
       )
     );
   }
@@ -90,7 +81,7 @@ export class UserService implements OnDestroy {
             { 'headers': headers }
           )
       }),
-      map(loadUserDtos => 
+      map((loadUserDtos: LoadUserDto[]) => 
           UserConverter.fromDtoToModel(loadUserDtos[0])
       )
     );
@@ -117,7 +108,7 @@ export class UserService implements OnDestroy {
       .pipe(
         tap(userInfo => {
           this.sessionStorageService.saveData(UserService.userInfoSessionStorageKey, JSON.stringify(userInfo));
-          this.isSignedIn = true;
+          this.isSignedInSubject.next(true);
          })
       );
   }
@@ -142,33 +133,29 @@ export class UserService implements OnDestroy {
       exhaustMap(() =>  
         this.firebaseSignInWithEmailAndPassword(signInUser.email, signInUser.password)
       ),
-      exhaustMap(userCredential => 
+      exhaustMap((userCredential: UserCredential) => 
         this.signInLocally(userCredential.user.uid)
       )
     );
   }
 
-  private onFirebaseAuthStateChange(user: User|null): void {
+  private firebaseAuthStateChange(user: User|null): Observable<UserInfo|undefined> {
     if (user) {
-      user.photoURL
-      this.signInLocallySubscription = this.signInLocally(user.uid).subscribe();
-    } else {
-      this.isSignedIn = false;
-    }
-  }
+      return this.signInLocally(user.uid)
+    } 
 
-  public notifyIsSignedInDefined(): void {
-    this.isSignedInDefinedEvent.emit();
+    this.isSignedInSubject.next(false);
+    return of(undefined);
   }
 
   public getCurrentUserInfo(): UserInfo|undefined {
-    if (this.isSignedIn) {
+    if (this.isSignedInSubject.value) {
       return JSON.parse(this.sessionStorageService.getData(UserService.userInfoSessionStorageKey));
     }
     return undefined;
   }
 
-  public getFirebaseJWT(): Observable<string | undefined> {
+  public getFirebaseJWT(): Observable<string|undefined> {
     if (this.firebaseAuth.currentUser) {
       return from(this.firebaseAuth.currentUser.getIdToken());
     }
@@ -185,7 +172,7 @@ export class UserService implements OnDestroy {
 
   public signOutLocally(): void {
     this.sessionStorageService.removeData(UserService.userInfoSessionStorageKey);
-    this.isSignedIn = false;
+    this.isSignedInSubject.next(false);
   }
 
   public signOut(): Observable<void> {

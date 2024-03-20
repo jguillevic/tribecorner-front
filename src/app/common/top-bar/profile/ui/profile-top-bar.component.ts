@@ -35,7 +35,7 @@ export class ProfileTopBarComponent implements OnInit, OnDestroy {
     ) { }
 
   public ngOnInit(): void {
-    this.currentUserInfo = this.userService.getCurrentUserInfo();
+    this.currentUserInfo = this.userService.userInfo;
   }
 
   public ngOnDestroy(): void {

@@ -27,7 +27,7 @@ export class DisplayFamilyComponent implements OnInit, OnDestroy {
     ) { }
 
   public ngOnInit(): void {
-    const currentUserInfo: UserInfo|undefined = this.userService.getCurrentUserInfo();
+    const currentUserInfo: UserInfo|undefined = this.userService.userInfo;
     if (currentUserInfo && currentUserInfo.familyId) {
       this.loadFamilySubscription = this.familyApiService
       .loadOneByFamilyId(currentUserInfo.familyId)

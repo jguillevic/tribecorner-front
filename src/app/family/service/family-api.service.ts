@@ -26,17 +26,14 @@ export class FamilyApiService {
   ) { }
 
   public family$: Observable<Family|undefined> 
-  = of(this.userService.getCurrentUserInfo())
-  .pipe(
-    exhaustMap((userInfo: UserInfo|undefined) => 
-      { 
-        if (userInfo && userInfo.familyId) {
-          return this.loadOneByFamilyId(userInfo.familyId); 
-        }
-        return of(undefined);
-      }
-    )
-  );
+  = this.getFamily();
+
+  private getFamily(): Observable<Family|undefined> {
+    if (this.userService.userInfo && this.userService.userInfo.familyId) {
+      return this.loadOneByFamilyId(this.userService.userInfo.familyId); 
+    }
+    return of(undefined);
+  }
 
   public loadOneByFamilyId(familyId: number): Observable<Family> {
     return this.apiHttp.get<LoadFamilyDto>(

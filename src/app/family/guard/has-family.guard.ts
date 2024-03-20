@@ -8,7 +8,7 @@ import {FamilyRoutes} from '../route/family.routes';
 export const hasFamilyGuard: CanActivateFn = () => {
   const userService = inject(UserService);
   const router = inject(Router);
-  const currentUserInfo: UserInfo|undefined = userService.getCurrentUserInfo();
+  const currentUserInfo: UserInfo|undefined = userService.userInfo;
 
   if (currentUserInfo === undefined) {
     return router.navigate([UserRoutes.signInUserRoute]);

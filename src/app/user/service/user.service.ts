@@ -5,11 +5,10 @@ import {BehaviorSubject, Observable, Subject, exhaustMap, from, map, mergeMap, o
 import {SignInUser} from '../model/sign-in-user.model';
 import {CreateUserDto} from '../dto/create-user.dto';
 import {LoadUserDto} from '../dto/load-user.dto';
-import {SessionStorageService} from '../../common/storage/service/session-storage.service';
 import {environment} from '../../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {UserConverter} from '../converter/user.converter';
-import {Auth, User, UserCredential, authState, browserLocalPersistence, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} from '@angular/fire/auth';
+import {Auth, User, UserCredential, authState, browserLocalPersistence, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, user} from '@angular/fire/auth';
 import {setPersistence} from '@firebase/auth';
 
 @Injectable({
@@ -23,12 +22,13 @@ export class UserService implements OnDestroy {
   private readonly firebaseAuth: Auth = inject(Auth);
   private readonly firebaseAuthState$ = authState(this.firebaseAuth);
 
-  private readonly isSignedInSubject: BehaviorSubject<boolean | undefined> = new BehaviorSubject<boolean | undefined>(undefined);
-  public readonly isSignedIn$: Observable<boolean | undefined> = this.isSignedInSubject.asObservable();
+  private readonly isSignedInSubject: BehaviorSubject<boolean|undefined> = new BehaviorSubject<boolean|undefined>(undefined);
+  public readonly isSignedIn$: Observable<boolean|undefined> = this.isSignedInSubject.asObservable();
+
+  public userInfo: UserInfo|undefined;
 
   public constructor(
-    private readonly http: HttpClient,
-    private readonly sessionStorageService: SessionStorageService
+    private readonly http: HttpClient
     ) {
       this.firebaseAuthState$
       .pipe(
@@ -107,19 +107,19 @@ export class UserService implements OnDestroy {
     return this.loadUserFromFirebaseId(firebaseId)
       .pipe(
         tap(userInfo => {
-          this.sessionStorageService.saveData(UserService.userInfoSessionStorageKey, JSON.stringify(userInfo));
+          this.userInfo = userInfo;
           this.isSignedInSubject.next(true);
          })
       );
   }
 
   public refreshCurrentUser(): Observable<UserInfo|undefined> {
-    const currentUserInfo: UserInfo|undefined = this.getCurrentUserInfo();
+    const currentUserInfo: UserInfo|undefined = this.userInfo;
     if (currentUserInfo) {
       return this.loadUserFromFirebaseId(currentUserInfo.firebaseId)
         .pipe(
           tap(userInfo => 
-              this.sessionStorageService.saveData(UserService.userInfoSessionStorageKey, JSON.stringify(userInfo))
+            this.userInfo = userInfo
           )
         );
     }
@@ -148,13 +148,6 @@ export class UserService implements OnDestroy {
     return of(undefined);
   }
 
-  public getCurrentUserInfo(): UserInfo|undefined {
-    if (this.isSignedInSubject.value) {
-      return JSON.parse(this.sessionStorageService.getData(UserService.userInfoSessionStorageKey));
-    }
-    return undefined;
-  }
-
   public getFirebaseJWT(): Observable<string|undefined> {
     if (this.firebaseAuth.currentUser) {
       return from(this.firebaseAuth.currentUser.getIdToken());
@@ -171,7 +164,7 @@ export class UserService implements OnDestroy {
   }
 
   public signOutLocally(): void {
-    this.sessionStorageService.removeData(UserService.userInfoSessionStorageKey);
+    this.userInfo = undefined;
     this.isSignedInSubject.next(false);
   }
 

@@ -14,6 +14,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {SignInUser} from '../../../model/sign-in-user.model';
 import {UserRoutes} from '../../../route/user.routes';
 import {MatCardModule} from '@angular/material/card';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-sign-in-user-page',
@@ -26,7 +27,8 @@ import {MatCardModule} from '@angular/material/card';
     MatButtonModule,
     MtxButtonModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    MatSlideToggleModule
 ],
   templateUrl: './sign-in-user-page.component.html'
 })
@@ -43,7 +45,8 @@ export class SignInUserComponent implements OnDestroy {
   public readonly signInForm: FormGroup = new FormGroup(
     {
       email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(this.emailMaxLength)]),
-      password: new FormControl('', [Validators.required, Validators.maxLength(this.passwordMaxLength)])
+      password: new FormControl('', [Validators.required, Validators.maxLength(this.passwordMaxLength)]),
+      rememberMe: new FormControl(false, [Validators.required])
     }
   );
 

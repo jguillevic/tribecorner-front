@@ -53,6 +53,9 @@
                 </mat-error>
               }
             </mat-form-field>
+            <mat-slide-toggle color="primary" formControlName="rememberMe">
+              Se souvenir de moi ?
+            </mat-slide-toggle>
           </section>
           <section>
             <button loadingMatButton [loading]="isSigningIn" class="form-button" mat-raised-button color="primary" type="submit">Se connecter</button>

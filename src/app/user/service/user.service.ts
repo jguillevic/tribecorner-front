@@ -8,7 +8,7 @@ import {LoadUserDto} from '../dto/load-user.dto';
 import {environment} from '../../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {UserConverter} from '../converter/user.converter';
-import {Auth, User, UserCredential, authState, browserLocalPersistence, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, user} from '@angular/fire/auth';
+import {Auth, User, UserCredential, authState, browserLocalPersistence, browserSessionPersistence, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, user} from '@angular/fire/auth';
 import {setPersistence} from '@firebase/auth';
 
 @Injectable({
@@ -88,7 +88,7 @@ export class UserService implements OnDestroy {
   }
 
   public signUp(signUpUser: SignUpUser): Observable<UserInfo|undefined> {
-    return this.firebaseSetPersistenceToLocal()
+    return this.firebaseSetPersistence(false)
       .pipe(
         exhaustMap(() => 
           this.firebaseCreateUserWithEmailAndPassword(signUpUser.email, signUpUser.password)
@@ -128,7 +128,7 @@ export class UserService implements OnDestroy {
   }
 
   public signIn(signInUser: SignInUser): Observable<UserInfo|undefined> {
-    return this.firebaseSetPersistenceToLocal()
+    return this.firebaseSetPersistence(signInUser.rememberMe)
     .pipe(
       exhaustMap(() =>  
         this.firebaseSignInWithEmailAndPassword(signInUser.email, signInUser.password)
@@ -155,8 +155,8 @@ export class UserService implements OnDestroy {
     return of(undefined);
   }
 
-  public firebaseSetPersistenceToLocal(): Observable<void> {
-    return from(setPersistence(this.firebaseAuth, browserLocalPersistence));
+  public firebaseSetPersistence(rememberMe: boolean = false): Observable<void> {
+    return from(setPersistence(this.firebaseAuth, rememberMe ? browserLocalPersistence : browserSessionPersistence));
   }
 
   public firebaseCreateUserWithEmailAndPassword(email: string, password: string): Observable<UserCredential> {

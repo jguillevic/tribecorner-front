@@ -1,11 +1,10 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-
-import { Meal } from '../../../model/meal.model';
-import { Subject, takeUntil, tap } from 'rxjs';
-import { MealService } from '../../../service/meal.service';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MtxButtonModule } from '@ng-matero/extensions/button';
+import {Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
+import {Meal} from '../../../model/meal.model';
+import {Subject, takeUntil, tap} from 'rxjs';
+import {MealService} from '../../../service/meal.service';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MtxButtonModule} from '@ng-matero/extensions/button';
 
 @Component({
   selector: 'app-meal-delete-button',
@@ -21,7 +20,6 @@ import { MtxButtonModule } from '@ng-matero/extensions/button';
 })
 export class MealDeleteButtonComponent implements OnDestroy {
   @Input() public mealToDelete: Meal|undefined;
-  @Output() public onMealDeleted: EventEmitter<Meal> = new EventEmitter<Meal>();
 
   private readonly destroy$ = new Subject<void>();
 
@@ -41,11 +39,8 @@ export class MealDeleteButtonComponent implements OnDestroy {
       this.isDeleting = true;
       this.mealService.delete(this.mealToDelete.id)
       .pipe(
+        tap(() => this.isDeleting = false),
         takeUntil(this.destroy$),
-        tap(() => 
-          this.onMealDeleted.emit(this.mealToDelete)
-        ),
-        tap(() => this.isDeleting = false)
       )
       .subscribe({
         error: () => this.isDeleting = false

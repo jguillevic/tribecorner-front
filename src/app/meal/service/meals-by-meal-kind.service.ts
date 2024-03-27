@@ -17,18 +17,35 @@ export class MealsByMealKindService {
   public loadAllByDate(date: Date): Observable<MealsByMealKind[]> {
     return combineLatest({
       mealKinds: this.mealKindService.mealKinds$,
-      meals: this.mealService.loadAllByDate(date)
+      meals: this.mealService.getMealsByDate(date)
     })
     .pipe(
       map(result => 
         result.mealKinds
         .filter(mealKind => 
-          result.meals.filter(meal => meal.mealKindId === mealKind.id).length
+          result.meals
+          .filter(meal => meal.mealKindId === mealKind.id).length
         )
         .map(mealKind => 
           new MealsByMealKind(
             mealKind,
-            result.meals.filter(meal => meal.mealKindId === mealKind.id)
+            result.meals
+            .filter(meal => meal.mealKindId === mealKind.id)
+            .sort((a, b) => {
+              // Utiliser toLowerCase() pour une comparaison insensible à la casse
+              const nameA = a.name.toLowerCase();
+              const nameB = b.name.toLowerCase();
+          
+              if (nameA < nameB) {
+                return -1; // a vient avant b
+              }
+              if (nameA > nameB) {
+                return 1; // a vient après b
+              }
+          
+              // Les noms sont identiques
+              return 0;
+            })
           )
         )
       )

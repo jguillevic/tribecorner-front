@@ -4,8 +4,6 @@
 @for (meal of mealsByMealKind?.meals; track meal) {
     <app-meal-card 
     [meal]="meal"
-    [showActions]="showActions"
-    (onMealCopied)="mealCopied($event)"
-    (onMealDeleted)="mealDeleted($event)">
+    [showActions]="showActions">
     </app-meal-card>
 }

@@ -82,12 +82,4 @@ export class DisplayMealsPageComponent implements OnDestroy {
             switchMap(date => this.mealsByMealKindService.loadAllByDate(date))
         );
     }
-
-    public mealDeleted(deletedMeal: Meal) {
-        //this.mealsByMealKinds.up = toSignal(this.getMealsByMealKinds$());
-    }
-
-    public mealCopied(copiedMeal: Meal) {
-        this.mealGoToService.goToUpdate(copiedMeal.id);
-    }
 }

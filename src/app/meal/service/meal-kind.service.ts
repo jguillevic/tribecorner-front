@@ -13,10 +13,11 @@ export class MealKindService {
   private static apiPath: string = "meal_kinds";
 
   public constructor(
-    private apiHttp: ApiHttpClient
+    private readonly apiHttp: ApiHttpClient
   ) { }
 
-  public mealKinds$: Observable<MealKind[]> = this.loadAll()
+  public readonly mealKinds$: Observable<MealKind[]> 
+  = this.loadAll()
   .pipe(
     shareReplay(1)
   );

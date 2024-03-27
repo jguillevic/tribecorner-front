@@ -9,9 +9,7 @@
     [ngClass]="{'meals__container--center': mealsByMealKinds() && !mealsByMealKinds()?.length}">
       @defer (when mealsByMealKinds()) {
         @for (mealsByMealKind of mealsByMealKinds(); track mealsByMealKind) {
-          <app-meals-by-meal-kind [mealsByMealKind]="mealsByMealKind"
-            (onMealCopied)="mealCopied($event)"
-            (onMealDeleted)="mealDeleted($event)">      
+          <app-meals-by-meal-kind [mealsByMealKind]="mealsByMealKind">      
           </app-meals-by-meal-kind>  
         }
         @if (!mealsByMealKinds()?.length) {

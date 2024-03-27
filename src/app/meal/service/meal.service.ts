@@ -79,7 +79,7 @@ export class MealService {
         [
           ...result.loadedMealsByDate.filter(meal => !result.updatedMeals.map(updatedMeal => updatedMeal.id).includes(meal.id)),
           ...this.addedMealsSubject.value.filter(meal => !result.updatedMeals.map(updatedMeal => updatedMeal.id).includes(meal.id)),
-          ...this.updatedMealsSubject.value
+          ...this.updatedMealsSubject.value.filter(meal => DateHelper.areDatesEqual(meal.date, date))
         ]
         .filter(meal => 
           !this.deletedMealIdsSubject.value.includes(meal.id)

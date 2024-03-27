@@ -3,7 +3,9 @@ import {Router} from '@angular/router';
 import {ShoppingListRoutes} from '../route/shopping-list.routes';
 import {Observable, from, of} from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ShoppingListGoToService {
     public constructor(
         private readonly router: Router

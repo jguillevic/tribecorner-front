@@ -4,7 +4,9 @@ import { MealService } from './meal.service';
 import { MealsByMealKind } from '../model/meals-by-meal-kind.model';
 import { Observable, combineLatest, map } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class MealsByMealKindService {
 
   public constructor(

@@ -6,7 +6,9 @@ import {MealKindDto} from '../dto/meal-kind.dto';
 import {ApiHttpClient} from '../../common/http/api-http-client';
 import {MealKindConverter} from '../converter/meal-kind.converter';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class MealKindService {
   private static apiPath: string = "meal_kinds";
 

@@ -6,7 +6,9 @@ import {ShoppingListDto} from '../dto/shopping-list.dto';
 import {ApiHttpClient} from 'src/app/common/http/api-http-client';
 import {ShoppingListConverter} from '../converter/shopping-list.converter';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ShoppingListApiService {
   private static apiPath: string = "shopping_lists";
 

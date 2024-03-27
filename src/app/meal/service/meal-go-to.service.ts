@@ -3,7 +3,9 @@ import { Router } from '@angular/router';
 import { Observable, from } from 'rxjs';
 import { MealRoutes } from '../route/meal.routes';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class MealGoToService {
     public constructor(
         private router: Router

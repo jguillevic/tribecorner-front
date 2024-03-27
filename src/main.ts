@@ -3,7 +3,6 @@ import {AppComponent} from './app/app.component';
 import {provideRouter, Routes} from '@angular/router';
 import {BrowserModule, bootstrapApplication} from '@angular/platform-browser';
 import {ShoppingListRoutes} from './app/shopping-list/route/shopping-list.routes';
-import {ShoppingListApiService} from './app/shopping-list/service/shopping-list-api.service';
 import {provideHttpClient} from '@angular/common/http';
 import {UserRoutes} from './app/user/route/user.routes';
 import {signedInGuard} from './app/user/guard/signed-in.guard';
@@ -14,27 +13,13 @@ import {FamilyRoutes} from './app/family/route/family.routes';
 import {hasFamilyGuard} from './app/family/guard/has-family.guard';
 import {NotFoundRoutes} from './app/not-found/route/not-found.routes';
 import {MealRoutes} from './app/meal/route/meal.routes';
-import {MealKindService} from './app/meal/service/meal-kind.service';
-import {MealService} from './app/meal/service/meal.service';
-import {EventApiService} from './app/event/service/event-api.service';
-import {MealsByMealKindService} from './app/meal/service/meals-by-meal-kind.service';
 import {EventRoutes} from './app/event/route/event.routes';
-import {EventCurrentDateService} from './app/event/service/event-current-date.service';
-import {MealCurrentDateService} from './app/meal/service/meal-current-date.service';
-import {EditEventService} from './app/event/service/edit-event.service';
 import {TranslocoHttpLoader} from './transloco-loader';
 import {provideTransloco} from '@ngneat/transloco';
-import {ShoppingListGoToService} from './app/shopping-list/service/shopping-list-go-to.service';
-import {MealGoToService} from './app/meal/service/meal-go-to.service';
-import {SuggestedItemShoppingListApiService} from './app/shopping-list/service/suggested-item-shopping-list-api.service';
-import {SuggestedItemShoppingListAutoCompleteService} from './app/shopping-list/service/suggested-item-shopping-list-auto-complete.service';
-import {ItemShoppingListApiService} from './app/shopping-list/service/item-shopping-list-api.service';
 import {ItemShoppingListRoutes} from './app/shopping-list/route/item-shopping-list.routes';
-import {ItemShoppingListGoToService} from './app/shopping-list/service/item-shopping-list-go-to.service';
-import {ItemShoppingListCategoryApiService} from './app/shopping-list/service/item-shopping-list-category-api.service';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { getAuth, provideAuth } from '@angular/fire/auth';
-import { environment } from './environments/environment';
+import {initializeApp, provideFirebaseApp} from '@angular/fire/app';
+import {getAuth, provideAuth} from '@angular/fire/auth';
+import {environment} from './environments/environment';
 
 const routes: Routes = [
     { 
@@ -48,61 +33,26 @@ const routes: Routes = [
     },
     { 
         path: '',
-        providers: [
-            ShoppingListApiService,
-            ShoppingListGoToService,
-            ItemShoppingListGoToService,
-            ItemShoppingListApiService,
-            ItemShoppingListCategoryApiService,
-            SuggestedItemShoppingListApiService,
-            SuggestedItemShoppingListAutoCompleteService
-        ],
         canActivate: [signedInGuard, hasFamilyGuard],
         children: ShoppingListRoutes.shoppingListRoutes
     },
     { 
         path: '',
-        providers: [
-            ItemShoppingListApiService,
-            ItemShoppingListCategoryApiService,
-            SuggestedItemShoppingListApiService,
-            SuggestedItemShoppingListAutoCompleteService
-        ],
         canActivate: [signedInGuard, hasFamilyGuard],
         children: ItemShoppingListRoutes.itemShoppingListRoutes
     },
     { 
         path: '',
-        providers: [
-            MealKindService,
-            MealService,
-            MealGoToService,
-            MealsByMealKindService,
-            MealCurrentDateService
-        ],
         canActivate: [signedInGuard, hasFamilyGuard],
         children: MealRoutes.mealRoutes
     },
     {
         path: '',
-        providers: [
-            EventCurrentDateService,
-            EventApiService,
-            EditEventService
-        ],
         canActivate: [signedInGuard, hasFamilyGuard],
         children: EventRoutes.eventRoutes
     },
     { 
         path: '',
-        providers: [
-            EventApiService,
-            MealKindService,
-            MealService,
-            MealsByMealKindService,
-            ShoppingListApiService,
-            ShoppingListGoToService
-        ],
         canActivate: [signedInGuard, hasFamilyGuard],
         children: HomeRoutes.homeRoutes
     },
@@ -140,8 +90,9 @@ bootstrapApplication(AppComponent, {
             prodMode: !isDevMode(),
             },
             loader: TranslocoHttpLoader
-        }), importProvidersFrom(provideFirebaseApp(() => initializeApp(environment.firebaseConfig))), importProvidersFrom(provideAuth(() => getAuth())),
-        
+        }),
+        importProvidersFrom(provideFirebaseApp(() => initializeApp(environment.firebaseConfig))),
+        importProvidersFrom(provideAuth(() => getAuth())),
     ]
 })
   .catch(err => console.error(err));

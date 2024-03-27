@@ -6,7 +6,9 @@ import { environment } from '../../../environments/environment';
 import { ItemShoppingListCategoryDto } from '../dto/item-shopping-list-category.dto';
 import { ItemShoppingListCategoryConverter } from '../converter/item-shopping-list-category.converter';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ItemShoppingListCategoryApiService {
     private static apiPath: string = "item_shopping_list_categories";
 

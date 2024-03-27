@@ -6,7 +6,9 @@ import {EditEventViewModelConverter} from '../converter/edit-event-view-model.co
 import {Event} from "../model/event.model";
 import {EventBusinessCheckerService} from './event-business-checker.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class EditEventService {
   public constructor(
     private eventApiService: EventApiService,

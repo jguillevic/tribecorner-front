@@ -3,7 +3,9 @@ import {SuggestedItemShoppingListApiService} from './suggested-item-shopping-lis
 import {SuggestedItemShoppingList} from '../model/suggested-item-shopping-list';
 import {Observable, map} from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class SuggestedItemShoppingListAutoCompleteService {
     public constructor(
         private readonly suggestedItemShoppingListApiService: SuggestedItemShoppingListApiService

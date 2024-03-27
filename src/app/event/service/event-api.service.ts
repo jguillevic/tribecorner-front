@@ -6,7 +6,9 @@ import {environment} from '../../../environments/environment';
 import {EventDto} from '../dto/event.dto';
 import {EventConverter} from '../converter/event.converter';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class EventApiService {
   private static apiPath: string = "events";
 

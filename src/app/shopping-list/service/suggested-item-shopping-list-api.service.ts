@@ -6,7 +6,9 @@ import {environment} from '../../../environments/environment';
 import {SuggestedItemShoppingListDto} from '../dto/suggested-item-shopping-list.dto';
 import {SuggestedItemShoppingListConverter} from '../converter/suggested-item-shopping-list.converter';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class SuggestedItemShoppingListApiService {
     private static apiPath: string = "suggested_item_shopping_lists";
 

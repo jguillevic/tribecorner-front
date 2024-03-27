@@ -1,12 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { Router } from '@angular/router';
-import { UserService } from 'src/app/user/service/user.service';
-import { UserRoutes } from 'src/app/user/route/user.routes';
-import { Subscription, from, map } from 'rxjs';
-import { MtxButtonModule } from '@ng-matero/extensions/button';
+import {Component, OnDestroy} from '@angular/core';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {Router} from '@angular/router';
+import {UserService} from '../../../../user/service/user.service';
+import {UserRoutes} from '../../../../user/route/user.routes';
+import {Subscription, from, map} from 'rxjs';
+import {MtxButtonModule} from '@ng-matero/extensions/button';
 
 @Component({
   selector: 'app-sign-out-button',

@@ -9,7 +9,9 @@ import {DateHelper} from '../../common/date/helper/date.helper';
 import {FamilyApiService} from '../../family/service/family-api.service';
 import {Family} from '../../family/model/family.model';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class MealService {
   private static apiPath: string = "meals";
 

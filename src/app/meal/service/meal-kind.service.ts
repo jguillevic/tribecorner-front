@@ -16,6 +16,11 @@ export class MealKindService {
     private apiHttp: ApiHttpClient
   ) { }
 
+  public mealKinds$: Observable<MealKind[]> = this.loadAll()
+  .pipe(
+    shareReplay(1)
+  );
+
   public loadAll(): Observable<MealKind[]> {
     return this.apiHttp.get<MealKindDto[]>(
       `${environment.apiUrl}${MealKindService.apiPath}`
@@ -27,8 +32,7 @@ export class MealKindService {
             MealKindConverter.fromDtoToModel(mealKindDto)
           )
           .sort((a, b) => a.position - b.position)
-        ),
-        shareReplay(1)
+        )
       );
   }
 }

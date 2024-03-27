@@ -45,8 +45,7 @@ export class EditMealPageComponent implements OnInit, OnDestroy {
   private currentMealId: number = 0;
 
   private readonly mealKinds$: Observable<MealKind[]> 
-  = this.mealKindService
-  .loadAll();
+  = this.mealKindService.mealKinds$;
 
   public readonly numbersOfPersons: number[] = [1, 2, 3, 4, 5, 6, 7, 8];
 

@@ -16,7 +16,7 @@ export class MealsByMealKindService {
   
   public loadAllByDate(date: Date): Observable<MealsByMealKind[]> {
     return combineLatest({
-      mealKinds: this.mealKindService.loadAll(),
+      mealKinds: this.mealKindService.mealKinds$,
       meals: this.mealService.loadAllByDate(date)
     })
     .pipe(

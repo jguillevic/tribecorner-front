@@ -78,6 +78,8 @@ const routes: Routes = [
 bootstrapApplication(AppComponent, {
     providers: [
         importProvidersFrom(BrowserModule, BrowserAnimationsModule),
+        importProvidersFrom(provideFirebaseApp(() => initializeApp(environment.firebaseConfig))),
+        importProvidersFrom(provideAuth(() => getAuth())),
         provideRouter(routes),
         provideHttpClient(),
         provideAnimations(),
@@ -91,8 +93,6 @@ bootstrapApplication(AppComponent, {
             },
             loader: TranslocoHttpLoader
         }),
-        importProvidersFrom(provideFirebaseApp(() => initializeApp(environment.firebaseConfig))),
-        importProvidersFrom(provideAuth(() => getAuth())),
     ]
 })
   .catch(err => console.error(err));

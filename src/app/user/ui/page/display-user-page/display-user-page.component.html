@@ -1,15 +1,19 @@
 <app-go-back-top-bar *transloco="let t;read:'displayUserPage';" label="{{t('top-bar-label')}}"></app-go-back-top-bar>
 <section class="page" *transloco="let t;read:'displayUserPage';">
+    <div class="spacer"></div>
+
     @if(userInfo$ | async; as userInfo) {
     <section class="profil">
-        <img class="profil__img" src="https://pics.craiyon.com/2023-07-07/67e29100f11041d983c0dbee0627f6d5.webp">
+        <img class="profil__img" src="https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg">
         <p class="profil__label">{{t('welcomeUser', {login: userInfo.username})}}</p>
     </section>
+
+    <div class="spacer"></div>
 
     <!--Zone "Profil".-->
     <article class="setting">
         <header>
-            <h2 class="setting__title">{{t('profil')}}</h2>
+            <h2 class="setting__title">{{t('profile')}}</h2>
         </header>
         <section>
             <mat-list class="list">
@@ -17,7 +21,7 @@
                 <mat-list-item class="list__item">
                     <div class="item__container">
                         <mat-icon fontIcon="person" class="material-symbols-outlined"></mat-icon>
-                        <span class="item__label">{{t('editProfil')}}</span>
+                        <span class="item__label">{{t('editProfile')}}</span>
                     </div>
                 </mat-list-item>
                 <mat-divider></mat-divider>
@@ -31,7 +35,7 @@
                 <mat-list-item class="list__item">
                     <div class="item__container">
                         <mat-icon fontIcon="delete" class="material-symbols-outlined"></mat-icon>
-                        <span class="item__label">{{t('deleteProfil')}}</span>
+                        <span class="item__label">{{t('deleteProfile')}}</span>
                     </div>
                 </mat-list-item>
                 <mat-divider></mat-divider>

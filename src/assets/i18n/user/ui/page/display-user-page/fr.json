@@ -1,10 +1,10 @@
 {
     "welcomeUser": "Hey {{login}} !",
     "top-bar-label": "Mon compte",
-    "profil": "Profil",
-    "editProfil": "Éditer mon profil",
+    "profile": "Profil",
+    "editProfile": "Éditer mon profil",
     "signOut": "Déconnexion",
-    "deleteProfil": "Supprimer mon profil",
+    "deleteProfile": "Supprimer mon profil",
     "notifications": "Notifications",
     "activate": "Activer",
     "configure": "Configurer",

@@ -6,11 +6,16 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-radius: $default-border-radius;
+    background-color: $light-color;
+    box-shadow: $card-shadow;
 
     &__img {
         width: 200px;
+        height: 200px;
+        object-fit: cover;
         border: 5px solid $primary-color;
         border-radius: 50%;
         box-shadow: $card-shadow;
@@ -24,6 +29,7 @@
 }
 
 .setting {
+    border-radius: $default-border-radius;
     background-color: $light-color;
     box-shadow: $card-shadow;
 
@@ -72,5 +78,5 @@
 }
 
 .spacer {
-    height: 10px;
+    height: 15px;
 }

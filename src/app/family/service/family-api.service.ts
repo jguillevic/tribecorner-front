@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Family} from '../model/family.model';
-import {Observable, exhaustMap, map, of, shareReplay, switchMap} from 'rxjs';
+import {Observable, map, of, shareReplay, switchMap} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {LoadFamilyDto} from '../dto/load-family.dto';
 import {FamilyMemberDto} from '../dto/family-member.dto';
@@ -10,8 +10,7 @@ import {AssociationCodeNotFoundError} from '../error/association-code-not-found.
 import {ApiHttpClient} from 'src/app/common/http/api-http-client';
 import {FamilyConverter} from '../converter/family.converter';
 import {UserService} from '../../user/service/user.service';
-import {UserInfo} from '../../user/model/user-info.model';
-import { FamilyMemberApiService } from './family-member-api.service';
+import {FamilyMemberApiService} from './family-member-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +26,22 @@ export class FamilyApiService {
 
   public family$: Observable<Family|undefined> 
   = this.getFamily();
+
+  public readonly members$: Observable<FamilyMember[]|undefined> 
+  = this.family$
+  .pipe(
+    map((family: Family|undefined) =>
+      family?.members
+    )
+  );
+
+  public readonly membersCount$: Observable<number|undefined>
+  = this.members$
+  .pipe(
+    map((familyMembers: FamilyMember[]|undefined) => 
+      familyMembers?.length
+    )
+  );
 
   private getFamily(): Observable<Family|undefined> {
     if (this.userService.userInfo && this.userService.userInfo.familyId) {

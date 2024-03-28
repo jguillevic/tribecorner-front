@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, combineLatest, map, mergeMap, of, tap} from 'rxjs';
+import {BehaviorSubject, Observable, combineLatest, map, mergeMap, tap} from 'rxjs';
 import {Meal} from '../model/meal.model';
 import {environment} from '../../../environments/environment';
 import {MealConverter} from '../converter/meal.converter';
@@ -7,7 +7,6 @@ import {MealDto} from '../dto/meal.dto';
 import {ApiHttpClient} from '../../common/http/api-http-client';
 import {DateHelper} from '../../common/date/helper/date.helper';
 import {FamilyApiService} from '../../family/service/family-api.service';
-import {Family} from '../../family/model/family.model';
 
 @Injectable({
   providedIn: 'root',
@@ -16,12 +15,10 @@ export class MealService {
   private static apiPath: string = "meals";
 
   public readonly defaultNumberOfPersons$: Observable<number> 
-  = this.familyApiService.family$
+  = this.familyApiService.membersCount$
   .pipe(
-    map((family: Family|undefined) => 
-      { 
-        return (family ? family.members.length : 2); 
-      }
+    map((count: number|undefined) => 
+        count ?? 2
     )
   );
 

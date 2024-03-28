@@ -1,17 +1,14 @@
 <app-go-back-top-bar label="Ma famille"></app-go-back-top-bar>
 <div class="page">
-  <div>
-    <p>En construction !</p>
-    <p>Nom famille : {{ family?.name }}</p>
+  @if(family$ | async; as family) {
+    <h1>{{family.name}}</h1>
+    <h2>{{family.members.length}} membre(s)</h2>
     <p>Code d'association : {{ family?.associationCode }}</p>
-    @if (family && family.members.length > 0) {
-      <ul>
-        @for (familyMember of family.members; track familyMember) {
-          <li>
-            {{ familyMember.username }}
-          </li>
-        }
-      </ul>
+    <p>Membres :</p>
+    <ul>
+    @for (familyMember of family.members; track familyMember) {
+      <li>{{familyMember.username}}</li>
     }
-  </div>
+    </ul>
+  }
 </div>

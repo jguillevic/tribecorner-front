@@ -1,41 +1,28 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-
-import {UserInfo} from 'src/app/user/model/user-info.model';
-import {UserService} from 'src/app/user/service/user.service';
 import {FamilyApiService} from '../../service/family-api.service';
-import {Subscription} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Family} from '../../model/family.model';
 import {TabBarComponent} from "../../../common/tab-bar/ui/tab-bar/tab-bar.component";
 import {ProfileTopBarComponent} from '../../../common/top-bar/profile/ui/profile-top-bar.component';
 import {GoBackTopBarComponent} from "../../../common/top-bar/go-back/ui/go-back-top-bar.component";
+import {CommonModule} from '@angular/common';
 
 @Component({
     selector: 'app-display-family',
     standalone: true,
     templateUrl: './display-family.component.html',
-    styles: [],
-    imports: [TabBarComponent, ProfileTopBarComponent, GoBackTopBarComponent]
+    styleUrl: './display-family.component.scss',
+    imports: [
+      TabBarComponent,
+      ProfileTopBarComponent,
+      GoBackTopBarComponent,
+      CommonModule
+    ]
 })
-export class DisplayFamilyComponent implements OnInit, OnDestroy {
-  private loadFamilySubscription: Subscription|undefined;
-
-  public family: Family|undefined;
+export class DisplayFamilyComponent {
+  public readonly family$: Observable<Family|undefined> = this.familyApiService.family$;
 
   public constructor(
-    private userService: UserService,
     private familyApiService: FamilyApiService
-    ) { }
-
-  public ngOnInit(): void {
-    const currentUserInfo: UserInfo|undefined = this.userService.userInfo;
-    if (currentUserInfo && currentUserInfo.familyId) {
-      this.loadFamilySubscription = this.familyApiService
-      .loadOneByFamilyId(currentUserInfo.familyId)
-      .subscribe((family) => { this.family = family; });
-    }
-  }
-
-  public ngOnDestroy(): void {
-    this.loadFamilySubscription?.unsubscribe();
-  }
+  ) { }
 }

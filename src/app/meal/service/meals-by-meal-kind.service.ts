@@ -32,18 +32,16 @@ export class MealsByMealKindService {
             result.meals
             .filter(meal => meal.mealKindId === mealKind.id)
             .sort((a, b) => {
-              // Utiliser toLowerCase() pour une comparaison insensible à la casse
               const nameA = a.name.toLowerCase();
               const nameB = b.name.toLowerCase();
           
               if (nameA < nameB) {
-                return -1; // a vient avant b
+                return -1;
               }
               if (nameA > nameB) {
-                return 1; // a vient après b
+                return 1
               }
           
-              // Les noms sont identiques
               return 0;
             })
           )

@@ -1,11 +1,9 @@
-<div class="top-bar go-back-top-bar">
-    <div>
-        <button mat-icon-button (click)="goBack()">
-            <mat-icon class="material-symbols-outlined">arrow_back</mat-icon>
-        </button>
-    </div>
-    <div>
-        <ng-content></ng-content>
-    </div>
+<div class="top-bar container">
+    <button mat-icon-button (click)="goBack()" class="go-back-button">
+        <mat-icon class="material-symbols-outlined">arrow_back</mat-icon>
+    </button>
+    @if(label()) {
+    <h1 class="label">{{label()}}</h1>
+    }
 </div>
 <mat-divider></mat-divider>

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, InputSignal, input} from '@angular/core';
 import {Location} from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
@@ -13,9 +13,10 @@ import {MatDividerModule} from '@angular/material/divider';
     MatDividerModule
 ],
   templateUrl: './go-back-top-bar.component.html',
-  styleUrls: ['go-back-top-bar.component.scss']
+  styleUrl: 'go-back-top-bar.component.scss'
 })
 export class GoBackTopBarComponent {
+  public label: InputSignal<string|undefined> = input<string>();
   public isGoingBack: boolean = false;
 
   public constructor(

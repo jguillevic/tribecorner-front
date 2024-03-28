@@ -31,12 +31,13 @@ import {TranslocoModule, provideTranslocoScope} from '@ngneat/transloco';
         CheckableItemShoppingListsComponent,
         EditShoppingListFormComponent,
         TranslocoModule
-    ],providers: [
+    ],
+    providers: [
       provideTranslocoScope({
           scope: 'shopping-list/ui/page/edit-shopping-list-page',
           alias: 'editShoppingListPage'
       })
-  ],
+    ],
 })
 export class EditShoppingListComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();

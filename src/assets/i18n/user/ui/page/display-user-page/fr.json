@@ -1,0 +1,16 @@
+{
+    "welcomeUser": "Hey {{login}} !",
+    "top-bar-label": "Mon compte",
+    "profil": "Profil",
+    "editProfil": "Éditer mon profil",
+    "signOut": "Déconnexion",
+    "deleteProfil": "Supprimer mon profil",
+    "notifications": "Notifications",
+    "activate": "Activer",
+    "configure": "Configurer",
+    "miscellaneous": "Divers",
+    "contactUs": "Nous contacter",
+    "about": "A propos",
+    "privacyPolicy": "Politique de confidentialité",
+    "termsOfUse": "Conditions d'utilisation"
+}

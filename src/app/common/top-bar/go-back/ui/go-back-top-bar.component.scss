@@ -1,8 +1,21 @@
 @import '../../../../../styles/helpers/variables';
 
-.go-back-top-bar {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+.container {
+    position: relative;
+}
+
+.go-back-button {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+.label {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 700;
 }

@@ -1,6 +1,6 @@
-import { Routes } from "@angular/router";
-import { notSignedInGuard } from "../guard/not-signed-in.guard";
-import { signedInGuard } from "../guard/signed-in.guard";
+import {Routes} from "@angular/router";
+import {notSignedInGuard} from "../guard/not-signed-in.guard";
+import {signedInGuard} from "../guard/signed-in.guard";
 
 export class UserRoutes {
     public static readonly signUpUserRoute: string = 'user/sign-up';
@@ -21,7 +21,7 @@ export class UserRoutes {
         },
         { 
             path: UserRoutes.displayUserRoute,
-            title: 'Mon profil',
+            title: 'Mon compte',
             canActivate: [signedInGuard],
             loadComponent: () => import('../ui/page/display-user-page/display-user-page.component').then(module => module.DisplayUserComponent) 
         }

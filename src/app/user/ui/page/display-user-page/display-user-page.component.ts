@@ -11,6 +11,7 @@ import {MatListModule} from '@angular/material/list';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatCardModule} from '@angular/material/card';
+import {TranslocoModule, provideTranslocoScope} from '@ngneat/transloco';
 
 @Component({
     selector: 'app-display-user-page',
@@ -26,15 +27,22 @@ import {MatCardModule} from '@angular/material/card';
         MatListModule,
         MatIconModule,
         MatSlideToggleModule,
-        MatCardModule
-    ]
+        MatCardModule,
+        TranslocoModule
+    ],
+    providers: [
+        provideTranslocoScope({
+            scope: 'user/ui/page/display-user-page',
+            alias: 'displayUserPage'
+        })
+      ],
 })
 export class DisplayUserComponent implements OnDestroy {
     private readonly destroy$: Subject<void> = new Subject<void>();
 
     public readonly userInfo$: Observable<UserInfo|undefined>
     = this.userService.userInfo$;
-
+    
     public constructor(
         private readonly userService: UserService
     ) { }

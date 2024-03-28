@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
-import {Subscription, map} from 'rxjs';
+import {Subscription} from 'rxjs';
 import {UserInfo} from 'src/app/user/model/user-info.model';
 import {UserService} from 'src/app/user/service/user.service';
 import {Router} from '@angular/router';
@@ -55,13 +55,5 @@ export class ProfileTopBarComponent implements OnInit, OnDestroy {
 
   public goToDisplayFamily(): Promise<boolean> {
     return this.router.navigate([FamilyRoutes.displayFamilyRoute]);
-  }
-
-  public signOut(): void{
-    this.signOutSubscription = this.userService.signOut()
-    .pipe(
-      map(() => this.router.navigate([UserRoutes.signInUserRoute]))
-    )
-    .subscribe();
   }
 }

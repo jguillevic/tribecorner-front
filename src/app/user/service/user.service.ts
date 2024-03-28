@@ -10,13 +10,14 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {UserConverter} from '../converter/user.converter';
 import {Auth, User, UserCredential, authState, browserLocalPersistence, browserSessionPersistence, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, user} from '@angular/fire/auth';
 import {setPersistence} from '@firebase/auth';
+import {Router} from '@angular/router';
+import {UserRoutes} from '../route/user.routes';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService implements OnDestroy {
   private static readonly apiPath: string = 'users';
-  private static readonly userInfoSessionStorageKey: string = 'userInfo';
 
   private readonly destroy$: Subject<boolean> = new Subject<boolean>();
   private readonly firebaseAuth: Auth = inject(Auth);
@@ -26,9 +27,14 @@ export class UserService implements OnDestroy {
   public readonly isSignedIn$: Observable<boolean|undefined> = this.isSignedInSubject.asObservable();
 
   public userInfo: UserInfo|undefined;
+  private readonly userInfoSubject: BehaviorSubject<UserInfo|undefined> 
+  = new BehaviorSubject<UserInfo|undefined>(undefined);
+  public readonly userInfo$: Observable<UserInfo|undefined> 
+  = this.userInfoSubject.asObservable();
 
   public constructor(
-    private readonly http: HttpClient
+    private readonly http: HttpClient,
+    private readonly router: Router
     ) {
       this.firebaseAuthState$
       .pipe(
@@ -108,6 +114,7 @@ export class UserService implements OnDestroy {
       .pipe(
         tap(userInfo => {
           this.userInfo = userInfo;
+          this.userInfoSubject.next(userInfo);
           this.isSignedInSubject.next(true);
          })
       );
@@ -118,9 +125,10 @@ export class UserService implements OnDestroy {
     if (currentUserInfo) {
       return this.loadUserFromFirebaseId(currentUserInfo.firebaseId)
         .pipe(
-          tap(userInfo => 
-            this.userInfo = userInfo
-          )
+          tap(userInfo => {
+            this.userInfo = userInfo;
+            this.userInfoSubject.next(userInfo);
+          })
         );
     }
 
@@ -165,13 +173,17 @@ export class UserService implements OnDestroy {
 
   public signOutLocally(): void {
     this.userInfo = undefined;
+    this.userInfoSubject.next(undefined);
     this.isSignedInSubject.next(false);
   }
 
-  public signOut(): Observable<void> {
+  public signOut(): Observable<boolean> {
     return from(signOut(this.firebaseAuth))
     .pipe(
-      tap(() => this.signOutLocally())
+      tap(() =>
+        this.signOutLocally()
+      ),
+      mergeMap(() => from(this.router.navigate([ UserRoutes.signInUserRoute ])))
     );
   }
 

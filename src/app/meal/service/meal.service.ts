@@ -40,7 +40,8 @@ export class MealService {
     private readonly familyApiService: FamilyApiService
   ) { }
 
-  private resetCache(meals: Meal[] = []): void {
+  public resetCache(meals: Meal[] = []): void {
+    this.lastDate = undefined;
     this.loadedMealsByDateSubject.next(meals);
     this.addedMealsSubject.next([]);
     this.updatedMealsSubject.next([]);

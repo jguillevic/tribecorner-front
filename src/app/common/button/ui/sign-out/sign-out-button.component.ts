@@ -25,7 +25,6 @@ export class SignOutButtonComponent implements OnDestroy {
   public isSigningOut: boolean = false;
 
   public constructor(
-    private router: Router,
     private userService: UserService
     ) { }
 
@@ -35,10 +34,8 @@ export class SignOutButtonComponent implements OnDestroy {
 
   public signOut(): void {
     this.isSigningOut = true;
-    this.signOutSubscription = this.userService.signOut()
-    .pipe(
-      map(() => from(this.router.navigate([ UserRoutes.signInUserRoute ])))
-    )
+    this.signOutSubscription 
+    = this.userService.signOut()
     .subscribe();
   }
 }

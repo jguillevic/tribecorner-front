@@ -1,6 +1,112 @@
 <app-go-back-top-bar></app-go-back-top-bar>
-<div class="page">
-    <div>
-        <p>En construction !</p>
-    </div>
-</div>
+<section class="page">
+    @if(userInfo$ | async; as userInfo) {
+    <section>
+        <h1>Hey {{userInfo.username}} !</h1>
+    </section>
+
+    <!--Zone "Profil".-->
+    <article class="setting">
+        <header>
+            <h2 class="setting__title">Profil</h2>
+        </header>
+        <section>
+            <mat-list class="list">
+                <mat-divider></mat-divider>
+                <mat-list-item class="list__item">
+                    <div class="item__container">
+                        <mat-icon fontIcon="person" class="material-symbols-outlined"></mat-icon>
+                        <span class="item__label">Éditer mon profil</span>
+                    </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item class="list__item" (click)="signOut()">
+                    <div class="item__container">
+                        <mat-icon fontIcon="logout" class="material-symbols-outlined"></mat-icon>
+                        <span class="item__label">Déconnexion</span>
+                    </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item class="list__item">
+                    <div class="item__container">
+                        <mat-icon fontIcon="delete" class="material-symbols-outlined"></mat-icon>
+                        <span class="item__label">Supprimer mon profil</span>
+                    </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+            </mat-list>
+        </section>
+    </article>
+
+    <div class="spacer"></div>
+
+    <!--Zone "Notifications".-->
+    <article class="setting">
+        <header>
+            <h2 class="setting__title">Notifications</h2>
+        </header>
+        <section>
+            <mat-list class="list">
+                <mat-divider></mat-divider>
+                <mat-list-item class="list__item">
+                    <div class="item__container">
+                        <mat-icon fontIcon="notifications" class="material-symbols-outlined"></mat-icon>
+                        <span class="item__label">Activer</span>
+                        <mat-slide-toggle color="primary"></mat-slide-toggle>
+                    </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item class="list__item">
+                    <div class="item__container">
+                        <mat-icon fontIcon="settings" class="material-symbols-outlined"></mat-icon>
+                        <span class="item__label">Paramétrer</span>
+                    </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+              </mat-list>
+        </section>
+    </article>
+
+    <div class="spacer"></div>
+
+    <!--Zone "Divers".-->
+    <article class="setting">
+        <header>
+            <h2 class="setting__title">Divers</h2>
+        </header>
+        <section>
+            <mat-list class="list">
+                <mat-divider></mat-divider>
+                <mat-list-item class="list__item">
+                    <div class="item__container">
+                        <mat-icon fontIcon="chat_bubble" class="material-symbols-outlined"></mat-icon>
+                        <span class="item__label">Nous contacter</span>
+                    </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item class="list__item">
+                    <div class="item__container">
+                        <mat-icon fontIcon="info" class="material-symbols-outlined"></mat-icon>
+                        <span class="item__label">A propos</span>
+                    </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item class="list__item">
+                    <div class="item__container">
+                        <mat-icon fontIcon="lock" class="material-symbols-outlined"></mat-icon>
+                        <span class="item__label">Politique de confidentialité</span>
+                    </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item class="list__item">
+                    <div class="item__container">
+                        <mat-icon fontIcon="description" class="material-symbols-outlined"></mat-icon>
+                        <span class="item__label">Conditions d'utilisation</span>
+                    </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+              </mat-list>
+        </section>
+    </article>
+    }
+</section>

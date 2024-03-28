@@ -1,0 +1,52 @@
+@import '../../../../../styles/helpers/colors';
+
+.setting {
+    background-color: $light-color;
+
+    &__title {
+        padding-left: 10px;
+        padding-top: 15px;
+    }
+}
+
+.list {
+    padding: 0;
+
+    &__item {
+        &:hover {
+            cursor: pointer;
+        }
+
+        &::after {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+            vertical-align: middle;
+            padding-top: 12px;
+            content: '\e409';
+        }
+    }
+}
+
+.item__container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.item__label {
+    padding-left: 10px;
+}
+
+.spacer {
+    height: 10px;
+}

@@ -1,8 +1,9 @@
 <app-go-back-top-bar *transloco="let t;read:'displayUserPage';" label="{{t('top-bar-label')}}"></app-go-back-top-bar>
 <section class="page" *transloco="let t;read:'displayUserPage';">
     @if(userInfo$ | async; as userInfo) {
-    <section>
-        <h1>{{t('welcomeUser', {login: userInfo.username})}}</h1>
+    <section class="profil">
+        <img class="profil__img" src="https://pics.craiyon.com/2023-07-07/67e29100f11041d983c0dbee0627f6d5.webp">
+        <p class="profil__label">{{t('welcomeUser', {login: userInfo.username})}}</p>
     </section>
 
     <!--Zone "Profil".-->
@@ -52,7 +53,6 @@
                     <div class="item__container">
                         <mat-icon fontIcon="notifications" class="material-symbols-outlined"></mat-icon>
                         <span class="item__label">{{t('activate')}}</span>
-                        <mat-slide-toggle color="primary"></mat-slide-toggle>
                     </div>
                 </mat-list-item>
                 <mat-divider></mat-divider>

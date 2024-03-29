@@ -12,12 +12,19 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatCardModule} from '@angular/material/card';
 import {TranslocoModule, provideTranslocoScope} from '@ngneat/transloco';
+import { SpacerComponent } from "../../../../common/spacer/ui/spacer/spacer.component";
 
 @Component({
     selector: 'app-display-user-page',
     standalone: true,
     templateUrl: './display-user-page.component.html',
     styleUrl: './display-user-page.component.scss',
+    providers: [
+        provideTranslocoScope({
+            scope: 'user/ui/page/display-user-page',
+            alias: 'displayUserPage'
+        })
+    ],
     imports: [
         ProfileTopBarComponent,
         TabBarComponent,
@@ -28,14 +35,9 @@ import {TranslocoModule, provideTranslocoScope} from '@ngneat/transloco';
         MatIconModule,
         MatSlideToggleModule,
         MatCardModule,
-        TranslocoModule
-    ],
-    providers: [
-        provideTranslocoScope({
-            scope: 'user/ui/page/display-user-page',
-            alias: 'displayUserPage'
-        })
-      ],
+        TranslocoModule,
+        SpacerComponent
+    ]
 })
 export class DisplayUserComponent implements OnDestroy {
     private readonly destroy$: Subject<void> = new Subject<void>();

@@ -1,4 +1,5 @@
 {
+    "top-bar-label": "Éditer mon évènement",
     "name": "Nom",
     "nameRequired": "Nom requis",
     "nameTooLong": "Nom trop long (max. {{maxLength}} caractères)",

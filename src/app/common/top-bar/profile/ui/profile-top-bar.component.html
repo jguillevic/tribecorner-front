@@ -1,25 +1,17 @@
 <div class="top-bar profile-top-bar">
+    <button mat-icon-button>
+        <mat-icon matBadge="4" matBadgeColor="accent" class="material-symbols-outlined">notifications</mat-icon>
+    </button>
+    <button mat-icon-button>
+        <mat-icon matBadge="9+" matBadgeColor="accent" class="material-symbols-outlined">mode_comment</mat-icon>
+    </button>
+    <button mat-icon-button (click)="goToDisplayFamily()">
+        <mat-icon class="material-symbols-outlined">group</mat-icon>
+    </button>
     <div class="profile-top-bar__profile" (click)="goToDisplayUser()">
         <div class="user__img">
             <span>{{ getUsernameFirstLetterUpperCase() }}</span>
         </div>
-    
-        <div class="profile__text">
-            <p class="text__welcome">Hey,</p>
-            <p class="text__username">{{ currentUserInfo?.username }} !</p>
-        </div>
-    </div>
-
-    <div>
-        <button mat-icon-button>
-            <mat-icon class="material-symbols-outlined">notifications</mat-icon>
-        </button>
-        <button mat-icon-button>
-            <mat-icon class="material-symbols-outlined">mode_comment</mat-icon>
-        </button>
-        <button mat-icon-button (click)="goToDisplayFamily()">
-            <mat-icon class="material-symbols-outlined">group</mat-icon>
-        </button>
     </div>
 </div>
 <mat-divider></mat-divider>

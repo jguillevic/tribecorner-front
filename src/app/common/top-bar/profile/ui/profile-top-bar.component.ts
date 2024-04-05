@@ -10,6 +10,7 @@ import {UserRoutes} from 'src/app/user/route/user.routes';
 import {MatDividerModule} from '@angular/material/divider';
 import {FamilyRoutes} from 'src/app/family/route/family.routes';
 import {SignOutButtonComponent} from 'src/app/common/button/ui/sign-out/sign-out-button.component';
+import {MatBadgeModule} from '@angular/material/badge';
 
 @Component({
     selector: 'app-profile-top-bar',
@@ -17,12 +18,13 @@ import {SignOutButtonComponent} from 'src/app/common/button/ui/sign-out/sign-out
     templateUrl: './profile-top-bar.component.html',
     styleUrls: ['./profile-top-bar.component.scss'],
     imports: [
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
-    SignOutButtonComponent,
-    MatDividerModule
-]
+        MatMenuModule,
+        MatIconModule,
+        MatButtonModule,
+        SignOutButtonComponent,
+        MatDividerModule,
+        MatBadgeModule
+    ]
 })
 export class ProfileTopBarComponent implements OnInit, OnDestroy {
   private signOutSubscription: Subscription|undefined;

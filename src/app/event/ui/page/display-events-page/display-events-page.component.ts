@@ -28,7 +28,7 @@ import {toSignal} from '@angular/core/rxjs-interop';
         SimpleLoadingComponent,
         EventLargeEmptyComponent,
         EventCardComponent,
-        EventCardPlaceholderComponent
+        EventCardPlaceholderComponent,
     ]
 })
 export class DisplayEventsPageComponent {

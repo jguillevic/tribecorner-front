@@ -4,22 +4,29 @@
 .profile-top-bar {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
 
     &__profile {
         display: flex;
         flex-direction: row;
-        justify-content: flex-start;
+        justify-content: center;
         align-items: center;
-        padding-left: 12px;
         cursor: pointer;
+        border-radius: 50%;
+        width: 48px;
+        height: 48px;
+
+        &:hover,
+        &:focus {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
     }
 }
 
 .user__img {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     object-fit: cover;
     border-radius: 50%;
     border: 2px solid $dark-color;
@@ -30,27 +37,7 @@
 
     & > span {
         color: $dark-color;
-        font-size: 24px;
+        font-size: 22px;
         font-weight: 700;
-    }
-}
-
-.profile__text {
-    padding-left: 10px;
-}
-
-.text {
-    &__welcome {
-        font-size: 12px;
-        font-weight: 300;
-        padding: 0px;
-        margin: 0px;
-    }
-
-    &__username {
-        font-size: 18px;
-        font-weight: 500;
-        padding: 0px;
-        margin: 0px;
     }
 }

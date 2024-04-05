@@ -5,15 +5,20 @@
 .tab-bar {
     position: fixed;
     bottom: 0px;
+    width: 100%;
     height: $tab-bar-height;
     background-color: $light-color;
     z-index: 99;
-
-    @include media-width;
-
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    
     &__container {
         display: flex;
+        flex-direction: row;
         justify-content: space-between;
+        max-width: 500px;
         width: 100%;
         padding-left: 15px;
         padding-right: 15px;
@@ -45,9 +50,41 @@
 
 .action-button {
     z-index: 2;
-    position: absolute;
+    position: fixed;
     right: 15px;
     bottom: calc($tab-bar-height + 15px);
     color: $dark-color;
     background-color: $primary-color;
+}
+
+@media screen and (min-width:calc($screen-width-transition + 2 * $tab-bar-height)) {
+    .tab-bar {
+        position: absolute;
+        width: $tab-bar-height;
+        height: 100%;
+        left: 0px;
+        top: $top-bar-height;
+        bottom: auto;
+        border-top: none;
+        border-right: 1px solid rgba(0, 0, 0, 0.12);
+        
+        &__container {
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            width: auto;
+            height: 100%;
+            padding-left: 0;
+            padding-right: 0;
+            padding-top: 10px;
+        }
+    }
+
+    .item:not(:last-child) {
+        margin-bottom: 25px;
+    }
+
+    .action-button {
+        bottom: 15px;
+    }
 }

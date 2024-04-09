@@ -150,9 +150,11 @@ export class MealService {
   }
 
   public delete(mealId: number): Observable<void> {
-    this.deletedMealIdsSubject.next([...this.deletedMealIdsSubject.value, mealId]);
     return this.apiHttp.delete<void>(
       `${environment.apiUrl}${MealService.apiPath}/${mealId}`
+    )
+    .pipe(
+      tap(() => this.deletedMealIdsSubject.next([...this.deletedMealIdsSubject.value, mealId]))
     );
   }
 }

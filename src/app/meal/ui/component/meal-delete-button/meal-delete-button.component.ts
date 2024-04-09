@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
+import {Component, Input, OnDestroy} from '@angular/core';
 import {Meal} from '../../../model/meal.model';
 import {Subject, takeUntil, tap} from 'rxjs';
 import {MealService} from '../../../service/meal.service';

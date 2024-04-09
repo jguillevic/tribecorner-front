@@ -1,7 +1,7 @@
 <div class="meal-kind__name">
     {{mealsByMealKind?.mealKind?.name}}
 </div>
-@for (meal of mealsByMealKind?.meals; track meal) {
+@for (meal of mealsByMealKind?.meals; track trackByMeal) {
     <app-meal-card 
     [meal]="meal"
     [showActions]="showActions">

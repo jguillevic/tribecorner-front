@@ -8,7 +8,7 @@
     <div class="meals__container"
     [ngClass]="{'meals__container--center': mealsByMealKinds() && !mealsByMealKinds()?.length}">
       @defer (when mealsByMealKinds()) {
-        @for (mealsByMealKind of mealsByMealKinds(); track mealsByMealKind) {
+        @for (mealsByMealKind of mealsByMealKinds(); track trackByMealsByMealKind) {
           <app-meals-by-meal-kind [mealsByMealKind]="mealsByMealKind">      
           </app-meals-by-meal-kind>  
         }

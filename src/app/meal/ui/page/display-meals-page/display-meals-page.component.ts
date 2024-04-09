@@ -82,4 +82,8 @@ export class DisplayMealsPageComponent implements OnDestroy {
             switchMap(date => this.mealsByMealKindService.loadAllByDate(date))
         );
     }
+
+    public trackByMealsByMealKind(mealsByMealKind: MealsByMealKind) {
+        return mealsByMealKind.mealKind.id;
+    }
 }

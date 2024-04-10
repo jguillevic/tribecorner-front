@@ -11,7 +11,6 @@ import {MealCurrentDateService} from '../../../service/meal-current-date.service
 import {MealCardComponent} from "../../component/meal-card/meal-card.component";
 import {MealEditButtonComponent} from "../../component/meal-edit-button/meal-edit-button.component";
 import {MealDeleteButtonComponent} from "../../component/meal-delete-button/meal-delete-button.component";
-import {Meal} from '../../../model/meal.model';
 import {MealCopyButtonComponent} from "../../component/meal-copy-button/meal-copy-button.component";
 import {MealGoToService} from '../../../service/meal-go-to.service';
 import {MealLargeEmptyComponent} from "../../component/meal-large-empty/meal-large-empty.component";

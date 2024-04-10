@@ -17,3 +17,50 @@
         }
     }
 }
+
+.logo {
+    &__container {
+        display: inline-block;
+        overflow: hidden;
+    }
+
+    &__capital-letter {
+        opacity: 0;
+        animation: fadeIn 0.5s forwards;
+    }
+
+    &__rest-of-word {
+        display: inline-block;
+        transform: translateX(-100%);
+        opacity: 0;
+        animation: slideIn 1s 0.5s forwards;
+    }
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    animation: fadeIn 2s forwards 3s;
+
+    & > h2 {
+        padding-left: 10px;
+        padding-right: 10px;
+        text-align: center;
+    }
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

@@ -3,14 +3,16 @@ import {UserService} from '../../../user/service/user.service';
 import {Router} from '@angular/router';
 import {UserRoutes} from '../../../user/route/user.routes';
 import {FamilyRoutes} from '../../../family/route/family.routes';
-import {Observable, Subject, from, mergeMap, of, takeUntil} from 'rxjs';
+import {Observable, Subject, delayWhen, from, mergeMap, of, takeUntil, timer} from 'rxjs';
 import {MatCardModule} from '@angular/material/card';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-display-loading',
   standalone: true,
   imports: [
-    MatCardModule
+    MatCardModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './display-loading.component.html',
   styleUrl: 'display-loading.component.scss'
@@ -27,6 +29,8 @@ export class DisplayLoadingComponent implements OnInit, OnDestroy {
     this.userService.isSignedIn$
     .pipe(
       takeUntil(this.destroy$),
+      // Attente de la fin de l'animation.
+      delayWhen(() => timer(1500)),
       mergeMap((isSignedIn: boolean | undefined) => {
         if (isSignedIn !== undefined) {
             this.navigateTo(isSignedIn);

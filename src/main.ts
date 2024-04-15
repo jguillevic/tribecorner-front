@@ -19,7 +19,9 @@ import {provideTransloco} from '@ngneat/transloco';
 import {ItemShoppingListRoutes} from './app/shopping-list/route/item-shopping-list.routes';
 import {initializeApp, provideFirebaseApp} from '@angular/fire/app';
 import {getAuth, provideAuth} from '@angular/fire/auth';
+import {getMessaging, provideMessaging} from '@angular/fire/messaging';
 import {environment} from './environments/environment';
+import { provideServiceWorker } from '@angular/service-worker';
 
 const routes: Routes = [
     { 
@@ -77,22 +79,27 @@ const routes: Routes = [
 
 bootstrapApplication(AppComponent, {
     providers: [
-        importProvidersFrom(BrowserModule, BrowserAnimationsModule),
-        importProvidersFrom(provideFirebaseApp(() => initializeApp(environment.firebaseConfig))),
-        importProvidersFrom(provideAuth(() => getAuth())),
-        provideRouter(routes),
-        provideHttpClient(),
-        provideAnimations(),
-        provideTransloco({
-            config: { 
+    importProvidersFrom(BrowserModule, BrowserAnimationsModule),
+    importProvidersFrom(provideFirebaseApp(() => initializeApp(environment.firebaseConfig))),
+    importProvidersFrom(provideAuth(() => getAuth())),
+    importProvidersFrom(provideMessaging(() => getMessaging())),
+    provideRouter(routes),
+    provideHttpClient(),
+    provideAnimations(),
+    provideTransloco({
+        config: {
             availableLangs: ['fr'],
             defaultLang: 'fr',
             // Remove this option if your application doesn't support changing language in runtime.
             reRenderOnLangChange: true,
             prodMode: !isDevMode(),
-            },
-            loader: TranslocoHttpLoader
-        }),
-    ]
+        },
+        loader: TranslocoHttpLoader
+    }),
+    provideServiceWorker('ngsw-worker.js', {
+        enabled: !isDevMode(),
+        registrationStrategy: 'registerWhenStable:30000'
+    })
+]
 })
   .catch(err => console.error(err));

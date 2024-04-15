@@ -9,6 +9,7 @@ export const environment = {
         storageBucket: "tribe-corner-prod.appspot.com",
         messagingSenderId: "828444084020",
         appId: "1:828444084020:web:4034ba44c0a40e9aa38761",
-        measurementId: "G-LWPMZLVQ68"
+        measurementId: "G-LWPMZLVQ68",
+        vapidPublicKey: "BCLv12Hz5srO8nRZUj3n2PM7woLUQ0iOUn_emvkYDZynMHnBLtxJMURsExatGqOI3JX5MAp0Z3psC0ReFwyAVaU"
     },
 };

@@ -1,7 +1,7 @@
 import {Injectable, OnDestroy, inject} from '@angular/core';
 import {SignUpUser} from '../model/sign-up-user.model';
 import {UserInfo} from '../model/user-info.model';
-import {BehaviorSubject, Observable, Subject, exhaustMap, from, map, mergeMap, of, takeUntil, tap} from 'rxjs';
+import {BehaviorSubject, Observable, Subject, catchError, exhaustMap, from, map, mergeMap, of, takeUntil, tap} from 'rxjs';
 import {SignInUser} from '../model/sign-in-user.model';
 import {CreateUserDto} from '../dto/create-user.dto';
 import {LoadUserDto} from '../dto/load-user.dto';
@@ -109,14 +109,19 @@ export class UserService implements OnDestroy {
       );
   }
 
-  private signInLocally(firebaseId: string): Observable<UserInfo> {
+  private signInLocally(firebaseId: string): Observable<UserInfo|undefined> {
     return this.loadUserFromFirebaseId(firebaseId)
       .pipe(
         tap(userInfo => {
           this.userInfo = userInfo;
           this.userInfoSubject.next(userInfo);
           this.isSignedInSubject.next(true);
-         })
+        }),
+        // En cas d'erreur, on se déconnecte.
+        catchError(() => {
+          this.signOut();
+          return of(undefined);
+        })
       );
   }
 

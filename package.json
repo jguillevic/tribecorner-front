@@ -24,6 +24,7 @@
     "@angular/platform-browser": "^17.3.4",
     "@angular/platform-browser-dynamic": "^17.3.4",
     "@angular/router": "^17.3.4",
+    "@angular/service-worker": "^17.3.4",
     "@ng-matero/extensions": "^17.2.1",
     "@ng-matero/extensions-moment-adapter": "^17.0.0",
     "@ngneat/transloco": "^6.0.4",

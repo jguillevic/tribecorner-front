@@ -1,11 +1,15 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {Component} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
+import {PushNotificationComponent} from "./notification/ui/component/push-notification/push-notification.component";
 
 @Component({
     selector: 'app-root',
-    template: '<router-outlet></router-outlet>',
+    templateUrl: './app.component.html',
     styles: [],
     standalone: true,
-    imports: [RouterOutlet]
+    imports: [
+        RouterOutlet,
+        PushNotificationComponent
+    ]
 })
 export class AppComponent { }

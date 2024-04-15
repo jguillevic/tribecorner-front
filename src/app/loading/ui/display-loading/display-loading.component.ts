@@ -21,15 +21,15 @@ export class DisplayLoadingComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
 
   public constructor(
-    private userService: UserService,
-    private router: Router
+    private readonly userService: UserService,
+    private readonly router: Router
   ) { }
 
   public ngOnInit(): void {
     this.userService.isSignedIn$
     .pipe(
       takeUntil(this.destroy$),
-      // Attente de la fin de l'animation.
+      // Attente de la fin de l'animation du logo.
       delayWhen(() => timer(1500)),
       mergeMap((isSignedIn: boolean | undefined) => {
         if (isSignedIn !== undefined) {

@@ -9,6 +9,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {ItemShoppingListGoToService} from '../../../service/item-shopping-list-go-to.service';
 import {ItemShoppingListsByCategoryViewModel} from '../../view-model/item-shopping-lists-by-category.view-model';
+import {ItemShoppingListCategoryHelper} from '../../../helper/item-shopping-list-category.helper';
 
 @Component({
   selector: 'app-checkable-item-shopping-lists',
@@ -119,17 +120,18 @@ export class CheckableItemShoppingListsComponent implements OnChanges, OnDestroy
     }
 
     private sortItemShoppingListsByCategories(): void {
-        const itemShoppingListsByCategories: ItemShoppingListsByCategoryViewModel[] = this.itemShoppingListsByCategories;
+        const itemShoppingListsByCategories: ItemShoppingListsByCategoryViewModel[] 
+        = this.itemShoppingListsByCategories;
 
-        itemShoppingListsByCategories.sort((a, b) => {
-            if (a.isExpanded !== b.isExpanded) {
-                // Tri par statut isExpanded.
-                return !a.isExpanded ? 1 : -1;
-            } else {
-                // Si les statuts isExpanded sont égaux, tri par nom.
-                return a.category.name.localeCompare(b.category.name);
+        itemShoppingListsByCategories
+        .sort((a, b) => {
+                if (a.isExpanded !== b.isExpanded) {
+                    // Tri par statut isExpanded.
+                    return !a.isExpanded ? 1 : -1;
+                } else {
+                    return ItemShoppingListCategoryHelper.compare(a.category, b.category);
+                }
             }
-          }
         );
     }
 
@@ -142,7 +144,8 @@ export class CheckableItemShoppingListsComponent implements OnChanges, OnDestroy
     }
 
     public goToItemShoppingListUpdate(itemShoppingListId: number|undefined): Observable<boolean> {
-        return this.itemShoppingListGoToService.goToUpdate(itemShoppingListId);
+        return this.itemShoppingListGoToService
+        .goToUpdate(itemShoppingListId);
       }
 
     public deleteItemShoppingList(itemShoppingList: ItemShoppingList): void {

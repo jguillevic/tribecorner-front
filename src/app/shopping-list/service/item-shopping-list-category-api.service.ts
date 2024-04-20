@@ -1,13 +1,14 @@
-import { Injectable } from '@angular/core';
-import { Observable, find, map, shareReplay } from 'rxjs';
-import { ItemShoppingListCategory } from '../model/item-shopping-list-category.model';
-import { ApiHttpClient } from '../../common/http/api-http-client';
-import { environment } from '../../../environments/environment';
-import { ItemShoppingListCategoryDto } from '../dto/item-shopping-list-category.dto';
-import { ItemShoppingListCategoryConverter } from '../converter/item-shopping-list-category.converter';
+import {Injectable} from '@angular/core';
+import {Observable, map, shareReplay} from 'rxjs';
+import {ItemShoppingListCategory} from '../model/item-shopping-list-category.model';
+import {ApiHttpClient} from '../../common/http/api-http-client';
+import {environment} from '../../../environments/environment';
+import {ItemShoppingListCategoryDto} from '../dto/item-shopping-list-category.dto';
+import {ItemShoppingListCategoryConverter} from '../converter/item-shopping-list-category.converter';
+import {ItemShoppingListCategoryHelper} from '../helper/item-shopping-list-category.helper';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class ItemShoppingListCategoryApiService {
     private static apiPath: string = "item_shopping_list_categories";
@@ -21,7 +22,7 @@ export class ItemShoppingListCategoryApiService {
     public readonly defaultCategory$: Observable<ItemShoppingListCategory|undefined>
     = this.categories$
     .pipe(
-        map(categories => categories.find(category => category.code === 'UNKNOWN'))
+        map(categories => categories.find(category => category.code === ItemShoppingListCategoryHelper.unknownCode))
     );
 
     public constructor(
@@ -34,8 +35,11 @@ export class ItemShoppingListCategoryApiService {
         )
         .pipe(
             map((loadItemShoppingListCategoryDtos: ItemShoppingListCategoryDto[]) => 
-            loadItemShoppingListCategoryDtos.map((loadItemShoppingListCategoryDto: ItemShoppingListCategoryDto) =>
-                ItemShoppingListCategoryConverter.fromDtoToModel(loadItemShoppingListCategoryDto))
+                loadItemShoppingListCategoryDtos
+                .map((loadItemShoppingListCategoryDto: ItemShoppingListCategoryDto) =>
+                    ItemShoppingListCategoryConverter.fromDtoToModel(loadItemShoppingListCategoryDto)
+                )
+                .sort((a, b) => ItemShoppingListCategoryHelper.compare(a, b))
             )
         );
     }

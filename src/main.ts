@@ -1,6 +1,6 @@
 import {importProvidersFrom, isDevMode} from '@angular/core';
 import {AppComponent} from './app/app.component';
-import {provideRouter, Routes} from '@angular/router';
+import {InMemoryScrollingFeature, InMemoryScrollingOptions, provideRouter, Routes, withInMemoryScrolling} from '@angular/router';
 import {BrowserModule, bootstrapApplication} from '@angular/platform-browser';
 import {ShoppingListRoutes} from './app/shopping-list/route/shopping-list.routes';
 import {provideHttpClient} from '@angular/common/http';
@@ -21,7 +21,7 @@ import {initializeApp, provideFirebaseApp} from '@angular/fire/app';
 import {getAuth, provideAuth} from '@angular/fire/auth';
 import {getMessaging, provideMessaging} from '@angular/fire/messaging';
 import {environment} from './environments/environment';
-import { provideServiceWorker } from '@angular/service-worker';
+import {provideServiceWorker} from '@angular/service-worker';
 
 const routes: Routes = [
     { 
@@ -77,21 +77,26 @@ const routes: Routes = [
     }
 ];
 
+const scrollConfig: InMemoryScrollingOptions = {
+    scrollPositionRestoration: 'top',
+    anchorScrolling: 'enabled',
+};
+const inMemoryScrollingFeature: InMemoryScrollingFeature =
+  withInMemoryScrolling(scrollConfig);
+
 bootstrapApplication(AppComponent, {
     providers: [
     importProvidersFrom(BrowserModule, BrowserAnimationsModule),
     importProvidersFrom(provideFirebaseApp(() => initializeApp(environment.firebaseConfig))),
     importProvidersFrom(provideAuth(() => getAuth())),
     importProvidersFrom(provideMessaging(() => getMessaging())),
-    provideRouter(routes),
+    provideRouter(routes, inMemoryScrollingFeature),
     provideHttpClient(),
     provideAnimations(),
     provideTransloco({
         config: {
             availableLangs: ['fr'],
             defaultLang: 'fr',
-            // Remove this option if your application doesn't support changing language in runtime.
-            reRenderOnLangChange: true,
             prodMode: !isDevMode(),
         },
         loader: TranslocoHttpLoader

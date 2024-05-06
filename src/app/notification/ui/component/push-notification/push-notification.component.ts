@@ -23,6 +23,13 @@ export class PushNotificationComponent implements OnInit, OnDestroy {
             takeUntil(this.destroy$),
             mergeMap((permission: NotificationPermission) => {
                 if (permission === "granted") {
+                    onMessage(
+                        this.messaging
+                        , payload => {
+                            console.log('Message reçu. ', payload.notification);
+                        }
+                    );
+
                     return from(
                         getToken(
                             this.messaging,
@@ -30,7 +37,7 @@ export class PushNotificationComponent implements OnInit, OnDestroy {
                         )
                     );
                 }
-                console.log('Permission non autorisée.');
+                console.log('Permission non donnée pour les notifications.');
                 return of(undefined);
             }),
             tap((token: string|undefined) => {
@@ -41,13 +48,6 @@ export class PushNotificationComponent implements OnInit, OnDestroy {
             )
         )
         .subscribe();
-
-        onMessage(
-            this.messaging
-            , payload => {
-                console.log('Message reçu. ', payload.notification);
-            }
-        );
     }
 
     public ngOnDestroy(): void {

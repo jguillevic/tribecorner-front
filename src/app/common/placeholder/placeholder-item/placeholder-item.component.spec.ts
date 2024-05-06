@@ -1,6 +1,5 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { PlaceholderItemComponent } from './placeholder-item.component';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {PlaceholderItemComponent} from './placeholder-item.component';
 
 describe('PlaceholderItemComponent', () => {
   let component: PlaceholderItemComponent;

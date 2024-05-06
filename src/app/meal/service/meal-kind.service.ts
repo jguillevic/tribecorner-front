@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable, map, shareReplay} from 'rxjs';
+import {Observable, filter, first, map, shareReplay} from 'rxjs';
 import {MealKind} from '../model/meal-kind.model';
 import {environment} from '../../../environments/environment';
 import {MealKindDto} from '../dto/meal-kind.dto';
@@ -21,6 +21,18 @@ export class MealKindService {
   .pipe(
     shareReplay(1)
   );
+
+  public readonly defaultMealKind$: Observable<MealKind|undefined>
+  = this.mealKinds$
+  .pipe(
+    map(meals => meals.find(meal => meal.name === 'Déjeuner'))
+  );
+
+  public readonly defaultMealKindId$: Observable<number>
+  = this.defaultMealKind$
+  .pipe(
+    map((defaultMealKind: MealKind|undefined) => defaultMealKind?.id ?? 1)
+  )
 
   public loadAll(): Observable<MealKind[]> {
     return this.apiHttp.get<MealKindDto[]>(

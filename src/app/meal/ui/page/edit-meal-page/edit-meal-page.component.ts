@@ -103,7 +103,8 @@ export class EditMealPageComponent implements OnInit, OnDestroy {
       {
           params: this.activatedRoute.queryParams,
           currentDate: this.mealCurrentDateService.currentDate$,
-          defaultNumberOfPersons: this.mealService.defaultNumberOfPersons$
+          defaultNumberOfPersons: this.mealService.defaultNumberOfPersons$,
+          defaultMealKindId: this.mealKindService.defaultMealKindId$
       }
     )
     .pipe(
@@ -118,7 +119,7 @@ export class EditMealPageComponent implements OnInit, OnDestroy {
             '',
             defaultDate,
             result.defaultNumberOfPersons,
-            1
+            result.defaultMealKindId
           );
           return of(meal);
         }),

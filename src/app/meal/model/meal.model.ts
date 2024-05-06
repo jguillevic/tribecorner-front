@@ -4,6 +4,7 @@ export class Meal {
         public name: string,
         public readonly date: Date,
         public readonly numberOfPersons: number,
-        public readonly mealKindId: number
+        public readonly mealKindId: number,
+        public readonly recipeUrl: string|undefined = undefined
     ) { }
 }

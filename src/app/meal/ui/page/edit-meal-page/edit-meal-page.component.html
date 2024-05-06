@@ -54,9 +54,18 @@
                   </mat-option>
                 }
               </mat-select>
-              @if (editMealFormData.editMealForm.controls['numberOfPersons'].hasError('required')) {
+              @if (getNumberOfPersonsControl().hasError('required')) {
                 <mat-error>
                   Nombre de personnes requis
+                </mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field class="form-input">
+              <mat-label>Page de la recette (facultatif)</mat-label>
+              <input matInput type="email" formControlName="recipeUrl">
+              @if (getRecipeUrlControl().hasError('pattern')) {
+                <mat-error>
+                  Format non valide
                 </mat-error>
               }
             </mat-form-field>

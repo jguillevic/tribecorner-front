@@ -1,6 +1,15 @@
 <mat-card class="meal-card">
     <mat-card-header>
-        <mat-card-title class="meal-card__name">{{this.meal?.name}}</mat-card-title>
+        <mat-card-title class="meal-card__name">
+            {{this.meal?.name}}
+            @if (hasRecipe()) {
+                <span 
+                (click)="goToRecipe()" 
+                [ngClass]="{'clickable': hasRecipe(), 'primary-color': hasRecipe()}">
+                    (voir la recette)
+                </span>
+            }
+        </mat-card-title>
         <mat-card-subtitle class="meal-card__persons">{{this.meal?.numberOfPersons}} pers.</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content></mat-card-content>

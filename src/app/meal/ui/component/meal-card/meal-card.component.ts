@@ -4,6 +4,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MealEditButtonComponent} from "../meal-edit-button/meal-edit-button.component";
 import {MealCopyButtonComponent} from "../meal-copy-button/meal-copy-button.component";
 import {MealDeleteButtonComponent} from "../meal-delete-button/meal-delete-button.component";
+import {CommonModule} from "@angular/common"
 
 @Component({
     selector: 'app-meal-card',
@@ -14,10 +15,24 @@ import {MealDeleteButtonComponent} from "../meal-delete-button/meal-delete-butto
         MatCardModule,
         MealEditButtonComponent,
         MealCopyButtonComponent,
-        MealDeleteButtonComponent
+        MealDeleteButtonComponent,
+        CommonModule
     ]
 })
 export class MealCardComponent {
     @Input() public meal: Meal|undefined;
     @Input() public showActions: boolean = true;
+
+    public goToRecipe(): void {
+        if (this.meal && this.meal.recipeUrl) {
+            window.open(this.meal.recipeUrl, '_blank');
+        }
+    }
+
+    public hasRecipe(): boolean {
+        if (this.meal && this.meal.recipeUrl) {
+            return true;
+        }
+        return false;
+    }
 }

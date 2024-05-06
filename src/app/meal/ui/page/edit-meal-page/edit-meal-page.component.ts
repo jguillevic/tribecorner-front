@@ -1,23 +1,23 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Meal } from '../../../model/meal.model';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MealService } from '../../../service/meal.service';
-import { Observable, Subject, combineLatest, debounceTime, exhaustMap, filter, map, mergeMap, of, takeUntil, tap } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
-import { MatSelectModule } from '@angular/material/select';
-import { MealKindService } from '../../../service/meal-kind.service';
-import { MealKind } from '../../../model/meal-kind.model';
-import { SimpleLoadingComponent } from "../../../../common/loading/ui/simple-loading/simple-loading.component";
-import { MtxButtonModule } from '@ng-matero/extensions/button';
-import { GoBackTopBarComponent } from "../../../../common/top-bar/go-back/ui/go-back-top-bar.component";
-import { MealCurrentDateService } from '../../../service/meal-current-date.service';
-import { DateHelper } from '../../../../common/date/helper/date.helper';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {Meal} from '../../../model/meal.model';
+import {MatButtonModule} from '@angular/material/button';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {MealService} from '../../../service/meal.service';
+import {Observable, Subject, combineLatest, debounceTime, exhaustMap, filter, map, mergeMap, of, takeUntil, tap} from 'rxjs';
+import {ActivatedRoute} from '@angular/router';
+import {MatSelectModule} from '@angular/material/select';
+import {MealKindService} from '../../../service/meal-kind.service';
+import {MealKind} from '../../../model/meal-kind.model';
+import {SimpleLoadingComponent} from "../../../../common/loading/ui/simple-loading/simple-loading.component";
+import {MtxButtonModule} from '@ng-matero/extensions/button';
+import {GoBackTopBarComponent} from "../../../../common/top-bar/go-back/ui/go-back-top-bar.component";
+import {MealCurrentDateService} from '../../../service/meal-current-date.service';
+import {DateHelper} from '../../../../common/date/helper/date.helper';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
 
 @Component({
     selector: 'app-edit-meal-page',
@@ -61,7 +61,11 @@ export class EditMealPageComponent implements OnInit, OnDestroy {
         [Validators.required]
       ),
       mealKindId: new FormControl(0, [Validators.required]),
-      numberOfPersons: new FormControl(0, [Validators.required])
+      numberOfPersons: new FormControl(0, [Validators.required]),
+      recipeUrl: new FormControl(
+        undefined,
+        [Validators.pattern('^(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})([/\\w .-]*)*/?$')]
+      )
     }
   );
 
@@ -149,6 +153,10 @@ export class EditMealPageComponent implements OnInit, OnDestroy {
     return this.editMealForm.controls['numberOfPersons'];
   }
 
+  public getRecipeUrlControl(): AbstractControl<any, any> {
+    return this.editMealForm.controls['recipeUrl'];
+  }
+
   public updateNameControl(name: string): void {
     this.getNameControl().setValue(name);
   }
@@ -165,11 +173,16 @@ export class EditMealPageComponent implements OnInit, OnDestroy {
     this.getNumberOfPersonsControl().setValue(numberOfPersons);
   }
 
+  public updateRecipeUrl(recipeUrl: string|undefined): void {
+    this.getRecipeUrlControl().setValue(recipeUrl);
+  }
+
   public updateEditMealForm(meal: Meal): FormGroup {
     this.updateNameControl(meal.name);
     this.updateDateControl(meal.date);
     this.updateMealKindIdControl(meal.mealKindId);
     this.updateNumberOfPersonsControl(meal.numberOfPersons);
+    this.updateRecipeUrl(meal.recipeUrl);
 
     return this.editMealForm;
   }

@@ -9,7 +9,8 @@ export abstract class MealConverter {
             mealDto.name,
             new Date(mealDto.date),
             mealDto.numberOfPersons,
-            mealDto.mealKindId
+            mealDto.mealKindId,
+            mealDto.recipeUrl
         );
     }
 
@@ -19,7 +20,8 @@ export abstract class MealConverter {
             meal.name,
             DateHelper.toISODate(meal.date),
             meal.numberOfPersons,
-            meal.mealKindId
+            meal.mealKindId,
+            meal.recipeUrl
         );
     }
 }
